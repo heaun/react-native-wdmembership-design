@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import Toast from "react-native-toast-message";
+import { SplashScreen } from "./src/screens/SplashScreen";
 import { IntroScreen } from "./src/screens/IntroScreen";
 import { LoginScreen } from "./src/screens/LoginScreen";
 import { AppNavigator } from "./navigation/AppNavigator";
 
-type ScreenType = "intro" | "login" | "signup" | "main";
+type ScreenType = "splash" | "intro" | "login" | "signup" | "main";
 
 export default function App() {
-  const [currentScreen, setCurrentScreen] = useState<ScreenType>("intro");
+  const [currentScreen, setCurrentScreen] = useState<ScreenType>("splash");
 
   const showToast = (type: "success" | "error" | "info", title: string, message: string) => {
     Toast.show({
@@ -51,11 +52,28 @@ export default function App() {
 
   console.log("현재 화면:", currentScreen);
 
+  if (currentScreen === "splash") {
+    console.log("SplashScreen 렌더링");
+    return (
+      <>
+        <SplashScreen onFinish={() => setCurrentScreen("intro")} />
+        <Toast />
+      </>
+    );
+  }
+
   if (currentScreen === "login") {
     console.log("LoginScreen 렌더링");
     return (
       <>
-        <LoginScreen onBackPress={handleBackPress} onLoginSuccess={handleLoginSuccess} />
+        <LoginScreen
+          onBackPress={handleBackPress}
+          onLoginSuccess={handleLoginSuccess}
+          onMembershipInfoPress={() => {
+            console.log("멤버쉽 상품 소개 버튼 클릭");
+            showToast("info", "멤버쉽 상품 소개", "멤버쉽 상품 소개 화면으로 이동합니다.");
+          }}
+        />
         <Toast />
       </>
     );

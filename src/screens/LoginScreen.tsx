@@ -1,14 +1,17 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, StatusBar } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, TextInput } from "react-native";
+import { CommonLayout } from "../components/CommonLayout";
 
 interface LoginScreenProps {
   onBackPress?: () => void;
   onLoginSuccess?: () => void;
+  onMembershipInfoPress?: () => void;
 }
 
-export const LoginScreen: React.FC<LoginScreenProps> = ({ onBackPress, onLoginSuccess }) => {
+export const LoginScreen: React.FC<LoginScreenProps> = ({ onBackPress, onLoginSuccess, onMembershipInfoPress }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [keepLoggedIn, setKeepLoggedIn] = useState(false);
 
   const handleLogin = () => {
     if (username && password) {
@@ -16,25 +19,23 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onBackPress, onLoginSu
     }
   };
 
-  return (
-    <View style={styles.container}>
-      {/* 헤더 */}
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.backButton} onPress={onBackPress}>
-          <Text style={styles.backButtonText}>←</Text>
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>로그인</Text>
-        <View style={styles.placeholder} />
-      </View>
+  const handleKeepLoggedInToggle = () => {
+    setKeepLoggedIn(!keepLoggedIn);
+  };
 
-      {/* 메인 콘텐츠 */}
-      <View style={styles.content}>
+  return (
+    <CommonLayout title="로그인" onBackPress={onBackPress}>
+      {/* Welcome Text */}
+      <View style={styles.welcomeSection}>
         <Text style={styles.welcomeText}>반갑습니다.</Text>
         <Text style={styles.subtitleText}>가입하신 계정으로 로그인하세요.</Text>
+      </View>
 
-        {/* 입력 필드 */}
+      {/* Input Fields */}
+      <View style={styles.inputSection}>
         <View style={styles.inputContainer}>
           <TextInput style={styles.input} placeholder="아이디" placeholderTextColor="#B1B8C0" value={username} onChangeText={setUsername} />
+          <View style={styles.inputBorder} />
         </View>
 
         <View style={styles.inputContainer}>
@@ -46,148 +47,162 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onBackPress, onLoginSu
             value={password}
             onChangeText={setPassword}
           />
-        </View>
-
-        {/* 로그인 상태 유지 */}
-        <View style={styles.rememberContainer}>
-          <TouchableOpacity style={styles.checkbox}>
-            <View style={styles.checkboxInner} />
-          </TouchableOpacity>
-          <Text style={styles.rememberText}>로그인 상태 유지</Text>
-        </View>
-
-        {/* 로그인 버튼 */}
-        <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-          <Text style={styles.loginButtonText}>로그인 하기</Text>
-        </TouchableOpacity>
-
-        {/* 링크 */}
-        <View style={styles.linksContainer}>
-          <TouchableOpacity>
-            <Text style={styles.linkText}>아이디 찾기</Text>
-          </TouchableOpacity>
-          <View style={styles.divider} />
-          <TouchableOpacity>
-            <Text style={styles.linkText}>비밀번호 재설정</Text>
-          </TouchableOpacity>
+          <View style={styles.inputBorder} />
         </View>
       </View>
-    </View>
+
+      {/* Keep Logged In */}
+      <View style={styles.keepLoggedInSection}>
+        <TouchableOpacity style={[styles.checkbox, keepLoggedIn && styles.checkboxChecked]} onPress={handleKeepLoggedInToggle}>
+          {keepLoggedIn && <Text style={styles.checkmark}>✓</Text>}
+        </TouchableOpacity>
+        <Text style={styles.keepLoggedInText}>로그인 상태 유지</Text>
+      </View>
+
+      {/* Login Button */}
+      <TouchableOpacity
+        style={[styles.loginButton, (!username || !password) && styles.loginButtonDisabled]}
+        onPress={handleLogin}
+        disabled={!username || !password}
+      >
+        <Text style={styles.loginButtonText}>로그인 하기</Text>
+      </TouchableOpacity>
+
+      {/* Links */}
+      <View style={styles.linksSection}>
+        <TouchableOpacity style={styles.linkButton}>
+          <Text style={styles.linkText}>아이디 찾기</Text>
+        </TouchableOpacity>
+        <View style={styles.linkDivider} />
+        <TouchableOpacity style={styles.linkButton}>
+          <Text style={styles.linkText}>비밀번호 재설정</Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* Membership Info Text */}
+      <View style={styles.membershipInfoSection}>
+        <TouchableOpacity onPress={onMembershipInfoPress}>
+          <Text style={styles.membershipInfoText}>멤버쉽 상품 소개</Text>
+        </TouchableOpacity>
+      </View>
+    </CommonLayout>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#FFFFFF"
-  },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: 20,
-    paddingTop: 60,
-    paddingBottom: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: "#E5E5E5"
-  },
-  backButton: {
-    width: 40,
-    height: 40,
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  backButtonText: {
-    fontSize: 24,
-    color: "#2B2B2B"
-  },
-  headerTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#2B2B2B"
-  },
-  placeholder: {
-    width: 40
-  },
-  content: {
-    flex: 1,
-    paddingHorizontal: 20,
-    paddingTop: 40
+  welcomeSection: {
+    marginBottom: 40,
+    marginTop: 60
   },
   welcomeText: {
-    fontSize: 28,
-    fontWeight: "bold",
+    fontSize: 30,
+    fontWeight: "800",
     color: "#2B2B2B",
-    marginBottom: 8
+    marginBottom: 10,
+    letterSpacing: -1.2
   },
   subtitleText: {
     fontSize: 16,
-    color: "#666666",
-    marginBottom: 40
+    fontWeight: "400",
+    color: "#2B2B2B",
+    letterSpacing: -0.64
   },
-  inputContainer: {
-    marginBottom: 20
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: "#E5E5E5",
-    borderRadius: 8,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    fontSize: 16,
-    backgroundColor: "#FFFFFF"
-  },
-  rememberContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+  inputSection: {
     marginBottom: 30
   },
+  inputContainer: {
+    marginBottom: 30
+  },
+  input: {
+    fontSize: 16,
+    fontWeight: "700",
+    color: "#2B2B2B",
+    paddingVertical: 12,
+    letterSpacing: -0.64
+  },
+  inputBorder: {
+    height: 1,
+    backgroundColor: "#D6DADF",
+    marginTop: 8
+  },
+  keepLoggedInSection: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 40
+  },
   checkbox: {
-    width: 20,
-    height: 20,
+    width: 24,
+    height: 24,
+    borderRadius: 12,
     borderWidth: 1,
-    borderColor: "#E5E5E5",
-    borderRadius: 4,
-    marginRight: 10,
+    borderColor: "#D6DADF",
+    backgroundColor: "#FFFFFF",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    marginRight: 10
   },
-  checkboxInner: {
-    width: 12,
-    height: 12,
+  checkboxChecked: {
     backgroundColor: "#2B2B2B",
-    borderRadius: 2
+    borderColor: "#2B2B2B"
   },
-  rememberText: {
+  checkmark: {
+    color: "#FFFFFF",
     fontSize: 14,
-    color: "#666666"
+    fontWeight: "bold"
+  },
+  keepLoggedInText: {
+    fontSize: 14,
+    fontWeight: "700",
+    color: "#2B2B2B",
+    letterSpacing: -0.56
   },
   loginButton: {
     backgroundColor: "#2B2B2B",
-    borderRadius: 8,
-    paddingVertical: 16,
+    borderRadius: 25,
+    height: 50,
+    justifyContent: "center",
     alignItems: "center",
-    marginBottom: 30
+    marginBottom: 40
+  },
+  loginButtonDisabled: {
+    backgroundColor: "#E5E5E5"
   },
   loginButtonText: {
-    color: "#FFFFFF",
     fontSize: 16,
-    fontWeight: "bold"
+    fontWeight: "700",
+    color: "#FFFFFF",
+    letterSpacing: -0.64
   },
-  linksContainer: {
+  linksSection: {
     flexDirection: "row",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    marginBottom: 40
+  },
+  linkButton: {
+    paddingHorizontal: 10
   },
   linkText: {
     fontSize: 14,
-    color: "#2B2B2B",
-    textDecorationLine: "underline"
+    fontWeight: "700",
+    color: "#505866",
+    letterSpacing: -0.56
   },
-  divider: {
+  linkDivider: {
     width: 1,
-    height: 12,
-    backgroundColor: "#E5E5E5",
-    marginHorizontal: 15
+    height: 10,
+    backgroundColor: "#D6DADF",
+    marginHorizontal: 20
+  },
+  membershipInfoSection: {
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 30
+  },
+  membershipInfoText: {
+    fontSize: 16,
+    fontWeight: "700",
+    color: "#B48327",
+    letterSpacing: -0.64
   }
 });

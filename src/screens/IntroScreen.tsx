@@ -14,21 +14,24 @@ const images = [
     color: "#F5F5F5",
     imageName: "intro_01.png",
     imageSource: require("../assets/intro/intro_01.png"),
-    text: "철저한 보안 시스템,\n독립된 프라이빗\n고급 주거 공간"
+    text: "철저한 보안 시스템,\n독립된 프라이빗\n고급 주거 공간",
+    align: "left"
   },
   {
     id: 2,
     color: "#E8F4FD",
     imageName: "intro_02.png",
     imageSource: require("../assets/intro/intro_02.png"),
-    text: "입주자를 위한\n맞춤형\n컨시어지 서비스"
+    text: "입주자를 위한\n맞춤형\n컨시어지 서비스",
+    align: "right"
   },
   {
     id: 3,
     color: "#F0F8F0",
     imageName: "intro_03.png",
     imageSource: require("../assets/intro/intro_03.png"),
-    text: "차별화된\n프리미엄\n라이프스타일"
+    text: "차별화된\n프리미엄\n라이프스타일",
+    align: "left"
   }
 ];
 
@@ -125,7 +128,7 @@ export const IntroScreen: React.FC<IntroScreenProps> = ({ onSignupPress, onLogin
               <Image source={image.imageSource} style={styles.backgroundImage} resizeMode="cover" />
               <View style={styles.gradientOverlay} />
               <Animated.View style={[styles.textContainer, { opacity: fadeAnim }]}>
-                <Text style={[styles.mainText, { textAlign: index === 1 ? "right" : "left" }]}>{image.text}</Text>
+                <Text style={[styles.mainText]}>{image.text}</Text>
               </Animated.View>
             </View>
           ))}

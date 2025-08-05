@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity, FlatList } from "react-native";
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, FlatList } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Card } from "../components/Card";
 import { Button } from "../components/Button";
+import { CommonLayout } from "../components/CommonLayout";
 import { colors } from "../../utils/colors";
 import { Reward } from "../../types";
 
@@ -104,7 +105,7 @@ export const RewardsScreen: React.FC = () => {
   );
 
   return (
-    <SafeAreaView style={styles.container}>
+    <CommonLayout title="리워드" showBackButton={false}>
       {/* Header */}
       <View style={styles.header}>
         <Text style={styles.title}>리워드</Text>
@@ -135,7 +136,7 @@ export const RewardsScreen: React.FC = () => {
         contentContainerStyle={styles.rewardsList}
         numColumns={2}
       />
-    </SafeAreaView>
+    </CommonLayout>
   );
 };
 

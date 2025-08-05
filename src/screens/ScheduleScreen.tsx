@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView, StatusBar, Dimensions } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Dimensions } from "react-native";
+import { CommonLayout } from "../components/CommonLayout";
 
 const { width: screenWidth } = Dimensions.get("window");
 
@@ -7,11 +8,96 @@ interface ScheduleScreenProps {
   onBackPress?: () => void;
   onHomePress?: () => void;
   onReservationDetailPress?: () => void;
+  currentTab?: string;
+  onTabPress?: (tabName: string) => void;
 }
 
-export const ScheduleScreen: React.FC<ScheduleScreenProps> = ({ onBackPress, onHomePress, onReservationDetailPress }) => {
+export const ScheduleScreen: React.FC<ScheduleScreenProps> = ({ onBackPress, onHomePress, onReservationDetailPress, currentTab, onTabPress }) => {
   const [activeTab, setActiveTab] = useState<"calendar" | "reservation">("calendar");
   const [currentMonth, setCurrentMonth] = useState("2026년 10월");
+
+  const reservations = [
+    {
+      id: 1,
+      date: "31일",
+      title: "마인드앤바디 포 어덜트",
+      location: "서울 서초구",
+      time: "오후 02:30",
+      status: "예약확정"
+    },
+    {
+      id: 2,
+      date: "28일",
+      title: "웰리스컴 Wellness Come",
+      location: "서울 서초구",
+      time: "오전11:00",
+      status: "예약확정"
+    },
+    {
+      id: 3,
+      date: "26일",
+      title: "웰리스컴 Wellness Come",
+      location: "서울 서초구",
+      time: "오후 02:30",
+      status: "예약확정"
+    },
+    {
+      id: 4,
+      date: "22일",
+      title: "웰리스컴 Wellness Come",
+      location: "서울 서초구",
+      time: "오전11:00",
+      status: "예약확정"
+    },
+    {
+      id: 5,
+      date: "28일",
+      title: "GCC 스크린 골프",
+      location: "서울 서초구",
+      time: "오후 07:00",
+      status: "예약확정"
+    },
+    {
+      id: 6,
+      date: "26일",
+      title: "마인드앤바디 포 어덜트",
+      location: "서울 서초구",
+      time: "오전 07:30",
+      status: "예약확정"
+    },
+    {
+      id: 7,
+      date: "22일",
+      title: "Healthy Meal Plan",
+      location: "서울 서초구",
+      time: "오전11:00",
+      status: "예약확정"
+    },
+    {
+      id: 8,
+      date: "28일",
+      title: "서울연세외과",
+      location: "서울 서초구",
+      time: "오후 02:30",
+      status: "예약확정"
+    },
+    {
+      id: 9,
+      date: "26일",
+      title: "웰리스컴 Wellness Come",
+      location: "서울 서초구",
+      time: "오후 02:30",
+      status: "예약확정"
+    },
+    {
+      id: 10,
+      date: "22일",
+      title: "Healthy Meal Plan",
+      location: "서울 서초구",
+      time: "오전 09:00",
+      status: "예약확정"
+    }
+  ];
 
   const handleTabPress = (tab: "calendar" | "reservation") => {
     setActiveTab(tab);
@@ -146,174 +232,50 @@ export const ScheduleScreen: React.FC<ScheduleScreenProps> = ({ onBackPress, onH
     </ScrollView>
   );
 
-  const renderReservationView = () => (
-    <ScrollView style={styles.reservationContainer} showsVerticalScrollIndicator={false}>
-      {/* 31일 예약 */}
-      <View style={styles.dateSection}>
-        <Text style={styles.dateTitle}>31일</Text>
-        <TouchableOpacity style={styles.reservationItem} onPress={onReservationDetailPress}>
-          <View style={styles.reservationContent}>
-            <Text style={styles.reservationTitle}>마인드앤바디 포 어덜트</Text>
-            <Text style={styles.reservationLocation}>서울 서초구</Text>
-            <Text style={styles.reservationTime}>오후 02:30</Text>
-          </View>
-          <View style={styles.reservationStatus}>
-            <Text style={styles.statusText}>예약확정</Text>
-          </View>
-        </TouchableOpacity>
-      </View>
+  const renderReservationView = () => {
+    // 날짜별로 예약을 그룹화
+    const groupedReservations = reservations.reduce((groups, reservation) => {
+      const date = reservation.date;
+      if (!groups[date]) {
+        groups[date] = [];
+      }
+      groups[date].push(reservation);
+      return groups;
+    }, {} as Record<string, typeof reservations>);
 
-      {/* 28일 예약 */}
-      <View style={styles.dateSection}>
-        <Text style={styles.dateTitle}>28일</Text>
-        <View style={styles.reservationItem}>
-          <View style={styles.reservationContent}>
-            <Text style={styles.reservationTitle}>웰리스컴 Wellness Come</Text>
-            <Text style={styles.reservationLocation}>서울 서초구</Text>
-            <Text style={styles.reservationTime}>오전11:00</Text>
+    return (
+      <ScrollView style={styles.reservationContainer} showsVerticalScrollIndicator={false}>
+        {Object.entries(groupedReservations).map(([date, dateReservations]) => (
+          <View key={date} style={styles.dateSection}>
+            <Text style={styles.dateTitle}>{date}</Text>
+            {dateReservations.map((reservation) => (
+              <TouchableOpacity key={reservation.id} style={styles.reservationItem} onPress={onReservationDetailPress}>
+                <View style={styles.reservationContent}>
+                  <Text style={styles.reservationTitle}>{reservation.title}</Text>
+                  <Text style={styles.reservationLocation}>{reservation.location}</Text>
+                  <Text style={styles.reservationTime}>{reservation.time}</Text>
+                </View>
+                <View style={styles.reservationStatus}>
+                  <Text style={styles.statusText}>{reservation.status}</Text>
+                </View>
+              </TouchableOpacity>
+            ))}
           </View>
-          <View style={styles.reservationStatus}>
-            <Text style={styles.statusText}>예약확정</Text>
-          </View>
-        </View>
-      </View>
-
-      {/* 26일 예약 */}
-      <View style={styles.dateSection}>
-        <Text style={styles.dateTitle}>26일</Text>
-        <View style={styles.reservationItem}>
-          <View style={styles.reservationContent}>
-            <Text style={styles.reservationTitle}>웰리스컴 Wellness Come</Text>
-            <Text style={styles.reservationLocation}>서울 서초구</Text>
-            <Text style={styles.reservationTime}>오후 02:30</Text>
-          </View>
-          <View style={styles.reservationStatus}>
-            <Text style={styles.statusText}>예약확정</Text>
-          </View>
-        </View>
-      </View>
-
-      {/* 22일 예약 */}
-      <View style={styles.dateSection}>
-        <Text style={styles.dateTitle}>22일</Text>
-        <View style={styles.reservationItem}>
-          <View style={styles.reservationContent}>
-            <Text style={styles.reservationTitle}>웰리스컴 Wellness Come</Text>
-            <Text style={styles.reservationLocation}>서울 서초구</Text>
-            <Text style={styles.reservationTime}>오전11:00</Text>
-          </View>
-          <View style={styles.reservationStatus}>
-            <Text style={styles.statusText}>예약확정</Text>
-          </View>
-        </View>
-      </View>
-
-      {/* 추가 예약들 */}
-      <View style={styles.dateSection}>
-        <Text style={styles.dateTitle}>28일</Text>
-        <View style={styles.reservationItem}>
-          <View style={styles.reservationContent}>
-            <Text style={styles.reservationTitle}>GCC 스크린 골프</Text>
-            <Text style={styles.reservationLocation}>서울 서초구</Text>
-            <Text style={styles.reservationTime}>오후 07:00</Text>
-          </View>
-          <View style={styles.reservationStatus}>
-            <Text style={styles.statusText}>예약확정</Text>
-          </View>
-        </View>
-      </View>
-
-      <View style={styles.dateSection}>
-        <Text style={styles.dateTitle}>26일</Text>
-        <View style={styles.reservationItem}>
-          <View style={styles.reservationContent}>
-            <Text style={styles.reservationTitle}>마인드앤바디 포 어덜트</Text>
-            <Text style={styles.reservationLocation}>서울 서초구</Text>
-            <Text style={styles.reservationTime}>오전 07:30</Text>
-          </View>
-          <View style={styles.reservationStatus}>
-            <Text style={styles.statusText}>예약확정</Text>
-          </View>
-        </View>
-      </View>
-
-      <View style={styles.dateSection}>
-        <Text style={styles.dateTitle}>22일</Text>
-        <View style={styles.reservationItem}>
-          <View style={styles.reservationContent}>
-            <Text style={styles.reservationTitle}>Healthy Meal Plan</Text>
-            <Text style={styles.reservationLocation}>서울 서초구</Text>
-            <Text style={styles.reservationTime}>오전11:00</Text>
-          </View>
-          <View style={styles.reservationStatus}>
-            <Text style={styles.statusText}>예약확정</Text>
-          </View>
-        </View>
-      </View>
-
-      <View style={styles.dateSection}>
-        <Text style={styles.dateTitle}>28일</Text>
-        <View style={styles.reservationItem}>
-          <View style={styles.reservationContent}>
-            <Text style={styles.reservationTitle}>서울연세외과</Text>
-            <Text style={styles.reservationLocation}>서울 서초구</Text>
-            <Text style={styles.reservationTime}>오후 02:30</Text>
-          </View>
-          <View style={styles.reservationStatus}>
-            <Text style={styles.statusText}>예약확정</Text>
-          </View>
-        </View>
-      </View>
-
-      <View style={styles.dateSection}>
-        <Text style={styles.dateTitle}>26일</Text>
-        <View style={styles.reservationItem}>
-          <View style={styles.reservationContent}>
-            <Text style={styles.reservationTitle}>웰리스컴 Wellness Come</Text>
-            <Text style={styles.reservationLocation}>서울 서초구</Text>
-            <Text style={styles.reservationTime}>오후 02:30</Text>
-          </View>
-          <View style={styles.reservationStatus}>
-            <Text style={styles.statusText}>예약확정</Text>
-          </View>
-        </View>
-      </View>
-
-      <View style={styles.dateSection}>
-        <Text style={styles.dateTitle}>22일</Text>
-        <View style={styles.reservationItem}>
-          <View style={styles.reservationContent}>
-            <Text style={styles.reservationTitle}>Healthy Meal Plan</Text>
-            <Text style={styles.reservationLocation}>서울 서초구</Text>
-            <Text style={styles.reservationTime}>오전 09:00</Text>
-          </View>
-          <View style={styles.reservationStatus}>
-            <Text style={styles.statusText}>예약확정</Text>
-          </View>
-        </View>
-      </View>
-    </ScrollView>
-  );
+        ))}
+      </ScrollView>
+    );
+  };
 
   return (
-    <View style={styles.container}>
-      {/* Top Bar */}
-      <View style={styles.topBar}>
-        <TouchableOpacity style={styles.menuButton}>
-          <Text style={styles.menuIcon}>☰</Text>
-        </TouchableOpacity>
-        <Text style={styles.topBarTitle}>나의 일정</Text>
-        <View style={styles.topBarRight}>
-          <TouchableOpacity style={styles.notificationButton}>
-            <Text style={styles.notificationIcon}>🔔</Text>
-            <View style={styles.notificationBadge} />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.couponButton}>
-            <Text style={styles.couponIcon}>🎫</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-
+    <CommonLayout
+      title="나의 일정"
+      showBackButton={false}
+      onMenuPress={() => console.log("메뉴 버튼 클릭")}
+      onCouponPress={() => console.log("쿠폰 버튼 클릭")}
+      onNotificationPress={() => console.log("알림 버튼 클릭")}
+      currentTab={currentTab}
+      onTabPress={onTabPress}
+    >
       {/* Tab Navigation */}
       <View style={styles.tabContainer}>
         <TouchableOpacity style={[styles.tabButton, activeTab === "calendar" && styles.activeTabButton]} onPress={() => handleTabPress("calendar")}>
@@ -329,72 +291,11 @@ export const ScheduleScreen: React.FC<ScheduleScreenProps> = ({ onBackPress, onH
 
       {/* Content */}
       {activeTab === "calendar" ? renderCalendarView() : renderReservationView()}
-
-      {/* Bottom Tab Bar */}
-      <View style={styles.bottomTabBar}>
-        <TouchableOpacity style={styles.tabItem} onPress={onHomePress}>
-          <Text style={styles.tabIcon}>🏠</Text>
-          <Text style={styles.tabText}>홈</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.tabItem}>
-          <Text style={styles.tabIcon}>📅</Text>
-          <Text style={[styles.tabText, styles.activeTabText]}>나의일정</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.tabItem}>
-          <Text style={styles.tabIcon}>💳</Text>
-          <Text style={styles.tabText}>멤버쉽카드</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.tabItem}>
-          <Text style={styles.tabIcon}>⚙️</Text>
-          <Text style={styles.tabText}>마이서비스</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+    </CommonLayout>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#FFFFFF"
-  },
-
-  topBar: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: "#EFF1F3"
-  },
-  menuButton: {
-    width: 24,
-    height: 24,
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  menuIcon: {
-    fontSize: 18,
-    color: "#2B2B2B"
-  },
-  topBarTitle: {
-    fontSize: 18,
-    fontWeight: "700",
-    color: "#2B2B2B"
-  },
-  topBarRight: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 10
-  },
-  notificationButton: {
-    position: "relative",
-    width: 24,
-    height: 24,
-    justifyContent: "center",
-    alignItems: "center"
-  },
   notificationIcon: {
     fontSize: 18,
     color: "#2B2B2B"
@@ -443,7 +344,6 @@ const styles = StyleSheet.create({
   },
   calendarContainer: {
     flex: 1,
-    paddingHorizontal: 20,
     paddingTop: 20
   },
   monthHeader: {
@@ -634,8 +534,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 20
   },
   section: {
-    marginBottom: 20,
-    paddingHorizontal: 20
+    marginBottom: 20
   },
   sectionHeader: {
     flexDirection: "row",

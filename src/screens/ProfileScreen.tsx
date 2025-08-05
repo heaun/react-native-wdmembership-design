@@ -1,8 +1,9 @@
 import React from "react";
-import { View, Text, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Card } from "../components/Card";
 import { MembershipBadge } from "../components/MembershipBadge";
+import { CommonLayout } from "../components/CommonLayout";
 import { colors } from "../../utils/colors";
 import { User } from "../../types";
 
@@ -74,9 +75,22 @@ const menuItems = [
   }
 ];
 
-export const ProfileScreen: React.FC = () => {
+interface ProfileScreenProps {
+  currentTab?: string;
+  onTabPress?: (tabName: string) => void;
+}
+
+export const ProfileScreen: React.FC<ProfileScreenProps> = ({ currentTab, onTabPress }) => {
   return (
-    <SafeAreaView style={styles.container}>
+    <CommonLayout
+      title="마이서비스"
+      showBackButton={false}
+      onMenuPress={() => console.log("메뉴 버튼 클릭")}
+      onCouponPress={() => console.log("쿠폰 버튼 클릭")}
+      onNotificationPress={() => console.log("알림 버튼 클릭")}
+      currentTab={currentTab}
+      onTabPress={onTabPress}
+    >
       <ScrollView showsVerticalScrollIndicator={false}>
         {/* Profile Header */}
         <Card style={styles.profileCard} variant="elevated">
@@ -127,15 +141,11 @@ export const ProfileScreen: React.FC = () => {
           <Text style={styles.appCopyright}>© 2024 WD Membership. All rights reserved.</Text>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </CommonLayout>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.backgroundSecondary
-  },
   profileCard: {
     marginHorizontal: 20,
     marginTop: 20,

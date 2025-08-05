@@ -1,8 +1,9 @@
 import React from "react";
-import { View, Text, StyleSheet, ScrollView, SafeAreaView } from "react-native";
+import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Card } from "../components/Card";
 import { MembershipBadge } from "../components/MembershipBadge";
+import { CommonLayout } from "../components/CommonLayout";
 import { colors, membershipLevels } from "../../utils/colors";
 import { Benefit } from "../../types";
 
@@ -53,7 +54,13 @@ const mockBenefits: Benefit[] = [
 
 export const BenefitsScreen: React.FC = () => {
   return (
-    <SafeAreaView style={styles.container}>
+    <CommonLayout
+      title="나의일정"
+      showBackButton={false}
+      onMenuPress={() => console.log("메뉴 버튼 클릭")}
+      onCouponPress={() => console.log("쿠폰 버튼 클릭")}
+      onNotificationPress={() => console.log("알림 버튼 클릭")}
+    >
       <ScrollView showsVerticalScrollIndicator={false}>
         {/* Header */}
         <View style={styles.header}>
@@ -136,15 +143,11 @@ export const BenefitsScreen: React.FC = () => {
           </Card>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </CommonLayout>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.backgroundSecondary
-  },
   header: {
     paddingHorizontal: 20,
     paddingVertical: 16

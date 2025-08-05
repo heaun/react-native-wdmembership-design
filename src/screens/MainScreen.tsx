@@ -1,40 +1,96 @@
 import React from "react";
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image, StatusBar, Dimensions } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image, Dimensions } from "react-native";
+import { CommonLayout } from "../components/CommonLayout";
 
 const { width: screenWidth } = Dimensions.get("window");
 
 interface MainScreenProps {
   onLogout?: () => void;
+  currentTab?: string;
+  onTabPress?: (tabName: string) => void;
+  onReservationDetailPress?: () => void;
 }
 
-export const MainScreen: React.FC<MainScreenProps> = ({ onLogout }) => {
-  return (
-    <View style={styles.container}>
-      {/* Top Bar */}
-      <View style={styles.topBar}>
-        <TouchableOpacity style={styles.menuButton}>
-          <Text style={styles.menuIcon}>☰</Text>
-        </TouchableOpacity>
-        <Text style={styles.topBarTitle}>Fist Care</Text>
-        <View style={styles.topBarRight}>
-          <TouchableOpacity style={styles.notificationButton}>
-            <Text style={styles.notificationIcon}>🔔</Text>
-            <View style={styles.notificationBadge} />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.couponButton}>
-            <Text style={styles.couponIcon}>🎫</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+export const MainScreen: React.FC<MainScreenProps> = ({ onLogout, currentTab, onTabPress, onReservationDetailPress }) => {
+  const reservations = [
+    {
+      id: 1,
+      image: require("../assets/reservation-1.png"),
+      badge: "2일전",
+      location: "서울시 서초구",
+      title: "위드닥터스 케어센터 서초점",
+      time: "12.18(금)  오후 04:30"
+    },
+    {
+      id: 2,
+      image: require("../assets/reservation-2.png"),
+      badge: "5일전",
+      location: "서울시 서초구",
+      title: "GCC 골프 서초점",
+      time: "12.21(월)  오후 01:30"
+    },
+    {
+      id: 3,
+      image: require("../assets/reservation-1.png"),
+      badge: "6일전",
+      location: "서울시 서초구",
+      title: "위드닥터스 케어센터 서초점",
+      time: "12.22(화)  오후03:30"
+    },
+    {
+      id: 4,
+      image: require("../assets/reservation-2.png"),
+      badge: "7일전",
+      location: "서울시 서초구",
+      title: "GCC 골프 서초점",
+      time: "12.22(수)  오후 05:30"
+    }
+  ];
 
+  const services = [
+    {
+      id: 1,
+      image: require("../assets/service-1.png"),
+      location: "서울 서초동",
+      title: "마인드앤바디 포 어덜트",
+      description: "전문트레이너에게 체계적인 운동을 시작하세요.\n#전신근육강화 #코어근육 #다이어트"
+    },
+    {
+      id: 2,
+      image: require("../assets/service-2.png"),
+      location: "서울 서대문구",
+      title: "프리미엄 스파 휴리재",
+      description: "단 한 번의 세션으로 두피 건강을 개선하도록 설계된 맞춤형 트리트먼트를 즐기세요."
+    },
+    {
+      id: 3,
+      image: require("../assets/service-3.png"),
+      location: "서울 종로구",
+      title: "GCC 스크린 골프연습장",
+      description: "골프입문부터 싱글플레이까지 실력에 맞춘\n전문 프로골프 강사 래슨"
+    }
+  ];
+
+  return (
+    <CommonLayout
+      title="Fist Care"
+      showBackButton={false}
+      onMenuPress={() => console.log("메뉴 버튼 클릭")}
+      onCouponPress={() => console.log("쿠폰 버튼 클릭")}
+      onNotificationPress={() => console.log("알림 버튼 클릭")}
+      currentTab={currentTab}
+      onTabPress={onTabPress}
+    >
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
-        {/* User Profile Section */}
+        {/* Profile Section */}
         <View style={styles.profileSection}>
           <View style={styles.profileInfo}>
-            <View style={styles.profileAvatar} />
+            <Image source={require("../assets/profile-avatar.png")} style={styles.profileAvatar} />
             <View style={styles.profileText}>
               <Text style={styles.greeting}>안녕하세요!</Text>
-              <Text style={styles.userName}>박기용님</Text>
+              <Text style={styles.userName}>
+                박기용<Text style={styles.userNameSuffix}>님</Text>
+              </Text>
             </View>
           </View>
           <TouchableOpacity style={styles.editProfileButton}>
@@ -45,7 +101,7 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onLogout }) => {
 
         {/* Membership Card */}
         <View style={styles.membershipCard}>
-          <View style={styles.cardImage} />
+          <Image source={require("../assets/membership-card.png")} style={styles.cardImage} />
           <View style={styles.cardContent}>
             <Text style={styles.cardLabel}>My 멤버쉽</Text>
             <Text style={styles.cardTitle}>PH 1603 RESIDENCE</Text>
@@ -66,28 +122,19 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onLogout }) => {
             </View>
           </View>
           <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.reservationScroll}>
-            <View style={styles.reservationCard}>
-              <View style={styles.reservationImage} />
-              <View style={styles.reservationBadge}>
-                <Text style={styles.reservationBadgeText}>2일전</Text>
-              </View>
-              <View style={styles.reservationInfo}>
-                <Text style={styles.reservationLocation}>서울시 서초구</Text>
-                <Text style={styles.reservationTitle}>위드닥터스 케어센터 서초점</Text>
-                <Text style={styles.reservationTime}>12.18(금) 오후 04:30</Text>
-              </View>
-            </View>
-            <View style={styles.reservationCard}>
-              <View style={styles.reservationImage} />
-              <View style={styles.reservationBadge}>
-                <Text style={styles.reservationBadgeText}>5일전</Text>
-              </View>
-              <View style={styles.reservationInfo}>
-                <Text style={styles.reservationLocation}>서울시 서초구</Text>
-                <Text style={styles.reservationTitle}>GCC 골프 서초점</Text>
-                <Text style={styles.reservationTime}>12.21(월) 오후 01:30</Text>
-              </View>
-            </View>
+            {reservations.map((reservation) => (
+              <TouchableOpacity key={reservation.id} style={styles.reservationCard} onPress={onReservationDetailPress}>
+                <Image source={reservation.image} style={styles.reservationImage} />
+                <View style={styles.reservationBadge}>
+                  <Text style={styles.reservationBadgeText}>{reservation.badge}</Text>
+                </View>
+                <View style={styles.reservationInfo}>
+                  <Text style={styles.reservationLocation}>{reservation.location}</Text>
+                  <Text style={styles.reservationTitle}>{reservation.title}</Text>
+                  <Text style={styles.reservationTime}>{reservation.time}</Text>
+                </View>
+              </TouchableOpacity>
+            ))}
           </ScrollView>
           <TouchableOpacity style={styles.viewAllButton}>
             <Text style={styles.viewAllText}>예약 관리 바로가기</Text>
@@ -104,101 +151,24 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onLogout }) => {
             </TouchableOpacity>
           </View>
           <View style={styles.servicesContainer}>
-            <View style={styles.serviceCard}>
-              <View style={styles.serviceImage} />
-              <View style={styles.serviceInfo}>
-                <Text style={styles.serviceLocation}>서울 서초동</Text>
-                <Text style={styles.serviceTitle}>마인드앤바디 포 어덜트</Text>
-                <Text style={styles.serviceDescription}>전문트레이너에게 체계적인 운동을 시작하세요.{"\n"}#전신근육강화 #코어근육 #다이어트</Text>
+            {services.map((service) => (
+              <View key={service.id} style={styles.serviceCard}>
+                <Image source={service.image} style={styles.serviceImage} />
+                <View style={styles.serviceInfo}>
+                  <Text style={styles.serviceLocation}>{service.location}</Text>
+                  <Text style={styles.serviceTitle}>{service.title}</Text>
+                  <Text style={styles.serviceDescription}>{service.description}</Text>
+                </View>
               </View>
-            </View>
-            <View style={styles.serviceCard}>
-              <View style={styles.serviceImage} />
-              <View style={styles.serviceInfo}>
-                <Text style={styles.serviceLocation}>서울 서대문구</Text>
-                <Text style={styles.serviceTitle}>프리미엄 스파 휴리재</Text>
-                <Text style={styles.serviceDescription}>단 한 번의 세션으로 두피 건강을 개선하도록 설계된 맞춤형 트리트먼트를 즐기세요.</Text>
-              </View>
-            </View>
-            <View style={styles.serviceCard}>
-              <View style={styles.serviceImage} />
-              <View style={styles.serviceInfo}>
-                <Text style={styles.serviceLocation}>서울 종로구</Text>
-                <Text style={styles.serviceTitle}>GCC 스크린 골프연습장</Text>
-                <Text style={styles.serviceDescription}>골프입문부터 싱글플레이까지 실력에 맞춘{"\n"}전문 프로골프 강사 래슨</Text>
-              </View>
-            </View>
+            ))}
           </View>
         </View>
       </ScrollView>
-    </View>
+    </CommonLayout>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#FFFFFF"
-  },
-  topBar: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: "#EFF1F3"
-  },
-  menuButton: {
-    width: 24,
-    height: 24,
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  menuIcon: {
-    fontSize: 18,
-    color: "#2B2B2B"
-  },
-  topBarTitle: {
-    fontSize: 18,
-    fontWeight: "700",
-    color: "#2B2B2B"
-  },
-  topBarRight: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 10
-  },
-  notificationButton: {
-    position: "relative",
-    width: 24,
-    height: 24,
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  notificationIcon: {
-    fontSize: 18,
-    color: "#2B2B2B"
-  },
-  notificationBadge: {
-    position: "absolute",
-    top: 0,
-    right: 0,
-    width: 6,
-    height: 6,
-    backgroundColor: "#ECA31D",
-    borderRadius: 3
-  },
-  couponButton: {
-    width: 24,
-    height: 24,
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  couponIcon: {
-    fontSize: 18,
-    color: "#2B2B2B"
-  },
   scrollView: {
     flex: 1
   },
@@ -206,7 +176,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingHorizontal: 20,
     paddingVertical: 20
   },
   profileInfo: {
@@ -217,8 +186,7 @@ const styles = StyleSheet.create({
   profileAvatar: {
     width: 60,
     height: 60,
-    borderRadius: 30,
-    backgroundColor: "#E0E0E0"
+    borderRadius: 30
   },
   profileText: {
     gap: 5
@@ -231,6 +199,11 @@ const styles = StyleSheet.create({
   userName: {
     fontSize: 20,
     fontWeight: "900",
+    color: "#2B2B2B"
+  },
+  userNameSuffix: {
+    fontSize: 20,
+    fontWeight: "400",
     color: "#2B2B2B"
   },
   editProfileButton: {
@@ -248,7 +221,6 @@ const styles = StyleSheet.create({
     color: "#505866"
   },
   membershipCard: {
-    marginHorizontal: 20,
     marginBottom: 20,
     backgroundColor: "#EFF1F3",
     borderRadius: 6,
@@ -256,11 +228,10 @@ const styles = StyleSheet.create({
     position: "relative"
   },
   cardImage: {
-    width: "100%",
-    height: 80,
+    width: 82.29,
+    height: 48,
     borderRadius: 6,
-    marginBottom: 15,
-    backgroundColor: "#D0D0D0"
+    marginBottom: 15
   },
   cardContent: {
     gap: 5
@@ -300,7 +271,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingHorizontal: 20,
     marginBottom: 15
   },
   sectionTitle: {
@@ -321,9 +291,7 @@ const styles = StyleSheet.create({
     fontWeight: "800",
     color: "#FFFFFF"
   },
-  reservationScroll: {
-    paddingHorizontal: 20
-  },
+  reservationScroll: {},
   reservationCard: {
     width: 250,
     marginRight: 15,
@@ -336,7 +304,7 @@ const styles = StyleSheet.create({
   reservationImage: {
     width: "100%",
     height: 136,
-    backgroundColor: "#E0E0E0"
+    borderRadius: 10
   },
   reservationBadge: {
     position: "absolute",
@@ -375,7 +343,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingHorizontal: 20,
     marginTop: 15
   },
   viewAllText: {
@@ -384,7 +351,6 @@ const styles = StyleSheet.create({
     color: "#505866"
   },
   servicesContainer: {
-    paddingHorizontal: 20,
     gap: 15
   },
   serviceCard: {
@@ -397,7 +363,7 @@ const styles = StyleSheet.create({
   serviceImage: {
     width: "100%",
     height: 168,
-    backgroundColor: "#E0E0E0"
+    borderRadius: 10
   },
   serviceInfo: {
     padding: 15,

@@ -1,5 +1,6 @@
 import React from "react";
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image, StatusBar, Dimensions } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image, Dimensions } from "react-native";
+import { CommonLayout } from "../components/CommonLayout";
 
 const { width: screenWidth } = Dimensions.get("window");
 
@@ -11,6 +12,8 @@ interface MembershipCardScreenProps {
   onMembershipBenefitsPress?: () => void;
   onMembershipCheckPress?: () => void;
   onAuthInfoPress?: () => void;
+  currentTab?: string;
+  onTabPress?: (tabName: string) => void;
 }
 
 export const MembershipCardScreen: React.FC<MembershipCardScreenProps> = ({
@@ -20,39 +23,20 @@ export const MembershipCardScreen: React.FC<MembershipCardScreenProps> = ({
   onCouponPress,
   onMembershipBenefitsPress,
   onMembershipCheckPress,
-  onAuthInfoPress
+  onAuthInfoPress,
+  currentTab,
+  onTabPress
 }) => {
   return (
-    <View style={styles.container}>
-      <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
-
-      {/* Status Bar */}
-      <View style={styles.statusBar}>
-        <Text style={styles.statusBarTime}>9:41</Text>
-        <View style={styles.statusBarIcons}>
-          <View style={styles.signalIcon} />
-          <View style={styles.wifiIcon} />
-          <View style={styles.batteryIcon} />
-        </View>
-      </View>
-
-      {/* Top Bar */}
-      <View style={styles.topBar}>
-        <TouchableOpacity style={styles.menuButton} onPress={onMenuPress}>
-          <Text style={styles.menuIcon}>☰</Text>
-        </TouchableOpacity>
-        <Text style={styles.topBarTitle}>멤버쉽 카드</Text>
-        <View style={styles.topBarRight}>
-          <TouchableOpacity style={styles.notificationButton} onPress={onNotificationPress}>
-            <Text style={styles.notificationIcon}>🔔</Text>
-            <View style={styles.notificationBadge} />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.couponButton} onPress={onCouponPress}>
-            <Text style={styles.couponIcon}>🎫</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-
+    <CommonLayout
+      title="멤버쉽 카드"
+      showBackButton={false}
+      onMenuPress={() => console.log("메뉴 버튼 클릭")}
+      onCouponPress={() => console.log("쿠폰 버튼 클릭")}
+      onNotificationPress={() => console.log("알림 버튼 클릭")}
+      currentTab={currentTab}
+      onTabPress={onTabPress}
+    >
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
         {/* Membership Card */}
         <View style={styles.membershipCardContainer}>
@@ -112,112 +96,15 @@ export const MembershipCardScreen: React.FC<MembershipCardScreenProps> = ({
           </View>
         </View>
       </ScrollView>
-    </View>
+    </CommonLayout>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#FFFFFF"
-  },
-  statusBar: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingHorizontal: 30,
-    paddingVertical: 16,
-    height: 44
-  },
-  statusBarTime: {
-    fontSize: 16,
-    fontWeight: "500",
-    color: "#2B2B2B"
-  },
-  statusBarIcons: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 5
-  },
-  signalIcon: {
-    width: 18,
-    height: 10,
-    backgroundColor: "#2B2B2B"
-  },
-  wifiIcon: {
-    width: 15,
-    height: 11,
-    backgroundColor: "#2B2B2B"
-  },
-  batteryIcon: {
-    width: 27,
-    height: 13,
-    backgroundColor: "#2B2B2B",
-    borderRadius: 2
-  },
-  topBar: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingHorizontal: 20,
-    paddingVertical: 15,
-    height: 48
-  },
-  menuButton: {
-    width: 24,
-    height: 24,
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  menuIcon: {
-    fontSize: 18,
-    color: "#2B2B2B"
-  },
-  topBarTitle: {
-    fontSize: 18,
-    fontWeight: "700",
-    color: "#2B2B2B"
-  },
-  topBarRight: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 10
-  },
-  notificationButton: {
-    position: "relative",
-    width: 24,
-    height: 24,
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  notificationIcon: {
-    fontSize: 18,
-    color: "#2B2B2B"
-  },
-  notificationBadge: {
-    position: "absolute",
-    top: 0,
-    right: 0,
-    width: 6,
-    height: 6,
-    backgroundColor: "#ECA31D",
-    borderRadius: 3
-  },
-  couponButton: {
-    width: 24,
-    height: 24,
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  couponIcon: {
-    fontSize: 18,
-    color: "#2B2B2B"
-  },
   scrollView: {
     flex: 1
   },
   membershipCardContainer: {
-    paddingHorizontal: 20,
     marginBottom: 20
   },
   membershipCard: {

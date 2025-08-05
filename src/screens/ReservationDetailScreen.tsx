@@ -1,22 +1,24 @@
 import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Dimensions } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Dimensions, Image } from "react-native";
 import { CommonModal } from "../components/CommonModal";
+import { CommonLayout } from "../components/CommonLayout";
 import Toast from "react-native-toast-message";
 
 interface ReservationDetailScreenProps {
   onBackPress?: () => void;
+  currentTab?: string;
+  onTabPress?: (tabName: string) => void;
 }
 
-const { width, height } = Dimensions.get("window");
+const { width } = Dimensions.get("window");
 
-export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = ({ onBackPress }) => {
+export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = ({ onBackPress, currentTab, onTabPress }) => {
   const [isReservationModalVisible, setIsReservationModalVisible] = React.useState(false);
   const [isCancelModalVisible, setIsCancelModalVisible] = React.useState(false);
   const [isReserved, setIsReserved] = React.useState(false);
 
   const handleReservationPress = () => {
     if (isReserved) {
-      // 이미 예약된 경우 예약변경 또는 취소 옵션 제공
       return;
     }
     setIsReservationModalVisible(true);
@@ -59,31 +61,33 @@ export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = (
   };
 
   return (
-    <View style={styles.container}>
-      {/* Top Bar */}
-      <View style={styles.topBar}>
-        <TouchableOpacity style={styles.backButton} onPress={onBackPress}>
-          <Text style={styles.backIcon}>‹</Text>
-        </TouchableOpacity>
-        <Text style={styles.topBarTitle}>마인드 앤 바디 포 어덜트</Text>
-        <View style={styles.placeholder} />
-      </View>
-
-      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+    <CommonLayout
+      title="마인드 앤 바디 포 어덜트"
+      showBackButton={true}
+      showTabBar={false}
+      onBackPress={onBackPress}
+      onMenuPress={() => console.log("메뉴 버튼 클릭")}
+      onCouponPress={() => console.log("쿠폰 버튼 클릭")}
+      onNotificationPress={() => console.log("알림 버튼 클릭")}
+      currentTab={currentTab}
+      onTabPress={onTabPress}
+    >
+      <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
         {/* 예약 이미지 */}
-        <View style={styles.reservationImage} />
+        <Image source={require("../assets/reservation-1.png")} style={styles.reservationImage} resizeMode="cover" />
 
-        {/* 예약 상태 */}
+        {/* 예약 상태 배지 */}
         <View style={styles.statusContainer}>
           <View style={styles.statusBadge}>
             <Text style={styles.statusText}>예약확정</Text>
           </View>
         </View>
 
+        {/* 클래스 제목 */}
+        <Text style={styles.classTitle}>마인드앤바디 포 어덜트</Text>
+
         {/* 예약 정보 */}
         <View style={styles.infoContainer}>
-          <Text style={styles.classTitle}>마인드앤바디 포 어덜트</Text>
-
           {/* 강사 정보 */}
           <View style={styles.infoRow}>
             <Text style={styles.infoLabel}>강사</Text>
@@ -162,60 +166,21 @@ export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = (
         onPrimaryPress={handleConfirmCancel}
         onSecondaryPress={handleCancelModalClose}
       />
-    </View>
+    </CommonLayout>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#FFFFFF"
-  },
-  topBar: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: "#EFF1F3",
-    marginTop: 44
-  },
-  backButton: {
-    width: 24,
-    height: 24,
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  backIcon: {
-    fontSize: 24,
-    color: "#2B2B2B",
-    fontWeight: "bold"
-  },
-  topBarTitle: {
-    fontSize: 18,
-    fontWeight: "700",
-    color: "#2B2B2B",
-    textAlign: "center",
-    flex: 1
-  },
-  placeholder: {
-    width: 24
-  },
-  content: {
-    flex: 1
-  },
   reservationImage: {
     width: width - 40,
     height: 160,
-    backgroundColor: "#F5F5F5",
     borderRadius: 15,
     marginHorizontal: 20,
     marginTop: 20
   },
   statusContainer: {
     position: "absolute",
-    top: 144,
+    top: 124,
     right: 35,
     zIndex: 1
   },
@@ -232,15 +197,16 @@ const styles = StyleSheet.create({
     fontSize: 11,
     fontWeight: "700"
   },
-  infoContainer: {
-    paddingHorizontal: 20,
-    paddingTop: 20
-  },
   classTitle: {
     fontSize: 18,
     fontWeight: "800",
     color: "#2B2B2B",
+    marginHorizontal: 20,
+    marginTop: 20,
     marginBottom: 20
+  },
+  infoContainer: {
+    paddingHorizontal: 20
   },
   infoRow: {
     flexDirection: "row",
