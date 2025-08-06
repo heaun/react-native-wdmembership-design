@@ -6,6 +6,8 @@ import { ProfileScreen } from "../src/screens/ProfileScreen";
 import { MembershipCardScreen } from "../src/screens/MembershipCardScreen";
 import { MembershipVerificationScreen } from "../src/screens/MembershipVerificationScreen";
 import { MembershipGuideScreen } from "../src/screens/MembershipGuideScreen";
+import { MyServiceScreen } from "../src/screens/MyServiceScreen";
+import { ServiceDetailScreen } from "../src/screens/ServiceDetailScreen";
 import { ScheduleScreen } from "../src/screens/ScheduleScreen";
 import { ReservationDetailScreen } from "../src/screens/ReservationDetailScreen";
 
@@ -17,10 +19,12 @@ type ScreenType =
   | "ReservationDetail"
   | "Profile"
   | "MembershipVerification"
-  | "MembershipGuide";
+  | "MembershipGuide"
+  | "ServiceDetail";
 
 export const AppNavigator: React.FC = () => {
   const [currentScreen, setCurrentScreen] = useState<ScreenType>("Home");
+  const [selectedService, setSelectedService] = useState<any>(null);
 
   const handleTabPress = (tabName: string) => {
     if (tabName === "Home" || tabName === "Schedule" || tabName === "MembershipCard" || tabName === "MyService") {
@@ -64,6 +68,15 @@ export const AppNavigator: React.FC = () => {
     setCurrentScreen("MembershipCard");
   };
 
+  const handleServiceDetailPress = (service: any) => {
+    setSelectedService(service);
+    setCurrentScreen("ServiceDetail");
+  };
+
+  const handleBackToMyService = () => {
+    setCurrentScreen("MyService");
+  };
+
   const renderScreen = () => {
     switch (currentScreen) {
       case "Home":
@@ -93,7 +106,11 @@ export const AppNavigator: React.FC = () => {
       case "MembershipGuide":
         return <MembershipGuideScreen onBackPress={handleBackToMembershipCardFromGuide} currentTab={currentScreen} onTabPress={handleTabPress} />;
       case "MyService":
-        return <ProfileScreen currentTab={currentScreen} onTabPress={handleTabPress} />;
+        return <MyServiceScreen currentTab={currentScreen} onTabPress={handleTabPress} onServiceDetailPress={handleServiceDetailPress} />;
+      case "ServiceDetail":
+        return (
+          <ServiceDetailScreen service={selectedService} onBackPress={handleBackToMyService} currentTab={currentScreen} onTabPress={handleTabPress} />
+        );
       case "ReservationDetail":
         return <ReservationDetailScreen onBackPress={handleBackToSchedule} currentTab={currentScreen} onTabPress={handleTabPress} />;
       case "Profile":

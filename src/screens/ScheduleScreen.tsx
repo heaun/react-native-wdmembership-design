@@ -522,11 +522,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginBottom: 4
   },
-  tabText: {
-    fontSize: 11,
-    fontWeight: "400",
-    color: "#505866"
-  },
+
   divider: {
     height: 1,
     backgroundColor: "#EFF1F3",
