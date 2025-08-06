@@ -9,6 +9,7 @@ interface MyServiceScreenProps {
   currentTab?: string;
   onTabPress?: (tabName: string) => void;
   onServiceDetailPress?: (service: ServiceItem) => void;
+  onSideMenuItemPress?: (itemId: string) => void;
 }
 
 interface ServiceItem {
@@ -19,7 +20,13 @@ interface ServiceItem {
   image: any;
 }
 
-export const MyServiceScreen: React.FC<MyServiceScreenProps> = ({ onBackPress, currentTab, onTabPress, onServiceDetailPress }) => {
+export const MyServiceScreen: React.FC<MyServiceScreenProps> = ({
+  onBackPress,
+  currentTab,
+  onTabPress,
+  onServiceDetailPress,
+  onSideMenuItemPress
+}) => {
   const [activeCategory, setActiveCategory] = useState<string>("전체");
 
   const categories = ["전체", "의료", "건강 프로그램", "스파/에스테틱"];
@@ -113,6 +120,7 @@ export const MyServiceScreen: React.FC<MyServiceScreenProps> = ({ onBackPress, c
       onNotificationPress={() => console.log("알림 버튼 클릭")}
       currentTab={currentTab}
       onTabPress={onTabPress}
+      onSideMenuItemPress={onSideMenuItemPress}
     >
       {/* Category Tabs */}
       <View style={styles.categoryContainer}>

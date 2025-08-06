@@ -10,9 +10,17 @@ interface ScheduleScreenProps {
   onReservationDetailPress?: () => void;
   currentTab?: string;
   onTabPress?: (tabName: string) => void;
+  onSideMenuItemPress?: (itemId: string) => void;
 }
 
-export const ScheduleScreen: React.FC<ScheduleScreenProps> = ({ onBackPress, onHomePress, onReservationDetailPress, currentTab, onTabPress }) => {
+export const ScheduleScreen: React.FC<ScheduleScreenProps> = ({
+  onBackPress,
+  onHomePress,
+  onReservationDetailPress,
+  currentTab,
+  onTabPress,
+  onSideMenuItemPress
+}) => {
   const [activeTab, setActiveTab] = useState<"calendar" | "reservation">("calendar");
   const [currentMonth, setCurrentMonth] = useState("2026년 10월");
 
@@ -275,6 +283,7 @@ export const ScheduleScreen: React.FC<ScheduleScreenProps> = ({ onBackPress, onH
       onNotificationPress={() => console.log("알림 버튼 클릭")}
       currentTab={currentTab}
       onTabPress={onTabPress}
+      onSideMenuItemPress={onSideMenuItemPress}
     >
       {/* Tab Navigation */}
       <View style={styles.tabContainer}>

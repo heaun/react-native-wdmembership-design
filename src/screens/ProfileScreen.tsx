@@ -78,9 +78,10 @@ const menuItems = [
 interface ProfileScreenProps {
   currentTab?: string;
   onTabPress?: (tabName: string) => void;
+  onSideMenuItemPress?: (itemId: string) => void;
 }
 
-export const ProfileScreen: React.FC<ProfileScreenProps> = ({ currentTab, onTabPress }) => {
+export const ProfileScreen: React.FC<ProfileScreenProps> = ({ currentTab, onTabPress, onSideMenuItemPress }) => {
   return (
     <CommonLayout
       title="마이서비스"
@@ -90,6 +91,7 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({ currentTab, onTabP
       onNotificationPress={() => console.log("알림 버튼 클릭")}
       currentTab={currentTab}
       onTabPress={onTabPress}
+      onSideMenuItemPress={onSideMenuItemPress}
     >
       <ScrollView showsVerticalScrollIndicator={false}>
         {/* Profile Header */}

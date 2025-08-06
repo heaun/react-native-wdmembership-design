@@ -15,6 +15,7 @@ interface ServiceDetailScreenProps {
   onBackPress?: () => void;
   currentTab?: string;
   onTabPress?: (tabName: string) => void;
+  onSideMenuItemPress?: (itemId: string) => void;
 }
 
 interface ServiceDetailData {
@@ -43,7 +44,7 @@ interface ContactInfo {
   operatingHours: string;
 }
 
-export const ServiceDetailScreen: React.FC<ServiceDetailScreenProps> = ({ service, onBackPress, currentTab, onTabPress }) => {
+export const ServiceDetailScreen: React.FC<ServiceDetailScreenProps> = ({ service, onBackPress, currentTab, onTabPress, onSideMenuItemPress }) => {
   // 서비스별 상세 데이터
   const getServiceDetailData = (serviceId: number): ServiceDetailData => {
     const serviceDataMap: { [key: number]: ServiceDetailData } = {
@@ -292,6 +293,7 @@ export const ServiceDetailScreen: React.FC<ServiceDetailScreenProps> = ({ servic
       onNotificationPress={() => console.log("알림 버튼 클릭")}
       currentTab={currentTab}
       onTabPress={onTabPress}
+      onSideMenuItemPress={onSideMenuItemPress}
     >
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
         {/* Service Header Image */}

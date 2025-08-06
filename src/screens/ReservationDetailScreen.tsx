@@ -8,11 +8,12 @@ interface ReservationDetailScreenProps {
   onBackPress?: () => void;
   currentTab?: string;
   onTabPress?: (tabName: string) => void;
+  onSideMenuItemPress?: (itemId: string) => void;
 }
 
 const { width } = Dimensions.get("window");
 
-export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = ({ onBackPress, currentTab, onTabPress }) => {
+export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = ({ onBackPress, currentTab, onTabPress, onSideMenuItemPress }) => {
   const [isReservationModalVisible, setIsReservationModalVisible] = React.useState(false);
   const [isCancelModalVisible, setIsCancelModalVisible] = React.useState(false);
   const [isReserved, setIsReserved] = React.useState(false);
@@ -71,6 +72,7 @@ export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = (
       onNotificationPress={() => console.log("알림 버튼 클릭")}
       currentTab={currentTab}
       onTabPress={onTabPress}
+      onSideMenuItemPress={onSideMenuItemPress}
     >
       <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
         {/* 예약 이미지 */}

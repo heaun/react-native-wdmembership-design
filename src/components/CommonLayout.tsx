@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, StatusBar, SafeAreaView, Platform } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { SideMenu } from "./SideMenu";
 
 interface TabItem {
   name: string;
@@ -20,6 +21,7 @@ interface CommonLayoutProps {
   onTabPress?: (tabName: string) => void;
   children: React.ReactNode;
   isWideLayout?: boolean;
+  onSideMenuItemPress?: (itemId: string) => void;
 }
 
 export const CommonLayout: React.FC<CommonLayoutProps> = ({
@@ -33,8 +35,24 @@ export const CommonLayout: React.FC<CommonLayoutProps> = ({
   currentTab = "Home",
   onTabPress,
   children,
-  isWideLayout = false
+  isWideLayout = false,
+  onSideMenuItemPress
 }) => {
+  const [sideMenuVisible, setSideMenuVisible] = useState(false);
+
+  const handleMenuPress = () => {
+    setSideMenuVisible(true);
+  };
+
+  const handleSideMenuClose = () => {
+    setSideMenuVisible(false);
+  };
+
+  const handleSideMenuItemPress = (itemId: string) => {
+    console.log(`Side menu item pressed: ${itemId}`);
+    setSideMenuVisible(false);
+    onSideMenuItemPress?.(itemId);
+  };
   const tabs: TabItem[] = [
     { name: "Home", icon: "home", label: "홈" },
     { name: "Schedule", icon: "calendar", label: "나의일정" },
@@ -53,7 +71,7 @@ export const CommonLayout: React.FC<CommonLayoutProps> = ({
             <Text style={styles.backButtonText}>←</Text>
           </TouchableOpacity>
         ) : (
-          <TouchableOpacity style={styles.menuButton} onPress={onMenuPress}>
+          <TouchableOpacity style={styles.menuButton} onPress={handleMenuPress}>
             <Ionicons name="menu" size={24} color="#2B2B2B" />
           </TouchableOpacity>
         )}
@@ -92,6 +110,9 @@ export const CommonLayout: React.FC<CommonLayoutProps> = ({
 
       {/* Safe Area for Bottom */}
       <SafeAreaView style={styles.safeAreaBottom} />
+
+      {/* Side Menu */}
+      <SideMenu visible={sideMenuVisible} onClose={handleSideMenuClose} onMenuItemPress={handleSideMenuItemPress} />
     </View>
   );
 };

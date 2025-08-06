@@ -8,9 +8,15 @@ interface MembershipVerificationScreenProps {
   onBackPress?: () => void;
   currentTab?: string;
   onTabPress?: (tabName: string) => void;
+  onSideMenuItemPress?: (itemId: string) => void;
 }
 
-export const MembershipVerificationScreen: React.FC<MembershipVerificationScreenProps> = ({ onBackPress, currentTab, onTabPress }) => {
+export const MembershipVerificationScreen: React.FC<MembershipVerificationScreenProps> = ({
+  onBackPress,
+  currentTab,
+  onTabPress,
+  onSideMenuItemPress
+}) => {
   return (
     <CommonLayout
       title="멤버쉽 확인"
@@ -22,6 +28,7 @@ export const MembershipVerificationScreen: React.FC<MembershipVerificationScreen
       onNotificationPress={() => console.log("알림 버튼 클릭")}
       currentTab={currentTab}
       onTabPress={onTabPress}
+      onSideMenuItemPress={onSideMenuItemPress}
     >
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
         {/* QR Code Section */}

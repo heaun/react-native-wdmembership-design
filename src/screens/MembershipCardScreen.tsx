@@ -16,6 +16,7 @@ interface MembershipCardScreenProps {
   onMembershipGuidePress?: () => void;
   currentTab?: string;
   onTabPress?: (tabName: string) => void;
+  onSideMenuItemPress?: (itemId: string) => void;
 }
 
 export const MembershipCardScreen: React.FC<MembershipCardScreenProps> = ({
@@ -29,7 +30,8 @@ export const MembershipCardScreen: React.FC<MembershipCardScreenProps> = ({
   onMembershipVerificationPress,
   onMembershipGuidePress,
   currentTab,
-  onTabPress
+  onTabPress,
+  onSideMenuItemPress
 }) => {
   return (
     <CommonLayout
@@ -40,6 +42,7 @@ export const MembershipCardScreen: React.FC<MembershipCardScreenProps> = ({
       onNotificationPress={() => console.log("알림 버튼 클릭")}
       currentTab={currentTab}
       onTabPress={onTabPress}
+      onSideMenuItemPress={onSideMenuItemPress}
     >
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
         {/* Membership Card */}

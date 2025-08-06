@@ -1,0 +1,380 @@
+import React from "react";
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Dimensions, Modal, Switch, Animated } from "react-native";
+
+const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
+
+interface MenuItem {
+  id: string;
+  title: string;
+  type: "header" | "item" | "toggle";
+  hasChevron?: boolean;
+  hasToggle?: boolean;
+  toggleValue?: boolean;
+  onPress?: () => void;
+  onToggleChange?: (value: boolean) => void;
+}
+
+interface MenuSection {
+  id: string;
+  items: MenuItem[];
+}
+
+interface SideMenuProps {
+  visible: boolean;
+  onClose: () => void;
+  onMenuItemPress?: (itemId: string) => void;
+}
+
+export const SideMenu: React.FC<SideMenuProps> = ({ visible, onClose, onMenuItemPress }) => {
+  const slideAnim = React.useRef(new Animated.Value(-screenWidth)).current;
+  const fadeAnim = React.useRef(new Animated.Value(0)).current;
+
+  const [toggleStates, setToggleStates] = React.useState({
+    biometricAuth: false,
+    pinCode: true
+  });
+
+  React.useEffect(() => {
+    if (visible) {
+      Animated.parallel([
+        Animated.timing(slideAnim, {
+          toValue: 0,
+          duration: 300,
+          useNativeDriver: true
+        }),
+        Animated.timing(fadeAnim, {
+          toValue: 1,
+          duration: 300,
+          useNativeDriver: true
+        })
+      ]).start();
+    } else {
+      Animated.parallel([
+        Animated.timing(slideAnim, {
+          toValue: -screenWidth,
+          duration: 300,
+          useNativeDriver: true
+        }),
+        Animated.timing(fadeAnim, {
+          toValue: 0,
+          duration: 300,
+          useNativeDriver: true
+        })
+      ]).start();
+    }
+  }, [visible, slideAnim, fadeAnim]);
+
+  const handleToggleChange = (key: string, value: boolean) => {
+    setToggleStates((prev) => ({
+      ...prev,
+      [key]: value
+    }));
+  };
+
+  const handleMenuItemPress = (item: MenuItem) => {
+    if (item.onPress) {
+      item.onPress();
+    } else if (onMenuItemPress) {
+      onMenuItemPress(item.id);
+    }
+  };
+
+  const menuData: MenuSection[] = [
+    {
+      id: "membership",
+      items: [
+        {
+          id: "membership-management",
+          title: "맴버쉽 관리",
+          type: "header",
+          hasChevron: false
+        },
+        {
+          id: "membership-info",
+          title: "맴버쉽 정보 조회",
+          type: "item",
+          hasChevron: true
+        },
+        {
+          id: "my-info",
+          title: "내 정보 조회/변경",
+          type: "item",
+          hasChevron: true
+        },
+        {
+          id: "vehicle-management",
+          title: "차량 관리",
+          type: "item",
+          hasChevron: true
+        },
+        {
+          id: "membership-benefits",
+          title: "맵버쉽 상품별 혜택 소개",
+          type: "item",
+          hasChevron: true
+        }
+      ]
+    },
+    {
+      id: "payment",
+      items: [
+        {
+          id: "payment-management",
+          title: "결제 관리",
+          type: "header",
+          hasChevron: false
+        },
+        {
+          id: "payment-methods",
+          title: "결제 수단 리스트 조회",
+          type: "item",
+          hasChevron: true
+        },
+        {
+          id: "payment-history",
+          title: "결제 이력 조회",
+          type: "item",
+          hasChevron: true
+        },
+        {
+          id: "payment-register",
+          title: "결제 수단 등록/삭제",
+          type: "item",
+          hasChevron: true
+        },
+        {
+          id: "biometric-auth",
+          title: "결제 생체 인증 사용",
+          type: "toggle",
+          toggleValue: toggleStates.biometricAuth,
+          onToggleChange: (value) => handleToggleChange("biometricAuth", value)
+        },
+        {
+          id: "pin-code",
+          title: "결제 PIN 코드 사용",
+          type: "toggle",
+          hasChevron: true,
+          toggleValue: toggleStates.pinCode,
+          onToggleChange: (value) => handleToggleChange("pinCode", value)
+        }
+      ]
+    },
+    {
+      id: "concierge",
+      items: [
+        {
+          id: "concierge-connection",
+          title: "컨시어지 연결",
+          type: "header",
+          hasChevron: false
+        },
+        {
+          id: "faq",
+          title: "FAQ",
+          type: "item",
+          hasChevron: true
+        },
+        {
+          id: "chatbot",
+          title: "쳇봇 상담",
+          type: "item",
+          hasChevron: true
+        },
+        {
+          id: "butler",
+          title: "전담 버틀러 연결",
+          type: "item",
+          hasChevron: true
+        },
+        {
+          id: "notice",
+          title: "공지사항",
+          type: "item",
+          hasChevron: true
+        }
+      ]
+    },
+    {
+      id: "settings",
+      items: [
+        {
+          id: "app-settings",
+          title: "앱 설정",
+          type: "item",
+          hasChevron: true
+        },
+        {
+          id: "logout",
+          title: "로그아웃",
+          type: "item",
+          hasChevron: false
+        }
+      ]
+    }
+  ];
+
+  const renderMenuItem = (item: MenuItem, sectionId: string) => {
+    const isHeader = item.type === "header";
+    const isToggle = item.type === "toggle";
+    const isSettingsSection = sectionId === "settings";
+
+    return (
+      <TouchableOpacity
+        key={item.id}
+        style={[styles.menuItem, isHeader ? styles.headerItem : styles.regularItem, isSettingsSection && styles.settingsSectionItem]}
+        onPress={() => handleMenuItemPress(item)}
+        disabled={isToggle}
+      >
+        <Text style={[styles.menuText, isHeader ? styles.headerText : styles.regularText]}>{item.title}</Text>
+
+        {isToggle && (
+          <Switch
+            value={item.toggleValue || false}
+            onValueChange={item.onToggleChange}
+            trackColor={{ false: "#E0E0E0", true: "#2B2B2B" }}
+            thumbColor="#FFFFFF"
+            style={styles.toggle}
+            ios_backgroundColor="#E0E0E0"
+          />
+        )}
+
+        {item.hasChevron && !isToggle && (
+          <View style={styles.chevronContainer}>
+            <Text style={styles.chevron}>›</Text>
+          </View>
+        )}
+      </TouchableOpacity>
+    );
+  };
+
+  const renderSection = (section: MenuSection) => (
+    <View key={section.id} style={styles.section}>
+      {section.items.map((item) => renderMenuItem(item, section.id))}
+    </View>
+  );
+
+  return (
+    <Modal visible={visible} transparent={true} onRequestClose={onClose}>
+      <Animated.View style={[styles.overlay, { opacity: fadeAnim }]}>
+        <Animated.View style={[styles.menuContainer, { transform: [{ translateX: slideAnim }] }]}>
+          {/* Header */}
+          <View style={styles.header}>
+            <TouchableOpacity style={styles.closeButton} onPress={onClose}>
+              <Text style={styles.closeIcon}>✕</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.settingsButton}>
+              <Text style={styles.settingsIcon}>⚙</Text>
+            </TouchableOpacity>
+          </View>
+
+          {/* Menu Content */}
+          <ScrollView style={styles.menuContent} showsVerticalScrollIndicator={false}>
+            {menuData.map(renderSection)}
+          </ScrollView>
+        </Animated.View>
+      </Animated.View>
+    </Modal>
+  );
+};
+
+const styles = StyleSheet.create({
+  overlay: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.5)"
+  },
+  menuContainer: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: screenWidth,
+    height: screenHeight,
+    backgroundColor: "#FFFFFF"
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: "#F0F0F0"
+  },
+  closeButton: {
+    width: 24,
+    height: 24,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  closeIcon: {
+    fontSize: 16,
+    color: "#131214"
+  },
+  settingsButton: {
+    width: 24,
+    height: 24,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  settingsIcon: {
+    fontSize: 16,
+    color: "#131214"
+  },
+  menuContent: {
+    flex: 1,
+    paddingHorizontal: 20
+  },
+  section: {
+    marginVertical: 10
+  },
+  menuItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingVertical: 12,
+    paddingHorizontal: 0
+  },
+  headerItem: {
+    borderBottomWidth: 1,
+    borderBottomColor: "#505866"
+  },
+  regularItem: {
+    height: 50
+  },
+  menuText: {
+    flex: 1,
+    fontSize: 15,
+    fontWeight: "800",
+    color: "#2B2B2B",
+    letterSpacing: -0.64
+  },
+  headerText: {
+    fontSize: 14,
+    fontWeight: "400",
+    color: "#2B2B2B",
+    letterSpacing: -0.56
+  },
+  regularText: {
+    fontSize: 16,
+    fontWeight: "800",
+    color: "#2B2B2B",
+    letterSpacing: -0.64
+  },
+  toggle: {
+    transform: [{ scaleX: 0.9 }, { scaleY: 0.9 }]
+  },
+  chevronContainer: {
+    width: 24,
+    height: 24,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  chevron: {
+    fontSize: 18,
+    color: "#505866",
+    fontWeight: "300"
+  },
+  settingsSectionItem: {
+    borderTopWidth: 1,
+    borderTopColor: "#505866"
+  }
+});

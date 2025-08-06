@@ -12,6 +12,7 @@ interface MainScreenProps {
   onMembershipManagePress?: () => void;
   onEditProfilePress?: () => void;
   onViewAllServicesPress?: () => void;
+  onSideMenuItemPress?: (itemId: string) => void;
 }
 
 export const MainScreen: React.FC<MainScreenProps> = ({
@@ -20,7 +21,8 @@ export const MainScreen: React.FC<MainScreenProps> = ({
   onTabPress,
   onReservationDetailPress,
   onMembershipManagePress,
-  onEditProfilePress
+  onEditProfilePress,
+  onSideMenuItemPress
 }) => {
   const reservations = [
     {
@@ -90,6 +92,7 @@ export const MainScreen: React.FC<MainScreenProps> = ({
       onNotificationPress={() => console.log("알림 버튼 클릭")}
       currentTab={currentTab}
       onTabPress={onTabPress}
+      onSideMenuItemPress={onSideMenuItemPress}
     >
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
         {/* Profile Section */}

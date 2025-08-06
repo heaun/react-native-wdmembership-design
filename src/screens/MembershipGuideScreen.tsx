@@ -8,9 +8,10 @@ interface MembershipGuideScreenProps {
   onBackPress?: () => void;
   currentTab?: string;
   onTabPress?: (tabName: string) => void;
+  onSideMenuItemPress?: (itemId: string) => void;
 }
 
-export const MembershipGuideScreen: React.FC<MembershipGuideScreenProps> = ({ onBackPress, currentTab, onTabPress }) => {
+export const MembershipGuideScreen: React.FC<MembershipGuideScreenProps> = ({ onBackPress, currentTab, onTabPress, onSideMenuItemPress }) => {
   return (
     <CommonLayout
       title="멤버쉽 안내"
@@ -23,6 +24,7 @@ export const MembershipGuideScreen: React.FC<MembershipGuideScreenProps> = ({ on
       currentTab={currentTab}
       onTabPress={onTabPress}
       isWideLayout={true}
+      onSideMenuItemPress={onSideMenuItemPress}
     >
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
         {/* Header Section */}
