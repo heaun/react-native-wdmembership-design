@@ -19,6 +19,7 @@ interface CommonLayoutProps {
   currentTab?: string;
   onTabPress?: (tabName: string) => void;
   children: React.ReactNode;
+  isWideLayout?: boolean;
 }
 
 export const CommonLayout: React.FC<CommonLayoutProps> = ({
@@ -31,7 +32,8 @@ export const CommonLayout: React.FC<CommonLayoutProps> = ({
   onNotificationPress,
   currentTab = "Home",
   onTabPress,
-  children
+  children,
+  isWideLayout = false
 }) => {
   const tabs: TabItem[] = [
     { name: "Home", icon: "home", label: "홈" },
@@ -40,12 +42,12 @@ export const CommonLayout: React.FC<CommonLayoutProps> = ({
     { name: "MyService", icon: "person", label: "마이서비스" }
   ];
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, isWideLayout && styles.wideContainer]}>
       {/* Status Bar */}
       <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
 
       {/* Top Bar */}
-      <View style={styles.topBar}>
+      <View style={[styles.topBar, isWideLayout && styles.wideTopBar]}>
         {showBackButton ? (
           <TouchableOpacity style={styles.backButton} onPress={onBackPress}>
             <Text style={styles.backButtonText}>←</Text>
@@ -70,7 +72,7 @@ export const CommonLayout: React.FC<CommonLayoutProps> = ({
       </View>
 
       {/* Main Content */}
-      <View style={[styles.content, !showTabBar && styles.contentWithoutTabBar]}>{children}</View>
+      <View style={[styles.content, !showTabBar && styles.contentWithoutTabBar, isWideLayout && styles.wideContent]}>{children}</View>
 
       {/* Bottom Tab Bar */}
       {showTabBar && (
@@ -98,10 +100,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#FFFFFF",
-    paddingTop: 30,
-    paddingBottom: 50,
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
+    paddingVertical: 20
   },
+
+  wideContainer: {
+    paddingHorizontal: 0
+  },
+
   safeAreaTop: {
     backgroundColor: "#FFFFFF"
   },
@@ -115,6 +121,9 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 10,
     height: 60
+  },
+  wideTopBar: {
+    paddingHorizontal: 20
   },
   backButton: {
     width: 40,
@@ -163,6 +172,9 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     paddingHorizontal: 10
+  },
+  wideContent: {
+    paddingHorizontal: 0
   },
   contentWithoutTabBar: {
     paddingBottom: 20

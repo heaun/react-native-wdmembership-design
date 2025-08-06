@@ -9,9 +9,19 @@ interface MainScreenProps {
   currentTab?: string;
   onTabPress?: (tabName: string) => void;
   onReservationDetailPress?: () => void;
+  onMembershipManagePress?: () => void;
+  onEditProfilePress?: () => void;
+  onViewAllServicesPress?: () => void;
 }
 
-export const MainScreen: React.FC<MainScreenProps> = ({ onLogout, currentTab, onTabPress, onReservationDetailPress }) => {
+export const MainScreen: React.FC<MainScreenProps> = ({
+  onLogout,
+  currentTab,
+  onTabPress,
+  onReservationDetailPress,
+  onMembershipManagePress,
+  onEditProfilePress
+}) => {
   const reservations = [
     {
       id: 1,
@@ -93,7 +103,7 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onLogout, currentTab, on
               </Text>
             </View>
           </View>
-          <TouchableOpacity style={styles.editProfileButton}>
+          <TouchableOpacity style={styles.editProfileButton} onPress={onEditProfilePress}>
             <Text style={styles.editProfileText}>내 정보 변경</Text>
             <Text style={styles.arrowIcon}>›</Text>
           </TouchableOpacity>
@@ -107,7 +117,7 @@ export const MainScreen: React.FC<MainScreenProps> = ({ onLogout, currentTab, on
             <Text style={styles.cardTitle}>PH 1603 RESIDENCE</Text>
             <Text style={styles.cardNumber}>9869 4586 2335 3698</Text>
           </View>
-          <TouchableOpacity style={styles.membershipManageButton}>
+          <TouchableOpacity style={styles.membershipManageButton} onPress={onMembershipManagePress}>
             <Text style={styles.membershipManageText}>멤버쉽 관리</Text>
             <Text style={styles.arrowIcon}>›</Text>
           </TouchableOpacity>
