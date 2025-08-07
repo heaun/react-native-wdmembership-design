@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Dimensions } from "react-native";
 import { CommonLayout } from "../components/CommonLayout";
 
@@ -11,6 +11,13 @@ interface ScheduleScreenProps {
   currentTab?: string;
   onTabPress?: (tabName: string) => void;
   onSideMenuItemPress?: (itemId: string) => void;
+  newReservation?: {
+    service: any;
+    location: any;
+    date: string;
+    time: string;
+    personCount: number;
+  };
 }
 
 export const ScheduleScreen: React.FC<ScheduleScreenProps> = ({
@@ -19,12 +26,20 @@ export const ScheduleScreen: React.FC<ScheduleScreenProps> = ({
   onReservationDetailPress,
   currentTab,
   onTabPress,
-  onSideMenuItemPress
+  onSideMenuItemPress,
+  newReservation
 }) => {
   const [activeTab, setActiveTab] = useState<"calendar" | "reservation">("calendar");
   const [currentMonth, setCurrentMonth] = useState("2026년 10월");
 
-  const reservations = [
+  // 새로운 예약이 있으면 예약 관리 탭으로 이동
+  useEffect(() => {
+    if (newReservation) {
+      setActiveTab("reservation");
+    }
+  }, [newReservation]);
+
+  const baseReservations = [
     {
       id: 1,
       date: "31일",
@@ -106,6 +121,24 @@ export const ScheduleScreen: React.FC<ScheduleScreenProps> = ({
       status: "예약확정"
     }
   ];
+
+  // 새로운 예약이 있으면 목록 맨 위에 추가
+  const allReservations = React.useMemo(() => {
+    if (newReservation) {
+      const newDate = new Date(newReservation.date);
+      const day = newDate.getDate();
+      const newReservationItem = {
+        id: Date.now(), // 고유 ID 생성
+        date: `${day}일`,
+        title: newReservation.service.title,
+        location: newReservation.location.address,
+        time: newReservation.time,
+        status: "예약확정"
+      };
+      return [newReservationItem, ...baseReservations];
+    }
+    return baseReservations;
+  }, [newReservation]);
 
   const handleTabPress = (tab: "calendar" | "reservation") => {
     setActiveTab(tab);
@@ -242,21 +275,21 @@ export const ScheduleScreen: React.FC<ScheduleScreenProps> = ({
 
   const renderReservationView = () => {
     // 날짜별로 예약을 그룹화
-    const groupedReservations = reservations.reduce((groups, reservation) => {
+    const groupedReservations = allReservations.reduce((groups: any, reservation: any) => {
       const date = reservation.date;
       if (!groups[date]) {
         groups[date] = [];
       }
       groups[date].push(reservation);
       return groups;
-    }, {} as Record<string, typeof reservations>);
+    }, {});
 
     return (
       <ScrollView style={styles.reservationContainer} showsVerticalScrollIndicator={false}>
-        {Object.entries(groupedReservations).map(([date, dateReservations]) => (
+        {Object.entries(groupedReservations).map(([date, dateReservations]: [string, any]) => (
           <View key={date} style={styles.dateSection}>
             <Text style={styles.dateTitle}>{date}</Text>
-            {dateReservations.map((reservation) => (
+            {dateReservations.map((reservation: any) => (
               <TouchableOpacity key={reservation.id} style={styles.reservationItem} onPress={onReservationDetailPress}>
                 <View style={styles.reservationContent}>
                   <Text style={styles.reservationTitle}>{reservation.title}</Text>

@@ -13,6 +13,7 @@ interface ServiceDetailScreenProps {
     image: any;
   };
   onBackPress?: () => void;
+  onLocationSelectPress?: () => void;
   currentTab?: string;
   onTabPress?: (tabName: string) => void;
   onSideMenuItemPress?: (itemId: string) => void;
@@ -44,7 +45,14 @@ interface ContactInfo {
   operatingHours: string;
 }
 
-export const ServiceDetailScreen: React.FC<ServiceDetailScreenProps> = ({ service, onBackPress, currentTab, onTabPress, onSideMenuItemPress }) => {
+export const ServiceDetailScreen: React.FC<ServiceDetailScreenProps> = ({
+  service,
+  onBackPress,
+  onLocationSelectPress,
+  currentTab,
+  onTabPress,
+  onSideMenuItemPress
+}) => {
   // 서비스별 상세 데이터
   const getServiceDetailData = (serviceId: number): ServiceDetailData => {
     const serviceDataMap: { [key: number]: ServiceDetailData } = {
@@ -279,7 +287,7 @@ export const ServiceDetailScreen: React.FC<ServiceDetailScreenProps> = ({ servic
 
   const handleReservationPress = () => {
     console.log(`${service.title} 예약 시작하기 클릭`);
-    // 여기에 예약 로직 추가
+    onLocationSelectPress?.();
   };
 
   return (

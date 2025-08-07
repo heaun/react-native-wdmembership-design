@@ -1,5 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Dimensions, Modal, Switch, Animated } from "react-native";
+import { FaceIdModal } from "./FaceIdModal";
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
@@ -33,6 +34,8 @@ export const SideMenu: React.FC<SideMenuProps> = ({ visible, onClose, onMenuItem
     biometricAuth: false,
     pinCode: true
   });
+
+  const [showFaceIdModal, setShowFaceIdModal] = React.useState(false);
 
   React.useEffect(() => {
     if (visible) {
@@ -69,6 +72,11 @@ export const SideMenu: React.FC<SideMenuProps> = ({ visible, onClose, onMenuItem
       ...prev,
       [key]: value
     }));
+
+    // 생체인증 토글이 활성화되면 Face ID 모달 표시
+    if (key === "biometricAuth" && value) {
+      setShowFaceIdModal(true);
+    }
   };
 
   const handleMenuItemPress = (item: MenuItem) => {
@@ -77,6 +85,10 @@ export const SideMenu: React.FC<SideMenuProps> = ({ visible, onClose, onMenuItem
     } else if (onMenuItemPress) {
       onMenuItemPress(item.id);
     }
+  };
+
+  const handleCloseFaceIdModal = () => {
+    setShowFaceIdModal(false);
   };
 
   const menuData: MenuSection[] = [
@@ -273,6 +285,9 @@ export const SideMenu: React.FC<SideMenuProps> = ({ visible, onClose, onMenuItem
           </ScrollView>
         </Animated.View>
       </Animated.View>
+
+      {/* Face ID Modal */}
+      <FaceIdModal isVisible={showFaceIdModal} onClose={handleCloseFaceIdModal} />
     </Modal>
   );
 };
