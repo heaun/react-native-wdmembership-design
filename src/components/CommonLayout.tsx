@@ -68,31 +68,43 @@ export const CommonLayout: React.FC<CommonLayoutProps> = ({
 
       {/* Top Bar */}
       <View style={[styles.topBar, isWideLayout && styles.wideTopBar]}>
-        {showBackButton ? (
-          <TouchableOpacity style={styles.backButton} onPress={onBackPress}>
-            <Text style={styles.backButtonText}>←</Text>
-          </TouchableOpacity>
-        ) : showTopIcons ? (
-          <TouchableOpacity style={styles.menuButton} onPress={handleMenuPress}>
-            <Ionicons name="menu" size={24} color="#2B2B2B" />
-          </TouchableOpacity>
-        ) : (
-          <View style={styles.emptyButton} />
-        )}
-        <Text style={[styles.topBarTitle, !showBackButton && !showTopIcons && styles.centeredTitle]}>{title}</Text>
-        {showTopIcons && (
-          <View style={styles.rightIcons}>
-            <TouchableOpacity style={styles.iconButton} onPress={onCouponPress}>
-              <Ionicons name="ticket-outline" size={24} color="#2B2B2B" />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.iconButton} onPress={onNotificationPress}>
-              <View style={styles.notificationContainer}>
-                <Ionicons name="notifications-outline" size={24} color="#2B2B2B" />
-                <View style={styles.notificationDot} />
-              </View>
-            </TouchableOpacity>
+        <Text style={styles.topBarTitle}>{title}</Text>
+
+        {/* Left side */}
+        <View style={styles.topBarIcons}>
+          <View style={styles.leftSide}>
+            {showBackButton ? (
+              <TouchableOpacity style={styles.backButton} onPress={onBackPress}>
+                <Text style={styles.backButtonText}>←</Text>
+              </TouchableOpacity>
+            ) : showTopIcons ? (
+              <TouchableOpacity style={styles.menuButton} onPress={handleMenuPress}>
+                <Ionicons name="menu" size={24} color="#2B2B2B" />
+              </TouchableOpacity>
+            ) : (
+              <View style={styles.emptyButton} />
+            )}
           </View>
-        )}
+
+          {/* Right side */}
+          <View style={styles.rightSide}>
+            {showTopIcons && !showBackButton ? (
+              <View style={styles.rightIcons}>
+                <TouchableOpacity style={styles.iconButton} onPress={onCouponPress}>
+                  <Ionicons name="ticket-outline" size={24} color="#2B2B2B" />
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.iconButton} onPress={onNotificationPress}>
+                  <View style={styles.notificationContainer}>
+                    <Ionicons name="notifications-outline" size={24} color="#2B2B2B" />
+                    <View style={styles.notificationDot} />
+                  </View>
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <View style={styles.emptyButton} />
+            )}
+          </View>
+        </View>
       </View>
 
       {/* Main Content */}
@@ -141,11 +153,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF"
   },
   topBar: {
+    position: "relative",
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
-    paddingTop: 10,
-    paddingBottom: 10,
     height: 60
   },
   wideTopBar: {
@@ -172,9 +182,34 @@ const styles = StyleSheet.create({
     height: 40
   },
   topBarTitle: {
+    position: "absolute",
+    left: 0,
+    right: 0,
     fontSize: 18,
     fontWeight: "700",
-    color: "#2B2B2B"
+    color: "#2B2B2B",
+    textAlign: "center",
+    zIndex: 1
+  },
+  topBarIcons: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    zIndex: 2
+  },
+  leftSide: {
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    alignItems: "center"
+  },
+  rightSide: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    gap: 10
   },
   centeredTitle: {
     position: "absolute",
