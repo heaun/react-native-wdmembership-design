@@ -1,79 +1,7 @@
 import React from "react";
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { Card } from "../components/Card";
-import { MembershipBadge } from "../components/MembershipBadge";
 import { CommonLayout } from "../components/CommonLayout";
-import { colors } from "../../utils/colors";
-import { User } from "../../types";
-
-const mockUser: User = {
-  id: "1",
-  name: "김철수",
-  email: "kim@example.com",
-  avatar: "https://via.placeholder.com/60",
-  membershipLevel: {
-    id: "gold",
-    name: "Gold",
-    color: colors.gold,
-    benefits: ["15% 할인", "무료 배송", "우선 주문"],
-    minPoints: 5000,
-    discount: 15
-  },
-  points: 7500,
-  joinDate: "2023-01-15"
-};
-
-const menuItems = [
-  {
-    id: "1",
-    title: "개인정보 수정",
-    icon: "person",
-    color: colors.primary
-  },
-  {
-    id: "2",
-    title: "결제 수단 관리",
-    icon: "card",
-    color: colors.secondary
-  },
-  {
-    id: "3",
-    title: "알림 설정",
-    icon: "notifications",
-    color: colors.warning
-  },
-  {
-    id: "4",
-    title: "보안 설정",
-    icon: "shield-checkmark",
-    color: colors.error
-  },
-  {
-    id: "5",
-    title: "고객센터",
-    icon: "headset",
-    color: colors.info
-  },
-  {
-    id: "6",
-    title: "이용약관",
-    icon: "document-text",
-    color: colors.textSecondary
-  },
-  {
-    id: "7",
-    title: "개인정보처리방침",
-    icon: "lock-closed",
-    color: colors.textSecondary
-  },
-  {
-    id: "8",
-    title: "로그아웃",
-    icon: "log-out",
-    color: colors.error
-  }
-];
 
 interface ProfileScreenProps {
   currentTab?: string;
@@ -82,65 +10,123 @@ interface ProfileScreenProps {
 }
 
 export const ProfileScreen: React.FC<ProfileScreenProps> = ({ currentTab, onTabPress, onSideMenuItemPress }) => {
+  const handleBackPress = () => {
+    // 홈으로 돌아가기
+    onTabPress?.("Home");
+  };
+
+  const handlePhoneEditPress = () => {
+    // 휴대전화 번호 수정
+    console.log("휴대전화 번호 수정");
+  };
+
+  const handleEmailEditPress = () => {
+    // 이메일 수정
+    console.log("이메일 수정");
+  };
+
+  const handlePasswordChangePress = () => {
+    // 비밀번호 변경
+    console.log("비밀번호 변경");
+  };
+
+  const handleLocationEditPress = () => {
+    // 기본 장소 수정
+    console.log("기본 장소 수정");
+  };
+
+  const handleProfileEditPress = () => {
+    // 프로필 사진 수정
+    console.log("프로필 사진 수정");
+  };
+
   return (
     <CommonLayout
-      title="마이서비스"
-      showBackButton={false}
-      onMenuPress={() => console.log("메뉴 버튼 클릭")}
-      onCouponPress={() => console.log("쿠폰 버튼 클릭")}
-      onNotificationPress={() => console.log("알림 버튼 클릭")}
+      title="내 정보 조회/변경"
+      showBackButton={true}
+      showTabBar={true}
+      onBackPress={handleBackPress}
+      onMenuPress={() => {}}
+      onCouponPress={() => {}}
+      onNotificationPress={() => {}}
       currentTab={currentTab}
       onTabPress={onTabPress}
       onSideMenuItemPress={onSideMenuItemPress}
     >
-      <ScrollView showsVerticalScrollIndicator={false}>
-        {/* Profile Header */}
-        <Card style={styles.profileCard} variant="elevated">
-          <View style={styles.profileHeader}>
-            <View style={styles.avatarContainer}>
-              <Ionicons name="person-circle" size={80} color={colors.primary} />
-            </View>
-            <View style={styles.profileInfo}>
-              <Text style={styles.profileName}>{mockUser.name}</Text>
-              <Text style={styles.profileEmail}>{mockUser.email}</Text>
-              <MembershipBadge level={mockUser.membershipLevel} size="medium" />
-            </View>
-          </View>
-          <View style={styles.profileStats}>
-            <View style={styles.stat}>
-              <Text style={styles.statValue}>{mockUser.points.toLocaleString()}</Text>
-              <Text style={styles.statLabel}>포인트</Text>
-            </View>
-            <View style={styles.statDivider} />
-            <View style={styles.stat}>
-              <Text style={styles.statValue}>2023.01.15</Text>
-              <Text style={styles.statLabel}>가입일</Text>
-            </View>
-            <View style={styles.statDivider} />
-            <View style={styles.stat}>
-              <Text style={styles.statValue}>Gold</Text>
-              <Text style={styles.statLabel}>등급</Text>
-            </View>
-          </View>
-        </Card>
-
-        {/* Menu Items */}
-        <View style={styles.menuSection}>
-          {menuItems.map((item) => (
-            <TouchableOpacity key={item.id} style={styles.menuItem}>
-              <View style={[styles.menuIcon, { backgroundColor: item.color + "20" }]}>
-                <Ionicons name={item.icon as any} size={20} color={item.color} />
+      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+        {/* 프로필 섹션 */}
+        <View style={styles.profileSection}>
+          <View style={styles.avatarContainer}>
+            <Image source={require("../assets/profile/profile-avatar-6bf758.png")} style={styles.avatar} resizeMode="cover" />
+            <TouchableOpacity style={styles.editAvatarButton} onPress={handleProfileEditPress}>
+              <View style={styles.editAvatarIcon}>
+                <Ionicons name="camera" size={12} color="#FFFFFF" />
               </View>
-              <Text style={styles.menuTitle}>{item.title}</Text>
-              <Ionicons name="chevron-forward" size={20} color={colors.textTertiary} />
             </TouchableOpacity>
-          ))}
+          </View>
+
+          <View style={styles.userInfo}>
+            <Text style={styles.userName}>박기용</Text>
+            <Text style={styles.userNameSuffix}>님</Text>
+          </View>
+
+          <Text style={styles.userDetails}>1966년 10월28일 ㅣ 남</Text>
         </View>
 
-        {/* App Info */}
-        <View style={styles.appInfo}>
-          <Text style={styles.appVersion}>앱 버전 1.0.0</Text>
-          <Text style={styles.appCopyright}>© 2024 WD Membership. All rights reserved.</Text>
+        {/* 구분선 */}
+        <View style={styles.divider} />
+
+        {/* 휴대전화 번호 */}
+        <View style={styles.infoSection}>
+          <Text style={styles.infoLabel}>휴대전화 번호</Text>
+          <View style={styles.infoRow}>
+            <Text style={styles.infoValue}>010-12**-56**</Text>
+            <TouchableOpacity style={styles.editButton} onPress={handlePhoneEditPress}>
+              <Text style={styles.editButtonText}>수정</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        {/* 구분선 */}
+        <View style={styles.divider} />
+
+        {/* 이메일 */}
+        <View style={styles.infoSection}>
+          <Text style={styles.infoLabel}>이메일</Text>
+          <View style={styles.infoRow}>
+            <Text style={styles.infoValue}>jgcho**@wiiv****.com</Text>
+            <TouchableOpacity style={styles.editButton} onPress={handleEmailEditPress}>
+              <Text style={styles.editButtonText}>수정</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        {/* 구분선 */}
+        <View style={styles.divider} />
+
+        {/* 비밀번호 변경 */}
+        <View style={styles.infoSection}>
+          <Text style={styles.infoLabel}>비밀번호 변경</Text>
+          <View style={styles.infoRow}>
+            <Text style={styles.infoValue}></Text>
+            <TouchableOpacity style={styles.editButton} onPress={handlePasswordChangePress}>
+              <Text style={styles.editButtonText}>변경</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        {/* 구분선 */}
+        <View style={styles.divider} />
+
+        {/* 기본 장소 */}
+        <View style={styles.infoSection}>
+          <Text style={styles.infoLabel}>기본 장소</Text>
+          <View style={styles.infoRow}>
+            <Text style={styles.infoValue}>메디웰 하우스 (서울 서초구)</Text>
+            <TouchableOpacity style={styles.editButton} onPress={handleLocationEditPress}>
+              <Text style={styles.editButtonText}>변경</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </ScrollView>
     </CommonLayout>
@@ -148,99 +134,100 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({ currentTab, onTabP
 };
 
 const styles = StyleSheet.create({
-  profileCard: {
-    marginHorizontal: 20,
-    marginTop: 20,
-    marginBottom: 24
+  container: {
+    flex: 1,
+    backgroundColor: "#FFFFFF",
+    paddingHorizontal: 20
   },
-  profileHeader: {
-    flexDirection: "row",
+  profileSection: {
     alignItems: "center",
-    marginBottom: 20
+    paddingVertical: 40
   },
   avatarContainer: {
-    marginRight: 16
+    position: "relative",
+    marginBottom: 20
   },
-  profileInfo: {
-    flex: 1
+  avatar: {
+    width: 60,
+    height: 60,
+    borderRadius: 30
   },
-  profileName: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: colors.textPrimary,
-    marginBottom: 4
+  editAvatarButton: {
+    position: "absolute",
+    bottom: 0,
+    right: 0
   },
-  profileEmail: {
-    fontSize: 16,
-    color: colors.textSecondary,
-    marginBottom: 8
-  },
-  profileStats: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    borderTopWidth: 1,
-    borderTopColor: colors.borderLight,
-    paddingTop: 16
-  },
-  stat: {
-    alignItems: "center",
-    flex: 1
-  },
-  statValue: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: colors.textPrimary,
-    marginBottom: 4
-  },
-  statLabel: {
-    fontSize: 12,
-    color: colors.textSecondary
-  },
-  statDivider: {
-    width: 1,
-    height: 40,
-    backgroundColor: colors.borderLight
-  },
-  menuSection: {
-    backgroundColor: colors.background,
-    marginHorizontal: 20,
-    borderRadius: 16,
-    overflow: "hidden",
-    marginBottom: 24
-  },
-  menuItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: 20,
-    paddingVertical: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.borderLight
-  },
-  menuIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    alignItems: "center",
+  editAvatarIcon: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: "#B48327",
+    borderWidth: 1,
+    borderColor: "#FFFFFF",
     justifyContent: "center",
-    marginRight: 16
+    alignItems: "center"
   },
-  menuTitle: {
-    flex: 1,
-    fontSize: 16,
-    color: colors.textPrimary,
-    fontWeight: "500"
-  },
-  appInfo: {
+  userInfo: {
+    flexDirection: "row",
     alignItems: "center",
-    paddingBottom: 20
+    marginBottom: 10
   },
-  appVersion: {
-    fontSize: 14,
-    color: colors.textSecondary,
-    marginBottom: 4
+  userName: {
+    fontSize: 20,
+    fontWeight: "900",
+    color: "#2B2B2B",
+    textAlign: "center"
   },
-  appCopyright: {
-    fontSize: 12,
-    color: colors.textTertiary
+  userNameSuffix: {
+    fontSize: 20,
+    fontWeight: "400",
+    color: "#2B2B2B",
+    marginLeft: 5
+  },
+  userDetails: {
+    fontSize: 13,
+    fontWeight: "700",
+    color: "#B1B8C0",
+    textAlign: "center"
+  },
+  divider: {
+    height: 1,
+    backgroundColor: "#D6DADF",
+    marginVertical: 20
+  },
+  infoSection: {
+    marginBottom: 20
+  },
+  infoLabel: {
+    fontSize: 13,
+    fontWeight: "700",
+    color: "#79818B",
+    marginBottom: 10
+  },
+  infoRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center"
+  },
+  infoValue: {
+    fontSize: 16,
+    fontWeight: "800",
+    color: "#2B2B2B",
+    flex: 1
+  },
+  editButton: {
+    backgroundColor: "#EFF1F3",
+    borderWidth: 1,
+    borderColor: "#D6DADF",
+    borderRadius: 6,
+    paddingVertical: 2,
+    paddingHorizontal: 13,
+    minWidth: 50,
+    alignItems: "center"
+  },
+  editButtonText: {
+    fontSize: 13,
+    fontWeight: "700",
+    color: "#79818B"
   }
 });
