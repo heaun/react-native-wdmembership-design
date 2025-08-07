@@ -24,7 +24,16 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onBackPress, onLoginSu
   };
 
   return (
-    <CommonLayout title="로그인" onBackPress={onBackPress}>
+    <CommonLayout
+      title="로그인"
+      showBackButton={false}
+      showTabBar={false}
+      showTopIcons={false}
+      onBackPress={onBackPress}
+      onMenuPress={() => {}}
+      onCouponPress={() => {}}
+      onNotificationPress={() => {}}
+    >
       {/* Welcome Text */}
       <View style={styles.welcomeSection}>
         <Text style={styles.welcomeText}>반갑습니다.</Text>

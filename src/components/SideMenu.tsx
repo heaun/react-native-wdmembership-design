@@ -298,11 +298,8 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)"
   },
   menuContainer: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    width: screenWidth,
-    height: screenHeight,
+    height: "100%",
+    paddingVertical: 20,
     backgroundColor: "#FFFFFF"
   },
   header: {

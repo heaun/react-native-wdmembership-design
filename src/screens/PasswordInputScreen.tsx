@@ -111,10 +111,11 @@ export const PasswordInputScreen: React.FC<PasswordInputScreenProps> = ({
         title=""
         showBackButton={true}
         showTabBar={false}
+        showTopIcons={false}
         onBackPress={onBackPress}
-        onMenuPress={() => console.log("메뉴 버튼 클릭")}
-        onCouponPress={() => console.log("쿠폰 버튼 클릭")}
-        onNotificationPress={() => console.log("알림 버튼 클릭")}
+        onMenuPress={() => {}}
+        onCouponPress={() => {}}
+        onNotificationPress={() => {}}
         currentTab={currentTab}
         onTabPress={onTabPress}
         onSideMenuItemPress={onSideMenuItemPress}

@@ -21,6 +21,7 @@ import { PasswordInputScreen } from "../src/screens/PasswordInputScreen";
 import { PaymentCompleteScreen } from "../src/screens/PaymentCompleteScreen";
 import { ScheduleScreen } from "../src/screens/ScheduleScreen";
 import { ReservationDetailScreen } from "../src/screens/ReservationDetailScreen";
+import { MembershipInfoScreen } from "../src/screens/MembershipInfoScreen";
 
 type ScreenType =
   | "Home"
@@ -42,7 +43,8 @@ type ScreenType =
   | "OrderConfirm"
   | "Payment"
   | "PasswordInput"
-  | "PaymentComplete";
+  | "PaymentComplete"
+  | "MembershipInfo";
 
 export const AppNavigator: React.FC = () => {
   const [currentScreen, setCurrentScreen] = useState<ScreenType>("Home");
@@ -70,7 +72,7 @@ export const AppNavigator: React.FC = () => {
   };
 
   const handleMembershipManagePress = () => {
-    setCurrentScreen("MembershipCard");
+    setCurrentScreen("MembershipInfo");
   };
 
   const handleEditProfilePress = () => {
@@ -87,6 +89,10 @@ export const AppNavigator: React.FC = () => {
 
   const handleBackToMembershipCard = () => {
     setCurrentScreen("MembershipCard");
+  };
+
+  const handleBackToHome = () => {
+    setCurrentScreen("Home");
   };
 
   const handleMembershipGuidePress = () => {
@@ -522,6 +528,8 @@ export const AppNavigator: React.FC = () => {
             onSideMenuItemPress={handleSideMenuItemPress}
           />
         );
+      case "MembershipInfo":
+        return <MembershipInfoScreen onBackPress={handleBackToHome} onMenuPress={() => {}} onCouponPress={() => {}} onNotificationPress={() => {}} />;
       case "Profile":
         return <ProfileScreen currentTab={currentScreen} onTabPress={handleTabPress} onSideMenuItemPress={handleSideMenuItemPress} />;
       default:

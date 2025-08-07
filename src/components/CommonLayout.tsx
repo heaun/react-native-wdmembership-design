@@ -14,6 +14,7 @@ interface CommonLayoutProps {
   onBackPress?: () => void;
   showBackButton?: boolean;
   showTabBar?: boolean;
+  showTopIcons?: boolean;
   onMenuPress?: () => void;
   onCouponPress?: () => void;
   onNotificationPress?: () => void;
@@ -29,6 +30,7 @@ export const CommonLayout: React.FC<CommonLayoutProps> = ({
   onBackPress,
   showBackButton = true,
   showTabBar = true,
+  showTopIcons = true,
   onMenuPress,
   onCouponPress,
   onNotificationPress,
@@ -62,7 +64,7 @@ export const CommonLayout: React.FC<CommonLayoutProps> = ({
   return (
     <View style={[styles.container, isWideLayout && styles.wideContainer]}>
       {/* Status Bar */}
-      <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
+      {/* <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" /> */}
 
       {/* Top Bar */}
       <View style={[styles.topBar, isWideLayout && styles.wideTopBar]}>
@@ -70,23 +72,27 @@ export const CommonLayout: React.FC<CommonLayoutProps> = ({
           <TouchableOpacity style={styles.backButton} onPress={onBackPress}>
             <Text style={styles.backButtonText}>←</Text>
           </TouchableOpacity>
-        ) : (
+        ) : showTopIcons ? (
           <TouchableOpacity style={styles.menuButton} onPress={handleMenuPress}>
             <Ionicons name="menu" size={24} color="#2B2B2B" />
           </TouchableOpacity>
+        ) : (
+          <View style={styles.emptyButton} />
         )}
-        <Text style={styles.topBarTitle}>{title}</Text>
-        <View style={styles.rightIcons}>
-          <TouchableOpacity style={styles.iconButton} onPress={onCouponPress}>
-            <Ionicons name="ticket-outline" size={24} color="#2B2B2B" />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.iconButton} onPress={onNotificationPress}>
-            <View style={styles.notificationContainer}>
-              <Ionicons name="notifications-outline" size={24} color="#2B2B2B" />
-              <View style={styles.notificationDot} />
-            </View>
-          </TouchableOpacity>
-        </View>
+        <Text style={[styles.topBarTitle, !showBackButton && !showTopIcons && styles.centeredTitle]}>{title}</Text>
+        {showTopIcons && (
+          <View style={styles.rightIcons}>
+            <TouchableOpacity style={styles.iconButton} onPress={onCouponPress}>
+              <Ionicons name="ticket-outline" size={24} color="#2B2B2B" />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.iconButton} onPress={onNotificationPress}>
+              <View style={styles.notificationContainer}>
+                <Ionicons name="notifications-outline" size={24} color="#2B2B2B" />
+                <View style={styles.notificationDot} />
+              </View>
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
 
       {/* Main Content */}
@@ -121,8 +127,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#FFFFFF",
-    paddingHorizontal: 20,
-    paddingVertical: 20
+    paddingHorizontal: 5
   },
 
   wideContainer: {
@@ -144,7 +149,7 @@ const styles = StyleSheet.create({
     height: 60
   },
   wideTopBar: {
-    paddingHorizontal: 20
+    paddingHorizontal: 5
   },
   backButton: {
     width: 40,
@@ -162,10 +167,20 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center"
   },
+  emptyButton: {
+    width: 40,
+    height: 40
+  },
   topBarTitle: {
     fontSize: 18,
     fontWeight: "700",
     color: "#2B2B2B"
+  },
+  centeredTitle: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    textAlign: "center"
   },
   rightIcons: {
     flexDirection: "row",
