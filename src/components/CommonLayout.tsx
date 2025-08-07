@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, StatusBar, SafeAreaView, Platform } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, StatusBar, SafeAreaView, Platform, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { SideMenu } from "./SideMenu";
 
 interface TabItem {
   name: string;
-  icon: string;
+  icon: any;
+  activeIcon: any;
   label: string;
 }
 
@@ -56,10 +57,30 @@ export const CommonLayout: React.FC<CommonLayoutProps> = ({
     onSideMenuItemPress?.(itemId);
   };
   const tabs: TabItem[] = [
-    { name: "Home", icon: "home", label: "홈" },
-    { name: "Schedule", icon: "calendar", label: "나의일정" },
-    { name: "MembershipCard", icon: "card", label: "멤버쉽카드" },
-    { name: "MyService", icon: "person", label: "마이서비스" }
+    {
+      name: "Home",
+      icon: require("../assets/icons/ic_tap_01_off.png"),
+      activeIcon: require("../assets/icons/ic_tap_01_on.png"),
+      label: "홈"
+    },
+    {
+      name: "Schedule",
+      icon: require("../assets/icons/ic_tap_02_off.png"),
+      activeIcon: require("../assets/icons/ic_tap_02_on.png"),
+      label: "나의일정"
+    },
+    {
+      name: "MembershipCard",
+      icon: require("../assets/icons/ic_tap_03_off.png"),
+      activeIcon: require("../assets/icons/ic_tap_03_on.png"),
+      label: "멤버쉽카드"
+    },
+    {
+      name: "MyService",
+      icon: require("../assets/icons/ic_tap_04_off.png"),
+      activeIcon: require("../assets/icons/ic_tap_04_on.png"),
+      label: "마이서비스"
+    }
   ];
   return (
     <View style={[styles.container, isWideLayout && styles.wideContainer]}>
@@ -75,11 +96,11 @@ export const CommonLayout: React.FC<CommonLayoutProps> = ({
           <View style={styles.leftSide}>
             {showBackButton ? (
               <TouchableOpacity style={styles.backButton} onPress={onBackPress}>
-                <Text style={styles.backButtonText}>←</Text>
+                <Image source={require("../assets/icons/ic-chevron-left.png")} style={styles.backButtonIcon} />
               </TouchableOpacity>
             ) : showTopIcons ? (
               <TouchableOpacity style={styles.menuButton} onPress={handleMenuPress}>
-                <Ionicons name="menu" size={24} color="#2B2B2B" />
+                <Image source={require("../assets/icons/ic_menu.png")} style={styles.menuIcon} />
               </TouchableOpacity>
             ) : (
               <View style={styles.emptyButton} />
@@ -91,11 +112,11 @@ export const CommonLayout: React.FC<CommonLayoutProps> = ({
             {showTopIcons && !showBackButton ? (
               <View style={styles.rightIcons}>
                 <TouchableOpacity style={styles.iconButton} onPress={onCouponPress}>
-                  <Ionicons name="ticket-outline" size={24} color="#2B2B2B" />
+                  <Image source={require("../assets/icons/ic_coupon.png")} style={styles.iconImage} />
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.iconButton} onPress={onNotificationPress}>
                   <View style={styles.notificationContainer}>
-                    <Ionicons name="notifications-outline" size={24} color="#2B2B2B" />
+                    <Image source={require("../assets/icons/ic_notification.png")} style={styles.iconImage} />
                     <View style={styles.notificationDot} />
                   </View>
                 </TouchableOpacity>
@@ -115,11 +136,7 @@ export const CommonLayout: React.FC<CommonLayoutProps> = ({
         <View style={styles.bottomTabBar}>
           {tabs.map((tab) => (
             <TouchableOpacity key={tab.name} style={styles.tabItem} onPress={() => onTabPress?.(tab.name)}>
-              <Ionicons
-                name={currentTab === tab.name ? (tab.icon as any) : (`${tab.icon}-outline` as any)}
-                size={24}
-                color={currentTab === tab.name ? "#6C7072" : "#505866"}
-              />
+              <Image source={currentTab === tab.name ? tab.activeIcon : tab.icon} style={styles.tabIcon} />
               <Text style={[styles.tabText, currentTab === tab.name && styles.activeTabText]}>{tab.label}</Text>
             </TouchableOpacity>
           ))}
@@ -171,11 +188,19 @@ const styles = StyleSheet.create({
     fontSize: 24,
     color: "#2B2B2B"
   },
+  backButtonIcon: {
+    width: 24,
+    height: 24
+  },
   menuButton: {
     width: 40,
     height: 40,
     justifyContent: "center",
     alignItems: "center"
+  },
+  menuIcon: {
+    width: 24,
+    height: 24
   },
   emptyButton: {
     width: 40,
@@ -228,6 +253,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center"
   },
+  iconImage: {
+    width: 24,
+    height: 24
+  },
+
   notificationContainer: {
     position: "relative"
   },
@@ -264,6 +294,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     paddingVertical: 4
+  },
+  tabIcon: {
+    width: 24,
+    height: 24
   },
   tabText: {
     fontSize: 11,

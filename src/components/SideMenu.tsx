@@ -1,6 +1,7 @@
 import React from "react";
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Dimensions, Modal, Switch, Animated } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Dimensions, Modal, Switch, Animated, Image } from "react-native";
 import { FaceIdModal } from "./FaceIdModal";
+import { Ionicons } from "@expo/vector-icons";
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
@@ -252,7 +253,7 @@ export const SideMenu: React.FC<SideMenuProps> = ({ visible, onClose, onMenuItem
 
         {item.hasChevron && !isToggle && (
           <View style={styles.chevronContainer}>
-            <Text style={styles.chevron}>›</Text>
+            <Image source={require("../assets/icons/ic-chevron-right.png")} style={styles.chevron} />
           </View>
         )}
       </TouchableOpacity>
@@ -275,7 +276,7 @@ export const SideMenu: React.FC<SideMenuProps> = ({ visible, onClose, onMenuItem
               <Text style={styles.closeIcon}>✕</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.settingsButton}>
-              <Text style={styles.settingsIcon}>⚙</Text>
+              <Image source={require("../assets/icons/ic-side-menu-setting.png")} style={styles.settingsIcon} />
             </TouchableOpacity>
           </View>
 
@@ -328,9 +329,10 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   settingsIcon: {
-    fontSize: 16,
-    color: "#131214"
+    width: 16,
+    height: 16
   },
+
   menuContent: {
     flex: 1,
     paddingHorizontal: 20
@@ -381,10 +383,10 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   chevron: {
-    fontSize: 18,
-    color: "#505866",
-    fontWeight: "300"
+    width: 18,
+    height: 18
   },
+
   settingsSectionItem: {
     borderTopWidth: 1,
     borderTopColor: "#505866"
