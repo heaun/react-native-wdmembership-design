@@ -22,6 +22,7 @@ import { PaymentCompleteScreen } from "../src/screens/PaymentCompleteScreen";
 import { ScheduleScreen } from "../src/screens/ScheduleScreen";
 import { ReservationDetailScreen } from "../src/screens/ReservationDetailScreen";
 import { MembershipInfoScreen } from "../src/screens/MembershipInfoScreen";
+import { VehicleManagementScreen } from "../src/screens/VehicleManagementScreen";
 
 type ScreenType =
   | "Home"
@@ -44,7 +45,8 @@ type ScreenType =
   | "Payment"
   | "PasswordInput"
   | "PaymentComplete"
-  | "MembershipInfo";
+  | "MembershipInfo"
+  | "VehicleManagement";
 
 export const AppNavigator: React.FC = () => {
   const [currentScreen, setCurrentScreen] = useState<ScreenType>("Home");
@@ -292,7 +294,7 @@ export const AppNavigator: React.FC = () => {
         console.log("결제 수단 등록/삭제");
         break;
       case "vehicle-management":
-        console.log("차량 관리");
+        setCurrentScreen("VehicleManagement");
         break;
       default:
         console.log(`처리되지 않은 메뉴 아이템: ${itemId}`);
@@ -530,6 +532,10 @@ export const AppNavigator: React.FC = () => {
         );
       case "MembershipInfo":
         return <MembershipInfoScreen onBackPress={handleBackToHome} onMenuPress={() => {}} onCouponPress={() => {}} onNotificationPress={() => {}} />;
+      case "VehicleManagement":
+        return (
+          <VehicleManagementScreen onBackPress={handleBackToHome} onMenuPress={() => {}} onCouponPress={() => {}} onNotificationPress={() => {}} />
+        );
       case "Profile":
         return <ProfileScreen currentTab={currentScreen} onTabPress={handleTabPress} onSideMenuItemPress={handleSideMenuItemPress} />;
       default:
