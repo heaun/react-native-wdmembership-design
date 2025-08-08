@@ -23,6 +23,7 @@ import { ScheduleScreen } from "../src/screens/ScheduleScreen";
 import { ReservationDetailScreen } from "../src/screens/ReservationDetailScreen";
 import { MembershipInfoScreen } from "../src/screens/MembershipInfoScreen";
 import { VehicleManagementScreen } from "../src/screens/VehicleManagementScreen";
+import { MembershipDetailScreen } from "../src/screens/MembershipDetailScreen";
 
 type ScreenType =
   | "Home"
@@ -46,7 +47,8 @@ type ScreenType =
   | "PasswordInput"
   | "PaymentComplete"
   | "MembershipInfo"
-  | "VehicleManagement";
+  | "VehicleManagement"
+  | "MembershipDetail";
 
 export const AppNavigator: React.FC = () => {
   const [currentScreen, setCurrentScreen] = useState<ScreenType>("Home");
@@ -58,6 +60,7 @@ export const AppNavigator: React.FC = () => {
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
   const [selectedOptions, setSelectedOptions] = useState<any>(null);
   const [newOrder, setNewOrder] = useState<any>(null);
+  const [selectedMembershipId, setSelectedMembershipId] = useState<string>("with-doctors");
 
   const handleTabPress = (tabName: string) => {
     if (tabName === "Home" || tabName === "Schedule" || tabName === "MembershipCard" || tabName === "MyService") {
@@ -103,6 +106,11 @@ export const AppNavigator: React.FC = () => {
 
   const handleBackToMembershipCardFromGuide = () => {
     setCurrentScreen("MembershipCard");
+  };
+
+  const handleMembershipDetailPress = (membershipId: string) => {
+    setSelectedMembershipId(membershipId);
+    setCurrentScreen("MembershipDetail");
   };
 
   const handleServiceDetailPress = (service: any) => {
@@ -345,14 +353,7 @@ export const AppNavigator: React.FC = () => {
           />
         );
       case "MembershipGuide":
-        return (
-          <MembershipGuideScreen
-            onBackPress={handleBackToMembershipCardFromGuide}
-            currentTab={currentScreen}
-            onTabPress={handleTabPress}
-            onSideMenuItemPress={handleSideMenuItemPress}
-          />
-        );
+        return <MembershipGuideScreen onBackPress={handleBackToMembershipCardFromGuide} onMenuItemPress={handleMembershipDetailPress} />;
       case "MyService":
         return (
           <MyServiceScreen
@@ -538,6 +539,14 @@ export const AppNavigator: React.FC = () => {
         );
       case "Profile":
         return <ProfileScreen currentTab={currentScreen} onTabPress={handleTabPress} onSideMenuItemPress={handleSideMenuItemPress} />;
+      case "MembershipDetail":
+        return (
+          <MembershipDetailScreen
+            membershipId={selectedMembershipId}
+            onBackPress={handleBackToMembershipCardFromGuide}
+            onConsultationPress={() => console.log("상담 문의")}
+          />
+        );
       default:
         return (
           <MainScreen

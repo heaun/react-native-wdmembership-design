@@ -1,224 +1,170 @@
 import React from "react";
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Image, Dimensions } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image } from "react-native";
 import { CommonLayout } from "../components/CommonLayout";
 
-const { width: screenWidth } = Dimensions.get("window");
+interface MembershipItem {
+  id: string;
+  title: string;
+  subtitle: string;
+  description: string;
+  image: any;
+  type: "with-doctors" | "ph-1603" | "saint-paul";
+}
 
 interface MembershipGuideScreenProps {
   onBackPress?: () => void;
-  currentTab?: string;
-  onTabPress?: (tabName: string) => void;
-  onSideMenuItemPress?: (itemId: string) => void;
+  onMenuItemPress?: (itemId: string) => void;
 }
 
-export const MembershipGuideScreen: React.FC<MembershipGuideScreenProps> = ({ onBackPress, currentTab, onTabPress, onSideMenuItemPress }) => {
+export const MembershipGuideScreen: React.FC<MembershipGuideScreenProps> = ({ onBackPress, onMenuItemPress }) => {
+  const membershipItems: MembershipItem[] = [
+    {
+      id: "with-doctors",
+      title: "위드닥터스 멤버스 전용",
+      subtitle: "With Drs. Member Only",
+      description: "맞춤형 개인 건강 관리, 전문 의료 상담, 웰니스 프로그램 등 프리미엄 건강 케어 서비스를 제공합니다.",
+      image: require("../assets/membership/with-doctors-member.png"),
+      type: "with-doctors"
+    },
+    {
+      id: "ph-1603",
+      title: "PH 1603 레지던스 전용",
+      subtitle: "For PH 1603 Residence",
+      description: "프라이빗 고급 주거 공간과 컨시어지, 커뮤니티 시설 등 품격 있는 라이프 스타일을 만나보십시오.",
+      image: require("../assets/membership/ph-1603-residence.png"),
+      type: "ph-1603"
+    },
+    {
+      id: "saint-paul",
+      title: "세인트폴 잉글리쉬 스쿨 전용",
+      subtitle: "For Saint Paul",
+      description: "맞춤형 영어 교육, 글로벌 인재 양성 프로그램, 자녀 성장 프로그램을 통한 맞춤 컨설팅 제공합니다.",
+      image: require("../assets/membership/saint-paul-school.png"),
+      type: "saint-paul"
+    }
+  ];
+
+  const handleItemPress = (item: MembershipItem) => {
+    onMenuItemPress?.(item.id);
+  };
+
   return (
-    <CommonLayout
-      title="멤버쉽 안내"
-      showBackButton={true}
-      showTabBar={false}
-      onBackPress={onBackPress}
-      onMenuPress={() => console.log("메뉴 버튼 클릭")}
-      onCouponPress={() => console.log("쿠폰 버튼 클릭")}
-      onNotificationPress={() => console.log("알림 버튼 클릭")}
-      currentTab={currentTab}
-      onTabPress={onTabPress}
-      isWideLayout={true}
-      onSideMenuItemPress={onSideMenuItemPress}
-    >
-      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+    <CommonLayout title="멤버십 안내" showBackButton={true} onBackPress={onBackPress} showTabBar={false}>
+      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         {/* Header Section */}
         <View style={styles.headerSection}>
-          <Text style={styles.membershipTitle}>PH1603 레지던스</Text>
-
-          {/* Membership Card */}
-          <View style={styles.membershipCard}>
-            <Image source={require("../assets/membership-card-bg.png")} style={styles.cardImage} />
-          </View>
-
-          {/* Fee Information */}
-          <View style={styles.feeSection}>
-            <Text style={styles.feeLabel}>가입비 / 연회비</Text>
-            <Text style={styles.feeValue}>별도 협의</Text>
-            <Text style={styles.feeDescription}>
-              회원님별 맞춤 혜택과 서비스 범위에 따라{"\n"}
-              가입비 및 연회비가 달라지므로 별도 협의가 필요합니다.
-            </Text>
-          </View>
+          <Text style={styles.vipTitle}>VIP MEMBERSHIP</Text>
+          <Text style={styles.vipDescription}>최상위 멤버를 위한 프라이빗 레지던스 서비스로{"\n"}한 차원 높은 품격과 특별한 혜택을 경험하세요.</Text>
         </View>
 
-        {/* Benefits Section */}
-        <View style={styles.benefitsSection}>
-          <Text style={styles.sectionTitle}>멤버쉽 혜택안내</Text>
-          <View style={styles.divider} />
+        {/* Membership Items */}
+        {membershipItems.map((item) => (
+          <TouchableOpacity key={item.id} style={styles.membershipCard} onPress={() => handleItemPress(item)}>
+            <View style={styles.cardContent}>
+              <View style={styles.cardImageContainer}>
+                <View style={styles.imageContainer}>
+                  <Image source={item.image} style={styles.cardImage} resizeMode="cover" />
+                </View>
+                <View style={styles.textContainer}>
+                  <Text style={styles.cardTitle}>{item.title}</Text>
+                  <Text style={styles.cardSubtitle}>{item.subtitle}</Text>
+                </View>
+              </View>
 
-          <Text style={styles.benefitText}>
-            호텔형 피트니스 무료 이용{"\n"}
-            사우나, 자쿠지 무료이용{"\n"}
-            피트니스 PT 무료이용권 5회 제공{"\n"}
-            탈모관리 및 해드 스파 20% 할인{"\n"}
-            스톤케어 및 등관리 20% 할인{"\n"}
-            골프연습타석, 스크린골프장 이용 20% 할인
-          </Text>
-
-          <View style={styles.divider} />
-
-          <Text style={styles.sectionTitle}>건강증진 프로그램</Text>
-
-          <Text style={styles.benefitText}>
-            24시간 응급 내과 진료, 응급 이송 서비스 제공{"\n"}
-            마인드앤바디 케어 프로그램 15% 할인{"\n"}
-            제휴 피부과 시술 및 레이저 치료 10% 할인{"\n"}
-            항노화, 호르몬 관리 프로그램 10% 할인{"\n"}
-            원격의료 서비스 제공{"\n"}
-            병원 예약 및 간호사와 함께 하는{"\n"}
-            고급 차량 의전 서비스 10% 할인
-          </Text>
-
-          <View style={styles.divider} />
-
-          <Text style={styles.sectionTitle}>메디케어 프로그램</Text>
-
-          <Text style={styles.benefitText}>
-            카페 & 베이커리 20% 할인{"\n"}
-            케어 푸드 식당 20% 할인
-          </Text>
-
-          <View style={styles.divider} />
-
-          <Text style={styles.sectionTitle}>케어 푸드 프로그램</Text>
-
-          <Text style={styles.benefitText}>
-            멤버스 프리미엄 라운지 무료 이용 5회,{"\n"}
-            추가 이용시 50% 할인{"\n"}
-            하이앤드 그룹 미팅룸 무료 이용 2회,{"\n"}
-            추가 이용시 30% 할인{"\n"}
-            PGA, LPGA 선수와 함께하는 원포인트 레슨{"\n"}
-            이용권 3회 제공
-          </Text>
-        </View>
+              <View style={styles.cardDescriptionContainer}>
+                <Text style={styles.cardDescription}>{item.description}</Text>
+                <Text style={styles.detailLink}>맴버쉽 혜택 상세보기</Text>
+              </View>
+            </View>
+          </TouchableOpacity>
+        ))}
       </ScrollView>
     </CommonLayout>
   );
 };
 
 const styles = StyleSheet.create({
-  scrollView: {
-    flex: 1
+  container: {
+    flex: 1,
+    backgroundColor: "#FFFFFF"
   },
   headerSection: {
-    backgroundColor: "#605B51",
-    paddingVertical: 40,
-    alignItems: "center"
+    paddingTop: 20,
+    paddingBottom: 30
   },
-  membershipTitle: {
-    fontSize: 18,
-    fontWeight: "900",
-    color: "#FFFFFF",
-    marginBottom: 20
+  vipTitle: {
+    fontSize: 20,
+    fontWeight: "700",
+    color: "#B48327",
+    marginBottom: 16,
+    letterSpacing: -0.8
+  },
+  vipDescription: {
+    fontSize: 14,
+    fontWeight: "400",
+    color: "#2B2B2B",
+    lineHeight: 22,
+    letterSpacing: -0.56
   },
   membershipCard: {
-    width: 280,
-    height: 160,
-    backgroundColor: "#4D4132",
-    borderRadius: 12,
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 30,
-    shadowColor: "#000000",
-    shadowOffset: {
-      width: 0,
-      height: 4
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 8
-  },
-  cardImage: {
-    width: "100%",
-    height: "100%",
-    borderRadius: 12
-  },
-  vipText: {
-    position: "absolute",
-    top: 22,
-    fontSize: 14,
-    fontWeight: "700",
-    color: "rgba(255, 255, 255, 0.5)",
-    letterSpacing: 0.84
-  },
-  cardTitle: {
-    position: "absolute",
-    fontSize: 20,
-    fontWeight: "900",
-    color: "#FFFFFF",
-    textAlign: "center",
-    lineHeight: 30,
-    letterSpacing: 2
-  },
-  feeSection: {
-    alignItems: "center",
-    paddingHorizontal: 20
-  },
-  feeLabel: {
-    fontSize: 16,
-    fontWeight: "350",
-    color: "#FFFFFF",
-    marginBottom: 10
-  },
-  feeValue: {
-    fontSize: 20,
-    fontWeight: "800",
-    color: "#FFFFFF",
-    marginBottom: 15,
-    letterSpacing: 0.8
-  },
-  feeDescription: {
-    fontSize: 14,
-    fontWeight: "350",
-    color: "#FFFFFF",
-    textAlign: "center",
-    lineHeight: 22
-  },
-  benefitsSection: {
-    paddingVertical: 30,
-    paddingHorizontal: 20
-  },
-  sectionTitle: {
-    fontSize: 16,
-    fontWeight: "800",
-    color: "#000000",
-    marginBottom: 15,
-    letterSpacing: -0.64
-  },
-  benefitText: {
-    fontSize: 16,
-    fontWeight: "400",
-    color: "#505866",
-    lineHeight: 28,
     marginBottom: 20,
-    letterSpacing: -0.64
+    backgroundColor: "#FFFFFF",
+    borderRadius: 0,
+    borderBottomWidth: 1,
+    borderBottomColor: "#D6DADF"
   },
-  divider: {
-    height: 1,
-    backgroundColor: "#D6DADF",
-    marginVertical: 20
+  cardContent: {},
+  imageContainer: {
+    borderRadius: 8,
+    marginRight: 16
   },
-  contactSection: {
-    paddingHorizontal: 24,
-    paddingVertical: 30
-  },
-  contactButton: {
-    backgroundColor: "#2B2B2B",
-    borderRadius: 48,
-    height: 50,
-    justifyContent: "center",
+  cardImageContainer: {
+    flexDirection: "row",
     alignItems: "center"
   },
-  contactButtonText: {
+  cardImage: {
+    width: 90,
+    height: 64,
+    borderRadius: 8
+  },
+  textContainer: {
+    flex: 1
+  },
+  cardDescriptionContainer: {
+    flex: 1,
+    paddingVertical: 16
+  },
+  cardTitle: {
+    fontSize: 18,
+    fontWeight: "800",
+    color: "#2B2B2B",
+    marginBottom: 4,
+    letterSpacing: -0.72,
+    fontFamily: "NanumSquare Neo"
+  },
+  cardSubtitle: {
+    fontSize: 14,
+    fontWeight: "400",
+    color: "#505866",
+    marginBottom: 8,
+    letterSpacing: -0.56,
+    fontFamily: "NanumSquare Neo"
+  },
+  cardDescription: {
+    fontSize: 14,
+    fontWeight: "400",
+    color: "#505866",
+    lineHeight: 20,
+    marginBottom: 12,
+    letterSpacing: -0.56,
+    fontFamily: "NanumSquare Neo"
+  },
+  detailLink: {
     fontSize: 16,
     fontWeight: "700",
-    color: "#FFFFFF",
-    letterSpacing: -0.64
+    color: "#505866",
+    letterSpacing: -0.64,
+    fontFamily: "NanumSquare Neo",
+    textDecorationLine: "underline"
   }
 });
