@@ -22,7 +22,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onFinish }) => {
     <View style={styles.container}>
       {/* Logo Section */}
       <View style={styles.logoSection}>
-        <Image source={require("../assets/splash-logo.png")} style={styles.logo} resizeMode="contain" />
+        <Image source={require("../assets/splash-icon.png")} style={styles.logo} resizeMode="contain" />
 
         {/* Title Section */}
         <View style={styles.titleSection}>

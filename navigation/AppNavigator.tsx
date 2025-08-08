@@ -24,6 +24,7 @@ import { ReservationDetailScreen } from "../src/screens/ReservationDetailScreen"
 import { MembershipInfoScreen } from "../src/screens/MembershipInfoScreen";
 import { VehicleManagementScreen } from "../src/screens/VehicleManagementScreen";
 import { MembershipDetailScreen } from "../src/screens/MembershipDetailScreen";
+import { UserMembershipInfoScreen } from "../src/screens/UserMembershipInfoScreen";
 
 type ScreenType =
   | "Home"
@@ -48,7 +49,8 @@ type ScreenType =
   | "PaymentComplete"
   | "MembershipInfo"
   | "VehicleManagement"
-  | "MembershipDetail";
+  | "MembershipDetail"
+  | "UserMembershipInfo";
 
 export const AppNavigator: React.FC = () => {
   const [currentScreen, setCurrentScreen] = useState<ScreenType>("Home");
@@ -98,6 +100,10 @@ export const AppNavigator: React.FC = () => {
 
   const handleBackToHome = () => {
     setCurrentScreen("Home");
+  };
+
+  const handleUserMembershipInfoPress = () => {
+    setCurrentScreen("UserMembershipInfo");
   };
 
   const handleMembershipGuidePress = () => {
@@ -340,6 +346,7 @@ export const AppNavigator: React.FC = () => {
             onTabPress={handleTabPress}
             onMembershipVerificationPress={handleMembershipVerificationPress}
             onMembershipGuidePress={handleMembershipGuidePress}
+            onMembershipInfoPress={handleUserMembershipInfoPress}
             onSideMenuItemPress={handleSideMenuItemPress}
           />
         );
@@ -543,8 +550,17 @@ export const AppNavigator: React.FC = () => {
         return (
           <MembershipDetailScreen
             membershipId={selectedMembershipId}
-            onBackPress={handleBackToMembershipCardFromGuide}
-            onConsultationPress={() => console.log("상담 문의")}
+            onBackPress={handleMembershipGuidePress}
+            onConsultationPress={() => {}} // 전화 기능은 컴포넌트 내부에서 처리
+          />
+        );
+      case "UserMembershipInfo":
+        return (
+          <UserMembershipInfoScreen
+            onBackPress={handleBackToMembershipCard}
+            currentTab={currentScreen}
+            onTabPress={handleTabPress}
+            onSideMenuItemPress={handleSideMenuItemPress}
           />
         );
       default:

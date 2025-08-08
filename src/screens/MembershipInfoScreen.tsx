@@ -129,83 +129,80 @@ export const MembershipInfoScreen: React.FC<MembershipInfoScreenProps> = ({ onBa
       onMenuPress={onMenuPress}
       onCouponPress={onCouponPress}
       onNotificationPress={onNotificationPress}
+      isWideLayout={true}
     >
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         {/* 멤버십 정보 섹션 */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>멤버십 정보</Text>
-
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionTitle}>멤버십 정보</Text>
+            <TouchableOpacity style={styles.moreButton} onPress={handleMembershipBenefitsPress}>
+              <Text style={styles.moreButtonText}>멤버십 혜택 안내</Text>
+              <Image source={require("../assets/icons/ic-chevron-right.png")} style={styles.chevron} />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.divider} />
           <View style={styles.membershipCard}>
             {/* 카드 헤더: 좌우 이동 버튼 */}
-            <View style={styles.cardHeader}>
-              <TouchableOpacity onPress={goPrevSlide} style={styles.arrowButton} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
-                <Ionicons name="chevron-back" size={22} color="#505866" />
-              </TouchableOpacity>
-              <View style={styles.cardHeaderSpacer} />
-              <TouchableOpacity onPress={goNextSlide} style={styles.arrowButton} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
-                <Ionicons name="chevron-forward" size={22} color="#505866" />
-              </TouchableOpacity>
-            </View>
 
-            {/* 슬라이드 0: 요약 */}
-            {cardSlide === 0 && (
-              <>
-                <Text style={styles.memberName}>{membershipData.member.name} 님은</Text>
-                <Text style={styles.memberAddress}>{membershipData.member.residence}</Text>
-                <Text style={styles.memberStatus}>{membershipData.member.statusText}</Text>
-              </>
-            )}
+            <Text style={styles.memberName}>{membershipData.member.name} 님은</Text>
+            <Text style={styles.memberAddress}>{membershipData.member.residence}</Text>
+            <Text style={styles.memberStatus}>{membershipData.member.statusText}</Text>
 
-            {/* 슬라이드 1: 상세 */}
-            {cardSlide === 1 && (
-              <>
-                <View style={styles.membershipDetails}>
-                  <View style={styles.detailRow}>
-                    <Text style={styles.detailLabel}>멤버십 회원 번호</Text>
-                    <Text style={styles.detailValue}>{membershipData.details.memberNumber}</Text>
-                  </View>
-                  <View style={styles.detailRow}>
-                    <Text style={styles.detailLabel}>멤버십 기간</Text>
-                    <Text style={styles.detailValue}>{membershipData.details.period}</Text>
-                  </View>
-                </View>
-                <View style={styles.progressBar}>
-                  {Array.from({ length: 79 }, (_, i) => (
-                    <View key={i} style={styles.progressDot} />
-                  ))}
-                </View>
-              </>
-            )}
-          </View>
-        </View>
-
-        {/* 연회비 납부 안내 */}
-        <View style={styles.paymentNotice}>
-          <Text style={styles.paymentTitle}>연회비 납부안내</Text>
-          <View style={styles.paymentDetails}>
-            <View style={styles.detailRow}>
-              <Text style={styles.detailLabel}>납부 기한</Text>
-              <Text style={styles.detailValue}>{membershipData.payment.due}</Text>
-            </View>
-            <View style={styles.detailRow}>
-              <Text style={styles.detailLabel}>문의전화</Text>
-              <Text style={styles.detailValue}>{membershipData.payment.phone}</Text>
+            <View style={styles.divider} />
+            <View style={styles.membershipDetails}>
+              <View style={styles.detailRow}>
+                <Text style={styles.detailLabel}>멤버십 회원 번호</Text>
+                <Text style={styles.detailValue}>{membershipData.details.memberNumber}</Text>
+              </View>
+              <View style={styles.detailRow}>
+                <Text style={styles.detailLabel}>멤버십 기간</Text>
+                <Text style={styles.detailValue}>{membershipData.details.period}</Text>
+              </View>
             </View>
           </View>
-          <Text style={styles.paymentDescription}>{paymentDescription}</Text>
-          <TouchableOpacity style={styles.paymentButton} onPress={handlePaymentPress}>
-            <Text style={styles.paymentButtonText}>연회비 납부하기</Text>
-          </TouchableOpacity>
-        </View>
 
+          {/* 연회비 납부 안내 */}
+          <View style={styles.paymentNoticeContainer}>
+            <View style={styles.paymentNotice}>
+              <Text style={styles.paymentTitle}>연회비 납부안내</Text>
+              <View style={styles.paymentDetails}>
+                <View style={styles.detailRow}>
+                  <Text style={styles.detailLabel}>납부 기한</Text>
+                  <Text style={styles.detailValue}>{membershipData.payment.due}</Text>
+                </View>
+                <View style={styles.detailRow}>
+                  <Text style={styles.detailLabel}>문의전화</Text>
+                  <Text style={styles.detailValue}>{membershipData.payment.phone}</Text>
+                </View>
+              </View>
+              <Text style={styles.paymentDescription}>{paymentDescription}</Text>
+            </View>
+
+            {/* 톱니바퀴 효과 */}
+            <View style={styles.gearBorder}>
+              {Array.from({ length: 20 }, (_, i) => (
+                <View key={i} style={styles.gearTooth} />
+              ))}
+            </View>
+
+            <View style={styles.paymentButton}>
+              <TouchableOpacity onPress={handlePaymentPress}>
+                <Text style={styles.paymentButtonText}>연회비 납부하기</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
         {/* 멤버십 이용권 섹션 */}
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>멤버십 이용권</Text>
             <TouchableOpacity style={styles.moreButton} onPress={handleMoreTicketsPress}>
-              <Text style={styles.moreButtonText}>멤버십 이용권 더보기</Text>
+              <Text style={styles.moreButtonText}>사용 이력 보기</Text>
+              <Image source={require("../assets/icons/ic-chevron-right.png")} style={styles.chevron} />
             </TouchableOpacity>
           </View>
+          <View style={styles.divider} />
 
           <View style={styles.ticketContainer}>
             <Text style={styles.availableTickets}>
@@ -214,22 +211,37 @@ export const MembershipInfoScreen: React.FC<MembershipInfoScreenProps> = ({ onBa
 
             {membershipData.tickets.map((t) => (
               <View key={t.id} style={styles.ticketCard}>
-                <Image source={t.icon} style={styles.ticketIcon} resizeMode="cover" />
-                <View style={styles.ticketInfo}>
-                  <Text style={styles.ticketTitle}>{t.title}</Text>
-                  <Text style={styles.ticketProvider}>{t.provider}</Text>
-                  <View style={styles.ticketDetails}>
+                {/* 상단 섹션 */}
+                <View style={styles.ticketTopSection}>
+                  <Image source={t.icon} style={styles.ticketIcon} resizeMode="cover" />
+                  <View style={styles.ticketTextInfo}>
+                    <Text style={styles.ticketTitle}>{t.title}</Text>
+                    <Text style={styles.ticketProvider}>{t.provider}</Text>
+                  </View>
+                </View>
+
+                {/* 점선 구분선 */}
+                <View style={styles.dashedDivider}></View>
+
+                {/* 하단 섹션 */}
+                <View style={styles.ticketBottomSection}>
+                  <View style={styles.ticketDetailRow}>
                     <Text style={styles.ticketDetailLabel}>유효기간</Text>
                     <Text style={styles.ticketDetailValue}>{t.period}</Text>
                   </View>
-                  <View style={styles.ticketDetails}>
+                  <View style={styles.ticketDetailRow}>
                     <Text style={styles.ticketDetailLabel}>사용가능지역</Text>
                     <Text style={styles.ticketDetailValue}>{t.region}</Text>
                   </View>
                 </View>
-                <Ionicons name="chevron-forward" size={24} color="#505866" />
               </View>
             ))}
+
+            <View style={styles.moreSection}>
+              <TouchableOpacity style={styles.moreButton} onPress={handleMoreTicketsPress}>
+                <Text style={styles.moreTitle}>멤버십 이용권 더보기</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
 
@@ -237,9 +249,6 @@ export const MembershipInfoScreen: React.FC<MembershipInfoScreenProps> = ({ onBa
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>멤버십 혜택</Text>
-            <TouchableOpacity style={styles.moreButton} onPress={handleMoreBenefitsPress}>
-              <Text style={styles.moreButtonText}>혜택 더보기</Text>
-            </TouchableOpacity>
           </View>
 
           <Text style={styles.benefitsDescription}>멤버쉽 회원님들께만 드리는 특별한 할인 혜택을 누려보세요.</Text>
@@ -253,10 +262,16 @@ export const MembershipInfoScreen: React.FC<MembershipInfoScreenProps> = ({ onBa
                 <Text style={styles.benefitProvider}>{b.provider}</Text>
               </View>
               <TouchableOpacity style={styles.downloadButton}>
+                <Image source={require("../assets/icons/ic_download.png")} style={styles.downloadIcon} />
                 <Text style={styles.downloadText}>다운로드</Text>
               </TouchableOpacity>
             </View>
           ))}
+          <View style={styles.moreSection}>
+            <TouchableOpacity style={styles.moreButton} onPress={handleMoreTicketsPress}>
+              <Text style={styles.moreTitle}>혜택 더보기</Text>
+            </TouchableOpacity>
+          </View>
         </View>
 
         {/* 혜택 이용 상세 내역 */}
@@ -264,8 +279,7 @@ export const MembershipInfoScreen: React.FC<MembershipInfoScreenProps> = ({ onBa
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>혜택 이용 상세 내역</Text>
             <TouchableOpacity style={styles.moreButton} onPress={handleUsageHistoryPress}>
-              <Text style={styles.moreButtonText}>사용 이력 보기</Text>
-              <Ionicons name="chevron-forward" size={24} color="#505866" />
+              <Image source={require("../assets/icons/ic-chevron-right.png")} style={styles.chevron} />
             </TouchableOpacity>
           </View>
         </View>
@@ -277,17 +291,19 @@ export const MembershipInfoScreen: React.FC<MembershipInfoScreenProps> = ({ onBa
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFFFFF"
+    backgroundColor: "#EFF1F3"
   },
   section: {
-    paddingVertical: 20
+    paddingHorizontal: 20,
+    backgroundColor: "#ffffff",
+    paddingVertical: 20,
+    marginBottom: 10
   },
   sectionHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 20,
-    paddingHorizontal: 20
+    paddingVertical: 10
   },
   sectionTitle: {
     fontSize: 16,
@@ -296,13 +312,7 @@ const styles = StyleSheet.create({
     letterSpacing: -0.64
   },
   membershipCard: {
-    backgroundColor: "#FFFFFF",
-    borderRadius: 10,
-    padding: 20,
-    borderWidth: 1,
-    borderColor: "#D6DADF",
-    marginTop: 10,
-    marginHorizontal: 20
+    paddingVertical: 20
   },
   cardHeader: {
     flexDirection: "row",
@@ -338,7 +348,16 @@ const styles = StyleSheet.create({
     marginBottom: 20
   },
   membershipDetails: {
-    marginBottom: 20
+    paddingVertical: 20
+  },
+  moreSection: {
+    paddingVertical: 20,
+    alignItems: "center"
+  },
+  moreTitle: {
+    fontSize: 16,
+    color: "#2B2B2B",
+    textDecorationLine: "underline"
   },
   detailRow: {
     flexDirection: "row",
@@ -367,20 +386,28 @@ const styles = StyleSheet.create({
     borderRadius: 2,
     backgroundColor: "#FFFFFF"
   },
-  paymentNotice: {
-    backgroundColor: "#FFFFFF",
-    borderRadius: 10,
-    padding: 20,
-    marginHorizontal: 20,
+  paymentNoticeContainer: {
     marginBottom: 20,
-    borderWidth: 1,
-    borderColor: "#D6DADF"
+    backgroundColor: "#EFF1F3",
+    borderRadius: 10,
+    overflow: "hidden",
+    position: "relative"
+  },
+  paymentNotice: {
+    backgroundColor: "#EFF1F3",
+    paddingVertical: 20,
+    paddingHorizontal: 20,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10
   },
   paymentTitle: {
     fontSize: 16,
     fontWeight: "800",
     color: "#2B2B2B",
-    marginBottom: 20
+    marginBottom: 20,
+    paddingBottom: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: "#D6DADF"
   },
   paymentDetails: {
     marginBottom: 20
@@ -393,21 +420,21 @@ const styles = StyleSheet.create({
     marginBottom: 20
   },
   paymentButton: {
-    backgroundColor: "#CAB8A2",
-    borderRadius: 25,
+    backgroundColor: "#2B2B2B",
     paddingVertical: 12,
-    paddingHorizontal: 30,
-    alignSelf: "center"
+    width: "100%",
+    alignSelf: "center",
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10
   },
   paymentButtonText: {
     fontSize: 16,
     fontWeight: "700",
-    color: "#2B2B2B",
+    color: "#CAB8A2",
     textAlign: "center"
   },
   ticketContainer: {
-    marginTop: 10,
-    paddingHorizontal: 20
+    marginTop: 10
   },
   availableTickets: {
     fontSize: 16,
@@ -419,8 +446,6 @@ const styles = StyleSheet.create({
     color: "#B48327"
   },
   ticketCard: {
-    flexDirection: "row",
-    alignItems: "center",
     backgroundColor: "#FFFFFF",
     borderRadius: 6,
     padding: 15,
@@ -428,13 +453,18 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#D6DADF"
   },
+  ticketTopSection: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    paddingBottom: 10
+  },
   ticketIcon: {
     width: 50,
     height: 50,
     borderRadius: 6,
     marginRight: 15
   },
-  ticketInfo: {
+  ticketTextInfo: {
     flex: 1
   },
   ticketTitle: {
@@ -446,10 +476,20 @@ const styles = StyleSheet.create({
   ticketProvider: {
     fontSize: 13,
     fontWeight: "700",
-    color: "#79818B",
-    marginBottom: 10
+    color: "#79818B"
   },
-  ticketDetails: {
+  dashedDivider: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#D6DADF",
+    borderStyle: "dashed"
+  },
+  ticketBottomSection: {
+    paddingTop: 10
+  },
+  ticketDetailRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     marginBottom: 5
@@ -480,25 +520,25 @@ const styles = StyleSheet.create({
     fontWeight: "400",
     color: "#2B2B2B",
     lineHeight: 20,
-    marginBottom: 20,
-    paddingHorizontal: 20
+    marginBottom: 20
   },
   benefitCard: {
     flexDirection: "row",
-    alignItems: "center",
+    justifyContent: "space-between",
     backgroundColor: "#FFFFFF",
     borderRadius: 6,
-    padding: 15,
+    paddingVertical: 15,
     marginBottom: 15,
     borderWidth: 1,
     borderColor: "#D6DADF",
-    marginHorizontal: 20
+    position: "relative"
   },
   benefitIcon: {
     width: 60,
     height: 60,
     borderRadius: 30,
-    marginRight: 15
+    marginRight: 15,
+    marginLeft: 15
   },
   benefitInfo: {
     flex: 1
@@ -521,17 +561,49 @@ const styles = StyleSheet.create({
     color: "#505866"
   },
   downloadButton: {
-    backgroundColor: "#FFFFFF",
-    borderRadius: 30,
-    paddingVertical: 8,
-    paddingHorizontal: 15,
-    borderWidth: 1,
-    borderColor: "#D6DADF"
+    backgroundColor: "#F5F5F5",
+    width: 70,
+    position: "absolute",
+    right: 0,
+    top: 0,
+    bottom: 0,
+    borderTopRightRadius: 6,
+    borderBottomRightRadius: 6,
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  downloadIcon: {
+    width: 16,
+    height: 16,
+    marginBottom: 4
   },
   downloadText: {
     fontSize: 12,
     fontWeight: "700",
     color: "#79818B",
     textAlign: "center"
+  },
+  chevron: {
+    width: 18,
+    height: 18
+  },
+  divider: {
+    height: 1,
+    backgroundColor: "#D6DADF",
+    marginVertical: 5
+  },
+  gearBorder: {
+    height: 8,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 10,
+    backgroundColor: "#EFF1F3"
+  },
+  gearTooth: {
+    width: 4,
+    height: 8,
+    backgroundColor: "#D6DADF",
+    borderRadius: 2
   }
 });

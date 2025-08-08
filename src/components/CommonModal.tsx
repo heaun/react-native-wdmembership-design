@@ -1,116 +1,110 @@
 import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Modal, Dimensions } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Modal, SafeAreaView, Image } from "react-native";
 
 interface CommonModalProps {
   visible: boolean;
   title: string;
-  message: string;
-  primaryButtonLabel: string;
-  secondaryButtonLabel: string;
-  primaryButtonColor?: string;
-  onPrimaryPress: () => void;
-  onSecondaryPress: () => void;
+  onClose: () => void;
+  children: React.ReactNode;
 }
 
-const { width } = Dimensions.get("window");
-
-export const CommonModal: React.FC<CommonModalProps> = ({
-  visible,
-  title,
-  message,
-  primaryButtonLabel,
-  secondaryButtonLabel,
-  primaryButtonColor = "#B48327",
-  onPrimaryPress,
-  onSecondaryPress
-}) => {
+export const CommonModal: React.FC<CommonModalProps> = ({ visible, title, onClose, children }) => {
   return (
-    <Modal visible={visible} transparent={true} animationType="fade" onRequestClose={onSecondaryPress}>
-      <View style={styles.overlay}>
+    <Modal visible={visible} transparent={true} animationType="fade" onRequestClose={onClose}>
+      <SafeAreaView style={styles.modalOverlay}>
         <View style={styles.modalContainer}>
-          {/* 모달 내용 */}
-          <View style={styles.content}>
-            <Text style={styles.title}>{title}</Text>
-            <Text style={styles.message}>{message}</Text>
+          {/* Top Bar */}
+          <View style={styles.modalTopBar}>
+            <Text style={styles.modalTitle}>{title}</Text>
+
+            <View style={styles.topBarIcons}>
+              <View style={styles.leftSide}>
+                <View style={styles.emptyButton}></View>
+              </View>
+              <View style={styles.rightSide}>
+                <TouchableOpacity onPress={onClose} style={styles.iconButton}>
+                  <Image source={require("../assets/icons/ic_close.png")} style={styles.iconImage} />
+                </TouchableOpacity>
+              </View>
+            </View>
           </View>
 
-          {/* 버튼 영역 */}
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity style={[styles.primaryButton, { backgroundColor: primaryButtonColor }]} onPress={onPrimaryPress}>
-              <Text style={styles.primaryButtonText}>{primaryButtonLabel}</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.secondaryButton} onPress={onSecondaryPress}>
-              <Text style={styles.secondaryButtonText}>{secondaryButtonLabel}</Text>
-            </TouchableOpacity>
-          </View>
+          {/* Content */}
+          <View style={styles.modalContent}>{children}</View>
         </View>
-      </View>
+      </SafeAreaView>
     </Modal>
   );
 };
 
 const styles = StyleSheet.create({
-  overlay: {
+  modalOverlay: {
     flex: 1,
-    backgroundColor: "rgba(43, 43, 43, 0.8)",
-    justifyContent: "center",
-    alignItems: "center"
+    backgroundColor: "#FFFFFF"
   },
   modalContainer: {
-    backgroundColor: "#FFFFFF",
-    borderRadius: 16,
-    paddingHorizontal: 24,
-    paddingTop: 32,
-    paddingBottom: 24,
-    width: width - 48,
-    alignItems: "center"
+    flex: 1,
+    backgroundColor: "#FFFFFF"
   },
-  content: {
+  modalTopBar: {
+    position: "relative",
+    flexDirection: "row",
     alignItems: "center",
-    marginBottom: 24
+    height: 60,
+    backgroundColor: "#FFFFFF"
   },
-  title: {
-    fontSize: 22,
-    fontWeight: "800",
+  modalTitle: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    fontSize: 18,
+    fontWeight: "700",
     color: "#2B2B2B",
     textAlign: "center",
-    marginBottom: 8
+    zIndex: 1
   },
-  message: {
-    fontSize: 16,
-    fontWeight: "400",
-    color: "#505866",
-    textAlign: "center",
-    lineHeight: 24
+  topBarIcons: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    zIndex: 2,
+    paddingHorizontal: 20
   },
-  buttonContainer: {
-    width: "100%",
-    gap: 12
+  leftSide: {
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    alignItems: "center"
   },
-  primaryButton: {
-    width: "100%",
-    height: 48,
-    borderRadius: 48,
+  rightSide: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    gap: 10
+  },
+  emptyButton: {
+    width: 40,
+    height: 40
+  },
+  iconButton: {
+    width: 40,
+    height: 40,
     justifyContent: "center",
     alignItems: "center"
   },
-  primaryButtonText: {
-    color: "#FFFFFF",
-    fontSize: 16,
-    fontWeight: "700"
-  },
-  secondaryButton: {
-    width: "100%",
-    height: 48,
-    borderRadius: 48,
-    justifyContent: "center",
+  rightIcons: {
+    flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "transparent"
+    gap: 10
   },
-  secondaryButtonText: {
-    color: "#6C7072",
-    fontSize: 16,
-    fontWeight: "700"
+  iconImage: {
+    width: 24,
+    height: 24
+  },
+  modalContent: {
+    flex: 1,
+    paddingHorizontal: 10
   }
 });

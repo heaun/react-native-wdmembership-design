@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import Modal from "react-native-modal";
 import LottieView from "lottie-react-native";
@@ -9,7 +9,6 @@ interface FaceIdModalProps {
 }
 
 export const FaceIdModal: React.FC<FaceIdModalProps> = ({ isVisible, onClose }) => {
-  const animation = useRef<LottieView>(null);
   return (
     <Modal
       isVisible={isVisible}
@@ -30,7 +29,7 @@ export const FaceIdModal: React.FC<FaceIdModalProps> = ({ isVisible, onClose }) 
           <Text style={styles.subtitle}>얼굴을 인식해 주세요.</Text>
 
           <View style={styles.lottieContainer}>
-            <LottieView ref={animation} source={require("../assets/authentication/face-id.json")} loop autoPlay style={styles.lottieAnimation} />
+            <LottieView source={require("../assets/authentication/face-id.json")} loop autoPlay style={styles.lottieAnimation} />
           </View>
 
           <Text style={styles.faceIdText}>- - - - - -</Text>
