@@ -25,17 +25,20 @@ import { MembershipInfoScreen } from "../src/screens/MembershipInfoScreen";
 import { VehicleManagementScreen } from "../src/screens/VehicleManagementScreen";
 import { MembershipDetailScreen } from "../src/screens/MembershipDetailScreen";
 import { UserMembershipInfoScreen } from "../src/screens/UserMembershipInfoScreen";
+import { VersionUpdateScreen } from "../src/screens/VersionUpdateScreen";
+import { VersionInfo } from "../types/version";
+import { AppSettingsSubMenuScreen } from "../src/screens/AppSettingsSubMenuScreen";
+import { HomeScreen } from "../src/screens/HomeScreen";
 
 type ScreenType =
   | "Home"
-  | "Schedule"
-  | "MembershipCard"
   | "MyService"
-  | "ReservationDetail"
+  | "Schedule"
   | "Profile"
-  | "MembershipVerification"
-  | "MembershipGuide"
-  | "ServiceDetail"
+  | "Login"
+  | "Intro"
+  | "Splash"
+  | "Test"
   | "LocationSelection"
   | "DateSelection"
   | "TimeSelection"
@@ -49,11 +52,25 @@ type ScreenType =
   | "PaymentComplete"
   | "MembershipInfo"
   | "VehicleManagement"
+  | "MembershipGuide"
   | "MembershipDetail"
-  | "UserMembershipInfo";
+  | "MembershipCard"
+  | "UserMembershipInfo"
+  | "AppSettings"
+  | "VersionUpdate"
+  | "ReservationDetail"
+  | "MembershipVerification"
+  | "ServiceDetail"
+  | "AppSettingsSubMenu";
 
 export const AppNavigator: React.FC = () => {
   const [currentScreen, setCurrentScreen] = useState<ScreenType>("Home");
+  const [showSideMenu, setShowSideMenu] = useState(false);
+  const [versionInfo, setVersionInfo] = useState<VersionInfo>({
+    currentVersion: "2.4.2",
+    newVersion: "3.0.0",
+    status: false
+  });
   const [selectedService, setSelectedService] = useState<any>(null);
   const [selectedLocation, setSelectedLocation] = useState<any>(null);
   const [selectedDate, setSelectedDate] = useState<string>("");
@@ -293,7 +310,7 @@ export const AppNavigator: React.FC = () => {
         console.log("공지사항 화면으로 이동");
         break;
       case "app-settings":
-        console.log("앱 설정 화면으로 이동");
+        setCurrentScreen("AppSettingsSubMenu");
         break;
       case "logout":
         console.log("로그아웃 처리");
@@ -312,6 +329,28 @@ export const AppNavigator: React.FC = () => {
         break;
       default:
         console.log(`처리되지 않은 메뉴 아이템: ${itemId}`);
+    }
+  };
+
+  const handleMenuItemPress = (itemId: string) => {
+    switch (itemId) {
+      case "membershipInfo":
+        setCurrentScreen("MembershipInfo");
+        break;
+      case "profile":
+        setCurrentScreen("Profile");
+        break;
+      case "vehicleManagement":
+        setCurrentScreen("VehicleManagement");
+        break;
+      case "membershipGuide":
+        setCurrentScreen("MembershipGuide");
+        break;
+      case "appSettings":
+        setCurrentScreen("AppSettingsSubMenu");
+        break;
+      default:
+        console.log("Unknown menu item:", itemId);
     }
   };
 
@@ -561,6 +600,20 @@ export const AppNavigator: React.FC = () => {
             currentTab={currentScreen}
             onTabPress={handleTabPress}
             onSideMenuItemPress={handleSideMenuItemPress}
+          />
+        );
+      case "AppSettings":
+        return <AppSettingsSubMenuScreen onBackPress={handleBackToHome} onVersionUpdatePress={() => setCurrentScreen("VersionUpdate")} />;
+      case "VersionUpdate":
+        return <VersionUpdateScreen onBackPress={() => setCurrentScreen("AppSettingsSubMenu")} versionInfo={versionInfo} />;
+      case "AppSettingsSubMenu":
+        return (
+          <AppSettingsSubMenuScreen
+            onBackPress={() => setCurrentScreen("Home")}
+            onVersionUpdatePress={(info) => {
+              setVersionInfo(info);
+              setCurrentScreen("VersionUpdate");
+            }}
           />
         );
       default:

@@ -80,11 +80,13 @@ export const SideMenu: React.FC<SideMenuProps> = ({ visible, onClose, onMenuItem
     }
   };
 
-  const handleMenuItemPress = (item: MenuItem) => {
-    if (item.onPress) {
-      item.onPress();
-    } else if (onMenuItemPress) {
-      onMenuItemPress(item.id);
+  const handleMenuPress = (itemId: string) => {
+    if (onMenuItemPress) {
+      onMenuItemPress(itemId);
+    }
+    // 앱설정은 사이드메뉴를 닫지 않음
+    if (itemId !== "app-settings") {
+      onClose();
     }
   };
 
@@ -235,7 +237,7 @@ export const SideMenu: React.FC<SideMenuProps> = ({ visible, onClose, onMenuItem
       <TouchableOpacity
         key={item.id}
         style={[styles.menuItem, isHeader ? styles.headerItem : styles.regularItem, isSettingsSection && styles.settingsSectionItem]}
-        onPress={() => handleMenuItemPress(item)}
+        onPress={() => handleMenuPress(item.id)}
         disabled={isToggle}
       >
         <Text style={[styles.menuText, isHeader ? styles.headerText : styles.regularText]}>{item.title}</Text>
@@ -329,8 +331,8 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   settingsIcon: {
-    width: 16,
-    height: 16
+    width: 24,
+    height: 24
   },
 
   menuContent: {
