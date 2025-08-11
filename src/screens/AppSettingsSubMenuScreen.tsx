@@ -128,7 +128,7 @@ export const AppSettingsSubMenuScreen: React.FC<AppSettingsSubMenuScreenProps> =
     },
     {
       id: "versionUpdate",
-      title: "버전 안내 / 업데이트",
+      title: "버전 안내 / 업데이트 ✅",
       type: "navigation",
       value: versionInfo.status,
       onPress: handleVersionUpdatePress

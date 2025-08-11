@@ -76,7 +76,7 @@ export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = (
     >
       <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
         {/* 예약 이미지 */}
-        <Image source={require("../assets/reservation-1.png")} style={styles.reservationImage} resizeMode="cover" />
+        <Image source={require("../assets/main/reservation-1.png")} style={styles.reservationImage} resizeMode="cover" />
 
         {/* 예약 상태 배지 */}
         <View style={styles.statusContainer}>
