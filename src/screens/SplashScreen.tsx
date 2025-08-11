@@ -27,7 +27,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onFinish }) => {
         {/* Title Section */}
         <View style={styles.titleSection}>
           <Text style={styles.title}>WITH DOCTORS</Text>
-          <Text style={styles.subtitle}>FIST CARE</Text>
+          <Text style={styles.subtitle}>FIRST CARE</Text>
           <Text style={styles.subtitle}>MEMBERSHIP</Text>
         </View>
       </View>

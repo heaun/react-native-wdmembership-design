@@ -85,7 +85,10 @@ export const CommonLayout: React.FC<CommonLayoutProps> = ({
   return (
     <View style={[styles.container, isWideLayout && styles.wideContainer]}>
       {/* Status Bar */}
-      {/* <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" /> */}
+      <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
+
+      {/* Safe Area for Top */}
+      <SafeAreaView style={styles.safeAreaTop} />
 
       {/* Top Bar */}
       <View style={[styles.topBar, isWideLayout && styles.wideTopBar]}>
@@ -155,7 +158,7 @@ export const CommonLayout: React.FC<CommonLayoutProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "#ffffff",
     paddingHorizontal: 5
   },
 
@@ -277,9 +280,7 @@ const styles = StyleSheet.create({
   wideContent: {
     paddingHorizontal: 0
   },
-  contentWithoutTabBar: {
-    paddingBottom: 20
-  },
+  contentWithoutTabBar: {},
   bottomTabBar: {
     flexDirection: "row",
     backgroundColor: "#FFFFFF",

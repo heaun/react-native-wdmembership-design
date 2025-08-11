@@ -17,7 +17,7 @@ export const VersionUpdateScreen: React.FC<VersionUpdateScreenProps> = ({ onBack
         {/* 앱 아이콘 */}
         <View style={styles.appIconContainer}>
           <View style={styles.appIcon}>
-            <Text style={styles.appIconText}>FIST{"\n"}CARE</Text>
+            <Text style={styles.appIconText}>FIRST{"\n"}CARE</Text>
           </View>
         </View>
 

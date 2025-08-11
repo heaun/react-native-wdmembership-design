@@ -80,6 +80,7 @@ export const AppNavigator: React.FC = () => {
   const [selectedOptions, setSelectedOptions] = useState<any>(null);
   const [newOrder, setNewOrder] = useState<any>(null);
   const [selectedMembershipId, setSelectedMembershipId] = useState<string>("with-doctors");
+  const [selectedReservation, setSelectedReservation] = useState<any>(null);
 
   const handleTabPress = (tabName: string) => {
     if (tabName === "Home" || tabName === "Schedule" || tabName === "MembershipCard" || tabName === "MyService") {
@@ -291,6 +292,9 @@ export const AppNavigator: React.FC = () => {
       case "membership-info":
         setCurrentScreen("MembershipCard");
         break;
+      case "membership-management":
+        setCurrentScreen("MembershipInfo");
+        break;
       case "my-info":
         setCurrentScreen("Profile");
         break;
@@ -373,7 +377,10 @@ export const AppNavigator: React.FC = () => {
           <ScheduleScreen
             currentTab={currentScreen}
             onTabPress={handleTabPress}
-            onReservationDetailPress={handleReservationDetailPress}
+            onReservationDetailPress={(reservationData) => {
+              setSelectedReservation(reservationData);
+              setCurrentScreen("ReservationDetail");
+            }}
             onSideMenuItemPress={handleSideMenuItemPress}
             newReservation={newReservation}
           />
@@ -421,6 +428,7 @@ export const AppNavigator: React.FC = () => {
           />
         );
       case "LocationSelection":
+        console.log("LocationSelection 렌더링 - selectedService:", selectedService);
         return (
           <LocationSelectionScreen
             service={selectedService}
@@ -571,7 +579,9 @@ export const AppNavigator: React.FC = () => {
       case "ReservationDetail":
         return (
           <ReservationDetailScreen
+            reservationData={selectedReservation}
             onBackPress={handleBackToSchedule}
+            onReservationStart={() => setCurrentScreen("MyService")}
             currentTab={currentScreen}
             onTabPress={handleTabPress}
             onSideMenuItemPress={handleSideMenuItemPress}

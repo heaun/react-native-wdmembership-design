@@ -4,8 +4,24 @@ import { CommonModal } from "../components/CommonModal";
 import { CommonLayout } from "../components/CommonLayout";
 import Toast from "react-native-toast-message";
 
+interface ReservationData {
+  id: string;
+  title: string;
+  instructor: string;
+  date: string;
+  time: string;
+  location: string;
+  status: "confirmed" | "pending" | "cancelled";
+  image: any;
+  description: string;
+  cancellationPolicy: string;
+  additionalInfo: string;
+}
+
 interface ReservationDetailScreenProps {
+  reservationData?: ReservationData;
   onBackPress?: () => void;
+  onReservationStart?: () => void;
   currentTab?: string;
   onTabPress?: (tabName: string) => void;
   onSideMenuItemPress?: (itemId: string) => void;
@@ -13,32 +29,36 @@ interface ReservationDetailScreenProps {
 
 const { width } = Dimensions.get("window");
 
-export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = ({ onBackPress, currentTab, onTabPress, onSideMenuItemPress }) => {
-  const [isReservationModalVisible, setIsReservationModalVisible] = React.useState(false);
+export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = ({
+  reservationData,
+  onBackPress,
+  onReservationStart,
+  currentTab,
+  onTabPress,
+  onSideMenuItemPress
+}) => {
   const [isCancelModalVisible, setIsCancelModalVisible] = React.useState(false);
-  const [isReserved, setIsReserved] = React.useState(false);
+
+  // 기본 데이터 (reservationData가 없을 때 사용)
+  const defaultData: ReservationData = {
+    id: "1",
+    title: "마인드 앤 바디 포 어덜트",
+    instructor: "최다니엘 강사",
+    date: "2026년 10월 31 (금)",
+    time: "오후 02:30 ~03:30",
+    location: "서초 메디웰하우스 1층 마인드앤바디 201",
+    status: "confirmed",
+    image: require("../assets/main/reservation-1.png"),
+    description: "호흡의 리듬을 따라 자연스럽게 자세를 교정하고 바른 신체 연결동작을 통해 체형교정및 심신안정을 찾도록 도움을 드립니다.",
+    cancellationPolicy: "예약변경은 클래스 시작 4시간 전까지 가능합니다.\n클래스 시작 2시간 전까지 예약취소 가능합니다.",
+    additionalInfo: "예약된 회원분만 참여 가능하며, 양도나 대리 수업참관을 지양합니다."
+  };
+
+  const data = reservationData || defaultData;
 
   const handleReservationPress = () => {
-    if (isReserved) {
-      return;
-    }
-    setIsReservationModalVisible(true);
-  };
-
-  const handleConfirmReservation = () => {
-    setIsReservationModalVisible(false);
-    setIsReserved(true);
-    Toast.show({
-      type: "success",
-      text1: "예약 완료",
-      text2: "예약이 성공적으로 완료되었습니다.",
-      position: "top",
-      visibilityTime: 2000
-    });
-  };
-
-  const handleCancelReservationModal = () => {
-    setIsReservationModalVisible(false);
+    // 새로운 예약 시작
+    onReservationStart?.();
   };
 
   const handleCancelPress = () => {
@@ -47,7 +67,6 @@ export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = (
 
   const handleConfirmCancel = () => {
     setIsCancelModalVisible(false);
-    setIsReserved(false);
     Toast.show({
       type: "success",
       text1: "예약 취소",
@@ -55,6 +74,9 @@ export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = (
       position: "top",
       visibilityTime: 2000
     });
+
+    // 토스트가 끝나면 나의 예약 메인으로 이동
+    onBackPress?.();
   };
 
   const handleCancelModalClose = () => {
@@ -62,78 +84,74 @@ export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = (
   };
 
   return (
-    <CommonLayout
-      title="마인드 앤 바디 포 어덜트"
-      showBackButton={true}
-      showTabBar={false}
-      onBackPress={onBackPress}
-      onMenuPress={() => console.log("메뉴 버튼 클릭")}
-      onCouponPress={() => console.log("쿠폰 버튼 클릭")}
-      onNotificationPress={() => console.log("알림 버튼 클릭")}
-      currentTab={currentTab}
-      onTabPress={onTabPress}
-      onSideMenuItemPress={onSideMenuItemPress}
-    >
-      <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-        {/* 예약 이미지 */}
-        <Image source={require("../assets/main/reservation-1.png")} style={styles.reservationImage} resizeMode="cover" />
+    <>
+      <CommonLayout
+        title={data.title}
+        showBackButton={true}
+        showTabBar={false}
+        onBackPress={onBackPress}
+        onMenuPress={() => console.log("메뉴 버튼 클릭")}
+        onCouponPress={() => console.log("쿠폰 버튼 클릭")}
+        onNotificationPress={() => console.log("알림 버튼 클릭")}
+        currentTab={currentTab}
+        onTabPress={onTabPress}
+        onSideMenuItemPress={onSideMenuItemPress}
+      >
+        <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+          {/* 예약 이미지 */}
+          <Image source={data.image} style={styles.reservationImage} resizeMode="cover" />
 
-        {/* 예약 상태 배지 */}
-        <View style={styles.statusContainer}>
-          <View style={styles.statusBadge}>
-            <Text style={styles.statusText}>예약확정</Text>
-          </View>
-        </View>
-
-        {/* 클래스 제목 */}
-        <Text style={styles.classTitle}>마인드앤바디 포 어덜트</Text>
-
-        {/* 예약 정보 */}
-        <View style={styles.infoContainer}>
-          {/* 강사 정보 */}
-          <View style={styles.infoRow}>
-            <Text style={styles.infoLabel}>강사</Text>
-            <Text style={styles.infoValue}>최다니엘 강사</Text>
+          {/* 예약 상태 배지 */}
+          <View style={styles.statusContainer}>
+            <View style={styles.statusBadge}>
+              <Text style={styles.statusText}>{data.status === "confirmed" ? "예약확정" : data.status === "pending" ? "예약대기" : "예약취소"}</Text>
+            </View>
           </View>
 
-          {/* 일정 정보 */}
-          <View style={styles.infoRow}>
-            <Text style={styles.infoLabel}>일정</Text>
-            <Text style={styles.infoValue}>2026년 10월 31 (금) 오후 02:30 ~03:30</Text>
+          {/* 클래스 제목 */}
+          <Text style={styles.classTitle}>{data.title}</Text>
+
+          {/* 예약 정보 */}
+          <View style={styles.infoContainer}>
+            {/* 강사 정보 */}
+            <View style={styles.infoRow}>
+              <Text style={styles.infoLabel}>강사</Text>
+              <Text style={styles.infoValue}>{data.instructor}</Text>
+            </View>
+
+            {/* 일정 정보 */}
+            <View style={styles.infoRow}>
+              <Text style={styles.infoLabel}>일정</Text>
+              <Text style={styles.infoValue}>
+                {data.date} {data.time}
+              </Text>
+            </View>
+
+            {/* 장소 정보 */}
+            <View style={styles.infoRow}>
+              <Text style={styles.infoLabel}>장소</Text>
+              <Text style={styles.infoValue}>{data.location}</Text>
+            </View>
+
+            {/* 구분선 */}
+            <View style={styles.divider} />
+
+            {/* 예약 변경/취소 안내 */}
+            <Text style={styles.infoLabel}>예약 취소 및 변경</Text>
+            <Text style={styles.infoDescription}>{data.cancellationPolicy}</Text>
+
+            {/* 부가정보 */}
+            <Text style={styles.infoLabel}>부가정보</Text>
+            <Text style={styles.infoDescription}>
+              {data.additionalInfo}
+              {"\n"}
+              {data.description}
+            </Text>
           </View>
+        </ScrollView>
 
-          {/* 장소 정보 */}
-          <View style={styles.infoRow}>
-            <Text style={styles.infoLabel}>장소</Text>
-            <Text style={styles.infoValue}>서초 메디웰하우스 1층 마인드앤바디 201</Text>
-          </View>
-
-          {/* 구분선 */}
-          <View style={styles.divider} />
-
-          {/* 예약 변경/취소 안내 */}
-          <Text style={styles.infoLabel}>예약 취소 및 변경</Text>
-          <Text style={styles.infoDescription}>
-            예약변경은 클래스 시작 4시간 전까지 가능합니다.{"\n"}
-            클래스 시작 2시간 전까지 예약취소 가능합니다.
-          </Text>
-
-          {/* 부가정보 */}
-          <Text style={styles.infoLabel}>부가정보</Text>
-          <Text style={styles.infoDescription}>
-            예약된 회원분만 참여 가능하며, 양도나 대리 수업참관을 지양합니다.{"\n"}
-            호흡의 리듬을 따라 자연스럽게 자세를 교정하고 바른 신체 연결동작을 통해 체형교정및 심신안정을 찾도록 도움을 드립니다.
-          </Text>
-        </View>
-      </ScrollView>
-
-      {/* 하단 버튼 */}
-      <View style={styles.bottomButtonContainer}>
-        {!isReserved ? (
-          <TouchableOpacity style={styles.bottomButton} onPress={handleReservationPress}>
-            <Text style={styles.bottomButtonText}>예약하기</Text>
-          </TouchableOpacity>
-        ) : (
+        {/* 하단 버튼 */}
+        <View style={styles.bottomButtonContainer}>
           <View style={styles.buttonRow}>
             <TouchableOpacity style={styles.changeButton}>
               <Text style={styles.changeButtonText}>예약변경</Text>
@@ -142,33 +160,29 @@ export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = (
               <Text style={styles.cancelButtonText}>취소</Text>
             </TouchableOpacity>
           </View>
-        )}
-      </View>
+        </View>
+      </CommonLayout>
 
-      {/* 예약하기 모달 */}
-      <CommonModal
-        visible={isReservationModalVisible}
-        title="예약하기"
-        message="예약신청이 가능합니다.\n예약을 진행하시겠습니까?"
-        primaryButtonLabel="네, 예약하겠습니다."
-        secondaryButtonLabel="아니요"
-        primaryButtonColor="#B48327"
-        onPrimaryPress={handleConfirmReservation}
-        onSecondaryPress={handleCancelReservationModal}
-      />
-
-      {/* 예약 취소 모달 */}
-      <CommonModal
-        visible={isCancelModalVisible}
-        title="예약취소"
-        message="예약을 취소하시겠습니까?"
-        primaryButtonLabel="네, 취소하겠습니다."
-        secondaryButtonLabel="아니요"
-        primaryButtonColor="#2B2B2B"
-        onPrimaryPress={handleConfirmCancel}
-        onSecondaryPress={handleCancelModalClose}
-      />
-    </CommonLayout>
+      {/* 예약 취소 팝오버 모달 - 전체 화면 오버레이 */}
+      {isCancelModalVisible && (
+        <View style={styles.popoverOverlay}>
+          <View style={styles.popoverContainer}>
+            <View style={styles.popoverContent}>
+              <Text style={styles.popoverTitle}>예약취소</Text>
+              <Text style={styles.popoverMessage}>예약을 취소하시겠습니까?</Text>
+              <View style={styles.popoverButtonContainer}>
+                <TouchableOpacity style={styles.popoverPrimaryButton} onPress={handleConfirmCancel}>
+                  <Text style={styles.popoverPrimaryButtonText}>네, 취소하겠습니다.</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.popoverSecondaryButton} onPress={handleCancelModalClose}>
+                  <Text style={styles.popoverSecondaryButtonText}>아니요</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </View>
+      )}
+    </>
   );
 };
 
@@ -243,14 +257,14 @@ const styles = StyleSheet.create({
   },
   bottomButtonContainer: {
     paddingHorizontal: 24,
-    paddingVertical: 20,
+    paddingTop: 10,
     borderTopWidth: 1,
     borderTopColor: "#EFF1F3"
   },
   bottomButton: {
     backgroundColor: "#B48327",
     borderRadius: 48,
-    height: 50,
+
     justifyContent: "center",
     alignItems: "center"
   },
@@ -286,6 +300,105 @@ const styles = StyleSheet.create({
   },
   cancelButtonText: {
     color: "#FFFFFF",
+    fontSize: 16,
+    fontWeight: "700"
+  },
+  modalContent: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 20
+  },
+  modalMessage: {
+    fontSize: 16,
+    color: "#505866",
+    textAlign: "center",
+    marginBottom: 30
+  },
+  modalButtonContainer: {
+    flexDirection: "row",
+    gap: 15
+  },
+  modalButton: {
+    backgroundColor: "#2B2B2B",
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    minWidth: 100,
+    alignItems: "center"
+  },
+  modalButtonText: {
+    color: "#FFFFFF",
+    fontSize: 16,
+    fontWeight: "600"
+  },
+  popoverOverlay: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: "rgba(43, 43, 43, 0.8)",
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 1000
+  },
+  popoverContainer: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 16,
+    paddingHorizontal: 24,
+    paddingTop: 32,
+    paddingBottom: 24,
+    marginHorizontal: 24,
+    minWidth: 327,
+    alignItems: "center"
+  },
+  popoverContent: {
+    alignItems: "center",
+    gap: 24
+  },
+  popoverTitle: {
+    fontSize: 22,
+    fontWeight: "800",
+    color: "#2B2B2B",
+    textAlign: "center"
+  },
+  popoverMessage: {
+    fontSize: 16,
+    fontWeight: "400",
+    color: "#505866",
+    textAlign: "center",
+    lineHeight: 24,
+    letterSpacing: -0.64
+  },
+  popoverButtonContainer: {
+    flexDirection: "column",
+    gap: 12,
+    width: 279
+  },
+  popoverPrimaryButton: {
+    backgroundColor: "#2B2B2B",
+    borderRadius: 48,
+    height: 48,
+    justifyContent: "center",
+    alignItems: "center",
+    width: 279
+  },
+  popoverPrimaryButtonText: {
+    color: "#FFFFFF",
+    fontSize: 16,
+    fontWeight: "700"
+  },
+  popoverSecondaryButton: {
+    backgroundColor: "transparent",
+    borderRadius: 48,
+    height: 48,
+    justifyContent: "center",
+    alignItems: "center",
+    width: 279
+  },
+  popoverSecondaryButtonText: {
+    color: "#6C7072",
     fontSize: 16,
     fontWeight: "700"
   }

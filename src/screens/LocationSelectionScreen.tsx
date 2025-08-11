@@ -345,7 +345,12 @@ export const LocationSelectionScreen: React.FC<LocationSelectionScreenProps> = (
     return locationDataMap[serviceId] || locationDataMap[1];
   };
 
-  const locations = getLocationData(service.id);
+  console.log("LocationSelectionScreen - service:", service);
+
+  // service가 없을 경우 기본값 제공
+  const serviceId = service?.id || 1;
+  const locations = getLocationData(serviceId);
+  console.log("LocationSelectionScreen - locations:", locations);
 
   const handleLocationPress = (location: LocationItem) => {
     setSelectedLocation(location.id);

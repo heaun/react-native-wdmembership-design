@@ -101,7 +101,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onBackPress, onLoginSu
 const styles = StyleSheet.create({
   welcomeSection: {
     marginBottom: 40,
-    marginTop: 60
+    marginTop: 20
   },
   welcomeText: {
     fontSize: 30,
@@ -204,9 +204,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 20
   },
   membershipInfoSection: {
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 30
+    alignItems: "center"
   },
   membershipInfoText: {
     fontSize: 16,

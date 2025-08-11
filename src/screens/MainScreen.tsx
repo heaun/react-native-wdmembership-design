@@ -85,7 +85,7 @@ export const MainScreen: React.FC<MainScreenProps> = ({
 
   return (
     <CommonLayout
-      title="Fist Care"
+      title="First Care"
       showBackButton={false}
       onMenuPress={() => console.log("메뉴 버튼 클릭")}
       onCouponPress={() => console.log("쿠폰 버튼 클릭")}
