@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { CommonLayout } from "../components/CommonLayout";
+import { useToast } from "../context/ToastContext";
 
 interface Vehicle {
   id: string;
@@ -20,6 +21,7 @@ interface VehicleManagementScreenProps {
 }
 
 export const VehicleManagementScreen: React.FC<VehicleManagementScreenProps> = ({ onBackPress, onMenuPress, onCouponPress, onNotificationPress }) => {
+  const { showToast } = useToast();
   // Mock data
   const vehicles: Vehicle[] = [
     {
@@ -34,17 +36,17 @@ export const VehicleManagementScreen: React.FC<VehicleManagementScreenProps> = (
 
   const handleAddVehiclePress = () => {
     // 추가 차량 등록 화면으로 이동
-    console.log("추가 차량 등록");
+    showToast("error", "차량 등록", "개발 중입니다...🛠️");
   };
 
   const handleParkingInfoPress = (vehicleId: string) => {
     // 입차정보 보기 화면으로 이동
-    console.log("입차정보 보기", vehicleId);
+    showToast("error", "입차정보", "개발 중입니다...🛠️");
   };
 
   const handleEditVehicle = (vehicleId: string) => {
     // 차량 정보 편집
-    console.log("차량 정보 편집", vehicleId);
+    showToast("error", "차량 정보 편집", "개발 중입니다...🛠️");
   };
 
   return (
