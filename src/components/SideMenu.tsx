@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Dimensions, Modal, Switch, Animated, Image } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Dimensions, Modal, Switch, Animated, Image, SafeAreaView } from "react-native";
 import { FaceIdModal } from "./FaceIdModal";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -106,25 +106,25 @@ export const SideMenu: React.FC<SideMenuProps> = ({ visible, onClose, onMenuItem
         },
         {
           id: "membership-info",
-          title: "맴버쉽 정보 조회 ✅",
+          title: "맴버쉽 정보 조회",
           type: "item",
           hasChevron: true
         },
         {
           id: "my-info",
-          title: "내 정보 조회/변경 ✅",
+          title: "내 정보 조회/변경 ",
           type: "item",
           hasChevron: true
         },
         {
           id: "vehicle-management",
-          title: "차량 관리 ✅",
+          title: "차량 관리",
           type: "item",
           hasChevron: true
         },
         {
           id: "membership-benefits",
-          title: "맵버쉽 상품별 혜택 소개 ✅",
+          title: "맵버쉽 상품별 혜택 소개",
           type: "item",
           hasChevron: true
         }
@@ -272,20 +272,22 @@ export const SideMenu: React.FC<SideMenuProps> = ({ visible, onClose, onMenuItem
     <Modal visible={visible} transparent={true} onRequestClose={onClose}>
       <Animated.View style={[styles.overlay, { opacity: fadeAnim }]}>
         <Animated.View style={[styles.menuContainer, { transform: [{ translateX: slideAnim }] }]}>
-          {/* Header */}
-          <View style={styles.header}>
-            <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-              <Text style={styles.closeIcon}>✕</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.settingsButton}>
-              <Image source={require("../assets/icons/ic-side-menu-setting.png")} style={styles.settingsIcon} />
-            </TouchableOpacity>
-          </View>
+          <SafeAreaView style={styles.safeArea}>
+            {/* Header */}
+            <View style={styles.header}>
+              <TouchableOpacity style={styles.closeButton} onPress={onClose}>
+                <Text style={styles.closeIcon}>✕</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.settingsButton}>
+                <Image source={require("../assets/icons/ic-side-menu-setting.png")} style={styles.settingsIcon} />
+              </TouchableOpacity>
+            </View>
 
-          {/* Menu Content */}
-          <ScrollView style={styles.menuContent} showsVerticalScrollIndicator={false}>
-            {menuData.map(renderSection)}
-          </ScrollView>
+            {/* Menu Content */}
+            <ScrollView style={styles.menuContent} showsVerticalScrollIndicator={false}>
+              {menuData.map(renderSection)}
+            </ScrollView>
+          </SafeAreaView>
         </Animated.View>
       </Animated.View>
 
@@ -298,11 +300,16 @@ export const SideMenu: React.FC<SideMenuProps> = ({ visible, onClose, onMenuItem
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.5)"
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: "flex-start"
+  },
+  safeArea: {
+    flex: 1
   },
   menuContainer: {
     height: "100%",
-    paddingVertical: 20,
+    maxHeight: "100%",
+    paddingVertical: 15,
     backgroundColor: "#FFFFFF"
   },
   header: {
@@ -337,7 +344,8 @@ const styles = StyleSheet.create({
 
   menuContent: {
     flex: 1,
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
+    maxHeight: "100%"
   },
   section: {
     marginVertical: 10
