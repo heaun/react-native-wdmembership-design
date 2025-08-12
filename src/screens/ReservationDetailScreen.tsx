@@ -153,7 +153,7 @@ export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = (
         {/* 하단 버튼 */}
         <View style={styles.bottomButtonContainer}>
           <View style={styles.buttonRow}>
-            <TouchableOpacity style={styles.changeButton}>
+            <TouchableOpacity style={styles.changeButton} onPress={handleReservationPress}>
               <Text style={styles.changeButtonText}>예약변경</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.cancelButton} onPress={handleCancelPress}>
@@ -265,7 +265,6 @@ const styles = StyleSheet.create({
     marginBottom: 20
   },
   bottomButtonContainer: {
-    paddingHorizontal: 24,
     paddingTop: 10,
     borderTopWidth: 1,
     borderTopColor: "#EFF1F3"

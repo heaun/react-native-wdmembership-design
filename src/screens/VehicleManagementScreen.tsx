@@ -51,7 +51,7 @@ export const VehicleManagementScreen: React.FC<VehicleManagementScreenProps> = (
     <CommonLayout
       title="차량관리"
       showBackButton={true}
-      showTabBar={true}
+      showTabBar={false}
       onBackPress={onBackPress}
       onMenuPress={onMenuPress}
       onCouponPress={onCouponPress}

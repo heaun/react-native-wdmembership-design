@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Dimensions, Image } from "react-native";
 import { CommonLayout } from "../components/CommonLayout";
+import { Calendar } from "../components/Calendar";
 
 const { width: screenWidth } = Dimensions.get("window");
 
@@ -61,7 +62,7 @@ export const ScheduleScreen: React.FC<ScheduleScreenProps> = ({
       id: "2",
       title: "웰리스컴 Wellness Come",
       instructor: "김영희 강사",
-      date: "2025-08-28",
+      date: "2025-08-31",
       time: "오전 11:00 ~12:00",
       location: "서초 메디웰하우스 2층 웰니스존",
       status: "confirmed",
@@ -141,6 +142,14 @@ export const ScheduleScreen: React.FC<ScheduleScreenProps> = ({
     setSelectedDate(newSelectedDate);
   };
 
+  // 예약이 있는 날짜들 확인
+  const hasReservation = (day: number) => {
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth();
+    const dateString = `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+    return allReservations.some((reservation: any) => reservation.date === dateString);
+  };
+
   // 예약 상태에 따른 배지 스타일 반환
   const getStatusBadgeStyle = (status: string) => {
     switch (status) {
@@ -181,105 +190,21 @@ export const ScheduleScreen: React.FC<ScheduleScreenProps> = ({
     });
   };
 
-  // 캘린더 날짜 생성 함수
-  const generateCalendarDays = () => {
-    const year = currentDate.getFullYear();
-    const month = currentDate.getMonth();
-
-    // 해당 월의 첫 번째 날과 마지막 날
-    const firstDay = new Date(year, month, 1);
-    const lastDay = new Date(year, month + 1, 0);
-
-    // 첫 번째 날의 요일 (0: 일요일, 1: 월요일, ...)
-    const firstDayOfWeek = firstDay.getDay();
-    // 월요일을 0으로 변환 (0: 월요일, 1: 화요일, ..., 6: 일요일)
-    const adjustedFirstDayOfWeek = firstDayOfWeek === 0 ? 6 : firstDayOfWeek - 1;
-
-    const days = [];
-
-    // 예약이 있는 날짜들 확인
-    const hasReservation = (day: number) => {
-      const dateString = `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
-      return allReservations.some((reservation: any) => reservation.date === dateString);
-    };
-
-    // 이전 달의 날짜들
-    const prevMonthLastDay = new Date(year, month, 0);
-    for (let i = adjustedFirstDayOfWeek - 1; i >= 0; i--) {
-      const day = prevMonthLastDay.getDate() - i;
-      days.push(
-        <Text key={`prev-${day}`} style={[styles.dateText, styles.otherMonthText]}>
-          {day}
-        </Text>
-      );
-    }
-
-    // 현재 달의 날짜들
-    const today = new Date();
-    const isToday = (day: number) => {
-      return today.getDate() === day && today.getMonth() === month && today.getFullYear() === year;
-    };
-
-    const isSelected = (day: number) => {
-      return selectedDate.getDate() === day && selectedDate.getMonth() === month && selectedDate.getFullYear() === year;
-    };
-
-    for (let day = 1; day <= lastDay.getDate(); day++) {
-      const hasReservationOnDay = hasReservation(day);
-
-      if (isSelected(day)) {
-        days.push(
-          <View key={`current-${day}`} style={styles.selectedDateContainer}>
-            <Text style={[styles.dateText, styles.selectedDate]}>{day}</Text>
-            <View style={hasReservationOnDay ? styles.dot : styles.dotInactive} />
-          </View>
-        );
-      } else if (isToday(day)) {
-        days.push(
-          <TouchableOpacity key={`current-${day}`} style={styles.todayDateContainer} onPress={() => handleDateSelect(day)}>
-            <Text style={[styles.dateText, styles.todayDate]}>{day}</Text>
-            <View style={hasReservationOnDay ? styles.dot : styles.dotInactive} />
-          </TouchableOpacity>
-        );
-      } else {
-        days.push(
-          <TouchableOpacity key={`current-${day}`} style={styles.dateContainer} onPress={() => handleDateSelect(day)}>
-            <Text style={styles.dateText}>{day}</Text>
-            <View style={hasReservationOnDay ? styles.dot : styles.dotInactive} />
-          </TouchableOpacity>
-        );
-      }
-    }
-
-    // 다음 달의 날짜들 (캘린더를 42개 셀로 맞추기 위해)
-    const remainingDays = 42 - days.length;
-    for (let day = 1; day <= remainingDays; day++) {
-      days.push(
-        <Text key={`next-${day}`} style={[styles.dateText, styles.otherMonthText]}>
-          {day}
-        </Text>
-      );
-    }
-
-    return days;
-  };
-
   const renderCalendarView = () => (
     <ScrollView style={styles.calendarContainer} showsVerticalScrollIndicator={false}>
       <View style={styles.section}>
-        {/* 요일 헤더 */}
-        <View style={styles.weekdayHeader}>
-          <Text style={styles.weekdayText}>월</Text>
-          <Text style={styles.weekdayText}>화</Text>
-          <Text style={styles.weekdayText}>수</Text>
-          <Text style={styles.weekdayText}>목</Text>
-          <Text style={styles.weekdayText}>금</Text>
-          <Text style={styles.weekdayText}>토</Text>
-          <Text style={styles.weekdayText}>일</Text>
-        </View>
-
-        {/* 캘린더 그리드 */}
-        <View style={styles.calendarGrid}>{generateCalendarDays()}</View>
+        <Calendar
+          currentDate={currentDate}
+          selectedDate={selectedDate}
+          onDateSelect={handleDateSelect}
+          onPrevMonth={handlePrevMonth}
+          onNextMonth={handleNextMonth}
+          onTodayPress={handleTodayPress}
+          showTodayButton={true}
+          showDots={true}
+          hasReservation={hasReservation}
+          mode="schedule"
+        />
       </View>
 
       {/* 선택된 날짜의 예약 섹션 */}
@@ -331,8 +256,16 @@ export const ScheduleScreen: React.FC<ScheduleScreenProps> = ({
   );
 
   const renderReservationView = () => {
-    // 날짜별로 예약을 그룹화
-    const groupedReservations = allReservations.reduce((groups: any, reservation: any) => {
+    // 현재 월의 예약만 필터링
+    const currentYear = currentDate.getFullYear();
+    const currentMonth = currentDate.getMonth() + 1;
+    const monthReservations = allReservations.filter((reservation: any) => {
+      const reservationDate = new Date(reservation.date);
+      return reservationDate.getFullYear() === currentYear && reservationDate.getMonth() + 1 === currentMonth;
+    });
+
+    // 날짜별로 예약을 그룹화하고 정렬
+    const groupedReservations = monthReservations.reduce((groups: any, reservation: any) => {
       const date = reservation.date;
       if (!groups[date]) {
         groups[date] = [];
@@ -341,29 +274,86 @@ export const ScheduleScreen: React.FC<ScheduleScreenProps> = ({
       return groups;
     }, {});
 
+    // 각 날짜 그룹 내에서 시간 역순으로 정렬
+    Object.keys(groupedReservations).forEach((date) => {
+      groupedReservations[date].sort((a: any, b: any) => {
+        // 시간을 비교하여 역순 정렬 (최신 시간이 위로)
+        const timeA = a.time;
+        const timeB = b.time;
+
+        // 오후 > 오전 순서로 정렬
+        if (timeA.includes("오후") && timeB.includes("오전")) return -1;
+        if (timeA.includes("오전") && timeB.includes("오후")) return 1;
+
+        // 같은 오전/오후 내에서는 시간 숫자로 비교
+        const timeAStr = timeA.replace(/[^0-9]/g, "");
+        const timeBStr = timeB.replace(/[^0-9]/g, "");
+
+        return parseInt(timeBStr) - parseInt(timeAStr);
+      });
+    });
+
+    // 날짜를 역순으로 정렬
+    const sortedDates = Object.keys(groupedReservations).sort((a, b) => {
+      return new Date(b).getTime() - new Date(a).getTime();
+    });
+
     return (
       <ScrollView style={styles.reservationContainer} showsVerticalScrollIndicator={false}>
-        {Object.entries(groupedReservations).map(([date, dateReservations]: [string, any]) => (
-          <View key={date} style={styles.dateSection}>
-            <Text style={styles.dateTitle}>{new Date(date).getDate()}일</Text>
-            {dateReservations.map((reservation: any) => {
-              // ReservationDetailScreen에서 사용할 수 있는 형식으로 변환
+        {/* 캘린더 헤더만 */}
+        <View style={styles.section}>
+          <Calendar
+            currentDate={currentDate}
+            selectedDate={selectedDate}
+            onDateSelect={handleDateSelect}
+            onPrevMonth={handlePrevMonth}
+            onNextMonth={handleNextMonth}
+            onTodayPress={handleTodayPress}
+            showTodayButton={true}
+            showDots={false}
+            hasReservation={hasReservation}
+            mode="schedule"
+            headerOnly={true}
+          />
+        </View>
+
+        {/* 예약 리스트 */}
+        <View style={styles.reservationListContainer}>
+          {sortedDates.length > 0 ? (
+            sortedDates.map((date: string) => {
+              const dateReservations = groupedReservations[date];
               return (
-                <TouchableOpacity key={reservation.id} style={styles.reservationItem} onPress={() => onReservationDetailPress?.(reservation)}>
-                  <View style={styles.reservationContent}>
-                    <Text style={styles.reservationTitle}>{reservation.title}</Text>
-                    <Text style={styles.reservationLocation}>
-                      {reservation.location} <Text style={styles.reservationTime}> | {reservation.time}</Text>
-                    </Text>
+                <View key={date} style={styles.dateGroup}>
+                  <Text style={styles.dateTitle}>{new Date(date).getDate()}일</Text>
+                  <View style={styles.reservationsContainer}>
+                    {dateReservations.map((reservation: any, index: number) => {
+                      return (
+                        <TouchableOpacity
+                          key={reservation.id}
+                          style={[styles.reservationItem]}
+                          onPress={() => onReservationDetailPress?.(reservation)}
+                        >
+                          <View style={styles.reservationContent}>
+                            <Text style={styles.reservationTitle}>{reservation.title}</Text>
+                            <Text style={styles.reservationLocation}>{reservation.location}</Text>
+                            <Text style={styles.reservationTime}>{reservation.time}</Text>
+                          </View>
+                          <View style={[styles.reservationStatus, getStatusBadgeStyle(reservation.status)]}>
+                            <Text style={styles.statusText}>{getStatusText(reservation.status)}</Text>
+                          </View>
+                        </TouchableOpacity>
+                      );
+                    })}
                   </View>
-                  <View style={[styles.reservationStatus, getStatusBadgeStyle(reservation.status)]}>
-                    <Text style={styles.statusText}>{getStatusText(reservation.status)}</Text>
-                  </View>
-                </TouchableOpacity>
+                </View>
               );
-            })}
-          </View>
-        ))}
+            })
+          ) : (
+            <View style={styles.noReservationContainer}>
+              <Text style={styles.noReservationText}>이번 달 예약이 없습니다.</Text>
+            </View>
+          )}
+        </View>
       </ScrollView>
     );
   };
@@ -393,21 +383,6 @@ export const ScheduleScreen: React.FC<ScheduleScreenProps> = ({
         </TouchableOpacity>
       </View>
 
-      <View style={styles.monthHeaderContainer}>
-        {/* 월 헤더 */}
-        <View style={styles.monthHeader}>
-          <TouchableOpacity style={styles.arrowButton} onPress={handlePrevMonth}>
-            <Text style={styles.arrowIcon}>‹</Text>
-          </TouchableOpacity>
-          <Text style={styles.monthText}>{currentMonth}</Text>
-          <TouchableOpacity style={styles.arrowButton} onPress={handleNextMonth}>
-            <Text style={styles.arrowIcon}>›</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.todayContainer} onPress={handleTodayPress}>
-            <Text style={styles.todayText}>오늘</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
       {/* Content */}
       {activeTab === "calendar" ? renderCalendarView() : renderReservationView()}
     </CommonLayout>
@@ -442,197 +417,64 @@ const styles = StyleSheet.create({
   calendarContainer: {
     flex: 1
   },
-  monthHeaderContainer: {
-    paddingTop: 20,
-    paddingHorizontal: 20,
-    backgroundColor: "#FFFFFF"
-  },
-  monthHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 20,
-    backgroundColor: "#FFFFFF"
-  },
-  arrowButton: {
-    width: 24,
-    height: 24,
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  arrowIcon: {
-    fontSize: 20,
-    color: "#505866"
-  },
-  monthText: {
-    fontSize: 20,
-    fontWeight: "900",
-    color: "#2B2B2B"
-  },
-  todayContainer: {
-    backgroundColor: "#FFFFFF",
-    borderWidth: 1,
-    borderColor: "#D6DADF",
-    borderRadius: 6,
-    paddingHorizontal: 10,
-    paddingVertical: 3
-  },
-  todayText: {
-    fontSize: 13,
-    fontWeight: "700",
-    color: "#2B2B2B"
-  },
-  weekdayHeader: {
-    flexDirection: "row",
-    marginBottom: 10
-  },
-  weekdayText: {
-    width: "14.28%",
-    textAlign: "center",
-    fontSize: 14,
-    fontWeight: "400",
-    color: "#2B2B2B",
-    minWidth: 40
-  },
-  calendarGrid: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    position: "relative",
-    marginBottom: 10,
-    backgroundColor: "#FFFFFF"
-  },
-  dateText: {
-    width: "14.28%",
-    height: 48,
-    textAlign: "center",
-    lineHeight: 48,
-    fontSize: 14,
-    fontWeight: "900",
-    color: "#2B2B2B",
-    position: "relative",
-    minWidth: 40
-  },
-  otherMonthText: {
-    color: "#B1B8C0"
-  },
-  selectedDateContainer: {
-    width: "14.28%",
-    height: 48,
-    justifyContent: "center",
-    alignItems: "center",
-    minWidth: 40,
-    position: "relative"
-  },
-  selectedDate: {
-    backgroundColor: "#2B2B2B",
-    borderRadius: 20,
-    color: "#FFFFFF",
-    width: 40,
-    height: 40,
-    textAlign: "center",
-    lineHeight: 40,
-    fontSize: 14,
-    fontWeight: "900"
-  },
-  todayDateContainer: {
-    width: "14.28%",
-    height: 48,
-    justifyContent: "center",
-    alignItems: "center",
-    minWidth: 40,
-    position: "relative"
-  },
-  todayDate: {
-    backgroundColor: "#B48327",
-    borderRadius: 20,
-    color: "#FFFFFF",
-    width: 40,
-    height: 40,
-    textAlign: "center",
-    lineHeight: 40,
-    fontSize: 14,
-    fontWeight: "900"
-  },
-  dateContainer: {
-    width: "14.28%",
-    height: 48,
-    justifyContent: "center",
-    alignItems: "center",
-    minWidth: 40
-  },
-  reservationDots: {
-    position: "absolute",
-    top: 120,
-    left: 20,
-    right: 20,
-    flexDirection: "row",
-    flexWrap: "wrap",
-    pointerEvents: "none"
-  },
-
-  dot: {
-    width: 5,
-    height: 5,
-    borderRadius: 3,
-    backgroundColor: "#B48327",
-    position: "absolute",
-    bottom: 0,
-    marginBottom: -5,
-    alignSelf: "center"
-  },
-  dotInactive: {
-    width: 5,
-    height: 5,
-    borderRadius: 3,
-    backgroundColor: "transparent",
-    position: "absolute",
-    bottom: 0,
-    alignSelf: "center"
-  },
 
   reservationContainer: {
     flex: 1,
-    paddingTop: 20,
-    backgroundColor: "#FFFFFF",
-    paddingHorizontal: 20
+    backgroundColor: "#ffffff"
   },
   dateSection: {
-    marginBottom: 20
+    marginBottom: 10
+  },
+  dateGroup: {
+    marginBottom: 20,
+    flexDirection: "row",
+    alignItems: "flex-start"
   },
   dateTitle: {
     fontSize: 16,
     fontWeight: "800",
     color: "#2B2B2B",
-    marginBottom: 10
+    marginBottom: 10,
+    width: 60,
+    paddingVertical: 10
+  },
+  reservationsContainer: {
+    flex: 1
+  },
+  reservationListContainer: {
+    flex: 1,
+    backgroundColor: "#ffffff",
+    paddingHorizontal: 20
   },
   reservationItem: {
     flexDirection: "row",
-    backgroundColor: "#FFFFFF",
-    borderRadius: 6,
-    paddingVertical: 5,
+    paddingVertical: 10,
     borderBottomWidth: 1,
-    borderBottomColor: "#EFF1F3",
-    marginBottom: 3
+    borderBottomColor: "#EFF1F3"
   },
   reservationContent: {
     flex: 1,
     justifyContent: "center"
   },
+  reservationHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 5,
+    gap: 20
+  },
   reservationTitle: {
     fontSize: 16,
     fontWeight: "800",
     color: "#2B2B2B",
-    marginBottom: 5
+    flex: 1
   },
   reservationLocation: {
     fontSize: 12,
-    fontWeight: "700",
     color: "#505866",
-    marginBottom: 5
+    paddingTop: 10
   },
   reservationTime: {
     fontSize: 12,
-    fontWeight: "700",
     color: "#505866"
   },
   reservationStatus: {
@@ -643,9 +485,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     height: 23,
-    marginRight: 10,
-    marginBottom: 10,
-    marginTop: 10
+    marginRight: 10
   },
   statusText: {
     fontSize: 11,
@@ -735,5 +575,10 @@ const styles = StyleSheet.create({
     fontWeight: "400",
     color: "#79818B",
     textAlign: "center"
+  },
+  noReservationContainer: {
+    padding: 40,
+    alignItems: "center",
+    justifyContent: "center"
   }
 });

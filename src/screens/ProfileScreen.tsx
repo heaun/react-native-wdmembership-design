@@ -44,7 +44,7 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({ currentTab, onTabP
     <CommonLayout
       title="내 정보 조회/변경"
       showBackButton={true}
-      showTabBar={true}
+      showTabBar={false}
       onBackPress={handleBackPress}
       onMenuPress={() => {}}
       onCouponPress={() => {}}
