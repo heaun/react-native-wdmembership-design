@@ -149,7 +149,7 @@ export const IntroScreen: React.FC<IntroScreenProps> = ({ onSignupPress, onLogin
       {/* 하단 버튼 영역 */}
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.signupButton} onPress={onSignupPress}>
-          <Text style={styles.signupButtonText}>멤버쉽 가입하기</Text>
+          <Text style={styles.signupButtonText}>멤버십 가입하기</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.loginButton} onPress={onLoginPress}>

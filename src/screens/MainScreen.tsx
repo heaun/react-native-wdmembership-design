@@ -116,12 +116,12 @@ export const MainScreen: React.FC<MainScreenProps> = ({
         <View style={styles.membershipCard}>
           <Image source={require("../assets/main/membership-card.png")} style={styles.cardImage} />
           <View style={styles.cardContent}>
-            <Text style={styles.cardLabel}>My 멤버쉽</Text>
+            <Text style={styles.cardLabel}>My 멤버십</Text>
             <Text style={styles.cardTitle}>PH 1603 RESIDENCE</Text>
             <Text style={styles.cardNumber}>9869 4586 2335 3698</Text>
           </View>
           <TouchableOpacity style={styles.membershipManageButton} onPress={onMembershipManagePress}>
-            <Text style={styles.membershipManageText}>멤버쉽 관리</Text>
+            <Text style={styles.membershipManageText}>멤버십 관리</Text>
             <Text style={styles.arrowIcon}>›</Text>
           </TouchableOpacity>
         </View>

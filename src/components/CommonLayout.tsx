@@ -73,7 +73,7 @@ export const CommonLayout: React.FC<CommonLayoutProps> = ({
       name: "MembershipCard",
       icon: require("../assets/icons/ic_tap_03_off.png"),
       activeIcon: require("../assets/icons/ic_tap_03_on.png"),
-      label: "멤버쉽카드"
+      label: "멤버십카드"
     },
     {
       name: "MyService",

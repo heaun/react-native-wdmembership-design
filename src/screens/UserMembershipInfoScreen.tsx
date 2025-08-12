@@ -73,7 +73,7 @@ export const UserMembershipInfoScreen: React.FC<UserMembershipInfoScreenProps> =
         title: "체형/체력 성장 정밀 검사 이용권",
         provider: "마인드앤바디 포 차일드",
         period: "2027.10.01 ~ 2027.10.31",
-        region: "전국 멤버쉽 가맹점 모두"
+        region: "전국 멤버십 가맹점 모두"
       },
       {
         id: "t4",
@@ -81,7 +81,7 @@ export const UserMembershipInfoScreen: React.FC<UserMembershipInfoScreenProps> =
         title: "골프 프로 무료 레슨 이용권",
         provider: "GCC 스크린골프 연습장",
         period: "2027.10.01 ~ 2027.10.31",
-        region: "전국 멤버쉽 가맹점 모두"
+        region: "전국 멤버십 가맹점 모두"
       }
     ],
     benefits: [
@@ -253,7 +253,7 @@ export const UserMembershipInfoScreen: React.FC<UserMembershipInfoScreenProps> =
             </TouchableOpacity>
           </View>
 
-          <Text style={styles.benefitsDescription}>멤버쉽 회원님들께만 드리는 특별한 할인 혜택을 누려보세요.</Text>
+          <Text style={styles.benefitsDescription}>멤버십 회원님들께만 드리는 특별한 할인 혜택을 누려보세요.</Text>
 
           {membershipData.benefits.map((b) => (
             <View key={b.id} style={styles.benefitCard}>

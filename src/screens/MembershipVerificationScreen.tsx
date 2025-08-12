@@ -19,7 +19,7 @@ export const MembershipVerificationScreen: React.FC<MembershipVerificationScreen
 }) => {
   return (
     <CommonLayout
-      title="멤버쉽 확인"
+      title="멤버십 확인"
       showBackButton={true}
       showTabBar={false}
       onBackPress={onBackPress}

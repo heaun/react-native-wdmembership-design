@@ -121,7 +121,7 @@ export const MyServiceScreen: React.FC<MyServiceScreenProps> = ({
 
   return (
     <CommonLayout
-      title="멤버쉽 서비스"
+      title="멤버십 서비스"
       showBackButton={false}
       onMenuPress={() => console.log("메뉴 버튼 클릭")}
       onCouponPress={() => console.log("쿠폰 버튼 클릭")}

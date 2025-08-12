@@ -91,7 +91,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onBackPress, onLoginSu
       {/* Membership Info Text */}
       <View style={styles.membershipInfoSection}>
         <TouchableOpacity onPress={onMembershipInfoPress}>
-          <Text style={styles.membershipInfoText}>멤버쉽 상품 소개</Text>
+          <Text style={styles.membershipInfoText}>멤버십 상품 소개</Text>
         </TouchableOpacity>
       </View>
     </CommonLayout>

@@ -72,7 +72,7 @@ export const MembershipDetailScreen: React.FC<MembershipDetailScreenProps> = ({ 
           items: ["카페 & 베이커리 20% 할인", "케어 푸드 식당 20% 할인"]
         },
         {
-          title: "멤버쉽 혜택안내",
+          title: "멤버십 혜택안내",
           items: [
             "멤버스 프리미엄 라운지 무료 이용 10회, 추가 이용시 50% 할인",
             "하이앤드 그룹 미팅룸 무료 이용 2회, 추가 이용시 30% 할인",
@@ -242,7 +242,7 @@ export const MembershipDetailScreen: React.FC<MembershipDetailScreenProps> = ({ 
 
         {/* Benefits Section */}
         <View style={styles.benefitsSection}>
-          <Text style={styles.benefitTitle}>멤버쉽 혜택 안내</Text>
+          <Text style={styles.benefitTitle}>멤버십 혜택 안내</Text>
           <View style={styles.divider} />
           {membership.benefits.map((benefit, index) => (
             <View key={index} style={styles.benefitGroup}>

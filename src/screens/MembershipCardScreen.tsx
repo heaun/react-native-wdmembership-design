@@ -80,7 +80,7 @@ export const MembershipCardScreen: React.FC<MembershipCardScreenProps> = ({
     infoSections: [
       {
         id: "verification",
-        title: "멤버쉽 확인",
+        title: "멤버십 확인",
         type: "verification",
         image: require("../assets/membership/qr-code.png"),
         onPress: handleQrCodePress
@@ -93,7 +93,7 @@ export const MembershipCardScreen: React.FC<MembershipCardScreenProps> = ({
       },
       {
         id: "benefits",
-        title: "멤버쉽 혜택 보기",
+        title: "멤버십 혜택 보기",
         type: "action",
         onPress: onMembershipGuidePress
       },
@@ -108,7 +108,7 @@ export const MembershipCardScreen: React.FC<MembershipCardScreenProps> = ({
 
   return (
     <CommonLayout
-      title="멤버쉽 카드"
+      title="멤버십 카드"
       showBackButton={false}
       onMenuPress={() => console.log("메뉴 버튼 클릭")}
       onCouponPress={() => console.log("쿠폰 버튼 클릭")}
@@ -136,7 +136,7 @@ export const MembershipCardScreen: React.FC<MembershipCardScreenProps> = ({
               {/* Right Side - Membership Details */}
               <View style={styles.membershipDetails}>
                 <View style={styles.detailRow}>
-                  <Text style={styles.detailLabel}>멤버쉽 번호</Text>
+                  <Text style={styles.detailLabel}>멤버십 번호</Text>
                   <Text style={styles.detailValue}>{membershipCardData.membershipNumber}</Text>
                 </View>
                 <View style={styles.detailRow}>
@@ -186,7 +186,7 @@ export const MembershipCardScreen: React.FC<MembershipCardScreenProps> = ({
       </ScrollView>
 
       {/* QR Code Modal */}
-      <CommonModal visible={showQrModal} title="멤버쉽 확인" onClose={handleCloseQrModal}>
+      <CommonModal visible={showQrModal} title="멤버십 확인" onClose={handleCloseQrModal}>
         <View style={styles.qrModalContent}>
           <TouchableOpacity onPress={handleCloseQrModal}>
             <Image source={membershipCardData.qrCodeImage} style={styles.qrModalImage} />
