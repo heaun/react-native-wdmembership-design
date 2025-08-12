@@ -1,29 +1,109 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import Toast from "react-native-toast-message";
+import Toast, { BaseToast, ErrorToast, InfoToast } from "react-native-toast-message";
 import { SplashScreen } from "./src/screens/SplashScreen";
 import { IntroScreen } from "./src/screens/IntroScreen";
 import { LoginScreen } from "./src/screens/LoginScreen";
 import { AppNavigator } from "./navigation/AppNavigator";
+import { ToastProvider, useToast } from "./src/context/ToastContext";
 
 type ScreenType = "splash" | "intro" | "login" | "signup" | "main";
 
-export default function App() {
+function AppContent() {
   const [currentScreen, setCurrentScreen] = useState<ScreenType>("splash");
+  const { showToast } = useToast();
 
-  const showToast = (type: "success" | "error" | "info", title: string, message: string) => {
-    Toast.show({
-      type: type,
-      text1: title,
-      text2: message,
-      position: "top",
-      visibilityTime: 2000
-    });
+  // Toast 커스텀 설정
+  const toastConfig = {
+    success: (props: any) => (
+      <BaseToast
+        {...props}
+        style={{
+          borderLeftColor: "#B48327",
+          backgroundColor: "#FFFFFF",
+          borderRadius: 8,
+          marginHorizontal: 20,
+          marginBottom: 50,
+          shadowColor: "#000",
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.1,
+          shadowRadius: 4,
+          elevation: 3
+        }}
+        contentContainerStyle={{ paddingHorizontal: 15 }}
+        text1Style={{
+          fontSize: 16,
+          fontWeight: "800",
+          color: "#2B2B2B"
+        }}
+        text2Style={{
+          fontSize: 14,
+          fontWeight: "400",
+          color: "#505866"
+        }}
+      />
+    ),
+    error: (props: any) => (
+      <ErrorToast
+        {...props}
+        style={{
+          borderLeftColor: "#FF3B30",
+          backgroundColor: "#FFFFFF",
+          borderRadius: 8,
+          marginHorizontal: 20,
+          marginBottom: 50,
+          shadowColor: "#000",
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.1,
+          shadowRadius: 4,
+          elevation: 3
+        }}
+        contentContainerStyle={{ paddingHorizontal: 15 }}
+        text1Style={{
+          fontSize: 16,
+          fontWeight: "800",
+          color: "#2B2B2B"
+        }}
+        text2Style={{
+          fontSize: 14,
+          fontWeight: "400",
+          color: "#505866"
+        }}
+      />
+    ),
+    info: (props: any) => (
+      <InfoToast
+        {...props}
+        style={{
+          borderLeftColor: "#007AFF",
+          backgroundColor: "#FFFFFF",
+          borderRadius: 8,
+          marginHorizontal: 20,
+          marginBottom: 50,
+          shadowColor: "#000",
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.1,
+          shadowRadius: 4,
+          elevation: 3
+        }}
+        contentContainerStyle={{ paddingHorizontal: 15 }}
+        text1Style={{
+          fontSize: 16,
+          fontWeight: "800",
+          color: "#2B2B2B"
+        }}
+        text2Style={{
+          fontSize: 14,
+          fontWeight: "400",
+          color: "#505866"
+        }}
+      />
+    )
   };
 
   const handleSignupPress = () => {
-    console.log("멤버쉽 가입 버튼 클릭");
-    showToast("info", "멤버쉽 가입", "멤버쉽 가입 화면으로 이동합니다.");
+    console.log("멤버십 가입 버튼 클릭");
+    showToast("info", "멤버십 가입", "멤버십 가입 화면으로 이동합니다.");
     setCurrentScreen("signup");
   };
 
@@ -40,7 +120,7 @@ export default function App() {
 
   const handleLoginSuccess = () => {
     console.log("로그인 성공 - 메인 화면으로 이동");
-    showToast("success", "성공", "로그인 성공! 메인 화면으로 이동합니다.");
+    showToast("success", "성공", "로그인 성공! 🎉");
     setCurrentScreen("main");
   };
 
@@ -57,7 +137,7 @@ export default function App() {
     return (
       <>
         <SplashScreen onFinish={() => setCurrentScreen("intro")} />
-        <Toast />
+        <Toast config={toastConfig} />
       </>
     );
   }
@@ -70,11 +150,11 @@ export default function App() {
           onBackPress={handleBackPress}
           onLoginSuccess={handleLoginSuccess}
           onMembershipInfoPress={() => {
-            console.log("멤버쉽 상품 소개 버튼 클릭");
-            showToast("info", "멤버쉽 상품 소개", "멤버쉽 상품 소개 화면으로 이동합니다.");
+            console.log("멤버십 상품 소개 버튼 클릭");
+            showToast("info", "멤버십 상품 소개", "멤버십 상품 소개 화면으로 이동합니다.");
           }}
         />
-        <Toast />
+        <Toast config={toastConfig} />
       </>
     );
   }
@@ -84,12 +164,12 @@ export default function App() {
     return (
       <>
         <View style={styles.container}>
-          <Text style={styles.title}>멤버쉽 가입 화면</Text>
+          <Text style={styles.title}>멤버십 가입 화면</Text>
           <TouchableOpacity style={styles.button} onPress={handleBackPress}>
             <Text style={styles.buttonText}>뒤로가기</Text>
           </TouchableOpacity>
         </View>
-        <Toast />
+        <Toast config={toastConfig} />
       </>
     );
   }
@@ -99,7 +179,7 @@ export default function App() {
     return (
       <>
         <AppNavigator />
-        <Toast />
+        <Toast config={toastConfig} />
       </>
     );
   }
@@ -108,8 +188,16 @@ export default function App() {
   return (
     <>
       <IntroScreen onSignupPress={handleSignupPress} onLoginPress={handleLoginPress} />
-      <Toast />
+      <Toast config={toastConfig} />
     </>
+  );
+}
+
+export default function App() {
+  return (
+    <ToastProvider>
+      <AppContent />
+    </ToastProvider>
   );
 }
 
