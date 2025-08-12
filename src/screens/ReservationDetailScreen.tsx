@@ -86,7 +86,7 @@ export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = (
   return (
     <>
       <CommonLayout
-        title={data.title}
+        title={data?.title || "예약 상세"}
         showBackButton={true}
         showTabBar={false}
         onBackPress={onBackPress}
@@ -109,7 +109,7 @@ export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = (
           </View>
 
           {/* 클래스 제목 */}
-          <Text style={styles.classTitle}>{data.title}</Text>
+          <Text style={styles.classTitle}>{data?.title || "예약 상세"}</Text>
 
           {/* 예약 정보 */}
           <View style={styles.infoContainer}>
@@ -137,11 +137,11 @@ export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = (
             <View style={styles.divider} />
 
             {/* 예약 변경/취소 안내 */}
-            <Text style={styles.infoLabel}>예약 취소 및 변경</Text>
+            <Text style={styles.infoTitleLabel}>예약 취소 및 변경</Text>
             <Text style={styles.infoDescription}>{data.cancellationPolicy}</Text>
 
             {/* 부가정보 */}
-            <Text style={styles.infoLabel}>부가정보</Text>
+            <Text style={styles.infoTitleLabel}>부가정보</Text>
             <Text style={styles.infoDescription}>
               {data.additionalInfo}
               {"\n"}
@@ -188,16 +188,15 @@ export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = (
 
 const styles = StyleSheet.create({
   reservationImage: {
-    width: width - 40,
+    width: "100%",
     height: 160,
     borderRadius: 15,
-    marginHorizontal: 20,
     marginTop: 20
   },
   statusContainer: {
     position: "absolute",
-    top: 124,
-    right: 35,
+    top: 30,
+    right: 20,
     zIndex: 1
   },
   statusBadge: {
@@ -217,16 +216,13 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "800",
     color: "#2B2B2B",
-    marginHorizontal: 20,
     marginTop: 20,
     marginBottom: 20
   },
-  infoContainer: {
-    paddingHorizontal: 20
-  },
+  infoContainer: {},
   infoRow: {
     flexDirection: "row",
-    marginBottom: 15,
+    marginBottom: 10,
     alignItems: "flex-start"
   },
   infoLabel: {
@@ -235,6 +231,13 @@ const styles = StyleSheet.create({
     color: "#79818B",
     width: 60,
     marginRight: 20
+  },
+  infoTitleLabel: {
+    fontSize: 14,
+    fontWeight: "700",
+    color: "#79818B",
+    marginBottom: 10,
+    letterSpacing: -0.56
   },
   infoValue: {
     fontSize: 14,
@@ -246,7 +249,8 @@ const styles = StyleSheet.create({
   divider: {
     height: 1,
     backgroundColor: "#B1B8C0",
-    marginVertical: 20
+    marginVertical: 10,
+    marginBottom: 20
   },
   infoDescription: {
     fontSize: 14,

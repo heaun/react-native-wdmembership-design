@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Dimensions } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Dimensions, Image } from "react-native";
 import { CommonLayout } from "../components/CommonLayout";
 
 const { width: screenWidth } = Dimensions.get("window");
@@ -30,7 +30,11 @@ export const ScheduleScreen: React.FC<ScheduleScreenProps> = ({
   newReservation
 }) => {
   const [activeTab, setActiveTab] = useState<"calendar" | "reservation">("calendar");
-  const [currentMonth, setCurrentMonth] = useState("2026년 10월");
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(new Date());
+
+  // 현재 월을 문자열로 표시
+  const currentMonth = `${currentDate.getFullYear()}년 ${currentDate.getMonth() + 1}월`;
 
   // 새로운 예약이 있으면 예약 관리 탭으로 이동
   useEffect(() => {
@@ -42,7 +46,7 @@ export const ScheduleScreen: React.FC<ScheduleScreenProps> = ({
   const baseReservations = [
     {
       id: 1,
-      date: "31일",
+      date: "2025-08-31",
       title: "마인드앤바디 포 어덜트",
       location: "서울 서초구",
       time: "오후 02:30",
@@ -50,15 +54,15 @@ export const ScheduleScreen: React.FC<ScheduleScreenProps> = ({
     },
     {
       id: 2,
-      date: "28일",
+      date: "2025-08-28",
       title: "웰리스컴 Wellness Come",
       location: "서울 서초구",
-      time: "오전11:00",
+      time: "오전 11:00",
       status: "예약확정"
     },
     {
       id: 3,
-      date: "26일",
+      date: "2025-08-26",
       title: "웰리스컴 Wellness Come",
       location: "서울 서초구",
       time: "오후 02:30",
@@ -66,7 +70,7 @@ export const ScheduleScreen: React.FC<ScheduleScreenProps> = ({
     },
     {
       id: 4,
-      date: "22일",
+      date: "2025-08-22",
       title: "웰리스컴 Wellness Come",
       location: "서울 서초구",
       time: "오전11:00",
@@ -74,15 +78,15 @@ export const ScheduleScreen: React.FC<ScheduleScreenProps> = ({
     },
     {
       id: 5,
-      date: "28일",
+      date: "2025-08-28",
       title: "GCC 스크린 골프",
       location: "서울 서초구",
       time: "오후 07:00",
-      status: "예약확정"
+      status: "예약대기"
     },
     {
       id: 6,
-      date: "26일",
+      date: "2025-08-26",
       title: "마인드앤바디 포 어덜트",
       location: "서울 서초구",
       time: "오전 07:30",
@@ -90,7 +94,7 @@ export const ScheduleScreen: React.FC<ScheduleScreenProps> = ({
     },
     {
       id: 7,
-      date: "22일",
+      date: "2025-08-22",
       title: "Healthy Meal Plan",
       location: "서울 서초구",
       time: "오전11:00",
@@ -98,7 +102,7 @@ export const ScheduleScreen: React.FC<ScheduleScreenProps> = ({
     },
     {
       id: 8,
-      date: "28일",
+      date: "2025-08-28",
       title: "서울연세외과",
       location: "서울 서초구",
       time: "오후 02:30",
@@ -106,7 +110,7 @@ export const ScheduleScreen: React.FC<ScheduleScreenProps> = ({
     },
     {
       id: 9,
-      date: "26일",
+      date: "2025-08-26",
       title: "웰리스컴 Wellness Come",
       location: "서울 서초구",
       time: "오후 02:30",
@@ -114,22 +118,20 @@ export const ScheduleScreen: React.FC<ScheduleScreenProps> = ({
     },
     {
       id: 10,
-      date: "22일",
+      date: "2025-08-22",
       title: "Healthy Meal Plan",
       location: "서울 서초구",
       time: "오전 09:00",
-      status: "예약확정"
+      status: "이용완료"
     }
   ];
 
   // 새로운 예약이 있으면 목록 맨 위에 추가
   const allReservations = React.useMemo(() => {
     if (newReservation) {
-      const newDate = new Date(newReservation.date);
-      const day = newDate.getDate();
       const newReservationItem = {
         id: Date.now(), // 고유 ID 생성
-        date: `${day}일`,
+        date: newReservation.date, // 이미 YYYY-MM-DD 형식
         title: newReservation.service.title,
         location: newReservation.location.address,
         time: newReservation.time,
@@ -145,124 +147,172 @@ export const ScheduleScreen: React.FC<ScheduleScreenProps> = ({
   };
 
   const handlePrevMonth = () => {
-    // 이전 달로 이동하는 로직
+    const newDate = new Date(currentDate);
+    newDate.setMonth(newDate.getMonth() - 1);
+    setCurrentDate(newDate);
   };
 
   const handleNextMonth = () => {
-    // 다음 달로 이동하는 로직
+    const newDate = new Date(currentDate);
+    newDate.setMonth(newDate.getMonth() + 1);
+    setCurrentDate(newDate);
+  };
+
+  const handleTodayPress = () => {
+    const today = new Date();
+    setSelectedDate(today);
+    setCurrentDate(today);
+  };
+
+  const handleDateSelect = (day: number) => {
+    const newSelectedDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
+    setSelectedDate(newSelectedDate);
+  };
+
+  // 선택된 날짜의 예약 목록 가져오기
+  const getReservationsForSelectedDate = () => {
+    const year = selectedDate.getFullYear();
+    const month = selectedDate.getMonth() + 1;
+    const day = selectedDate.getDate();
+    const selectedDateString = `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+
+    return allReservations.filter((reservation: any) => {
+      return reservation.date === selectedDateString;
+    });
+  };
+
+  // 캘린더 날짜 생성 함수
+  const generateCalendarDays = () => {
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth();
+
+    // 해당 월의 첫 번째 날과 마지막 날
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0);
+
+    // 첫 번째 날의 요일 (0: 일요일, 1: 월요일, ...)
+    const firstDayOfWeek = firstDay.getDay();
+    // 월요일을 0으로 변환 (0: 월요일, 1: 화요일, ..., 6: 일요일)
+    const adjustedFirstDayOfWeek = firstDayOfWeek === 0 ? 6 : firstDayOfWeek - 1;
+
+    const days = [];
+
+    // 예약이 있는 날짜들 확인
+    const hasReservation = (day: number) => {
+      const dateString = `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+      return allReservations.some((reservation: any) => reservation.date === dateString);
+    };
+
+    // 이전 달의 날짜들
+    const prevMonthLastDay = new Date(year, month, 0);
+    for (let i = adjustedFirstDayOfWeek - 1; i >= 0; i--) {
+      const day = prevMonthLastDay.getDate() - i;
+      days.push(
+        <Text key={`prev-${day}`} style={[styles.dateText, styles.otherMonthText]}>
+          {day}
+        </Text>
+      );
+    }
+
+    // 현재 달의 날짜들
+    const today = new Date();
+    const isToday = (day: number) => {
+      return today.getDate() === day && today.getMonth() === month && today.getFullYear() === year;
+    };
+
+    const isSelected = (day: number) => {
+      return selectedDate.getDate() === day && selectedDate.getMonth() === month && selectedDate.getFullYear() === year;
+    };
+
+    for (let day = 1; day <= lastDay.getDate(); day++) {
+      const hasReservationOnDay = hasReservation(day);
+
+      if (isSelected(day)) {
+        days.push(
+          <View key={`current-${day}`} style={styles.selectedDateContainer}>
+            <Text style={[styles.dateText, styles.selectedDate]}>{day}</Text>
+            <View style={hasReservationOnDay ? styles.dot : styles.dotInactive} />
+          </View>
+        );
+      } else if (isToday(day)) {
+        days.push(
+          <TouchableOpacity key={`current-${day}`} style={styles.todayDateContainer} onPress={() => handleDateSelect(day)}>
+            <Text style={[styles.dateText, styles.todayDate]}>{day}</Text>
+            <View style={hasReservationOnDay ? styles.dot : styles.dotInactive} />
+          </TouchableOpacity>
+        );
+      } else {
+        days.push(
+          <TouchableOpacity key={`current-${day}`} style={styles.dateContainer} onPress={() => handleDateSelect(day)}>
+            <Text style={styles.dateText}>{day}</Text>
+            <View style={hasReservationOnDay ? styles.dot : styles.dotInactive} />
+          </TouchableOpacity>
+        );
+      }
+    }
+
+    // 다음 달의 날짜들 (캘린더를 42개 셀로 맞추기 위해)
+    const remainingDays = 42 - days.length;
+    for (let day = 1; day <= remainingDays; day++) {
+      days.push(
+        <Text key={`next-${day}`} style={[styles.dateText, styles.otherMonthText]}>
+          {day}
+        </Text>
+      );
+    }
+
+    return days;
   };
 
   const renderCalendarView = () => (
     <ScrollView style={styles.calendarContainer} showsVerticalScrollIndicator={false}>
-      {/* 월 헤더 */}
-      <View style={styles.monthHeader}>
-        <TouchableOpacity style={styles.arrowButton} onPress={handlePrevMonth}>
-          <Text style={styles.arrowIcon}>‹</Text>
-        </TouchableOpacity>
-        <Text style={styles.monthText}>{currentMonth}</Text>
-        <View style={styles.todayContainer}>
-          <Text style={styles.todayText}>오늘</Text>
+      <View style={styles.section}>
+        {/* 요일 헤더 */}
+        <View style={styles.weekdayHeader}>
+          <Text style={styles.weekdayText}>월</Text>
+          <Text style={styles.weekdayText}>화</Text>
+          <Text style={styles.weekdayText}>수</Text>
+          <Text style={styles.weekdayText}>목</Text>
+          <Text style={styles.weekdayText}>금</Text>
+          <Text style={styles.weekdayText}>토</Text>
+          <Text style={styles.weekdayText}>일</Text>
         </View>
-        <TouchableOpacity style={styles.arrowButton} onPress={handleNextMonth}>
-          <Text style={styles.arrowIcon}>›</Text>
-        </TouchableOpacity>
+
+        {/* 캘린더 그리드 */}
+        <View style={styles.calendarGrid}>{generateCalendarDays()}</View>
       </View>
 
-      {/* 요일 헤더 */}
-      <View style={styles.weekdayHeader}>
-        <Text style={styles.weekdayText}>월</Text>
-        <Text style={styles.weekdayText}>화</Text>
-        <Text style={styles.weekdayText}>수</Text>
-        <Text style={styles.weekdayText}>목</Text>
-        <Text style={styles.weekdayText}>금</Text>
-        <Text style={styles.weekdayText}>토</Text>
-        <Text style={styles.weekdayText}>일</Text>
-      </View>
-
-      {/* 캘린더 그리드 */}
-      <View style={styles.calendarGrid}>
-        {/* 이전 달 날짜들 */}
-        <Text style={[styles.dateText, styles.otherMonthText]}>27</Text>
-        <Text style={[styles.dateText, styles.otherMonthText]}>28</Text>
-        <Text style={[styles.dateText, styles.otherMonthText]}>29</Text>
-        <Text style={[styles.dateText, styles.otherMonthText]}>30</Text>
-
-        {/* 현재 달 날짜들 */}
-        <Text style={styles.dateText}>1</Text>
-        <Text style={styles.dateText}>2</Text>
-        <Text style={styles.dateText}>3</Text>
-        <Text style={styles.dateText}>4</Text>
-        <Text style={styles.dateText}>5</Text>
-        <View style={styles.selectedDateContainer}>
-          <Text style={[styles.dateText, styles.selectedDate]}>6</Text>
-        </View>
-        <Text style={styles.dateText}>7</Text>
-        <Text style={styles.dateText}>8</Text>
-        <Text style={styles.dateText}>9</Text>
-        <Text style={styles.dateText}>10</Text>
-        <Text style={styles.dateText}>11</Text>
-        <Text style={styles.dateText}>12</Text>
-        <Text style={styles.dateText}>13</Text>
-        <Text style={styles.dateText}>14</Text>
-        <Text style={styles.dateText}>15</Text>
-        <Text style={styles.dateText}>16</Text>
-        <Text style={styles.dateText}>17</Text>
-        <Text style={styles.dateText}>18</Text>
-        <Text style={styles.dateText}>19</Text>
-        <Text style={styles.dateText}>20</Text>
-        <Text style={styles.dateText}>21</Text>
-        <Text style={styles.dateText}>22</Text>
-        <Text style={styles.dateText}>23</Text>
-        <Text style={styles.dateText}>24</Text>
-        <Text style={styles.dateText}>25</Text>
-        <Text style={styles.dateText}>26</Text>
-        <Text style={styles.dateText}>27</Text>
-        <Text style={styles.dateText}>28</Text>
-        <Text style={styles.dateText}>29</Text>
-        <Text style={styles.dateText}>30</Text>
-        <Text style={styles.dateText}>31</Text>
-      </View>
-
-      {/* 예약 표시 점들 */}
-      <View style={styles.reservationDots}>
-        <View style={[styles.dot, styles.dot1]} />
-        <View style={[styles.dot, styles.dot6]} />
-        <View style={[styles.dot, styles.dot8]} />
-        <View style={[styles.dot, styles.dot13]} />
-        <View style={[styles.dot, styles.dot15]} />
-        <View style={[styles.dot, styles.dot20]} />
-        <View style={[styles.dot, styles.dot22]} />
-        <View style={[styles.dot, styles.dot26]} />
-        <View style={[styles.dot, styles.dot29]} />
-      </View>
-
-      {/* 구분선 */}
-      <View style={styles.divider} />
-
-      {/* 오늘 예약 섹션 */}
+      {/* 선택된 날짜의 예약 섹션 */}
       <View style={styles.section}>
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>오늘 예약</Text>
-          <View style={styles.sectionDot} />
         </View>
-        <View style={styles.reservationCard}>
-          <View style={styles.reservationImage} />
-          <View style={styles.reservationInfo}>
-            <Text style={styles.reservationLocation}>서울 서초구</Text>
-            <Text style={styles.reservationTitle}>마인드앤바디 포 어덜트</Text>
-            <Text style={styles.reservationTime}>오후 02:30</Text>
+
+        {getReservationsForSelectedDate().length > 0 ? (
+          getReservationsForSelectedDate().map((reservation: any, index: number) => (
+            <View key={index} style={styles.reservationCard}>
+              <Image source={require("../assets/main/reservation-1.png")} style={styles.reservationImage} resizeMode="cover" />
+              <View style={styles.reservationInfo}>
+                <Text style={styles.reservationLocation}>{reservation.location}</Text>
+                <Text style={styles.reservationTitle}>{reservation.title}</Text>
+                <Text style={styles.reservationTime}>{reservation.time}</Text>
+              </View>
+            </View>
+          ))
+        ) : (
+          <View style={styles.noReservationCard}>
+            <Text style={styles.noReservationText}>예약된 일정이 없습니다.</Text>
           </View>
+        )}
+
+        {/* 추천 서비스 섹션 */}
+
+        <View style={[styles.sectionHeader, { marginTop: 20 }]}>
+          <Text style={styles.sectionTitle}>추천 서비스</Text>
         </View>
-      </View>
 
-      {/* 구분선 */}
-      <View style={styles.divider} />
-
-      {/* 추천 서비스 섹션 */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>추천 서비스</Text>
         <View style={styles.reservationCard}>
-          <View style={styles.reservationImage} />
+          <Image source={require("../assets/services/service-image-1.png")} style={styles.reservationImage} resizeMode="cover" />
           <View style={styles.reservationInfo}>
             <Text style={styles.reservationLocation}>건강 프로그램</Text>
             <Text style={styles.reservationTitle}>웰리스컴 Wellness Come</Text>
@@ -288,29 +338,30 @@ export const ScheduleScreen: React.FC<ScheduleScreenProps> = ({
       <ScrollView style={styles.reservationContainer} showsVerticalScrollIndicator={false}>
         {Object.entries(groupedReservations).map(([date, dateReservations]: [string, any]) => (
           <View key={date} style={styles.dateSection}>
-            <Text style={styles.dateTitle}>{date}</Text>
+            <Text style={styles.dateTitle}>{new Date(date).getDate()}일</Text>
             {dateReservations.map((reservation: any) => {
               // ReservationDetailScreen에서 사용할 수 있는 형식으로 변환
               const reservationData = {
                 id: reservation.id.toString(),
                 title: reservation.title,
-                instructor: "최다니엘 강사", // 기본값
-                date: `2026년 10월 ${reservation.date}`,
+                instructor: "최다니엘 강사",
+                date: `2025년 8월 ${new Date(reservation.date).getDate()}일`,
                 time: reservation.time,
                 location: reservation.location,
                 status: reservation.status === "예약확정" ? "confirmed" : "pending",
-                image: require("../assets/main/reservation-1.png"), // 기본 이미지
+                image: require("../assets/main/reservation-1.png"),
                 description: "호흡의 리듬을 따라 자연스럽게 자세를 교정하고 바른 신체 연결동작을 통해 체형교정및 심신안정을 찾도록 도움을 드립니다.",
                 cancellationPolicy: "예약변경은 클래스 시작 4시간 전까지 가능합니다.\n클래스 시작 2시간 전까지 예약취소 가능합니다.",
                 additionalInfo: "예약된 회원분만 참여 가능하며, 양도나 대리 수업참관을 지양합니다."
               };
-              
+
               return (
                 <TouchableOpacity key={reservation.id} style={styles.reservationItem} onPress={() => onReservationDetailPress?.(reservationData)}>
-                                  <View style={styles.reservationContent}>
+                  <View style={styles.reservationContent}>
                     <Text style={styles.reservationTitle}>{reservation.title}</Text>
-                    <Text style={styles.reservationLocation}>{reservation.location}</Text>
-                    <Text style={styles.reservationTime}>{reservation.time}</Text>
+                    <Text style={styles.reservationLocation}>
+                      {reservation.location} <Text style={styles.reservationTime}> | {reservation.time}</Text>
+                    </Text>
                   </View>
                   <View style={styles.reservationStatus}>
                     <Text style={styles.statusText}>{reservation.status}</Text>
@@ -318,7 +369,6 @@ export const ScheduleScreen: React.FC<ScheduleScreenProps> = ({
                 </TouchableOpacity>
               );
             })}
-            ))}
           </View>
         ))}
       </ScrollView>
@@ -335,6 +385,7 @@ export const ScheduleScreen: React.FC<ScheduleScreenProps> = ({
       currentTab={currentTab}
       onTabPress={onTabPress}
       onSideMenuItemPress={onSideMenuItemPress}
+      isWideLayout={true}
     >
       {/* Tab Navigation */}
       <View style={styles.tabContainer}>
@@ -349,6 +400,21 @@ export const ScheduleScreen: React.FC<ScheduleScreenProps> = ({
         </TouchableOpacity>
       </View>
 
+      <View style={styles.monthHeaderContainer}>
+        {/* 월 헤더 */}
+        <View style={styles.monthHeader}>
+          <TouchableOpacity style={styles.arrowButton} onPress={handlePrevMonth}>
+            <Text style={styles.arrowIcon}>‹</Text>
+          </TouchableOpacity>
+          <Text style={styles.monthText}>{currentMonth}</Text>
+          <TouchableOpacity style={styles.arrowButton} onPress={handleNextMonth}>
+            <Text style={styles.arrowIcon}>›</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.todayContainer} onPress={handleTodayPress}>
+            <Text style={styles.todayText}>오늘</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
       {/* Content */}
       {activeTab === "calendar" ? renderCalendarView() : renderReservationView()}
     </CommonLayout>
@@ -356,34 +422,12 @@ export const ScheduleScreen: React.FC<ScheduleScreenProps> = ({
 };
 
 const styles = StyleSheet.create({
-  notificationIcon: {
-    fontSize: 18,
-    color: "#2B2B2B"
-  },
-  notificationBadge: {
-    position: "absolute",
-    top: 0,
-    right: 0,
-    width: 6,
-    height: 6,
-    backgroundColor: "#ECA31D",
-    borderRadius: 3
-  },
-  couponButton: {
-    width: 24,
-    height: 24,
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  couponIcon: {
-    fontSize: 18,
-    color: "#2B2B2B"
-  },
   tabContainer: {
     flexDirection: "row",
     backgroundColor: "#FFFFFF",
     borderBottomWidth: 1,
-    borderBottomColor: "#EFF1F3"
+    borderBottomColor: "#EFF1F3",
+    paddingHorizontal: 20
   },
   tabButton: {
     flex: 1,
@@ -403,14 +447,19 @@ const styles = StyleSheet.create({
     color: "#2B2B2B"
   },
   calendarContainer: {
-    flex: 1,
-    paddingTop: 20
+    flex: 1
+  },
+  monthHeaderContainer: {
+    paddingTop: 20,
+    paddingHorizontal: 20,
+    backgroundColor: "#FFFFFF"
   },
   monthHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 20
+    marginBottom: 20,
+    backgroundColor: "#FFFFFF"
   },
   arrowButton: {
     width: 24,
@@ -445,27 +494,30 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   weekdayText: {
-    flex: 1,
+    width: "14.28%",
     textAlign: "center",
     fontSize: 14,
     fontWeight: "400",
-    color: "#2B2B2B"
+    color: "#2B2B2B",
+    minWidth: 40
   },
   calendarGrid: {
     flexDirection: "row",
     flexWrap: "wrap",
-    marginBottom: 20,
-    position: "relative"
+    position: "relative",
+    marginBottom: 10,
+    backgroundColor: "#FFFFFF"
   },
   dateText: {
     width: "14.28%",
     height: 48,
     textAlign: "center",
     lineHeight: 48,
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: "900",
     color: "#2B2B2B",
-    position: "relative"
+    position: "relative",
+    minWidth: 40
   },
   otherMonthText: {
     color: "#B1B8C0"
@@ -474,16 +526,46 @@ const styles = StyleSheet.create({
     width: "14.28%",
     height: 48,
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    minWidth: 40,
+    position: "relative"
   },
   selectedDate: {
     backgroundColor: "#2B2B2B",
-    borderRadius: 24,
+    borderRadius: 20,
     color: "#FFFFFF",
-    width: 48,
-    height: 48,
+    width: 40,
+    height: 40,
     textAlign: "center",
-    lineHeight: 48
+    lineHeight: 40,
+    fontSize: 14,
+    fontWeight: "900"
+  },
+  todayDateContainer: {
+    width: "14.28%",
+    height: 48,
+    justifyContent: "center",
+    alignItems: "center",
+    minWidth: 40,
+    position: "relative"
+  },
+  todayDate: {
+    backgroundColor: "#B48327",
+    borderRadius: 20,
+    color: "#FFFFFF",
+    width: 40,
+    height: 40,
+    textAlign: "center",
+    lineHeight: 40,
+    fontSize: 14,
+    fontWeight: "900"
+  },
+  dateContainer: {
+    width: "14.28%",
+    height: 48,
+    justifyContent: "center",
+    alignItems: "center",
+    minWidth: 40
   },
   reservationDots: {
     position: "absolute",
@@ -494,26 +576,32 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     pointerEvents: "none"
   },
+
   dot: {
-    width: 6,
-    height: 6,
+    width: 5,
+    height: 5,
     borderRadius: 3,
     backgroundColor: "#B48327",
-    position: "absolute"
+    position: "absolute",
+    bottom: 0,
+    marginBottom: -5,
+    alignSelf: "center"
   },
-  dot1: { top: 70, left: 125 },
-  dot6: { top: 166, left: 221 },
-  dot8: { top: 214, left: 77 },
-  dot13: { top: 262, left: 125 },
-  dot15: { top: 310, left: 77 },
-  dot20: { top: 406, left: 125 },
-  dot22: { top: 454, left: 77 },
-  dot26: { top: 550, left: 125 },
-  dot29: { top: 550, left: 221 },
+  dotInactive: {
+    width: 5,
+    height: 5,
+    borderRadius: 3,
+    backgroundColor: "transparent",
+    position: "absolute",
+    bottom: 0,
+    alignSelf: "center"
+  },
+
   reservationContainer: {
     flex: 1,
-    paddingHorizontal: 20,
-    paddingTop: 20
+    paddingTop: 20,
+    backgroundColor: "#FFFFFF",
+    paddingHorizontal: 20
   },
   dateSection: {
     marginBottom: 20
@@ -527,14 +615,14 @@ const styles = StyleSheet.create({
   reservationItem: {
     flexDirection: "row",
     backgroundColor: "#FFFFFF",
-    borderWidth: 1,
-    borderColor: "#D6DADF",
-    borderRadius: 6,
-    padding: 15,
-    marginBottom: 10
+    borderRadius: 6
   },
   reservationContent: {
-    flex: 1
+    flex: 1,
+    justifyContent: "center",
+    borderBottomWidth: 1,
+    borderBottomColor: "#EFF1F3",
+    paddingVertical: 10
   },
   reservationTitle: {
     fontSize: 16,
@@ -559,7 +647,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 5,
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    height: 23,
+    marginRight: 10,
+    marginBottom: 10,
+    marginTop: 10
   },
   statusText: {
     fontSize: 11,
@@ -586,38 +678,35 @@ const styles = StyleSheet.create({
   divider: {
     height: 1,
     backgroundColor: "#EFF1F3",
-    marginVertical: 20,
-    marginHorizontal: 20
+    marginBottom: 20
   },
   section: {
-    marginBottom: 20
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    marginBottom: 10,
+    backgroundColor: "#FFFFFF"
   },
   sectionHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 10
+    paddingVertical: 10,
+    marginBottom: 10,
+    paddingBottom: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: "#EFF1F3"
   },
   sectionTitle: {
     fontSize: 18,
     fontWeight: "800",
     color: "#2B2B2B"
   },
-  sectionDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: "#B48327",
-    marginLeft: 5
-  },
+
   reservationCard: {
     flexDirection: "row",
-    backgroundColor: "#FFFFFF",
-    borderWidth: 1,
-    borderColor: "#D6DADF",
     borderRadius: 6,
-    padding: 15,
-    alignItems: "center"
+    alignItems: "center",
+    paddingVertical: 10
   },
   reservationImage: {
     width: 50,
@@ -628,5 +717,18 @@ const styles = StyleSheet.create({
   },
   reservationInfo: {
     flex: 1
+  },
+  noReservationCard: {
+    backgroundColor: "#F8F9FA",
+    borderRadius: 6,
+    padding: 20,
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  noReservationText: {
+    fontSize: 14,
+    fontWeight: "400",
+    color: "#79818B",
+    textAlign: "center"
   }
 });

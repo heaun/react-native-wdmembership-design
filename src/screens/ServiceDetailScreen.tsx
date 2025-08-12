@@ -65,17 +65,17 @@ export const ServiceDetailScreen: React.FC<ServiceDetailScreenProps> = ({
           {
             id: 1,
             image: require("../assets/services/service-image-1.png"),
-            description: "자세교정과 심신안정을 위한 전문 프로그램으로 체형을 개선하고 건강한 몸을 만듭니다."
+            description: "24시간 응급내과 진료, 응급 이송 서비스, 일상 외 응급상황에도 빠른 대응과 진단으로 웰니스의 격을 높입니다."
           },
           {
             id: 2,
             image: require("../assets/services/service-image-2.png"),
-            description: "전문 강사의 지도하에 체계적인 운동을 통해 몸의 균형을 바로잡습니다."
+            description: "겉보다 속을 먼저 살피는 진단, 정확한 진단과 따뜻한 관리로 메디컬 웰니스의 기초를 다집니다."
           },
           {
             id: 3,
             image: require("../assets/services/service-image-3.png"),
-            description: "개인별 맞춤 프로그램으로 효과적인 체형 교정과 건강 관리 서비스를 제공합니다."
+            description: "호르몬관리, 안티에이징, 기본 건강 관리 등 몸과 건강의 균형을 바로잡는 가장 과학적인 진료와 차별화된 의료 상품을 제공합니다."
           }
         ],
         locations: [
@@ -302,6 +302,7 @@ export const ServiceDetailScreen: React.FC<ServiceDetailScreenProps> = ({
       currentTab={currentTab}
       onTabPress={onTabPress}
       onSideMenuItemPress={onSideMenuItemPress}
+      isWideLayout={true}
     >
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
         {/* Service Header Image */}
@@ -320,12 +321,25 @@ export const ServiceDetailScreen: React.FC<ServiceDetailScreenProps> = ({
         <View style={styles.contentSection}>
           {/* Service List */}
           <View style={styles.serviceList}>
-            {serviceDetailData.serviceItems.map((item) => (
+            {serviceDetailData.serviceItems.map((item, index) => (
               <View key={item.id} style={styles.serviceListItem}>
-                <Image source={item.image} style={styles.serviceImage} resizeMode="cover" />
-                <View style={styles.serviceTextContainer}>
-                  <Text style={styles.descriptionText}>{item.description}</Text>
-                </View>
+                {index === 1 ? (
+                  // index가 1번째인 경우 (두 번째 항목): 텍스트가 왼쪽, 이미지가 오른쪽
+                  <>
+                    <View style={styles.serviceTextContainer}>
+                      <Text style={styles.descriptionText}>{item.description}</Text>
+                    </View>
+                    <Image source={item.image} style={styles.serviceImage} resizeMode="cover" />
+                  </>
+                ) : (
+                  // 나머지 항목들: 이미지가 왼쪽, 텍스트가 오른쪽
+                  <>
+                    <Image source={item.image} style={styles.serviceImage} resizeMode="cover" />
+                    <View style={styles.serviceTextContainer}>
+                      <Text style={styles.descriptionText}>{item.description}</Text>
+                    </View>
+                  </>
+                )}
               </View>
             ))}
           </View>
@@ -385,7 +399,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
     borderRadius: 10,
     padding: 20,
-    margin: 19,
     alignItems: "center",
     shadowColor: "#000000",
     shadowOffset: {
@@ -394,7 +407,10 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.1,
     shadowRadius: 4,
-    elevation: 3
+    elevation: 3,
+    marginTop: -90,
+    marginHorizontal: 20,
+    marginBottom: 30
   },
   serviceTitle: {
     fontSize: 30,
@@ -422,7 +438,7 @@ const styles = StyleSheet.create({
   },
   contentSection: {
     backgroundColor: "#FFFFFF",
-    paddingHorizontal: 20
+    paddingHorizontal: 30
   },
   serviceList: {
     marginBottom: 40
@@ -430,24 +446,24 @@ const styles = StyleSheet.create({
   serviceListItem: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 30,
+    justifyContent: "space-between",
+    marginBottom: 10,
     gap: 20
   },
   serviceImage: {
-    width: 105,
-    height: 105,
-    borderRadius: 52.5,
-    flex: 0.5
+    width: 100,
+    height: 100,
+    borderRadius: 50
   },
-  serviceTextContainer: {
-    flex: 0.5
-  },
+  serviceTextContainer: {},
   descriptionText: {
     fontSize: 13,
     fontWeight: "700",
     color: "#000000",
     lineHeight: 20,
-    letterSpacing: -0.52
+    letterSpacing: -0.52,
+    minWidth: 160,
+    maxWidth: 200
   },
   locationSection: {
     marginBottom: 30

@@ -149,11 +149,11 @@ export const TimeSelectionScreen: React.FC<TimeSelectionScreenProps> = ({
           <View style={styles.legend}>
             <View style={styles.legendItem}>
               <View style={styles.legendBox} />
-              <Text style={styles.legendText}>선택가능</Text>
+              <Text style={styles.legendText}>선택 불가</Text>
             </View>
             <View style={styles.legendItem}>
               <View style={[styles.legendBox, styles.unavailableLegendBox]} />
-              <Text style={styles.legendText}>선택 불가</Text>
+              <Text style={styles.legendText}>선택가능</Text>
             </View>
           </View>
         </ScrollView>
@@ -181,14 +181,12 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "800",
     color: "#2B2B2B",
-    marginHorizontal: 20,
     marginTop: 20,
     marginBottom: 20,
     letterSpacing: -0.8
   },
   timeContainer: {
-    flex: 1,
-    paddingHorizontal: 20
+    flex: 1
   },
   timeSection: {
     marginBottom: 30
@@ -208,16 +206,16 @@ const styles = StyleSheet.create({
   timeSlot: {
     width: 80,
     height: 40,
-    backgroundColor: "#EFF1F3",
+    backgroundColor: "#FFFFFF",
     borderWidth: 1,
-    borderColor: "#B1B8C0",
+    borderColor: "#2B2B2B",
     borderRadius: 6,
     justifyContent: "center",
     alignItems: "center"
   },
   unavailableTimeSlot: {
-    backgroundColor: "#FFFFFF",
-    borderColor: "#2B2B2B"
+    backgroundColor: "#EFF1F3",
+    borderColor: "#B1B8C0"
   },
   selectedTimeSlot: {
     backgroundColor: "#B48327",
@@ -226,19 +224,18 @@ const styles = StyleSheet.create({
   timeText: {
     fontSize: 13,
     fontWeight: "800",
-    color: "#B1B8C0",
+    color: "#2B2B2B",
     letterSpacing: -0.52
   },
   unavailableTimeText: {
-    color: "#2B2B2B"
+    color: "#B1B8C0"
   },
   selectedTimeText: {
     color: "#FFFFFF"
   },
   legend: {
     flexDirection: "row",
-    justifyContent: "center",
-    marginTop: 30,
+    justifyContent: "flex-start",
     gap: 40
   },
   legendItem: {

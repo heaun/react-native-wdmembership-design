@@ -564,11 +564,13 @@ export const AppNavigator: React.FC = () => {
       case "ReservationConfirm":
         return (
           <ReservationConfirmScreen
-            service={selectedService}
-            selectedLocation={selectedLocation}
-            selectedDate={selectedDate}
-            selectedTime={selectedTime}
-            selectedPersonCount={selectedPersonCount}
+            reservationData={{
+              service: selectedService,
+              location: selectedLocation,
+              date: selectedDate,
+              time: selectedTime,
+              personCount: selectedPersonCount
+            }}
             onBackPress={handleBackToPersonSelection}
             onConfirmReservation={handleConfirmReservation}
             currentTab={currentScreen}
@@ -588,7 +590,17 @@ export const AppNavigator: React.FC = () => {
           />
         );
       case "MembershipInfo":
-        return <MembershipInfoScreen onBackPress={handleBackToHome} onMenuPress={() => {}} onCouponPress={() => {}} onNotificationPress={() => {}} />;
+        return (
+          <MembershipInfoScreen
+            onBackPress={handleBackToHome}
+            onMenuPress={() => {}}
+            onCouponPress={() => {}}
+            onNotificationPress={() => {}}
+            currentTab={currentScreen}
+            onTabPress={handleTabPress}
+            onSideMenuItemPress={handleSideMenuItemPress}
+          />
+        );
       case "VehicleManagement":
         return (
           <VehicleManagementScreen onBackPress={handleBackToHome} onMenuPress={() => {}} onCouponPress={() => {}} onNotificationPress={() => {}} />

@@ -222,12 +222,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    marginHorizontal: 20,
     marginBottom: 20,
-    paddingVertical: 15,
-    borderWidth: 1,
-    borderColor: "#D6DADF",
-    borderRadius: 6
+    paddingVertical: 15
   },
   monthButton: {
     width: 24,
@@ -254,7 +250,6 @@ const styles = StyleSheet.create({
   },
   weekHeader: {
     flexDirection: "row",
-    marginHorizontal: 20,
     marginBottom: 10
   },
   weekDayText: {
@@ -267,8 +262,7 @@ const styles = StyleSheet.create({
   },
   calendarGrid: {
     flexDirection: "row",
-    flexWrap: "wrap",
-    marginHorizontal: 20
+    flexWrap: "wrap"
   },
   calendarDay: {
     width: 48,
@@ -299,9 +293,6 @@ const styles = StyleSheet.create({
   },
   unavailableText: {
     color: "#B1B8C0"
-  },
-  todayText: {
-    color: "#FFFFFF"
   },
   selectedDayText: {
     color: "#FFFFFF"

@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image } from "react-native";
 import { CommonLayout } from "../components/CommonLayout";
 
-interface ReservationConfirmScreenProps {
+interface ReservationData {
   service: {
     id: number;
     title: string;
@@ -10,15 +10,19 @@ interface ReservationConfirmScreenProps {
     tags: string;
     image: any;
   };
-  selectedLocation: {
+  location: {
     id: number;
     name: string;
     address: string;
     image: any;
   };
-  selectedDate: string;
-  selectedTime: string;
-  selectedPersonCount: number;
+  date: string;
+  time: string;
+  personCount: number;
+}
+
+interface ReservationConfirmScreenProps {
+  reservationData?: ReservationData;
   onBackPress?: () => void;
   onConfirmReservation?: () => void;
   currentTab?: string;
@@ -27,17 +31,35 @@ interface ReservationConfirmScreenProps {
 }
 
 export const ReservationConfirmScreen: React.FC<ReservationConfirmScreenProps> = ({
-  service,
-  selectedLocation,
-  selectedDate,
-  selectedTime,
-  selectedPersonCount,
+  reservationData,
   onBackPress,
   onConfirmReservation,
   currentTab,
   onTabPress,
   onSideMenuItemPress
 }) => {
+  // 기본 데이터 (reservationData가 없을 때 사용)
+  const defaultData: ReservationData = {
+    service: {
+      id: 1,
+      title: "마인드앤바디 포 어덜트",
+      category: "건강 프로그램",
+      tags: "자세교정, 심신안정",
+      image: require("../assets/services/service-image-1.png")
+    },
+    location: {
+      id: 1,
+      name: "서초 메디웰하우스",
+      address: "서울 서초구 서초대로 396",
+      image: require("../assets/locations/mediwell-house.png")
+    },
+    date: "2026-10-31",
+    time: "14:30",
+    personCount: 1
+  };
+
+  const data = reservationData || defaultData;
+
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`;
@@ -72,11 +94,11 @@ export const ReservationConfirmScreen: React.FC<ReservationConfirmScreenProps> =
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <View style={styles.iconContainer}>
-              <Image source={selectedLocation.image} style={styles.locationIcon} resizeMode="cover" />
+              <Image source={require("../assets/icons/ic_location.png")} style={styles.iconStyle} />
             </View>
             <View style={styles.sectionContent}>
-              <Text style={styles.sectionTitle}>{selectedLocation.name}</Text>
-              <Text style={styles.sectionSubtitle}>{selectedLocation.address}</Text>
+              <Text style={styles.sectionTitle}>{data.location.name}</Text>
+              <Text style={styles.sectionSubtitle}>{data.location.address}</Text>
             </View>
           </View>
         </View>
@@ -85,10 +107,10 @@ export const ReservationConfirmScreen: React.FC<ReservationConfirmScreenProps> =
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <View style={styles.iconContainer}>
-              <Text style={styles.calendarIcon}>📅</Text>
+              <Image source={require("../assets/icons/ic_day.png")} style={styles.iconStyle} />
             </View>
             <View style={styles.sectionContent}>
-              <Text style={styles.sectionTitle}>{formatDate(selectedDate)}</Text>
+              <Text style={styles.sectionTitle}>{formatDate(data.date)}</Text>
             </View>
           </View>
         </View>
@@ -97,10 +119,10 @@ export const ReservationConfirmScreen: React.FC<ReservationConfirmScreenProps> =
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <View style={styles.iconContainer}>
-              <Text style={styles.clockIcon}>🕐</Text>
+              <Image source={require("../assets/icons/ic_time.png")} style={styles.iconStyle} />
             </View>
             <View style={styles.sectionContent}>
-              <Text style={styles.sectionTitle}>{formatTime(selectedTime)}</Text>
+              <Text style={styles.sectionTitle}>{formatTime(data.time)}</Text>
             </View>
           </View>
         </View>
@@ -109,12 +131,25 @@ export const ReservationConfirmScreen: React.FC<ReservationConfirmScreenProps> =
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <View style={styles.iconContainer}>
-              <Text style={styles.personIcon}>{selectedPersonCount === 1 ? "👤" : "👥"}</Text>
+              <Image source={require("../assets/icons/ic_people.png")} style={styles.iconStyle} />
             </View>
             <View style={styles.sectionContent}>
-              <Text style={styles.sectionTitle}>{selectedPersonCount}명</Text>
+              <Text style={styles.sectionTitle}>{data.personCount}명</Text>
             </View>
           </View>
+        </View>
+
+        {/* 예약 요약 카드 */}
+        <View style={styles.summaryCard}>
+          <Text style={styles.summaryTitle}>{data.service.title}</Text>
+          <Text style={styles.summaryName}>{data.location.name}</Text>
+          <Text style={styles.summaryLocation}>{data.location.address})</Text>
+          <View style={styles.summaryDivider} />
+          <Text style={styles.summaryDetails}>
+            {formatDate(data.date)} {formatTime(data.time)}
+            {"\n"}
+            참여인원 : {data.personCount}명
+          </Text>
         </View>
 
         {/* 안내 메시지 */}
@@ -123,21 +158,6 @@ export const ReservationConfirmScreen: React.FC<ReservationConfirmScreenProps> =
             선택하신 예약 내용입니다.{"\n"}
             예약 확정을 위해 다시 한 번 확인해주세요.{"\n"}각 항목마다 변경 및 수정이 가능하며,{"\n"}
             처음부터 다시 예약을 시작하실 수 있습니다.
-          </Text>
-        </View>
-
-        {/* 예약 요약 카드 */}
-        <View style={styles.summaryCard}>
-          <Text style={styles.summaryTitle}>{service.title}</Text>
-          <Text style={styles.summaryLocation}>
-            {selectedLocation.name}
-            {"\n"}({selectedLocation.address})
-          </Text>
-          <View style={styles.summaryDivider} />
-          <Text style={styles.summaryDetails}>
-            {formatDate(selectedDate)} {formatTime(selectedTime)}
-            {"\n"}
-            참여인원 : {selectedPersonCount}명
           </Text>
         </View>
       </ScrollView>
@@ -157,7 +177,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF"
   },
   section: {
-    paddingHorizontal: 20,
     paddingVertical: 15,
     borderBottomWidth: 1,
     borderBottomColor: "#D6DADF"
@@ -173,20 +192,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginRight: 30
   },
-  locationIcon: {
+  iconStyle: {
     width: 24,
     height: 24,
     borderRadius: 4
   },
-  calendarIcon: {
-    fontSize: 20
-  },
-  clockIcon: {
-    fontSize: 20
-  },
-  personIcon: {
-    fontSize: 20
-  },
+
   sectionContent: {
     flex: 1
   },
@@ -204,8 +215,7 @@ const styles = StyleSheet.create({
     letterSpacing: -0.48
   },
   messageContainer: {
-    paddingHorizontal: 20,
-    paddingVertical: 30
+    marginTop: 20
   },
   messageText: {
     fontSize: 13,
@@ -216,8 +226,8 @@ const styles = StyleSheet.create({
     letterSpacing: -0.52
   },
   summaryCard: {
+    marginTop: 20,
     marginHorizontal: 20,
-    marginBottom: 30,
     padding: 20,
     backgroundColor: "#EFF1F3",
     borderRadius: 6
@@ -230,19 +240,25 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     letterSpacing: -0.64
   },
+  summaryName: {
+    fontSize: 16,
+    fontWeight: "800",
+    color: "#2B2B2B",
+    textAlign: "center",
+    letterSpacing: -0.64
+  },
   summaryLocation: {
     fontSize: 16,
     fontWeight: "400",
     color: "#2B2B2B",
     textAlign: "center",
-    marginBottom: 10,
     lineHeight: 24,
     letterSpacing: -0.64
   },
   summaryDivider: {
     height: 1,
     backgroundColor: "#B1B8C0",
-    marginVertical: 10,
+    marginVertical: 5,
     borderStyle: "dashed"
   },
   summaryDetails: {

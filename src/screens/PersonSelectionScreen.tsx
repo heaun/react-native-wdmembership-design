@@ -36,18 +36,22 @@ export const PersonSelectionScreen: React.FC<PersonSelectionScreenProps> = ({
   onTabPress,
   onSideMenuItemPress
 }) => {
-  const [selectedPersonCount, setSelectedPersonCount] = useState<number | null>(null);
+  const [selectedPersonCount, setSelectedPersonCount] = useState<number>(1);
 
-  const personOptions = [1, 2, 3, 4, 5, 6, 7, 8];
+  const handleDecrease = () => {
+    if (selectedPersonCount > 1) {
+      setSelectedPersonCount(selectedPersonCount - 1);
+    }
+  };
 
-  const handlePersonPress = (count: number) => {
-    setSelectedPersonCount(count);
+  const handleIncrease = () => {
+    if (selectedPersonCount < 10) {
+      setSelectedPersonCount(selectedPersonCount + 1);
+    }
   };
 
   const handleConfirmPress = () => {
-    if (selectedPersonCount !== null) {
-      onPersonSelect?.(selectedPersonCount);
-    }
+    onPersonSelect?.(selectedPersonCount);
   };
 
   return (
@@ -66,29 +70,30 @@ export const PersonSelectionScreen: React.FC<PersonSelectionScreenProps> = ({
       <View style={styles.container}>
         <Text style={styles.title}>방문하실 인원을 선택해주세요</Text>
 
-        <View style={styles.personContainer}>
-          {personOptions.map((count) => (
-            <TouchableOpacity
-              key={count}
-              style={[styles.personOption, selectedPersonCount === count && styles.selectedPersonOption]}
-              onPress={() => handlePersonPress(count)}
-            >
-              <View style={styles.personCircle}>
-                <View style={styles.personIconContainer}>
-                  <Text style={styles.personIconText}>{count === 1 ? "👤" : "👥"}</Text>
-                </View>
-              </View>
-              <Text style={[styles.personText, selectedPersonCount === count && styles.selectedPersonText]}>{count}</Text>
-            </TouchableOpacity>
-          ))}
+        <View style={styles.counterContainer}>
+          <TouchableOpacity
+            style={[styles.counterButton, selectedPersonCount <= 1 && styles.disabledButton]}
+            onPress={handleDecrease}
+            disabled={selectedPersonCount <= 1}
+          >
+            <Text style={[styles.counterButtonText, selectedPersonCount <= 1 && styles.disabledButtonText]}>-</Text>
+          </TouchableOpacity>
+
+          <View style={styles.numberContainer}>
+            <Text style={styles.numberText}>{selectedPersonCount}</Text>
+          </View>
+
+          <TouchableOpacity
+            style={[styles.counterButton, selectedPersonCount >= 10 && styles.disabledButton]}
+            onPress={handleIncrease}
+            disabled={selectedPersonCount >= 10}
+          >
+            <Text style={[styles.counterButtonText, selectedPersonCount >= 10 && styles.disabledButtonText]}>+</Text>
+          </TouchableOpacity>
         </View>
 
         <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={[styles.confirmButton, selectedPersonCount === null && styles.disabledButton]}
-            onPress={handleConfirmPress}
-            disabled={selectedPersonCount === null}
-          >
+          <TouchableOpacity style={styles.confirmButton} onPress={handleConfirmPress}>
             <Text style={styles.confirmButtonText}>인원 선택</Text>
           </TouchableOpacity>
         </View>
@@ -106,21 +111,55 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "800",
     color: "#2B2B2B",
-    marginHorizontal: 20,
     marginTop: 20,
     marginBottom: 40,
     letterSpacing: -0.8
   },
+  counterContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 50,
+    gap: 50
+  },
+  counterButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: "#EFF1F3",
+    backgroundColor: "#FFFFFF",
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  counterButtonText: {
+    fontSize: 20,
+    fontWeight: "700",
+    color: "#2B2B2B"
+  },
+  disabledButtonText: {
+    color: "#CDCFD0"
+  },
+  numberContainer: {
+    minWidth: 60,
+    alignItems: "center"
+  },
+  numberText: {
+    fontSize: 30,
+    fontWeight: "900",
+    color: "#2B2B2B"
+  },
   personContainer: {
     flexDirection: "row",
     flexWrap: "wrap",
-    justifyContent: "center",
+    justifyContent: "space-between",
     paddingHorizontal: 20,
     gap: 20
   },
   personOption: {
     alignItems: "center",
-    marginBottom: 20
+    marginBottom: 20,
+    width: "30%"
   },
   selectedPersonOption: {
     // 선택된 옵션 스타일
@@ -136,6 +175,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
     marginBottom: 10
   },
+  selectedPersonCircle: {
+    borderColor: "#B48327",
+    backgroundColor: "#B48327"
+  },
   personIconContainer: {
     width: 24,
     height: 24,
@@ -144,6 +187,9 @@ const styles = StyleSheet.create({
   },
   personIconText: {
     fontSize: 16
+  },
+  selectedPersonIconText: {
+    color: "#FFFFFF"
   },
   personText: {
     fontSize: 30,

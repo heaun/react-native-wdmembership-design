@@ -8,9 +8,20 @@ interface MembershipInfoScreenProps {
   onMenuPress?: () => void;
   onCouponPress?: () => void;
   onNotificationPress?: () => void;
+  currentTab?: string;
+  onTabPress?: (tabName: string) => void;
+  onSideMenuItemPress?: (itemId: string) => void;
 }
 
-export const MembershipInfoScreen: React.FC<MembershipInfoScreenProps> = ({ onBackPress, onMenuPress, onCouponPress, onNotificationPress }) => {
+export const MembershipInfoScreen: React.FC<MembershipInfoScreenProps> = ({
+  onBackPress,
+  onMenuPress,
+  onCouponPress,
+  onNotificationPress,
+  currentTab,
+  onTabPress,
+  onSideMenuItemPress
+}) => {
   const [cardSlide, setCardSlide] = useState<number>(0);
 
   const handleMembershipBenefitsPress = () => {
@@ -129,6 +140,9 @@ export const MembershipInfoScreen: React.FC<MembershipInfoScreenProps> = ({ onBa
       onMenuPress={onMenuPress}
       onCouponPress={onCouponPress}
       onNotificationPress={onNotificationPress}
+      currentTab={currentTab}
+      onTabPress={onTabPress}
+      onSideMenuItemPress={onSideMenuItemPress}
       isWideLayout={true}
     >
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
@@ -178,14 +192,6 @@ export const MembershipInfoScreen: React.FC<MembershipInfoScreenProps> = ({ onBa
               </View>
               <Text style={styles.paymentDescription}>{paymentDescription}</Text>
             </View>
-
-            {/* 톱니바퀴 효과 */}
-            <View style={styles.gearBorder}>
-              {Array.from({ length: 20 }, (_, i) => (
-                <View key={i} style={styles.gearTooth} />
-              ))}
-            </View>
-
             <View style={styles.paymentButton}>
               <TouchableOpacity onPress={handlePaymentPress}>
                 <Text style={styles.paymentButtonText}>연회비 납부하기</Text>
@@ -290,8 +296,7 @@ export const MembershipInfoScreen: React.FC<MembershipInfoScreenProps> = ({ onBa
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: "#EFF1F3"
+    flex: 1
   },
   section: {
     paddingHorizontal: 20,
@@ -593,7 +598,7 @@ const styles = StyleSheet.create({
     marginVertical: 5
   },
   gearBorder: {
-    height: 8,
+    height: 1,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
@@ -601,9 +606,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#EFF1F3"
   },
   gearTooth: {
-    width: 4,
-    height: 8,
-    backgroundColor: "#D6DADF",
-    borderRadius: 2
+    width: 2,
+    height: 1,
+    backgroundColor: "#D6DADF"
   }
 });

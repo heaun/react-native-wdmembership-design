@@ -27,7 +27,7 @@ interface CommonLayoutProps {
 }
 
 export const CommonLayout: React.FC<CommonLayoutProps> = ({
-  title,
+  title = "타이틀",
   onBackPress,
   showBackButton = true,
   showTabBar = true,
@@ -158,7 +158,7 @@ export const CommonLayout: React.FC<CommonLayoutProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#ffffff",
+    backgroundColor: "#EFF1F3",
     paddingHorizontal: 5
   },
 
@@ -173,6 +173,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF"
   },
   topBar: {
+    backgroundColor: "#FFFFFF",
     position: "relative",
     flexDirection: "row",
     alignItems: "center",
