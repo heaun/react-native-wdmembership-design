@@ -159,11 +159,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#EFF1F3",
-    paddingHorizontal: 5
+    marginHorizontal: 5
   },
 
   wideContainer: {
-    paddingHorizontal: 0
+    marginHorizontal: 0
   },
 
   safeAreaTop: {
@@ -276,10 +276,12 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
+    backgroundColor: "#FFFFFF"
   },
   wideContent: {
-    paddingHorizontal: 0
+    paddingHorizontal: 0,
+    backgroundColor: "transparent"
   },
   contentWithoutTabBar: {},
   bottomTabBar: {

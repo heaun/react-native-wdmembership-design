@@ -45,84 +45,56 @@ export const ScheduleScreen: React.FC<ScheduleScreenProps> = ({
 
   const baseReservations = [
     {
-      id: 1,
+      id: "1",
+      title: "마인드 앤 바디 포 어덜트",
+      instructor: "최다니엘 강사",
       date: "2025-08-31",
-      title: "마인드앤바디 포 어덜트",
-      location: "서울 서초구",
-      time: "오후 02:30",
-      status: "예약확정"
+      time: "오후 02:30 ~03:30",
+      location: "서초 메디웰하우스 1층 마인드앤바디 201",
+      status: "confirmed",
+      image: require("../assets/main/reservation-1.png"),
+      description: "호흡의 리듬을 따라 자연스럽게 자세를 교정하고 바른 신체 연결동작을 통해 체형교정및 심신안정을 찾도록 도움을 드립니다.",
+      cancellationPolicy: "예약변경은 클래스 시작 4시간 전까지 가능합니다.\n클래스 시작 2시간 전까지 예약취소 가능합니다.",
+      additionalInfo: "예약된 회원분만 참여 가능하며, 양도나 대리 수업참관을 지양합니다."
     },
     {
-      id: 2,
+      id: "2",
+      title: "웰리스컴 Wellness Come",
+      instructor: "김영희 강사",
       date: "2025-08-28",
-      title: "웰리스컴 Wellness Come",
-      location: "서울 서초구",
-      time: "오전 11:00",
-      status: "예약확정"
+      time: "오전 11:00 ~12:00",
+      location: "서초 메디웰하우스 2층 웰니스존",
+      status: "confirmed",
+      image: require("../assets/main/reservation-1.png"),
+      description: "전문적인 운동 프로그램을 통해 체력 향상과 건강한 라이프스타일을 만들어갑니다.",
+      cancellationPolicy: "예약변경은 클래스 시작 4시간 전까지 가능합니다.\n클래스 시작 2시간 전까지 예약취소 가능합니다.",
+      additionalInfo: "예약된 회원분만 참여 가능하며, 양도나 대리 수업참관을 지양합니다."
     },
     {
-      id: 3,
-      date: "2025-08-26",
-      title: "웰리스컴 Wellness Come",
-      location: "서울 서초구",
-      time: "오후 02:30",
-      status: "예약확정"
-    },
-    {
-      id: 4,
-      date: "2025-08-22",
-      title: "웰리스컴 Wellness Come",
-      location: "서울 서초구",
-      time: "오전11:00",
-      status: "예약확정"
-    },
-    {
-      id: 5,
-      date: "2025-08-28",
+      id: "3",
       title: "GCC 스크린 골프",
-      location: "서울 서초구",
-      time: "오후 07:00",
-      status: "예약대기"
-    },
-    {
-      id: 6,
+      instructor: "박지훈 프로",
       date: "2025-08-26",
-      title: "마인드앤바디 포 어덜트",
-      location: "서울 서초구",
-      time: "오전 07:30",
-      status: "예약확정"
+      time: "오후 07:00 ~08:00",
+      location: "서초 골프연습장 3층",
+      status: "pending",
+      image: require("../assets/main/reservation-1.png"),
+      description: "스크린 골프를 통해 실전과 유사한 환경에서 골프 실력을 향상시킵니다.",
+      cancellationPolicy: "예약변경은 클래스 시작 4시간 전까지 가능합니다.\n클래스 시작 2시간 전까지 예약취소 가능합니다.",
+      additionalInfo: "예약된 회원분만 참여 가능하며, 양도나 대리 수업참관을 지양합니다."
     },
     {
-      id: 7,
-      date: "2025-08-22",
+      id: "4",
       title: "Healthy Meal Plan",
-      location: "서울 서초구",
-      time: "오전11:00",
-      status: "예약확정"
-    },
-    {
-      id: 8,
-      date: "2025-08-28",
-      title: "서울연세외과",
-      location: "서울 서초구",
-      time: "오후 02:30",
-      status: "예약확정"
-    },
-    {
-      id: 9,
-      date: "2025-08-26",
-      title: "웰리스컴 Wellness Come",
-      location: "서울 서초구",
-      time: "오후 02:30",
-      status: "예약확정"
-    },
-    {
-      id: 10,
+      instructor: "이미영 영양사",
       date: "2025-08-22",
-      title: "Healthy Meal Plan",
-      location: "서울 서초구",
-      time: "오전 09:00",
-      status: "이용완료"
+      time: "오전 09:00 ~10:00",
+      location: "서초 메디웰하우스 1층 영양상담실",
+      status: "completed",
+      image: require("../assets/main/reservation-1.png"),
+      description: "개인 맞춤형 영양 상담을 통해 건강한 식습관을 형성합니다.",
+      cancellationPolicy: "예약변경은 클래스 시작 4시간 전까지 가능합니다.\n클래스 시작 2시간 전까지 예약취소 가능합니다.",
+      additionalInfo: "예약된 회원분만 참여 가능하며, 양도나 대리 수업참관을 지양합니다."
     }
   ];
 
@@ -167,6 +139,34 @@ export const ScheduleScreen: React.FC<ScheduleScreenProps> = ({
   const handleDateSelect = (day: number) => {
     const newSelectedDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
     setSelectedDate(newSelectedDate);
+  };
+
+  // 예약 상태에 따른 배지 스타일 반환
+  const getStatusBadgeStyle = (status: string) => {
+    switch (status) {
+      case "confirmed":
+        return styles.statusConfirmed;
+      case "pending":
+        return styles.statusPending;
+      case "completed":
+        return styles.statusCompleted;
+      default:
+        return styles.statusConfirmed;
+    }
+  };
+
+  // 예약 상태 텍스트 변환
+  const getStatusText = (status: string) => {
+    switch (status) {
+      case "confirmed":
+        return "예약확정";
+      case "pending":
+        return "예약대기";
+      case "completed":
+        return "이용완료";
+      default:
+        return "예약확정";
+    }
   };
 
   // 선택된 날짜의 예약 목록 가져오기
@@ -289,16 +289,23 @@ export const ScheduleScreen: React.FC<ScheduleScreenProps> = ({
         </View>
 
         {getReservationsForSelectedDate().length > 0 ? (
-          getReservationsForSelectedDate().map((reservation: any, index: number) => (
-            <View key={index} style={styles.reservationCard}>
-              <Image source={require("../assets/main/reservation-1.png")} style={styles.reservationImage} resizeMode="cover" />
-              <View style={styles.reservationInfo}>
-                <Text style={styles.reservationLocation}>{reservation.location}</Text>
-                <Text style={styles.reservationTitle}>{reservation.title}</Text>
-                <Text style={styles.reservationTime}>{reservation.time}</Text>
-              </View>
-            </View>
-          ))
+          getReservationsForSelectedDate().map((reservation: any, index: number) => {
+            // ReservationDetailScreen에서 사용할 수 있는 형식으로 변환
+
+            return (
+              <TouchableOpacity key={index} style={styles.reservationCard} onPress={() => onReservationDetailPress?.(reservation)}>
+                <Image source={require("../assets/main/reservation-1.png")} style={styles.reservationImage} resizeMode="cover" />
+                <View style={styles.reservationInfo}>
+                  <Text style={styles.reservationLocation}>{reservation.location}</Text>
+                  <Text style={styles.reservationTitle}>{reservation.title}</Text>
+                  <Text style={styles.reservationTime}>{reservation.time}</Text>
+                </View>
+                <View style={[styles.reservationStatus, getStatusBadgeStyle(reservation.status)]}>
+                  <Text style={styles.statusText}>{getStatusText(reservation.status)}</Text>
+                </View>
+              </TouchableOpacity>
+            );
+          })
         ) : (
           <View style={styles.noReservationCard}>
             <Text style={styles.noReservationText}>예약된 일정이 없습니다.</Text>
@@ -341,30 +348,16 @@ export const ScheduleScreen: React.FC<ScheduleScreenProps> = ({
             <Text style={styles.dateTitle}>{new Date(date).getDate()}일</Text>
             {dateReservations.map((reservation: any) => {
               // ReservationDetailScreen에서 사용할 수 있는 형식으로 변환
-              const reservationData = {
-                id: reservation.id.toString(),
-                title: reservation.title,
-                instructor: "최다니엘 강사",
-                date: `2025년 8월 ${new Date(reservation.date).getDate()}일`,
-                time: reservation.time,
-                location: reservation.location,
-                status: reservation.status === "예약확정" ? "confirmed" : "pending",
-                image: require("../assets/main/reservation-1.png"),
-                description: "호흡의 리듬을 따라 자연스럽게 자세를 교정하고 바른 신체 연결동작을 통해 체형교정및 심신안정을 찾도록 도움을 드립니다.",
-                cancellationPolicy: "예약변경은 클래스 시작 4시간 전까지 가능합니다.\n클래스 시작 2시간 전까지 예약취소 가능합니다.",
-                additionalInfo: "예약된 회원분만 참여 가능하며, 양도나 대리 수업참관을 지양합니다."
-              };
-
               return (
-                <TouchableOpacity key={reservation.id} style={styles.reservationItem} onPress={() => onReservationDetailPress?.(reservationData)}>
+                <TouchableOpacity key={reservation.id} style={styles.reservationItem} onPress={() => onReservationDetailPress?.(reservation)}>
                   <View style={styles.reservationContent}>
                     <Text style={styles.reservationTitle}>{reservation.title}</Text>
                     <Text style={styles.reservationLocation}>
                       {reservation.location} <Text style={styles.reservationTime}> | {reservation.time}</Text>
                     </Text>
                   </View>
-                  <View style={styles.reservationStatus}>
-                    <Text style={styles.statusText}>{reservation.status}</Text>
+                  <View style={[styles.reservationStatus, getStatusBadgeStyle(reservation.status)]}>
+                    <Text style={styles.statusText}>{getStatusText(reservation.status)}</Text>
                   </View>
                 </TouchableOpacity>
               );
@@ -424,10 +417,10 @@ export const ScheduleScreen: React.FC<ScheduleScreenProps> = ({
 const styles = StyleSheet.create({
   tabContainer: {
     flexDirection: "row",
-    backgroundColor: "#FFFFFF",
     borderBottomWidth: 1,
     borderBottomColor: "#EFF1F3",
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
+    backgroundColor: "#FFFFFF"
   },
   tabButton: {
     flex: 1,
@@ -615,14 +608,15 @@ const styles = StyleSheet.create({
   reservationItem: {
     flexDirection: "row",
     backgroundColor: "#FFFFFF",
-    borderRadius: 6
+    borderRadius: 6,
+    paddingVertical: 5,
+    borderBottomWidth: 1,
+    borderBottomColor: "#EFF1F3",
+    marginBottom: 3
   },
   reservationContent: {
     flex: 1,
-    justifyContent: "center",
-    borderBottomWidth: 1,
-    borderBottomColor: "#EFF1F3",
-    paddingVertical: 10
+    justifyContent: "center"
   },
   reservationTitle: {
     fontSize: 16,
@@ -657,6 +651,15 @@ const styles = StyleSheet.create({
     fontSize: 11,
     fontWeight: "700",
     color: "#FFFFFF"
+  },
+  statusConfirmed: {
+    backgroundColor: "#B48327"
+  },
+  statusPending: {
+    backgroundColor: "#CAB8A2"
+  },
+  statusCompleted: {
+    backgroundColor: "#B1B8C0"
   },
   bottomTabBar: {
     flexDirection: "row",
@@ -706,7 +709,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     borderRadius: 6,
     alignItems: "center",
-    paddingVertical: 10
+    paddingVertical: 10,
+    justifyContent: "space-between"
   },
   reservationImage: {
     width: 50,
@@ -716,7 +720,8 @@ const styles = StyleSheet.create({
     marginRight: 15
   },
   reservationInfo: {
-    flex: 1
+    flex: 1,
+    marginRight: 10
   },
   noReservationCard: {
     backgroundColor: "#F8F9FA",

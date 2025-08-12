@@ -97,7 +97,7 @@ export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = (
         onTabPress={onTabPress}
         onSideMenuItemPress={onSideMenuItemPress}
       >
-        <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+        <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
           {/* 예약 이미지 */}
           <Image source={data.image} style={styles.reservationImage} resizeMode="cover" />
 
@@ -187,11 +187,16 @@ export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = (
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#FFFFFF"
+  },
   reservationImage: {
     width: "100%",
     height: 160,
     borderRadius: 15,
-    marginTop: 20
+    marginTop: 20,
+    backgroundColor: "#F5F5F5"
   },
   statusContainer: {
     position: "absolute",

@@ -200,7 +200,8 @@ export const MembershipCardScreen: React.FC<MembershipCardScreenProps> = ({
 
 const styles = StyleSheet.create({
   scrollView: {
-    flex: 1
+    flex: 1,
+    backgroundColor: "#FFFFFF"
   },
   membershipCardContainer: {
     marginBottom: 20
