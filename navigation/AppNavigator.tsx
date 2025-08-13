@@ -63,7 +63,11 @@ type ScreenType =
   | "ServiceDetail"
   | "AppSettingsSubMenu";
 
-export const AppNavigator: React.FC = () => {
+interface AppNavigatorProps {
+  onLogout?: () => void;
+}
+
+export const AppNavigator: React.FC<AppNavigatorProps> = ({ onLogout }) => {
   const [currentScreen, setCurrentScreen] = useState<ScreenType>("Home");
   const [showSideMenu, setShowSideMenu] = useState(false);
   const [versionInfo, setVersionInfo] = useState<VersionInfo>({
@@ -318,6 +322,7 @@ export const AppNavigator: React.FC = () => {
         break;
       case "logout":
         console.log("로그아웃 처리");
+        onLogout?.();
         break;
       case "payment-methods":
         console.log("결제 수단 리스트 조회");
