@@ -4,10 +4,12 @@ import Toast, { BaseToast, ErrorToast, InfoToast } from "react-native-toast-mess
 import { SplashScreen } from "./src/screens/SplashScreen";
 import { IntroScreen } from "./src/screens/IntroScreen";
 import { LoginScreen } from "./src/screens/LoginScreen";
+import { FindIdScreen } from "./src/screens/FindIdScreen";
+import { ResetPasswordScreen } from "./src/screens/ResetPasswordScreen";
 import { AppNavigator } from "./navigation/AppNavigator";
 import { ToastProvider, useToast } from "./src/context/ToastContext";
 
-type ScreenType = "splash" | "intro" | "login" | "signup" | "main";
+type ScreenType = "splash" | "intro" | "login" | "findId" | "resetPassword" | "signup" | "main";
 
 function AppContent() {
   const [currentScreen, setCurrentScreen] = useState<ScreenType>("splash");
@@ -124,10 +126,32 @@ function AppContent() {
     setCurrentScreen("main");
   };
 
+  const handleFindIdPress = () => {
+    console.log("아이디 찾기 화면으로 이동");
+    setCurrentScreen("findId");
+  };
+
+  const handleFindIdSuccess = (userId: string) => {
+    console.log("아이디 찾기 성공:", userId);
+    showToast("success", "아이디 찾기 완료", `아이디: ${userId}`);
+    setCurrentScreen("login");
+  };
+
+  const handleResetPasswordPress = () => {
+    console.log("비밀번호 재설정 화면으로 이동");
+    setCurrentScreen("resetPassword");
+  };
+
+  const handleResetPasswordSuccess = () => {
+    console.log("비밀번호 재설정 성공");
+    showToast("success", "비밀번호 재설정 완료", "새로운 비밀번호로 재설정되었습니다.");
+    setCurrentScreen("login");
+  };
+
   const handleLogout = () => {
     console.log("로그아웃 버튼 클릭");
     showToast("info", "로그아웃", "로그아웃되었습니다.");
-    setCurrentScreen("intro");
+    setCurrentScreen("login");
   };
 
   console.log("현재 화면:", currentScreen);
@@ -153,7 +177,29 @@ function AppContent() {
             console.log("멤버십 상품 소개 버튼 클릭");
             showToast("info", "멤버십 상품 소개", "멤버십 상품 소개 화면으로 이동합니다.");
           }}
+          onFindIdPress={handleFindIdPress}
+          onResetPasswordPress={handleResetPasswordPress}
         />
+        <Toast config={toastConfig} />
+      </>
+    );
+  }
+
+  if (currentScreen === "findId") {
+    console.log("FindIdScreen 렌더링");
+    return (
+      <>
+        <FindIdScreen onBackPress={() => setCurrentScreen("login")} onFindIdSuccess={handleFindIdSuccess} />
+        <Toast config={toastConfig} />
+      </>
+    );
+  }
+
+  if (currentScreen === "resetPassword") {
+    console.log("ResetPasswordScreen 렌더링");
+    return (
+      <>
+        <ResetPasswordScreen onBackPress={() => setCurrentScreen("login")} onResetPasswordSuccess={handleResetPasswordSuccess} />
         <Toast config={toastConfig} />
       </>
     );
@@ -178,7 +224,7 @@ function AppContent() {
     console.log("AppNavigator 렌더링");
     return (
       <>
-        <AppNavigator />
+        <AppNavigator onLogout={handleLogout} />
         <Toast config={toastConfig} />
       </>
     );

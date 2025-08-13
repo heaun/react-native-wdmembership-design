@@ -6,9 +6,17 @@ interface LoginScreenProps {
   onBackPress?: () => void;
   onLoginSuccess?: () => void;
   onMembershipInfoPress?: () => void;
+  onFindIdPress?: () => void;
+  onResetPasswordPress?: () => void;
 }
 
-export const LoginScreen: React.FC<LoginScreenProps> = ({ onBackPress, onLoginSuccess, onMembershipInfoPress }) => {
+export const LoginScreen: React.FC<LoginScreenProps> = ({
+  onBackPress,
+  onLoginSuccess,
+  onMembershipInfoPress,
+  onFindIdPress,
+  onResetPasswordPress
+}) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [keepLoggedIn, setKeepLoggedIn] = useState(false);
@@ -79,11 +87,11 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onBackPress, onLoginSu
 
       {/* Links */}
       <View style={styles.linksSection}>
-        <TouchableOpacity style={styles.linkButton}>
+        <TouchableOpacity style={styles.linkButton} onPress={onFindIdPress}>
           <Text style={styles.linkText}>아이디 찾기</Text>
         </TouchableOpacity>
         <View style={styles.linkDivider} />
-        <TouchableOpacity style={styles.linkButton}>
+        <TouchableOpacity style={styles.linkButton} onPress={onResetPasswordPress}>
           <Text style={styles.linkText}>비밀번호 재설정</Text>
         </TouchableOpacity>
       </View>

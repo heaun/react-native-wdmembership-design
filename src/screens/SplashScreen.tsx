@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { StyleSheet, Text, View, Image, StatusBar, Dimensions } from "react-native";
+import { typography } from "../../utils/typography";
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
@@ -49,7 +50,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#2B2B2B",
     alignItems: "center",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
+    fontFamily: typography.fontFamily
   },
   statusBar: {
     flexDirection: "row",
