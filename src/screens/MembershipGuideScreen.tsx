@@ -73,7 +73,7 @@ export const MembershipGuideScreen: React.FC<MembershipGuideScreenProps> = ({ on
 
               <View style={styles.cardDescriptionContainer}>
                 <Text style={styles.cardDescription}>{item.description}</Text>
-                <Text style={styles.detailLink}>맴버쉽 혜택 상세보기</Text>
+                <Text style={styles.detailLink}>멤버십 혜택 상세보기</Text>
               </View>
             </View>
           </TouchableOpacity>

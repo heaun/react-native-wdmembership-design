@@ -263,7 +263,7 @@ export const MembershipDetailScreen: React.FC<MembershipDetailScreenProps> = ({ 
         {/* Consultation Button */}
         <View style={styles.buttonSection}>
           <TouchableOpacity style={styles.consultationButton} onPress={handleConsultationPress}>
-            <Text style={styles.consultationButtonText}>맴버쉽 상담 문의</Text>
+            <Text style={styles.consultationButtonText}>멤버십 상담 문의</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

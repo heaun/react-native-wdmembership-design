@@ -100,13 +100,13 @@ export const SideMenu: React.FC<SideMenuProps> = ({ visible, onClose, onMenuItem
       items: [
         {
           id: "membership-management",
-          title: "맴버쉽 관리",
+          title: "멤버십 관리",
           type: "header",
           hasChevron: false
         },
         {
           id: "membership-info",
-          title: "맴버쉽 정보 조회",
+          title: "멤버십 정보 조회",
           type: "item",
           hasChevron: true
         },
@@ -124,7 +124,7 @@ export const SideMenu: React.FC<SideMenuProps> = ({ visible, onClose, onMenuItem
         },
         {
           id: "membership-benefits",
-          title: "맵버쉽 상품별 혜택 소개",
+          title: "멤버십 상품별 혜택 소개",
           type: "item",
           hasChevron: true
         }
@@ -214,7 +214,7 @@ export const SideMenu: React.FC<SideMenuProps> = ({ visible, onClose, onMenuItem
       items: [
         {
           id: "app-settings",
-          title: "앱 설정 ✅",
+          title: "앱 설정",
           type: "item",
           hasChevron: true
         },

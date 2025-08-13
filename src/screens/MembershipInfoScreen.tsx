@@ -66,7 +66,7 @@ export const MembershipInfoScreen: React.FC<MembershipInfoScreenProps> = ({
         title: "전 메뉴 30% 할인 이용권",
         provider: "Healthy Meal Plan",
         period: "2027.10.01 ~ 2027.10.31",
-        region: "전국 맵버쉽 가맹점 모두"
+        region: "전국 멤버십 가맹점 모두"
       },
       {
         id: "t2",

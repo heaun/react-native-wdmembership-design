@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, StatusBar, SafeAreaView, Platform, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { SideMenu } from "./SideMenu";
+import { typography } from "../../utils/typography";
 
 interface TabItem {
   name: string;
@@ -79,7 +80,7 @@ export const CommonLayout: React.FC<CommonLayoutProps> = ({
       name: "MyService",
       icon: require("../assets/icons/ic_tap_04_off.png"),
       activeIcon: require("../assets/icons/ic_tap_04_on.png"),
-      label: "마이서비스"
+      label: "멤버십서비스"
     }
   ];
   return (
@@ -159,7 +160,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#EFF1F3",
-    marginHorizontal: 5
+    marginHorizontal: 5,
+    fontFamily: typography.fontFamily
   },
 
   wideContainer: {
