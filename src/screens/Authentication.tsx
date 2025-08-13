@@ -2,19 +2,28 @@ import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView } from "react-native";
 import { CommonLayout } from "../components/CommonLayout";
 import { Ionicons } from "@expo/vector-icons";
+import { authCommonStyles, PhoneInput, VerificationInput, Timer, useAuthTimer, EmailInput, AuthButtonSection } from "../components/AuthCommon";
 
-interface FindIdScreenProps {
+interface AuthenticationProps {
   onBackPress?: () => void;
-  onFindIdSuccess?: (userId: string) => void;
+  onSuccess?: (result: any) => void;
+  mode: "findId" | "resetPassword" | "login" | "register";
+  params?: {
+    id?: string;
+    password?: string;
+    etc?: any;
+  };
 }
 
-interface FindIdData {
+interface AuthenticationData {
   step: "input" | "verification" | "result" | "emailInput" | "link";
   form: {
     name: string;
     phoneNumber: string;
     verificationCode: string;
     email: string;
+    id: string;
+    password: string;
   };
   status: {
     isCodeSent: boolean;
@@ -28,13 +37,15 @@ interface FindIdData {
   };
 }
 
-const initialData: FindIdData = {
+const initialData: AuthenticationData = {
   step: "input",
   form: {
     name: "",
     phoneNumber: "",
     verificationCode: "",
-    email: ""
+    email: "",
+    id: "",
+    password: ""
   },
   status: {
     isCodeSent: false,
@@ -48,54 +59,60 @@ const initialData: FindIdData = {
   }
 };
 
-export const FindIdScreen: React.FC<FindIdScreenProps> = ({ onBackPress, onFindIdSuccess }) => {
-  const [data, setData] = useState<FindIdData>(initialData);
-
-  // 타이머 효과
-  useEffect(() => {
-    let interval: NodeJS.Timeout;
-    if (data.status.isTimerActive && data.status.timeRemaining > 0) {
-      interval = setInterval(() => {
-        setData((prev) => ({
-          ...prev,
-          status: {
-            ...prev.status,
-            timeRemaining: prev.status.timeRemaining <= 1 ? 0 : prev.status.timeRemaining - 1,
-            isTimerActive: prev.status.timeRemaining <= 1 ? false : prev.status.isTimerActive
-          }
-        }));
-      }, 1000);
+export const Authentication: React.FC<AuthenticationProps> = ({ onBackPress, onSuccess, mode = "findId", params = {} }) => {
+  const [data, setData] = useState<AuthenticationData>(() => ({
+    ...initialData,
+    form: {
+      ...initialData.form,
+      id: params.id || "",
+      password: params.password || ""
     }
-    return () => {
-      if (interval) clearInterval(interval);
-    };
-  }, [data.status.isTimerActive, data.status.timeRemaining]);
+  }));
 
-  const formatTime = (seconds: number) => {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-    return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
+  const { timeRemaining, isTimerActive, startTimer, stopTimer } = useAuthTimer(180);
+
+  const message = {
+    findId: {
+      menuTitle: "아이디 찾기",
+      headerTitle: "가입하신 아이디를 찾기위해",
+      buttonText: "아이디 찾기"
+    },
+    resetPassword: {
+      menuTitle: "비밀번호 재설정",
+      headerTitle: "비밀번호 재설정을 위해",
+      buttonText: "다음"
+    },
+    login: {
+      menuTitle: "로그인",
+      headerTitle: "로그인",
+      buttonText: "로그인"
+    },
+    register: {
+      menuTitle: "회원가입",
+      headerTitle: "회원가입",
+      buttonText: "가입하기"
+    }
   };
 
-  const updateData = (updates: Partial<FindIdData>) => {
+  const updateData = (updates: Partial<AuthenticationData>) => {
     setData((prev) => ({ ...prev, ...updates }));
   };
 
-  const updateForm = (updates: Partial<FindIdData["form"]>) => {
+  const updateForm = (updates: Partial<AuthenticationData["form"]>) => {
     setData((prev) => ({
       ...prev,
       form: { ...prev.form, ...updates }
     }));
   };
 
-  const updateStatus = (updates: Partial<FindIdData["status"]>) => {
+  const updateStatus = (updates: Partial<AuthenticationData["status"]>) => {
     setData((prev) => ({
       ...prev,
       status: { ...prev.status, ...updates }
     }));
   };
 
-  const updateResult = (updates: Partial<FindIdData["result"]>) => {
+  const updateResult = (updates: Partial<AuthenticationData["result"]>) => {
     setData((prev) => ({
       ...prev,
       result: { ...prev.result, ...updates }
@@ -106,10 +123,9 @@ export const FindIdScreen: React.FC<FindIdScreenProps> = ({ onBackPress, onFindI
     if (data.form.phoneNumber) {
       updateStatus({
         isCodeSent: true,
-        isVerificationSent: true,
-        isTimerActive: true,
-        timeRemaining: 180
+        isVerificationSent: true
       });
+      startTimer();
       // 실제로는 API 호출로 인증번호 전송
       console.log("인증번호 전송:", { phoneNumber: data.form.phoneNumber });
     }
@@ -120,9 +136,17 @@ export const FindIdScreen: React.FC<FindIdScreenProps> = ({ onBackPress, onFindI
       // 실제로는 API 호출로 인증번호 확인
       console.log("인증번호 확인:", data.form.verificationCode);
       updateStatus({
-        isVerificationCompleted: true,
-        isTimerActive: false
+        isVerificationCompleted: true
       });
+      stopTimer();
+    }
+  };
+
+  const handleAuthentication = () => {
+    if (mode === "findId") {
+      handleFindId();
+    } else if (mode === "resetPassword") {
+      handleResetPassword();
     }
   };
 
@@ -131,8 +155,25 @@ export const FindIdScreen: React.FC<FindIdScreenProps> = ({ onBackPress, onFindI
     updateData({ step: "result" });
   };
 
-  const handleLogin = () => {
-    onFindIdSuccess?.(data.result.foundUserId);
+  const handleResetPassword = () => {
+    // ResetPasswordScreen으로 이동하기 위해 onSuccess 콜백 호출
+    const result = {
+      mode: "resetPassword",
+      form: data.form,
+      action: "navigateToResetPassword",
+      ...params.etc
+    };
+    onSuccess?.(result);
+  };
+
+  const handleSuccess = () => {
+    const result = {
+      mode,
+      userId: data.result.foundUserId,
+      form: data.form,
+      ...params.etc
+    };
+    onSuccess?.(result);
   };
 
   const handleEmailInput = () => {
@@ -150,126 +191,125 @@ export const FindIdScreen: React.FC<FindIdScreenProps> = ({ onBackPress, onFindI
     updateData({ step: "input" });
   };
 
+  const getTitle = () => {
+    switch (mode) {
+      case "findId":
+        return "아이디 찾기";
+      case "resetPassword":
+        return "비밀번호 재설정";
+      case "login":
+        return "로그인";
+      case "register":
+        return "회원가입";
+      default:
+        return "인증";
+    }
+  };
+
+  const getStepTitle = () => {
+    switch (data.step) {
+      case "input":
+        return getTitle();
+      case "verification":
+        return "인증번호 확인";
+      case "emailInput":
+        return "이메일 주소 입력";
+      case "link":
+        return "링크 전송 완료";
+      case "result":
+        return mode === "findId" ? "아이디 찾기 완료" : "완료";
+      default:
+        return getTitle();
+    }
+  };
+
+  // AuthHeader 컴포넌트를 내부에 정의
+  const AuthHeader: React.FC<{ title: string; subtitle?: string }> = ({ title, subtitle = "가입하신 휴대폰 번호를 입력해주세요." }) => (
+    <View style={authCommonStyles.headerSection}>
+      <Text style={authCommonStyles.title}>{title}</Text>
+      <Text style={authCommonStyles.title}>휴대폰 인증을 해주세요</Text>
+      {subtitle && <Text style={authCommonStyles.subtitle}>{subtitle}</Text>}
+    </View>
+  );
+
   const renderInputStep = () => (
-    <View style={styles.container}>
-      <View style={styles.headerSection}>
-        <Text style={styles.title}>가입하신 아이디를 찾기위해{"\n"}휴대폰 인증을 해주세요</Text>
-        <Text style={styles.subtitle}>가입하신 휴대폰 번호를 입력해주세요.</Text>
-      </View>
+    <View style={authCommonStyles.container}>
+      <AuthHeader title={message?.[mode]?.headerTitle} />
 
-      <View style={styles.inputSection}>
-        <View style={styles.inputContainer}>
-          <Text style={styles.inputLabel}>휴대전화 번호</Text>
-          <View style={styles.phoneInputContainer}>
+      <View style={authCommonStyles.inputSection}>
+        <PhoneInput
+          value={data.form.phoneNumber}
+          onChangeText={(text) => updateForm({ phoneNumber: text })}
+          onSendCode={handleSendVerificationCode}
+          disabled={!data.form.phoneNumber}
+          isVerificationSent={data.status.isVerificationSent}
+        />
+
+        <VerificationInput
+          value={data.form.verificationCode}
+          onChangeText={(text) => updateForm({ verificationCode: text })}
+          onVerify={handleVerifyCode}
+          isVerificationCompleted={data.status.isVerificationCompleted}
+        />
+
+        <Timer timeRemaining={timeRemaining} isTimerActive={isTimerActive} />
+
+        {mode === "resetPassword" && (
+          <View style={authCommonStyles.inputContainer}>
+            <Text style={authCommonStyles.inputLabel}>아이디(이메일)</Text>
             <TextInput
-              style={styles.phoneInput}
-              placeholder="(-)제외하고 숫자만 입력"
+              style={authCommonStyles.input}
+              placeholder="가입하신 아이디(이메일)를 입력해주세요."
               placeholderTextColor="#B1B8C0"
-              value={data.form.phoneNumber}
-              onChangeText={(text) => updateForm({ phoneNumber: text })}
-              keyboardType="phone-pad"
+              value={data.form.id}
+              onChangeText={(text) => updateForm({ id: text })}
+              autoCapitalize="none"
+              autoCorrect={false}
             />
-            <TouchableOpacity
-              style={[styles.sendCodeButton, (!data.form.phoneNumber || data.status.isVerificationSent) && styles.sendCodeButtonDisabled]}
-              onPress={handleSendVerificationCode}
-              disabled={!data.form.phoneNumber || data.status.isVerificationSent}
-            >
-              <Text style={styles.sendCodeButtonText}>인증번호 받기</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.inputBorder} />
-          {data.status.isVerificationSent && <Text style={styles.statusMessage}>인증번호가 발송되었습니다.</Text>}
-        </View>
-
-        <View style={styles.inputContainer}>
-          <Text style={styles.inputLabel}>인증번호</Text>
-          <View style={styles.verificationInputContainer}>
-            <TextInput
-              style={styles.verificationInput}
-              placeholder="인증번호 입력"
-              placeholderTextColor="#B1B8C0"
-              value={data.form.verificationCode}
-              onChangeText={(text) => updateForm({ verificationCode: text })}
-              keyboardType="number-pad"
-              maxLength={6}
-            />
-            <TouchableOpacity
-              style={[styles.verifyButton, (!data.form.verificationCode || data.status.isVerificationCompleted) && styles.verifyButtonDisabled]}
-              onPress={handleVerifyCode}
-              disabled={!data.form.verificationCode || data.status.isVerificationCompleted}
-            >
-              <Text style={styles.verifyButtonText}>인증확인</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.inputBorder} />
-          {data.status.isVerificationCompleted && <Text style={styles.statusMessage}>휴대폰 번호 인증이 완료되었습니다.</Text>}
-        </View>
-
-        {data.status.isTimerActive && data.status.timeRemaining > 0 && (
-          <View style={styles.timerContainer}>
-            <Text style={styles.timerLabel}>남은시간</Text>
-            <Text style={[styles.timerText, data.status.timeRemaining <= 30 && styles.timerWarning]}>{formatTime(data.status.timeRemaining)}</Text>
+            <View style={authCommonStyles.inputBorder} />
           </View>
         )}
       </View>
 
-      <View style={styles.buttonSection}>
-        <TouchableOpacity
-          style={[styles.primaryButton, !data.status.isVerificationCompleted && styles.buttonDisabled]}
-          onPress={handleFindId}
-          disabled={!data.status.isVerificationCompleted}
-        >
-          <Text style={styles.primaryButtonText}>아이디 찾기</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={[styles.secondaryButton, styles.emailButton]} onPress={handleEmailInput}>
-          <Text style={styles.secondaryButtonText}>이메일로 찾기</Text>
-        </TouchableOpacity>
-      </View>
+      <AuthButtonSection
+        primaryButton={{
+          text: message?.[mode]?.buttonText,
+          onPress: handleAuthentication,
+          disabled: mode === "resetPassword" ? !data.status.isVerificationCompleted || !data.form.id : !data.status.isVerificationCompleted
+        }}
+        secondaryButton={
+          mode === "findId"
+            ? {
+                text: "이메일로 찾기",
+                onPress: handleEmailInput
+              }
+            : undefined
+        }
+      />
     </View>
   );
 
   const renderVerificationStep = () => (
-    <View style={styles.container}>
-      <View style={styles.headerSection}>
-        <Text style={styles.title}>인증번호 확인</Text>
-        <Text style={styles.subtitle}>휴대폰으로 전송된 인증번호를 입력해주세요.</Text>
+    <View style={authCommonStyles.container}>
+      <AuthHeader title="인증번호 확인" />
+
+      <View style={authCommonStyles.inputSection}>
+        <VerificationInput
+          value={data.form.verificationCode}
+          onChangeText={(text) => updateForm({ verificationCode: text })}
+          onVerify={handleVerifyCode}
+          isVerificationCompleted={data.status.isVerificationCompleted}
+        />
       </View>
 
-      <View style={styles.inputSection}>
-        <View style={styles.inputContainer}>
-          <Text style={styles.inputLabel}>인증번호</Text>
-          <View style={styles.verificationInputContainer}>
-            <TextInput
-              style={styles.verificationInput}
-              placeholder="인증번호 6자리를 입력하세요"
-              placeholderTextColor="#B1B8C0"
-              value={data.form.verificationCode}
-              onChangeText={(text) => updateForm({ verificationCode: text })}
-              keyboardType="number-pad"
-              maxLength={6}
-            />
-            <TouchableOpacity
-              style={[styles.verifyButton, !data.form.verificationCode && styles.verifyButtonDisabled]}
-              onPress={handleVerifyCode}
-              disabled={!data.form.verificationCode}
-            >
-              <Text style={styles.verifyButtonText}>확인</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.inputBorder} />
-          {data.status.isVerificationCompleted && <Text style={styles.statusMessage}>휴대폰 번호 인증이 완료되었습니다.</Text>}
-        </View>
-      </View>
-
-      <TouchableOpacity style={styles.resendButton} onPress={handleSendVerificationCode}>
-        <Text style={styles.resendButtonText}>인증번호 재전송</Text>
+      <TouchableOpacity style={authCommonStyles.resendButton} onPress={handleSendVerificationCode}>
+        <Text style={authCommonStyles.resendButtonText}>인증번호 재전송</Text>
       </TouchableOpacity>
     </View>
   );
 
   const renderResultStep = () => (
-    <View style={styles.container}>
+    <View style={authCommonStyles.container}>
       <View style={styles.resultSection}>
         <Text style={styles.resultTitle}>아이디 찾기가{"\n"}완료되었습니다</Text>
         <Text style={styles.resultSubtitle}>회원님의 아이디(이메일)은 아래와 같습니다.</Text>
@@ -283,54 +323,36 @@ export const FindIdScreen: React.FC<FindIdScreenProps> = ({ onBackPress, onFindI
         </View>
       </View>
 
-      <View style={styles.buttonSection}>
-        <TouchableOpacity style={[styles.secondaryButton, styles.resetPasswordButton]} onPress={() => {}}>
-          <Text style={styles.secondaryButtonText}>비밀번호 재설정하기</Text>
+      <View style={authCommonStyles.buttonSection}>
+        <TouchableOpacity style={[authCommonStyles.secondaryButton, styles.resetPasswordButton]} onPress={() => {}}>
+          <Text style={authCommonStyles.secondaryButtonText}>비밀번호 재설정하기</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.primaryButton, styles.loginButton]} onPress={handleLogin}>
-          <Text style={styles.primaryButtonText}>로그인 하러가기</Text>
+        <TouchableOpacity style={[authCommonStyles.primaryButton, styles.loginButton]} onPress={handleSuccess}>
+          <Text style={authCommonStyles.primaryButtonText}>로그인 하러가기</Text>
         </TouchableOpacity>
       </View>
     </View>
   );
 
   const renderEmailInputStep = () => (
-    <View style={styles.container}>
-      <View style={styles.headerSection}>
-        <Text style={styles.title}>이메일 주소 입력</Text>
-        <Text style={styles.subtitle}>가입하신 이메일 주소를{"\n"}입력해주세요.</Text>
+    <View style={authCommonStyles.container}>
+      <AuthHeader title="이메일 주소 입력" subtitle="가입하신 이메일 주소를\n입력해주세요." />
+
+      <View style={authCommonStyles.inputSection}>
+        <EmailInput value={data.form.email} onChangeText={(text) => updateForm({ email: text })} />
       </View>
 
-      <View style={styles.inputSection}>
-        <View style={styles.inputContainer}>
-          <Text style={styles.inputLabel}>이메일 주소</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="이메일 주소를 입력하세요"
-            placeholderTextColor="#B1B8C0"
-            value={data.form.email}
-            onChangeText={(text) => updateForm({ email: text })}
-            keyboardType="email-address"
-            autoCapitalize="none"
-            autoCorrect={false}
-          />
-          <View style={styles.inputBorder} />
-        </View>
-      </View>
-
-      <View style={styles.buttonSection}>
-        <TouchableOpacity
-          style={[styles.primaryButton, !data.form.email && styles.buttonDisabled]}
-          onPress={handleSendEmailLink}
-          disabled={!data.form.email}
-        >
-          <Text style={styles.primaryButtonText}>링크 전송하기</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={[styles.secondaryButton, styles.backButton]} onPress={handleBackToInput}>
-          <Text style={styles.secondaryButtonText}>뒤로가기</Text>
-        </TouchableOpacity>
-      </View>
+      <AuthButtonSection
+        primaryButton={{
+          text: "링크 전송하기",
+          onPress: handleSendEmailLink,
+          disabled: !data.form.email
+        }}
+        secondaryButton={{
+          text: "뒤로가기",
+          onPress: handleBackToInput
+        }}
+      />
     </View>
   );
 
@@ -358,7 +380,7 @@ export const FindIdScreen: React.FC<FindIdScreenProps> = ({ onBackPress, onFindI
         <TouchableOpacity style={styles.secondaryButton} onPress={() => updateData({ step: "input" })}>
           <Text style={styles.secondaryButtonText}>다시 입력하기</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.primaryButton} onPress={handleLogin}>
+        <TouchableOpacity style={styles.primaryButton} onPress={handleSuccess}>
           <Text style={styles.primaryButtonText}>로그인으로 돌아가기</Text>
         </TouchableOpacity>
       </View>
@@ -367,17 +389,7 @@ export const FindIdScreen: React.FC<FindIdScreenProps> = ({ onBackPress, onFindI
 
   return (
     <CommonLayout
-      title={
-        data.step === "input"
-          ? "아이디 찾기"
-          : data.step === "verification"
-          ? "인증번호 확인"
-          : data.step === "emailInput"
-          ? "이메일 주소 입력"
-          : data.step === "link"
-          ? "링크 전송 완료"
-          : "아이디 찾기 완료"
-      }
+      title={getStepTitle()}
       showBackButton={true}
       showTabBar={false}
       showTopIcons={false}
@@ -527,7 +539,7 @@ const styles = StyleSheet.create({
     color: "#505866"
   },
   resultSection: {
-    alignItems: "center",
+    alignItems: "flex-start",
     marginBottom: 40
   },
   successIcon: {

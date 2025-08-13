@@ -4,12 +4,12 @@ import Toast, { BaseToast, ErrorToast, InfoToast } from "react-native-toast-mess
 import { SplashScreen } from "./src/screens/SplashScreen";
 import { IntroScreen } from "./src/screens/IntroScreen";
 import { LoginScreen } from "./src/screens/LoginScreen";
-import { FindIdScreen } from "./src/screens/FindIdScreen";
+import { Authentication } from "./src/screens/Authentication";
 import { ResetPasswordScreen } from "./src/screens/ResetPasswordScreen";
 import { AppNavigator } from "./navigation/AppNavigator";
 import { ToastProvider, useToast } from "./src/context/ToastContext";
 
-type ScreenType = "splash" | "intro" | "login" | "findId" | "resetPassword" | "signup" | "main";
+type ScreenType = "splash" | "intro" | "login" | "findId" | "resetPassword" | "resetPasswordScreen" | "signup" | "main";
 
 function AppContent() {
   const [currentScreen, setCurrentScreen] = useState<ScreenType>("splash");
@@ -131,10 +131,21 @@ function AppContent() {
     setCurrentScreen("findId");
   };
 
-  const handleFindIdSuccess = (userId: string) => {
-    console.log("아이디 찾기 성공:", userId);
-    showToast("success", "아이디 찾기 완료", `아이디: ${userId}`);
-    setCurrentScreen("login");
+  const handleAuthentication = (mode: string, result: any) => {
+    if (mode === "findId") {
+      console.log("아이디 찾기 성공:", result);
+      showToast("success", "아이디 찾기 완료", `아이디: ${result.userId}`);
+      setCurrentScreen("login");
+    } else if (mode === "resetPassword") {
+      if (result.action === "navigateToResetPassword") {
+        console.log("ResetPasswordScreen으로 이동");
+        setCurrentScreen("resetPasswordScreen");
+      } else {
+        console.log("비밀번호 재설정 성공:", result);
+        showToast("success", "비밀번호 재설정 완료", "새로운 비밀번호로 재설정되었습니다.");
+        setCurrentScreen("login");
+      }
+    }
   };
 
   const handleResetPasswordPress = () => {
@@ -185,17 +196,21 @@ function AppContent() {
     );
   }
 
-  if (currentScreen === "findId") {
-    console.log("FindIdScreen 렌더링");
+  if (currentScreen === "findId" || currentScreen === "resetPassword") {
+    console.log("Authentication 렌더링 - mode:", currentScreen);
     return (
       <>
-        <FindIdScreen onBackPress={() => setCurrentScreen("login")} onFindIdSuccess={handleFindIdSuccess} />
+        <Authentication
+          mode={currentScreen}
+          onBackPress={() => setCurrentScreen("login")}
+          onSuccess={(result) => handleAuthentication(currentScreen, result)}
+        />
         <Toast config={toastConfig} />
       </>
     );
   }
 
-  if (currentScreen === "resetPassword") {
+  if (currentScreen === "resetPasswordScreen") {
     console.log("ResetPasswordScreen 렌더링");
     return (
       <>
