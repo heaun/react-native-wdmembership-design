@@ -402,6 +402,18 @@ export const AuthResultStep: React.FC<AuthResultStepProps> = ({
           </View>
         )}
       </View>
+
+      <View style={authCommonStyles.buttonSectionFixed}>
+        <TouchableOpacity style={authCommonStyles.primaryButton} onPress={primaryButton.onPress}>
+          <Text style={authCommonStyles.primaryButtonText}>{primaryButton.text}</Text>
+        </TouchableOpacity>
+
+        {secondaryButton && (
+          <TouchableOpacity style={authCommonStyles.secondaryButton} onPress={secondaryButton.onPress}>
+            <Text style={authCommonStyles.secondaryButtonText}>{secondaryButton.text}</Text>
+          </TouchableOpacity>
+        )}
+      </View>
     </View>
   );
 };

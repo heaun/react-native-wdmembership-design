@@ -8,12 +8,15 @@ import { AuthenticationScreen } from "./src/screens/AuthenticationScreen";
 import { ResetPasswordScreen } from "./src/screens/ResetPasswordScreen";
 import { AppNavigator } from "./navigation/AppNavigator";
 import { ToastProvider, useToast } from "./src/context/ToastContext";
+import { SignUpScreen } from "./src/screens/SignUpScreen";
+import { MembershipResultScreen } from "./src/screens/MembershipResultScreen";
 
-type ScreenType = "splash" | "intro" | "login" | "findId" | "resetPassword" | "resetPasswordScreen" | "signup" | "main";
+type ScreenType = "splash" | "intro" | "login" | "findId" | "resetPassword" | "resetPasswordScreen" | "signup" | "membershipResult" | "main";
 
 function AppContent() {
   const [currentScreen, setCurrentScreen] = useState<ScreenType>("splash");
   const [foundUserId, setFoundUserId] = useState<string>("");
+  const [membershipResultData, setMembershipResultData] = useState<{ approveStatus: boolean }>({ approveStatus: true });
   const { showToast } = useToast();
 
   // Toast 커스텀 설정
@@ -125,6 +128,17 @@ function AppContent() {
     console.log("로그인 성공 - 메인 화면으로 이동");
     showToast("success", "성공", "로그인 성공! 🎉");
     setCurrentScreen("main");
+  };
+
+  const handleRegisterSuccess = (result: any) => {
+    console.log("회원가입 완료:", result);
+    if (result?.action === "navigateToMembershipResult") {
+      setCurrentScreen("membershipResult");
+      setMembershipResultData({ approveStatus: result.approveStatus });
+    } else {
+      // 기본적으로 메인 화면으로 이동
+      setCurrentScreen("main");
+    }
   };
 
   const handleFindIdPress = () => {
@@ -239,12 +253,32 @@ function AppContent() {
     console.log("SignupScreen 렌더링");
     return (
       <>
-        <View style={styles.container}>
-          <Text style={styles.title}>멤버십 가입 화면</Text>
-          <TouchableOpacity style={styles.button} onPress={handleBackPress}>
-            <Text style={styles.buttonText}>뒤로가기</Text>
-          </TouchableOpacity>
-        </View>
+        <SignUpScreen onBackPress={() => setCurrentScreen("intro")} onRegisterSuccess={handleRegisterSuccess} />
+        <Toast config={toastConfig} />
+      </>
+    );
+  }
+
+  if (currentScreen === "membershipResult") {
+    console.log("MembershipResultScreen 렌더링");
+    return (
+      <>
+        <MembershipResultScreen
+          onBackPress={() => setCurrentScreen("intro")}
+          onSuccess={(result) => {
+            console.log("MembershipResultScreen 결과:", result);
+            if (result?.action === "navigateToLogin") {
+              setCurrentScreen("login");
+            } else if (result?.action === "navigateToInquiry") {
+              // 멤버십 승인 문의 페이지로 이동
+              console.log("멤버십 승인 문의 페이지로 이동");
+            } else if (result?.action === "navigateToBenefits") {
+              // 멤버십 혜택 둘러보기 페이지로 이동
+              console.log("멤버십 혜택 둘러보기 페이지로 이동");
+            }
+          }}
+          approveStatus={membershipResultData.approveStatus}
+        />
         <Toast config={toastConfig} />
       </>
     );

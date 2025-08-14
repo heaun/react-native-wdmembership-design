@@ -51,7 +51,14 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
       {/* Input Fields */}
       <View style={styles.inputSection}>
         <View style={styles.inputContainer}>
-          <TextInput style={styles.input} placeholder="아이디" placeholderTextColor="#B1B8C0" value={username} onChangeText={setUsername} />
+          <TextInput
+            style={styles.input}
+            placeholder="아이디"
+            placeholderTextColor="#B1B8C0"
+            value={username}
+            onChangeText={setUsername}
+            showSoftInputOnFocus={false}
+          />
           <View style={styles.inputBorder} />
         </View>
 
@@ -63,6 +70,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
             secureTextEntry
             value={password}
             onChangeText={setPassword}
+            showSoftInputOnFocus={false}
           />
           <View style={styles.inputBorder} />
         </View>
