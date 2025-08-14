@@ -130,6 +130,7 @@ export const AuthenticationScreen: React.FC<AuthenticationProps> = ({ onBackPres
             blurOnSubmit={false}
             autoCorrect={false}
             autoCapitalize="none"
+            showSoftInputOnFocus={false}
           />
           <TouchableOpacity
             style={[authCommonStyles.verifyButton, (!value || isVerificationSent) && authCommonStyles.verifyButtonDisabled]}
@@ -163,6 +164,7 @@ export const AuthenticationScreen: React.FC<AuthenticationProps> = ({ onBackPres
             blurOnSubmit={false}
             autoCorrect={false}
             autoCapitalize="none"
+            showSoftInputOnFocus={false}
           />
           <TouchableOpacity
             style={[authCommonStyles.verifyButton, (!value || isVerificationCompleted) && authCommonStyles.verifyButtonDisabled]}
@@ -356,6 +358,7 @@ export const AuthenticationScreen: React.FC<AuthenticationProps> = ({ onBackPres
               onChangeText={(text) => updateForm({ id: text })}
               autoCapitalize="none"
               autoCorrect={false}
+              showSoftInputOnFocus={false}
             />
             <View style={authCommonStyles.inputBorder} />
           </View>

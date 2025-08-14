@@ -281,6 +281,7 @@ export const EmailInput: React.FC<EmailInputProps> = ({ value, onChangeText, pla
       keyboardType="email-address"
       autoCapitalize="none"
       autoCorrect={false}
+      showSoftInputOnFocus={false}
     />
     <View style={authCommonStyles.inputBorder} />
   </View>
@@ -303,6 +304,7 @@ export const UserIdInput: React.FC<UserIdInputProps> = ({ value, onChangeText, p
       onChangeText={onChangeText}
       autoCapitalize="none"
       autoCorrect={false}
+      showSoftInputOnFocus={false}
     />
     <View style={authCommonStyles.inputBorder} />
   </View>

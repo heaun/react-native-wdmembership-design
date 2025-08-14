@@ -121,6 +121,7 @@ export const ResetPasswordScreen: React.FC<ResetPasswordScreenProps> = ({ onBack
                   autoCapitalize="none"
                   autoCorrect={false}
                   editable={!foundUserId} // 찾은 아이디가 있으면 편집 불가
+                  showSoftInputOnFocus={false}
                 />
                 <View style={styles.inputBorder} />
               </View>
@@ -135,6 +136,12 @@ export const ResetPasswordScreen: React.FC<ResetPasswordScreenProps> = ({ onBack
                     value={data.form.newPassword}
                     onChangeText={(text) => updateForm({ newPassword: text })}
                     secureTextEntry={!data.status.showPassword}
+                    keyboardType="default"
+                    returnKeyType="next"
+                    blurOnSubmit={false}
+                    autoCorrect={false}
+                    autoCapitalize="none"
+                    showSoftInputOnFocus={false}
                   />
                   <TouchableOpacity style={styles.eyeButton} onPress={() => updateStatus({ showPassword: !data.status.showPassword })}>
                     <Ionicons name={data.status.showPassword ? "eye" : "eye-off"} size={24} color="#505866" />
@@ -201,6 +208,12 @@ export const ResetPasswordScreen: React.FC<ResetPasswordScreenProps> = ({ onBack
                     value={data.form.confirmPassword}
                     onChangeText={(text) => updateForm({ confirmPassword: text })}
                     secureTextEntry={!data.status.showConfirmPassword}
+                    keyboardType="default"
+                    returnKeyType="done"
+                    blurOnSubmit={false}
+                    autoCorrect={false}
+                    autoCapitalize="none"
+                    showSoftInputOnFocus={false}
                   />
                   <TouchableOpacity style={styles.eyeButton} onPress={() => updateStatus({ showConfirmPassword: !data.status.showConfirmPassword })}>
                     <Ionicons name={data.status.showConfirmPassword ? "eye" : "eye-off"} size={24} color="#505866" />
@@ -319,17 +332,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#D6DADF",
     marginTop: 8
   },
-  primaryButton: {
-    backgroundColor: "#2B2B2B",
-    borderRadius: 25,
-    height: 50,
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 20
-  },
-  buttonDisabled: {
-    backgroundColor: "#E5E5E5"
-  },
   primaryButtonText: {
     fontSize: 16,
     fontWeight: "700",
@@ -371,19 +373,5 @@ const styles = StyleSheet.create({
   },
   validationTextActive: {
     color: "#B48327"
-  },
-  passwordStrengthSection: {
-    marginBottom: 40,
-    paddingHorizontal: 20
-  },
-  strengthDots: {
-    flexDirection: "row",
-    gap: 12
-  },
-  strengthDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: "#2B2B2B"
   }
 });
