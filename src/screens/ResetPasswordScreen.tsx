@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView } from "react-native";
 import { CommonLayout } from "../components/CommonLayout";
 import { Ionicons } from "@expo/vector-icons";
+import { AuthResultStep } from "../components/AuthCommon";
 
 interface ResetPasswordScreenProps {
   onBackPress?: () => void;
   onResetPasswordSuccess?: () => void;
+  foundUserId?: string;
 }
 
 interface ResetPasswordData {
@@ -13,6 +15,7 @@ interface ResetPasswordData {
   form: {
     newPassword: string;
     confirmPassword: string;
+    id: string;
   };
   status: {
     showPassword: boolean;
@@ -24,7 +27,8 @@ const initialData: ResetPasswordData = {
   step: "input",
   form: {
     newPassword: "",
-    confirmPassword: ""
+    confirmPassword: "",
+    id: ""
   },
   status: {
     showPassword: false,
@@ -32,8 +36,14 @@ const initialData: ResetPasswordData = {
   }
 };
 
-export const ResetPasswordScreen: React.FC<ResetPasswordScreenProps> = ({ onBackPress, onResetPasswordSuccess }) => {
-  const [data, setData] = useState<ResetPasswordData>(initialData);
+export const ResetPasswordScreen: React.FC<ResetPasswordScreenProps> = ({ onBackPress, onResetPasswordSuccess, foundUserId = "" }) => {
+  const [data, setData] = useState<ResetPasswordData>(() => ({
+    ...initialData,
+    form: {
+      ...initialData.form,
+      id: foundUserId // 찾은 아이디를 초기값으로 설정
+    }
+  }));
 
   const updateForm = (updates: Partial<ResetPasswordData["form"]>) => {
     setData((prev) => ({
@@ -62,18 +72,13 @@ export const ResetPasswordScreen: React.FC<ResetPasswordScreenProps> = ({ onBack
   };
 
   const renderResultStep = () => (
-    <View style={styles.container}>
-      <View style={styles.resultSection}>
-        <Text style={styles.resultTitle}>비밀번호가{"\n"}재설정 되었습니다</Text>
-        <Text style={styles.resultSubtitle}>비밀번호 변경이 완료되었습니다.{"\n"}새로운 비밀번호로 로그인해주세요.</Text>
-      </View>
-
-      <View style={styles.buttonSection}>
-        <TouchableOpacity style={styles.primaryButton} onPress={handleSuccess}>
-          <Text style={styles.primaryButtonText}>로그인 하러가기</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+    <AuthResultStep
+      mode="resetPassword"
+      primaryButton={{
+        text: "로그인 하러가기",
+        onPress: handleSuccess
+      }}
+    />
   );
 
   return (
@@ -96,6 +101,21 @@ export const ResetPasswordScreen: React.FC<ResetPasswordScreenProps> = ({ onBack
 
             <View style={styles.inputSection}>
               <View style={styles.inputContainer}>
+                <Text style={styles.inputLabel}>아이디(이메일)</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="가입하신 아이디(이메일)를 입력해주세요."
+                  placeholderTextColor="#B1B8C0"
+                  value={data.form.id}
+                  onChangeText={(text) => updateForm({ id: text })}
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  editable={!foundUserId} // 찾은 아이디가 있으면 편집 불가
+                />
+                <View style={styles.inputBorder} />
+              </View>
+
+              <View style={styles.inputContainer}>
                 <Text style={styles.inputLabel}>비밀번호</Text>
                 <View style={styles.passwordInputContainer}>
                   <TextInput
@@ -116,7 +136,7 @@ export const ResetPasswordScreen: React.FC<ResetPasswordScreenProps> = ({ onBack
                   <View style={styles.validationItem}>
                     <View style={styles.validationIcon}>
                       <Ionicons
-                        name={data.form.newPassword.length >= 8 && data.form.newPassword.length <= 20 ? "checkmark-circle" : "ellipse-outline"}
+                        name={data.form.newPassword.length >= 8 && data.form.newPassword.length <= 20 ? "checkmark" : "ellipse-outline"}
                         size={18}
                         color={data.form.newPassword.length >= 8 && data.form.newPassword.length <= 20 ? "#B48327" : "#B1B8C0"}
                       />
@@ -138,7 +158,7 @@ export const ResetPasswordScreen: React.FC<ResetPasswordScreenProps> = ({ onBack
                           /[a-z]/.test(data.form.newPassword) &&
                           /\d/.test(data.form.newPassword) &&
                           /[!@#$%^&*(),.?":{}|<>]/.test(data.form.newPassword)
-                            ? "checkmark-circle"
+                            ? "checkmark"
                             : "ellipse-outline"
                         }
                         size={18}
@@ -180,7 +200,7 @@ export const ResetPasswordScreen: React.FC<ResetPasswordScreenProps> = ({ onBack
                     secureTextEntry={!data.status.showConfirmPassword}
                   />
                   <TouchableOpacity style={styles.eyeButton} onPress={() => updateStatus({ showConfirmPassword: !data.status.showConfirmPassword })}>
-                    <Ionicons name={data.status.showConfirmPassword ? "eye" : "eye-off"} size={24} color="#505866" />
+                    <Ionicons name={data.status.showConfirmPassword ? "eye-off" : "eye"} size={24} color="#505866" />
                   </TouchableOpacity>
                 </View>
                 <View style={styles.inputBorder} />
@@ -191,7 +211,7 @@ export const ResetPasswordScreen: React.FC<ResetPasswordScreenProps> = ({ onBack
                       <Ionicons
                         name={
                           data.form.newPassword && data.form.confirmPassword && data.form.newPassword === data.form.confirmPassword
-                            ? "checkmark-circle"
+                            ? "checkmark"
                             : "ellipse-outline"
                         }
                         size={18}
@@ -230,16 +250,18 @@ export const ResetPasswordScreen: React.FC<ResetPasswordScreenProps> = ({ onBack
               <TouchableOpacity
                 style={[
                   styles.primaryButton,
-                  (!data.form.newPassword || !data.form.confirmPassword || data.form.newPassword !== data.form.confirmPassword) &&
+                  (!data.form.id || !data.form.newPassword || !data.form.confirmPassword || data.form.newPassword !== data.form.confirmPassword) &&
                     styles.buttonDisabled
                 ]}
                 onPress={handleResetPassword}
-                disabled={!data.form.newPassword || !data.form.confirmPassword || data.form.newPassword !== data.form.confirmPassword}
+                disabled={
+                  !data.form.id || !data.form.newPassword || !data.form.confirmPassword || data.form.newPassword !== data.form.confirmPassword
+                }
               >
                 <Text
                   style={[
                     styles.primaryButtonText,
-                    (!data.form.newPassword || !data.form.confirmPassword || data.form.newPassword !== data.form.confirmPassword) &&
+                    (!data.form.id || !data.form.newPassword || !data.form.confirmPassword || data.form.newPassword !== data.form.confirmPassword) &&
                       styles.buttonTextDisabled
                   ]}
                 >
@@ -262,7 +284,6 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    paddingHorizontal: 20,
     justifyContent: "space-between",
     backgroundColor: "#FFFFFF"
   },
@@ -287,7 +308,7 @@ const styles = StyleSheet.create({
     marginBottom: 40
   },
   inputContainer: {
-    marginBottom: 30
+    marginBottom: 20
   },
   inputLabel: {
     fontSize: 16,
@@ -343,8 +364,9 @@ const styles = StyleSheet.create({
     paddingBottom: 20
   },
   validationSection: {
-    marginBottom: 30,
-    paddingHorizontal: 20
+    paddingVertical: 10,
+    flexDirection: "row",
+    gap: 10
   },
   validationItem: {
     flexDirection: "row",
@@ -352,7 +374,7 @@ const styles = StyleSheet.create({
     marginBottom: 12
   },
   validationIcon: {
-    marginRight: 8
+    marginRight: 3
   },
   validationText: {
     fontSize: 12,
@@ -376,25 +398,5 @@ const styles = StyleSheet.create({
     height: 8,
     borderRadius: 4,
     backgroundColor: "#2B2B2B"
-  },
-  resultSection: {
-    flex: 1,
-    paddingHorizontal: 20,
-    paddingTop: 20
-  },
-  resultTitle: {
-    fontSize: 20,
-    fontWeight: "800",
-    color: "#2B2B2B",
-    marginBottom: 10,
-    textAlign: "left",
-    lineHeight: 30
-  },
-  resultSubtitle: {
-    fontSize: 14,
-    fontWeight: "400",
-    color: "#2B2B2B",
-    textAlign: "left",
-    lineHeight: 24
   }
 });

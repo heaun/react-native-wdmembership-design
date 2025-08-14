@@ -6,7 +6,6 @@ import { Ionicons } from "@expo/vector-icons";
 export const authCommonStyles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 20,
     justifyContent: "space-between",
     backgroundColor: "#FFFFFF"
   },
@@ -31,7 +30,7 @@ export const authCommonStyles = StyleSheet.create({
     marginBottom: 40
   },
   inputContainer: {
-    marginBottom: 30
+    paddingVertical: 10
   },
   inputLabel: {
     fontSize: 16,
@@ -57,22 +56,7 @@ export const authCommonStyles = StyleSheet.create({
     color: "#2B2B2B",
     paddingVertical: 12
   },
-  sendCodeButton: {
-    backgroundColor: "#B48327",
-    borderRadius: 24,
-    paddingHorizontal: 32,
-    paddingVertical: 16,
-    minWidth: 105
-  },
-  sendCodeButtonDisabled: {
-    backgroundColor: "#B1B8C0"
-  },
-  sendCodeButtonText: {
-    fontSize: 14,
-    fontWeight: "700",
-    color: "#FFFFFF",
-    textAlign: "center"
-  },
+
   verificationInputContainer: {
     flexDirection: "row",
     alignItems: "center",
@@ -88,13 +72,15 @@ export const authCommonStyles = StyleSheet.create({
   verifyButton: {
     backgroundColor: "#B48327",
     borderRadius: 24,
-    paddingHorizontal: 32,
-    paddingVertical: 16,
-    minWidth: 105
+    height: 40,
+    minWidth: 105,
+    justifyContent: "center",
+    alignItems: "center"
   },
   verifyButtonDisabled: {
     backgroundColor: "#B1B8C0"
   },
+
   verifyButtonText: {
     fontSize: 14,
     fontWeight: "700",
@@ -150,8 +136,7 @@ export const authCommonStyles = StyleSheet.create({
   timerContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: 16,
-    paddingHorizontal: 24
+    marginBottom: 10
   },
   timerLabel: {
     fontSize: 16,
@@ -162,7 +147,7 @@ export const authCommonStyles = StyleSheet.create({
   timerText: {
     fontSize: 16,
     fontWeight: "700",
-    color: "#2B2B2B"
+    color: "#FF3A4A"
   },
   timerWarning: {
     color: "#FF3A4A"
@@ -173,6 +158,52 @@ export const authCommonStyles = StyleSheet.create({
   resendButtonText: {
     fontSize: 14,
     fontWeight: "700",
+    color: "#505866"
+  },
+  resultSection: {
+    alignItems: "flex-start",
+    marginBottom: 40
+  },
+  resultTitle: {
+    fontSize: 20,
+    fontWeight: "700",
+    color: "#2B2B2B",
+    marginBottom: 8
+  },
+  resultSubtitle: {
+    fontSize: 16,
+    fontWeight: "400",
+    color: "#505866",
+    marginBottom: 30
+  },
+  userIdContainer: {
+    backgroundColor: "#EFF1F3",
+    borderRadius: 5,
+    padding: 20,
+    width: "100%",
+    borderWidth: 1,
+    borderColor: "#D6DADF"
+  },
+  userIdRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 10
+  },
+  userIdLabel: {
+    fontSize: 14,
+    fontWeight: "400",
+    color: "#505866",
+    marginBottom: 8
+  },
+  userId: {
+    fontSize: 18,
+    fontWeight: "700",
+    color: "#2B2B2B"
+  },
+  userIdDate: {
+    fontSize: 14,
+    fontWeight: "400",
     color: "#505866"
   }
 });
@@ -192,73 +223,6 @@ export interface AuthStatusData {
   timeRemaining: number;
   isTimerActive: boolean;
 }
-
-// 공통 컴포넌트들
-interface PhoneInputProps {
-  value: string;
-  onChangeText: (text: string) => void;
-  onSendCode: () => void;
-  disabled: boolean;
-  isVerificationSent: boolean;
-}
-
-export const PhoneInput: React.FC<PhoneInputProps> = ({ value, onChangeText, onSendCode, disabled, isVerificationSent }) => (
-  <View style={authCommonStyles.inputContainer}>
-    <Text style={authCommonStyles.inputLabel}>휴대전화 번호</Text>
-    <View style={authCommonStyles.phoneInputContainer}>
-      <TextInput
-        style={authCommonStyles.phoneInput}
-        placeholder="(-)제외하고 숫자만 입력"
-        placeholderTextColor="#B1B8C0"
-        value={value}
-        onChangeText={onChangeText}
-        keyboardType="phone-pad"
-      />
-      <TouchableOpacity
-        style={[authCommonStyles.sendCodeButton, (!value || isVerificationSent) && authCommonStyles.sendCodeButtonDisabled]}
-        onPress={onSendCode}
-        disabled={!value || isVerificationSent}
-      >
-        <Text style={authCommonStyles.sendCodeButtonText}>인증번호 받기</Text>
-      </TouchableOpacity>
-    </View>
-    <View style={authCommonStyles.inputBorder} />
-    {isVerificationSent && <Text style={authCommonStyles.statusMessage}>인증번호가 발송되었습니다.</Text>}
-  </View>
-);
-
-interface VerificationInputProps {
-  value: string;
-  onChangeText: (text: string) => void;
-  onVerify: () => void;
-  isVerificationCompleted: boolean;
-}
-
-export const VerificationInput: React.FC<VerificationInputProps> = ({ value, onChangeText, onVerify, isVerificationCompleted }) => (
-  <View style={authCommonStyles.inputContainer}>
-    <Text style={authCommonStyles.inputLabel}>인증번호</Text>
-    <View style={authCommonStyles.verificationInputContainer}>
-      <TextInput
-        style={authCommonStyles.verificationInput}
-        placeholder="인증번호 입력"
-        placeholderTextColor="#B1B8C0"
-        value={value}
-        onChangeText={onChangeText}
-        keyboardType="number-pad"
-        maxLength={6}
-      />
-      <TouchableOpacity
-        style={[authCommonStyles.verifyButton, (!value || isVerificationCompleted) && authCommonStyles.verifyButtonDisabled]}
-        onPress={onVerify}
-        disabled={!value || isVerificationCompleted}
-      >
-        <Text style={authCommonStyles.verifyButtonText}>인증확인</Text>
-      </TouchableOpacity>
-    </View>
-    <View style={authCommonStyles.inputBorder} />
-    {isVerificationCompleted && <Text style={authCommonStyles.statusMessage}>휴대폰 번호 인증이 완료되었습니다.</Text>}
-  </View>
-);
 
 interface TimerProps {
   timeRemaining: number;
@@ -362,6 +326,86 @@ export const AuthButtonSection: React.FC<AuthButtonSectionProps> = ({ primaryBut
     )}
   </View>
 );
+
+// 공통 결과 화면 컴포넌트
+interface AuthResultStepProps {
+  mode: "findId" | "resetPassword" | "login" | "register";
+  userId?: string;
+  registrationDate?: string;
+  primaryButton: {
+    text: string;
+    onPress: () => void;
+  };
+  secondaryButton?: {
+    text: string;
+    onPress: () => void;
+  };
+}
+
+export const AuthResultStep: React.FC<AuthResultStepProps> = ({ mode, userId, registrationDate, primaryButton, secondaryButton }) => {
+  // mode에 따른 텍스트 설정
+  const getResultTexts = () => {
+    switch (mode) {
+      case "findId":
+        return {
+          title: "아이디 찾기가\n완료되었습니다",
+          subtitle: "회원님의 아이디(이메일)은 아래와 같습니다."
+        };
+      case "resetPassword":
+        return {
+          title: "비밀번호가\n재설정 되었습니다",
+          subtitle: "비밀번호 변경이 완료되었습니다.\n새로운 비밀번호로 로그인해주세요."
+        };
+      case "login":
+        return {
+          title: "로그인이\n완료되었습니다",
+          subtitle: "로그인이 성공적으로 완료되었습니다."
+        };
+      case "register":
+        return {
+          title: "회원가입이\n완료되었습니다",
+          subtitle: "회원가입이 성공적으로 완료되었습니다."
+        };
+      default:
+        return {
+          title: "완료되었습니다",
+          subtitle: "처리가 완료되었습니다."
+        };
+    }
+  };
+
+  const { title, subtitle } = getResultTexts();
+
+  return (
+    <View style={authCommonStyles.container}>
+      <View style={authCommonStyles.resultSection}>
+        <Text style={authCommonStyles.resultTitle}>{title}</Text>
+        <Text style={authCommonStyles.resultSubtitle}>{subtitle}</Text>
+
+        {userId && (
+          <View style={authCommonStyles.userIdContainer}>
+            <View style={authCommonStyles.userIdRow}>
+              <Text style={authCommonStyles.userIdLabel}>가입일</Text>
+              <Text style={authCommonStyles.userIdDate}>{registrationDate}</Text>
+            </View>
+            <Text style={authCommonStyles.userId}>{userId}</Text>
+          </View>
+        )}
+      </View>
+
+      <View style={authCommonStyles.buttonSection}>
+        {secondaryButton && (
+          <TouchableOpacity style={authCommonStyles.secondaryButton} onPress={secondaryButton.onPress}>
+            <Text style={authCommonStyles.secondaryButtonText}>{secondaryButton.text}</Text>
+          </TouchableOpacity>
+        )}
+        <TouchableOpacity style={authCommonStyles.primaryButton} onPress={primaryButton.onPress}>
+          <Text style={authCommonStyles.primaryButtonText}>{primaryButton.text}</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+};
 
 // 공통 유틸리티 함수들
 export const useAuthTimer = (initialTime: number = 180) => {
