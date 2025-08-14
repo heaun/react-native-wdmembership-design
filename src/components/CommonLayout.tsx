@@ -11,6 +11,12 @@ interface TabItem {
   label: string;
 }
 
+interface ButtonConfig {
+  text: string;
+  onPress: () => void;
+  disabled?: boolean;
+}
+
 interface CommonLayoutProps {
   title: string;
   onBackPress?: () => void;
@@ -25,6 +31,7 @@ interface CommonLayoutProps {
   children: React.ReactNode;
   isWideLayout?: boolean;
   onSideMenuItemPress?: (itemId: string) => void;
+  buttons?: ButtonConfig[];
 }
 
 export const CommonLayout: React.FC<CommonLayoutProps> = ({
@@ -40,7 +47,8 @@ export const CommonLayout: React.FC<CommonLayoutProps> = ({
   onTabPress,
   children,
   isWideLayout = false,
-  onSideMenuItemPress
+  onSideMenuItemPress,
+  buttons
 }) => {
   const [sideMenuVisible, setSideMenuVisible] = useState(false);
 
@@ -133,7 +141,43 @@ export const CommonLayout: React.FC<CommonLayoutProps> = ({
       </View>
 
       {/* Main Content */}
-      <View style={[styles.content, !showTabBar && styles.contentWithoutTabBar, isWideLayout && styles.wideContent]}>{children}</View>
+      <View style={[styles.content, !showTabBar && styles.contentWithoutTabBar, isWideLayout && styles.wideContent]}>
+        {children}
+
+        {/* Common Button Container */}
+        {buttons && buttons.length > 0 && (
+          <View style={styles.buttonContainer}>
+            {buttons.length === 1 ? (
+              // 단일 버튼: solid 스타일
+              <TouchableOpacity
+                style={[styles.solidButton, buttons[0].disabled && styles.buttonDisabled]}
+                onPress={buttons[0].onPress}
+                disabled={buttons[0].disabled}
+              >
+                <Text style={styles.solidButtonText}>{buttons[0].text}</Text>
+              </TouchableOpacity>
+            ) : (
+              // 다중 버튼: outline, solid 순서
+              <>
+                <TouchableOpacity
+                  style={[styles.outlineButton, buttons[0].disabled && styles.buttonDisabled]}
+                  onPress={buttons[0].onPress}
+                  disabled={buttons[0].disabled}
+                >
+                  <Text style={styles.outlineButtonText}>{buttons[0].text}</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[styles.solidButton, buttons[1].disabled && styles.buttonDisabled]}
+                  onPress={buttons[1].onPress}
+                  disabled={buttons[1].disabled}
+                >
+                  <Text style={styles.solidButtonText}>{buttons[1].text}</Text>
+                </TouchableOpacity>
+              </>
+            )}
+          </View>
+        )}
+      </View>
 
       {/* Bottom Tab Bar */}
       {showTabBar && (
@@ -313,5 +357,44 @@ const styles = StyleSheet.create({
   },
   activeTabText: {
     color: "#6C7072"
+  },
+  buttonContainer: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    paddingHorizontal: 20,
+    paddingBottom: 20,
+    backgroundColor: "#FFFFFF",
+    gap: 12
+  },
+  solidButton: {
+    backgroundColor: "#2B2B2B",
+    borderRadius: 25,
+    height: 50,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  outlineButton: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 25,
+    height: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#D6DADF"
+  },
+  buttonDisabled: {
+    backgroundColor: "#D6DADF"
+  },
+  solidButtonText: {
+    fontSize: 16,
+    fontWeight: "700",
+    color: "#FFFFFF"
+  },
+  outlineButtonText: {
+    fontSize: 16,
+    fontWeight: "700",
+    color: "#505866"
   }
 });

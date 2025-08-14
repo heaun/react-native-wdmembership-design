@@ -71,15 +71,24 @@ export const ResetPasswordScreen: React.FC<ResetPasswordScreenProps> = ({ onBack
     onResetPasswordSuccess?.();
   };
 
-  const renderResultStep = () => (
-    <AuthResultStep
-      mode="resetPassword"
-      primaryButton={{
-        text: "로그인 하러가기",
-        onPress: handleSuccess
-      }}
-    />
-  );
+  // 버튼 설정을 동적으로 생성하는 함수
+  const getButtons = () => {
+    if (data.step === "result") {
+      return [
+        {
+          text: "로그인 하러가기",
+          onPress: handleSuccess
+        }
+      ];
+    }
+    return [
+      {
+        text: "비밀번호 재설정",
+        onPress: handleResetPassword,
+        disabled: !data.form.id || !data.form.newPassword || !data.form.confirmPassword || data.form.newPassword !== data.form.confirmPassword
+      }
+    ];
+  };
 
   return (
     <CommonLayout
@@ -91,10 +100,11 @@ export const ResetPasswordScreen: React.FC<ResetPasswordScreenProps> = ({ onBack
       onMenuPress={() => {}}
       onCouponPress={() => {}}
       onNotificationPress={() => {}}
+      buttons={getButtons()}
     >
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
         {data.step === "input" ? (
-          <View style={styles.container}>
+          <View style={[styles.container, { paddingBottom: 120 }]}>
             <View style={styles.headerSection}>
               <Text style={styles.title}>새로 사용하실{"\n"}비밀번호를 입력해 주세요</Text>
             </View>
@@ -136,7 +146,7 @@ export const ResetPasswordScreen: React.FC<ResetPasswordScreenProps> = ({ onBack
                   <View style={styles.validationItem}>
                     <View style={styles.validationIcon}>
                       <Ionicons
-                        name={data.form.newPassword.length >= 8 && data.form.newPassword.length <= 20 ? "checkmark" : "ellipse-outline"}
+                        name={"checkmark"}
                         size={18}
                         color={data.form.newPassword.length >= 8 && data.form.newPassword.length <= 20 ? "#B48327" : "#B1B8C0"}
                       />
@@ -153,14 +163,7 @@ export const ResetPasswordScreen: React.FC<ResetPasswordScreenProps> = ({ onBack
                   <View style={styles.validationItem}>
                     <View style={styles.validationIcon}>
                       <Ionicons
-                        name={
-                          /[A-Z]/.test(data.form.newPassword) &&
-                          /[a-z]/.test(data.form.newPassword) &&
-                          /\d/.test(data.form.newPassword) &&
-                          /[!@#$%^&*(),.?":{}|<>]/.test(data.form.newPassword)
-                            ? "checkmark"
-                            : "ellipse-outline"
-                        }
+                        name={"checkmark"}
                         size={18}
                         color={
                           /[A-Z]/.test(data.form.newPassword) &&
@@ -200,7 +203,7 @@ export const ResetPasswordScreen: React.FC<ResetPasswordScreenProps> = ({ onBack
                     secureTextEntry={!data.status.showConfirmPassword}
                   />
                   <TouchableOpacity style={styles.eyeButton} onPress={() => updateStatus({ showConfirmPassword: !data.status.showConfirmPassword })}>
-                    <Ionicons name={data.status.showConfirmPassword ? "eye-off" : "eye"} size={24} color="#505866" />
+                    <Ionicons name={data.status.showConfirmPassword ? "eye" : "eye-off"} size={24} color="#505866" />
                   </TouchableOpacity>
                 </View>
                 <View style={styles.inputBorder} />
@@ -209,11 +212,7 @@ export const ResetPasswordScreen: React.FC<ResetPasswordScreenProps> = ({ onBack
                   <View style={styles.validationItem}>
                     <View style={styles.validationIcon}>
                       <Ionicons
-                        name={
-                          data.form.newPassword && data.form.confirmPassword && data.form.newPassword === data.form.confirmPassword
-                            ? "checkmark"
-                            : "ellipse-outline"
-                        }
+                        name={"checkmark"}
                         size={18}
                         color={
                           data.form.newPassword && data.form.confirmPassword && data.form.newPassword === data.form.confirmPassword
@@ -237,41 +236,20 @@ export const ResetPasswordScreen: React.FC<ResetPasswordScreenProps> = ({ onBack
                 </View>
               </View>
             </View>
-
-            {/* <View style={styles.passwordStrengthSection}>
-              <View style={styles.strengthDots}>
-                {[1, 2, 3, 4, 5, 6].map((dot) => (
-                  <View key={dot} style={styles.strengthDot} />
-                ))}
-              </View>
-            </View> */}
-
-            <View style={styles.buttonSection}>
-              <TouchableOpacity
-                style={[
-                  styles.primaryButton,
-                  (!data.form.id || !data.form.newPassword || !data.form.confirmPassword || data.form.newPassword !== data.form.confirmPassword) &&
-                    styles.buttonDisabled
-                ]}
-                onPress={handleResetPassword}
-                disabled={
-                  !data.form.id || !data.form.newPassword || !data.form.confirmPassword || data.form.newPassword !== data.form.confirmPassword
-                }
-              >
-                <Text
-                  style={[
-                    styles.primaryButtonText,
-                    (!data.form.id || !data.form.newPassword || !data.form.confirmPassword || data.form.newPassword !== data.form.confirmPassword) &&
-                      styles.buttonTextDisabled
-                  ]}
-                >
-                  비밀번호 재설정
-                </Text>
-              </TouchableOpacity>
-            </View>
           </View>
         ) : (
-          renderResultStep()
+          <AuthResultStep
+            mode="resetPassword"
+            message={{
+              title: "비밀번호가\n재설정 되었습니다",
+              subtitle: "비밀번호 변경이 완료되었습니다.\n새로운 비밀번호로 로그인해주세요."
+            }}
+            primaryButton={{
+              text: "로그인 하러가기",
+              onPress: handleSuccess
+            }}
+            onBackPress={onBackPress}
+          />
         )}
       </ScrollView>
     </CommonLayout>
@@ -362,6 +340,15 @@ const styles = StyleSheet.create({
   },
   buttonSection: {
     paddingBottom: 20
+  },
+  buttonSectionFixed: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    paddingHorizontal: 20,
+    paddingBottom: 20,
+    backgroundColor: "#FFFFFF"
   },
   validationSection: {
     paddingVertical: 10,

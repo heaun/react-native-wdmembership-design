@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView } from "react-native";
 import { CommonLayout } from "../components/CommonLayout";
 import { Ionicons } from "@expo/vector-icons";
-import { authCommonStyles, Timer, useAuthTimer, EmailInput, AuthButtonSection, AuthResultStep } from "../components/AuthCommon";
+import { authCommonStyles, Timer, useAuthTimer, EmailInput, AuthResultStep } from "../components/AuthCommon";
 
 interface AuthenticationProps {
   onBackPress?: () => void;
@@ -74,7 +74,7 @@ const message = {
     headerTitle: "비밀번호 재설정을 위해",
     buttonText: "다음",
     resultTitle: "비밀번호 재설정이\n완료되었습니다",
-    resultSubtitle: "비밀번호 변경이 완료되었습니다. 새로운 비밀번호로 로그인해주세요."
+    resultSubtitle: "비밀번호 변경이 완료되었습니다.\n새로운 비밀번호로 로그인해주세요."
   },
   login: {
     menuTitle: "로그인",
@@ -324,7 +324,7 @@ export const AuthenticationScreen: React.FC<AuthenticationProps> = ({ onBackPres
   );
 
   const renderInputStep = () => (
-    <View style={authCommonStyles.container}>
+    <View style={[authCommonStyles.container, { paddingBottom: 120 }]}>
       <AuthHeader title={message?.[mode]?.headerTitle} />
 
       <View style={authCommonStyles.inputSection}>
@@ -361,25 +361,6 @@ export const AuthenticationScreen: React.FC<AuthenticationProps> = ({ onBackPres
           </View>
         )}
       </View>
-
-      <AuthButtonSection
-        primaryButton={{
-          text: message?.[mode]?.buttonText,
-          onPress: handleAuthentication,
-          disabled:
-            mode === "resetPassword"
-              ? !data.status.isVerificationSent || !data.status.isVerificationCompleted || !data.form.id
-              : !data.status.isVerificationSent || !data.status.isVerificationCompleted
-        }}
-        secondaryButton={
-          mode === "findId"
-            ? {
-                text: "이메일로 찾기",
-                onPress: handleEmailInput
-              }
-            : undefined
-        }
-      />
     </View>
   );
 
@@ -407,6 +388,9 @@ export const AuthenticationScreen: React.FC<AuthenticationProps> = ({ onBackPres
       mode={mode}
       userId={data.result.foundUserId}
       registrationDate={data.result.registrationDate}
+      message={{
+        title: message?.[mode]?.resultTitle
+      }}
       primaryButton={{
         text: "로그인 하러가기",
         onPress: handleSuccess
@@ -427,32 +411,21 @@ export const AuthenticationScreen: React.FC<AuthenticationProps> = ({ onBackPres
           onSuccess?.(result);
         }
       }}
+      onBackPress={onBackPress}
     />
   );
   const renderEmailInputStep = () => (
-    <View style={authCommonStyles.container}>
+    <View style={[authCommonStyles.container, { paddingBottom: 120 }]}>
       <AuthHeader title="이메일 주소 입력" subtitle="가입하신 이메일 주소를\n입력해주세요." />
 
       <View style={authCommonStyles.inputSection}>
         <EmailInput value={data.form.email} onChangeText={(text) => updateForm({ email: text })} />
       </View>
-
-      <AuthButtonSection
-        primaryButton={{
-          text: "링크 전송하기",
-          onPress: handleSendEmailLink,
-          disabled: !data.form.email
-        }}
-        secondaryButton={{
-          text: "뒤로가기",
-          onPress: handleBackToInput
-        }}
-      />
     </View>
   );
 
   const renderLinkStep = () => (
-    <View style={styles.container}>
+    <View style={[styles.container, { paddingBottom: 120 }]}>
       <View style={styles.headerSection}>
         <Text style={styles.title}>링크 전송 완료</Text>
         <Text style={styles.subtitle}>아이디 찾기 링크가{"\n"}이메일로 전송되었습니다.</Text>
@@ -470,17 +443,92 @@ export const AuthenticationScreen: React.FC<AuthenticationProps> = ({ onBackPres
           </Text>
         </View>
       </View>
-
-      <View style={styles.linkActionsSection}>
-        <TouchableOpacity style={styles.secondaryButton} onPress={() => updateData({ step: "input" })}>
-          <Text style={styles.secondaryButtonText}>다시 입력하기</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.primaryButton} onPress={handleSuccess}>
-          <Text style={styles.primaryButtonText}>로그인으로 돌아가기</Text>
-        </TouchableOpacity>
-      </View>
     </View>
   );
+
+  // 버튼 설정을 동적으로 생성하는 함수
+  const getButtons = () => {
+    switch (data.step) {
+      case "input":
+        if (mode === "findId") {
+          return [
+            {
+              text: "이메일로 찾기",
+              onPress: handleEmailInput
+            },
+            {
+              text: message?.[mode]?.buttonText || "확인",
+              onPress: handleAuthentication,
+              disabled: !data.status.isVerificationSent || !data.status.isVerificationCompleted
+            }
+          ];
+        } else {
+          return [
+            {
+              text: message?.[mode]?.buttonText || "확인",
+              onPress: handleAuthentication,
+              disabled:
+                mode === "resetPassword"
+                  ? !data.status.isVerificationSent || !data.status.isVerificationCompleted || !data.form.id
+                  : !data.status.isVerificationSent || !data.status.isVerificationCompleted
+            }
+          ];
+        }
+      case "emailInput":
+        return [
+          {
+            text: "뒤로가기",
+            onPress: handleBackToInput
+          },
+          {
+            text: "링크 전송하기",
+            onPress: handleSendEmailLink,
+            disabled: !data.form.email
+          }
+        ];
+      case "link":
+        return [
+          {
+            text: "다시 입력하기",
+            onPress: () => updateData({ step: "input" })
+          },
+          {
+            text: "로그인으로 돌아가기",
+            onPress: handleSuccess
+          }
+        ];
+      case "result":
+        const buttons = [];
+
+        if (mode === "findId") {
+          buttons.push({
+            text: "비밀번호 재설정하기",
+            onPress: () => {
+              // 찾은 아이디 정보와 함께 비밀번호 재설정 화면으로 이동
+              const result = {
+                mode: "resetPassword",
+                form: {
+                  ...data.form,
+                  id: data.result.foundUserId // 찾은 아이디를 form.id에 설정
+                },
+                action: "navigateToResetPassword",
+                foundUserId: data.result.foundUserId
+              };
+              onSuccess?.(result);
+            }
+          });
+        }
+
+        buttons.push({
+          text: "로그인 하러가기",
+          onPress: handleSuccess
+        });
+
+        return buttons;
+      default:
+        return [];
+    }
+  };
 
   return (
     <CommonLayout
@@ -492,6 +540,7 @@ export const AuthenticationScreen: React.FC<AuthenticationProps> = ({ onBackPres
       onMenuPress={() => {}}
       onCouponPress={() => {}}
       onNotificationPress={() => {}}
+      buttons={getButtons()}
     >
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
         {data.step === "input" && renderInputStep()}

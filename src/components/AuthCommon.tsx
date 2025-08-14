@@ -6,7 +6,6 @@ import { Ionicons } from "@expo/vector-icons";
 export const authCommonStyles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "space-between",
     backgroundColor: "#FFFFFF"
   },
   headerSection: {
@@ -126,6 +125,16 @@ export const authCommonStyles = StyleSheet.create({
     gap: 12,
     paddingBottom: 20
   },
+  buttonSectionFixed: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    gap: 12,
+    paddingHorizontal: 20,
+    paddingBottom: 20,
+    backgroundColor: "#FFFFFF"
+  },
   statusMessage: {
     fontSize: 12,
     fontWeight: "400",
@@ -170,11 +179,18 @@ export const authCommonStyles = StyleSheet.create({
     color: "#2B2B2B",
     marginBottom: 8
   },
+  resultTitleContainer: {
+    paddingVertical: 10,
+    gap: 3
+  },
+  resultSubtitleContainer: {
+    paddingVertical: 10,
+    gap: 3
+  },
   resultSubtitle: {
     fontSize: 16,
     fontWeight: "400",
-    color: "#505866",
-    marginBottom: 30
+    color: "#505866"
   },
   userIdContainer: {
     backgroundColor: "#EFF1F3",
@@ -306,7 +322,7 @@ interface AuthButtonSectionProps {
 }
 
 export const AuthButtonSection: React.FC<AuthButtonSectionProps> = ({ primaryButton, secondaryButton }) => (
-  <View style={authCommonStyles.buttonSection}>
+  <View style={authCommonStyles.buttonSectionFixed}>
     <TouchableOpacity
       style={[authCommonStyles.primaryButton, primaryButton.disabled && authCommonStyles.buttonDisabled]}
       onPress={primaryButton.onPress}
@@ -332,6 +348,10 @@ interface AuthResultStepProps {
   mode: "findId" | "resetPassword" | "login" | "register";
   userId?: string;
   registrationDate?: string;
+  message: {
+    title: string;
+    subtitle?: string;
+  };
   primaryButton: {
     text: string;
     onPress: () => void;
@@ -340,47 +360,35 @@ interface AuthResultStepProps {
     text: string;
     onPress: () => void;
   };
+  onBackPress?: () => void;
 }
 
-export const AuthResultStep: React.FC<AuthResultStepProps> = ({ mode, userId, registrationDate, primaryButton, secondaryButton }) => {
-  // mode에 따른 텍스트 설정
-  const getResultTexts = () => {
-    switch (mode) {
-      case "findId":
-        return {
-          title: "아이디 찾기가\n완료되었습니다",
-          subtitle: "회원님의 아이디(이메일)은 아래와 같습니다."
-        };
-      case "resetPassword":
-        return {
-          title: "비밀번호가\n재설정 되었습니다",
-          subtitle: "비밀번호 변경이 완료되었습니다.\n새로운 비밀번호로 로그인해주세요."
-        };
-      case "login":
-        return {
-          title: "로그인이\n완료되었습니다",
-          subtitle: "로그인이 성공적으로 완료되었습니다."
-        };
-      case "register":
-        return {
-          title: "회원가입이\n완료되었습니다",
-          subtitle: "회원가입이 성공적으로 완료되었습니다."
-        };
-      default:
-        return {
-          title: "완료되었습니다",
-          subtitle: "처리가 완료되었습니다."
-        };
-    }
+export const AuthResultStep: React.FC<AuthResultStepProps> = ({
+  mode,
+  userId,
+  registrationDate,
+  message,
+  primaryButton,
+  secondaryButton,
+  onBackPress
+}) => {
+  const { title, subtitle } = message;
+
+  const renderTitle = (title: string, style?: StyleProp<TextStyle>) => {
+    return title.split("\n").map((line: string, index: number) => (
+      <Text key={index} style={style ? style : authCommonStyles.resultTitle}>
+        {line}
+      </Text>
+    ));
   };
-
-  const { title, subtitle } = getResultTexts();
-
   return (
-    <View style={authCommonStyles.container}>
+    <View style={[authCommonStyles.container, { paddingBottom: 120 }]}>
       <View style={authCommonStyles.resultSection}>
-        <Text style={authCommonStyles.resultTitle}>{title}</Text>
-        <Text style={authCommonStyles.resultSubtitle}>{subtitle}</Text>
+        <View style={authCommonStyles.resultTitleContainer}>{renderTitle(title)}</View>
+
+        <View style={authCommonStyles.resultSubtitleContainer}>
+          {subtitle && subtitle.split("\n").map((line: string, index: number) => renderTitle(line, authCommonStyles.resultSubtitle))}
+        </View>
 
         {userId && (
           <View style={authCommonStyles.userIdContainer}>
@@ -391,17 +399,6 @@ export const AuthResultStep: React.FC<AuthResultStepProps> = ({ mode, userId, re
             <Text style={authCommonStyles.userId}>{userId}</Text>
           </View>
         )}
-      </View>
-
-      <View style={authCommonStyles.buttonSection}>
-        {secondaryButton && (
-          <TouchableOpacity style={authCommonStyles.secondaryButton} onPress={secondaryButton.onPress}>
-            <Text style={authCommonStyles.secondaryButtonText}>{secondaryButton.text}</Text>
-          </TouchableOpacity>
-        )}
-        <TouchableOpacity style={authCommonStyles.primaryButton} onPress={primaryButton.onPress}>
-          <Text style={authCommonStyles.primaryButtonText}>{primaryButton.text}</Text>
-        </TouchableOpacity>
       </View>
     </View>
   );

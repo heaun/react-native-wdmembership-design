@@ -17,11 +17,11 @@
         "expo-font",
         {
           "fonts": [
-            "./assets/fonts/NanumSquareNeo-bRg.ttf",
-            "./assets/fonts/NanumSquareNeo-cBd.ttf",
-            "./assets/fonts/NanumSquareNeo-dEb.ttf",
-            "./assets/fonts/NanumSquareNeo-eHv.ttf",
-            "./assets/fonts/NanumSquareNeo-aLt.ttf"
+            "./src/assets/fonts/NanumSquareNeo-bRg.ttf",
+            "./src/assets/fonts/NanumSquareNeo-cBd.ttf",
+            "./src/assets/fonts/NanumSquareNeo-dEb.ttf",
+            "./src/assets/fonts/NanumSquareNeo-eHv.ttf",
+            "./src/assets/fonts/NanumSquareNeo-aLt.ttf"
           ]
         }
       ]
@@ -41,19 +41,19 @@
           "fontFamily": "NanumSquareNeo-bRg",
           "fontDefinitions": [
             {
-              "path": "assets/fonts/NanumSquareNeo-bRg.ttf",
+              "path": "src/assets/fonts/NanumSquareNeo-bRg.ttf",
               "fontFamily": "NanumSquareNeo-bRg",
               "fontWeight": "400",
               "fontStyle": "normal"
             },
             {
-              "path": "assets/fonts/NanumSquareNeo-cBd.ttf",
+              "path": "src/assets/fonts/NanumSquareNeo-cBd.ttf",
               "fontFamily": "NanumSquareNeo-cBd",
               "fontWeight": "700",
               "fontStyle": "normal"
             },
             {
-              "path": "assets/fonts/NanumSquareNeo-dEb.ttf",
+              "path": "src/assets/fonts/NanumSquareNeo-dEb.ttf",
               "fontFamily": "NanumSquareNeo-dEb",
               "fontWeight": "800",
               "fontStyle": "normal"

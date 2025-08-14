@@ -8,28 +8,28 @@
 
 /* Begin PBXBuildFile section */
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
+		35DFA184002203F3E390B9DA /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755116E1D0DBEF6F6DAE2080 /* ExpoModulesProvider.swift */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
-		3FEB162A4C2143151E84623A /* libPods-WDMembershipApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 894B5DA02FDED143E7712C22 /* libPods-WDMembershipApp.a */; };
-		673AA642FAF5ECB09C39D565 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 065DAA164ECCE351AD14D2BC /* PrivacyInfo.xcprivacy */; };
+		AAAEE684F8A426450A67790E /* libPods-WDMembershipApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 75B9ADD112B4A8A8802CF586 /* libPods-WDMembershipApp.a */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
-		E4F0F1C0661B5EE94B95C782 /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621D1201BA6DC6416D71F907 /* ExpoModulesProvider.swift */; };
+		E95C034E1015425CA7CDAC73 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 3B8367C37B0E3255946F0EFC /* PrivacyInfo.xcprivacy */; };
 		F11748422D0307B40044C1D9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11748412D0307B40044C1D9 /* AppDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		065DAA164ECCE351AD14D2BC /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = WDMembershipApp/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* WDMembershipApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WDMembershipApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = WDMembershipApp/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = WDMembershipApp/Info.plist; sourceTree = "<group>"; };
-		45B1713C3FC3E601E1416728 /* Pods-WDMembershipApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WDMembershipApp.debug.xcconfig"; path = "Target Support Files/Pods-WDMembershipApp/Pods-WDMembershipApp.debug.xcconfig"; sourceTree = "<group>"; };
-		621D1201BA6DC6416D71F907 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-WDMembershipApp/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
-		894B5DA02FDED143E7712C22 /* libPods-WDMembershipApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-WDMembershipApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		301BE2E54033A901B266867C /* Pods-WDMembershipApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WDMembershipApp.debug.xcconfig"; path = "Target Support Files/Pods-WDMembershipApp/Pods-WDMembershipApp.debug.xcconfig"; sourceTree = "<group>"; };
+		349E80181CA7BDCB149DCBAE /* Pods-WDMembershipApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WDMembershipApp.release.xcconfig"; path = "Target Support Files/Pods-WDMembershipApp/Pods-WDMembershipApp.release.xcconfig"; sourceTree = "<group>"; };
+		3B8367C37B0E3255946F0EFC /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = WDMembershipApp/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		755116E1D0DBEF6F6DAE2080 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-WDMembershipApp/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
+		75B9ADD112B4A8A8802CF586 /* libPods-WDMembershipApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-WDMembershipApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = WDMembershipApp/SplashScreen.storyboard; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F11748412D0307B40044C1D9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = WDMembershipApp/AppDelegate.swift; sourceTree = "<group>"; };
 		F11748442D0722820044C1D9 /* WDMembershipApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "WDMembershipApp-Bridging-Header.h"; path = "WDMembershipApp/WDMembershipApp-Bridging-Header.h"; sourceTree = "<group>"; };
-		F2BE6CF1072733BAED96DA0D /* Pods-WDMembershipApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WDMembershipApp.release.xcconfig"; path = "Target Support Files/Pods-WDMembershipApp/Pods-WDMembershipApp.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -37,13 +37,21 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3FEB162A4C2143151E84623A /* libPods-WDMembershipApp.a in Frameworks */,
+				AAAEE684F8A426450A67790E /* libPods-WDMembershipApp.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0842EB7B37D55B8E40439DE3 /* ExpoModulesProviders */ = {
+			isa = PBXGroup;
+			children = (
+				1DF2CEF399D17A407F1A9078 /* WDMembershipApp */,
+			);
+			name = ExpoModulesProviders;
+			sourceTree = "<group>";
+		};
 		13B07FAE1A68108700A75B9A /* WDMembershipApp */ = {
 			isa = PBXGroup;
 			children = (
@@ -53,7 +61,15 @@
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */,
-				065DAA164ECCE351AD14D2BC /* PrivacyInfo.xcprivacy */,
+				3B8367C37B0E3255946F0EFC /* PrivacyInfo.xcprivacy */,
+			);
+			name = WDMembershipApp;
+			sourceTree = "<group>";
+		};
+		1DF2CEF399D17A407F1A9078 /* WDMembershipApp */ = {
+			isa = PBXGroup;
+			children = (
+				755116E1D0DBEF6F6DAE2080 /* ExpoModulesProvider.swift */,
 			);
 			name = WDMembershipApp;
 			sourceTree = "<group>";
@@ -62,17 +78,9 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				894B5DA02FDED143E7712C22 /* libPods-WDMembershipApp.a */,
+				75B9ADD112B4A8A8802CF586 /* libPods-WDMembershipApp.a */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		49730B26F88CB8300871FB57 /* WDMembershipApp */ = {
-			isa = PBXGroup;
-			children = (
-				621D1201BA6DC6416D71F907 /* ExpoModulesProvider.swift */,
-			);
-			name = WDMembershipApp;
 			sourceTree = "<group>";
 		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
@@ -89,8 +97,8 @@
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
-				CE30A063BDB63575A448A2F7 /* Pods */,
-				F629EE73DF992655E6468A96 /* ExpoModulesProviders */,
+				EB08A53FFE30A8EF9B5781F6 /* Pods */,
+				0842EB7B37D55B8E40439DE3 /* ExpoModulesProviders */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -114,22 +122,14 @@
 			path = WDMembershipApp/Supporting;
 			sourceTree = "<group>";
 		};
-		CE30A063BDB63575A448A2F7 /* Pods */ = {
+		EB08A53FFE30A8EF9B5781F6 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				45B1713C3FC3E601E1416728 /* Pods-WDMembershipApp.debug.xcconfig */,
-				F2BE6CF1072733BAED96DA0D /* Pods-WDMembershipApp.release.xcconfig */,
+				301BE2E54033A901B266867C /* Pods-WDMembershipApp.debug.xcconfig */,
+				349E80181CA7BDCB149DCBAE /* Pods-WDMembershipApp.release.xcconfig */,
 			);
 			name = Pods;
 			path = Pods;
-			sourceTree = "<group>";
-		};
-		F629EE73DF992655E6468A96 /* ExpoModulesProviders */ = {
-			isa = PBXGroup;
-			children = (
-				49730B26F88CB8300871FB57 /* WDMembershipApp */,
-			);
-			name = ExpoModulesProviders;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -140,13 +140,13 @@
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "WDMembershipApp" */;
 			buildPhases = (
 				08A4A3CD28434E44B6B9DE2E /* [CP] Check Pods Manifest.lock */,
-				815C7C1552830E06917FE30C /* [Expo] Configure project */,
+				80455987EA245B5FD5BE0EDD /* [Expo] Configure project */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */,
-				8D9BDCA615B521DBF6D02FB5 /* [CP] Embed Pods Frameworks */,
+				4D44E9CC2055D219DBACA0A4 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -196,7 +196,7 @@
 				BB2F792D24A3F905000567C9 /* Expo.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */,
-				673AA642FAF5ECB09C39D565 /* PrivacyInfo.xcprivacy in Resources */,
+				E95C034E1015425CA7CDAC73 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -240,6 +240,24 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		4D44E9CC2055D219DBACA0A4 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-WDMembershipApp/Pods-WDMembershipApp-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/hermes-engine/Pre-built/hermes.framework/hermes",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WDMembershipApp/Pods-WDMembershipApp-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -276,7 +294,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WDMembershipApp/Pods-WDMembershipApp-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		815C7C1552830E06917FE30C /* [Expo] Configure project */ = {
+		80455987EA245B5FD5BE0EDD /* [Expo] Configure project */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
@@ -295,24 +313,6 @@
 			shellPath = /bin/sh;
 			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-WDMembershipApp/expo-configure-project.sh\"\n";
 		};
-		8D9BDCA615B521DBF6D02FB5 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-WDMembershipApp/Pods-WDMembershipApp-frameworks.sh",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/hermes-engine/Pre-built/hermes.framework/hermes",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WDMembershipApp/Pods-WDMembershipApp-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -321,7 +321,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F11748422D0307B40044C1D9 /* AppDelegate.swift in Sources */,
-				E4F0F1C0661B5EE94B95C782 /* ExpoModulesProvider.swift in Sources */,
+				35DFA184002203F3E390B9DA /* ExpoModulesProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -330,7 +330,7 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 45B1713C3FC3E601E1416728 /* Pods-WDMembershipApp.debug.xcconfig */;
+			baseConfigurationReference = 301BE2E54033A901B266867C /* Pods-WDMembershipApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -364,7 +364,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F2BE6CF1072733BAED96DA0D /* Pods-WDMembershipApp.release.xcconfig */;
+			baseConfigurationReference = 349E80181CA7BDCB149DCBAE /* Pods-WDMembershipApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
