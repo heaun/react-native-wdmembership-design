@@ -15,6 +15,12 @@ interface ButtonConfig {
   text: string;
   onPress: () => void;
   disabled?: boolean;
+  style?: "primary" | "secondary" | "custom";
+  customStyle?: {
+    backgroundColor?: string;
+    textColor?: string;
+    borderColor?: string;
+  };
 }
 
 interface CommonLayoutProps {
@@ -32,6 +38,7 @@ interface CommonLayoutProps {
   isWideLayout?: boolean;
   onSideMenuItemPress?: (itemId: string) => void;
   buttons?: ButtonConfig[];
+  showTitle?: boolean;
 }
 
 export const CommonLayout: React.FC<CommonLayoutProps> = ({
@@ -48,7 +55,8 @@ export const CommonLayout: React.FC<CommonLayoutProps> = ({
   children,
   isWideLayout = false,
   onSideMenuItemPress,
-  buttons
+  buttons,
+  showTitle = true
 }) => {
   const [sideMenuVisible, setSideMenuVisible] = useState(false);
 
@@ -100,8 +108,8 @@ export const CommonLayout: React.FC<CommonLayoutProps> = ({
       <SafeAreaView style={styles.safeAreaTop} />
 
       {/* Top Bar */}
-      <View style={[styles.topBar, isWideLayout && styles.wideTopBar]}>
-        <Text style={styles.topBarTitle}>{title}</Text>
+      <View style={[styles.topBar, isWideLayout && styles.wideTopBar, !showTitle && styles.noTitle]}>
+        {showTitle && <Text style={styles.topBarTitle}>{title}</Text>}
 
         {/* Left side */}
         <View style={styles.topBarIcons}>
@@ -148,30 +156,105 @@ export const CommonLayout: React.FC<CommonLayoutProps> = ({
         {buttons && buttons.length > 0 && (
           <View style={styles.buttonContainer}>
             {buttons.length === 1 ? (
-              // 단일 버튼: solid 스타일
+              // 단일 버튼
               <TouchableOpacity
-                style={[styles.solidButton, buttons[0].disabled && styles.buttonDisabled]}
+                style={[
+                  buttons[0].style === "custom" && buttons[0].customStyle
+                    ? {
+                        backgroundColor: buttons[0].customStyle.backgroundColor || "#2B2B2B",
+                        borderRadius: 25,
+                        height: 50,
+                        justifyContent: "center",
+                        alignItems: "center",
+                        borderWidth: buttons[0].customStyle.borderColor ? 1 : 0,
+                        borderColor: buttons[0].customStyle.borderColor
+                      }
+                    : styles.solidButton,
+                  buttons[0].disabled && styles.buttonDisabled
+                ]}
                 onPress={buttons[0].onPress}
                 disabled={buttons[0].disabled}
               >
-                <Text style={styles.solidButtonText}>{buttons[0].text}</Text>
+                <Text
+                  style={[
+                    buttons[0].style === "custom" && buttons[0].customStyle
+                      ? {
+                          fontSize: 16,
+                          fontWeight: "700",
+                          color: buttons[0].customStyle.textColor || "#FFFFFF"
+                        }
+                      : styles.solidButtonText
+                  ]}
+                >
+                  {buttons[0].text}
+                </Text>
               </TouchableOpacity>
             ) : (
-              // 다중 버튼: outline, solid 순서
+              // 다중 버튼
               <>
                 <TouchableOpacity
-                  style={[styles.outlineButton, buttons[0].disabled && styles.buttonDisabled]}
+                  style={[
+                    buttons[0].style === "custom" && buttons[0].customStyle
+                      ? {
+                          backgroundColor: buttons[0].customStyle.backgroundColor || "#FFFFFF",
+                          borderRadius: 25,
+                          height: 50,
+                          justifyContent: "center",
+                          alignItems: "center",
+                          borderWidth: 1,
+                          borderColor: buttons[0].customStyle.borderColor || "#D6DADF"
+                        }
+                      : styles.outlineButton,
+                    buttons[0].disabled && styles.buttonDisabled
+                  ]}
                   onPress={buttons[0].onPress}
                   disabled={buttons[0].disabled}
                 >
-                  <Text style={styles.outlineButtonText}>{buttons[0].text}</Text>
+                  <Text
+                    style={[
+                      buttons[0].style === "custom" && buttons[0].customStyle
+                        ? {
+                            fontSize: 16,
+                            fontWeight: "700",
+                            color: buttons[0].customStyle.textColor || "#505866"
+                          }
+                        : styles.outlineButtonText
+                    ]}
+                  >
+                    {buttons[0].text}
+                  </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  style={[styles.solidButton, buttons[1].disabled && styles.buttonDisabled]}
+                  style={[
+                    buttons[1].style === "custom" && buttons[1].customStyle
+                      ? {
+                          backgroundColor: buttons[1].customStyle.backgroundColor || "#2B2B2B",
+                          borderRadius: 25,
+                          height: 50,
+                          justifyContent: "center",
+                          alignItems: "center",
+                          borderWidth: buttons[1].customStyle.borderColor ? 1 : 0,
+                          borderColor: buttons[1].customStyle.borderColor
+                        }
+                      : styles.solidButton,
+                    buttons[1].disabled && styles.buttonDisabled
+                  ]}
                   onPress={buttons[1].onPress}
                   disabled={buttons[1].disabled}
                 >
-                  <Text style={styles.solidButtonText}>{buttons[1].text}</Text>
+                  <Text
+                    style={[
+                      buttons[1].style === "custom" && buttons[1].customStyle
+                        ? {
+                            fontSize: 16,
+                            fontWeight: "700",
+                            color: buttons[1].customStyle.textColor || "#FFFFFF"
+                          }
+                        : styles.solidButtonText
+                    ]}
+                  >
+                    {buttons[1].text}
+                  </Text>
                 </TouchableOpacity>
               </>
             )}
@@ -224,6 +307,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     height: 60
+  },
+  noTitle: {
+    height: 0,
+    paddingTop: 0
   },
   wideTopBar: {
     paddingHorizontal: 5
@@ -365,7 +452,6 @@ const styles = StyleSheet.create({
     right: 0,
     paddingHorizontal: 20,
     paddingBottom: 20,
-    backgroundColor: "#FFFFFF",
     gap: 12
   },
   solidButton: {

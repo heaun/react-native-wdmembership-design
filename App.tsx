@@ -222,7 +222,7 @@ function AppContent() {
           onLoginSuccess={handleLoginSuccess}
           onMembershipInfoPress={() => {
             console.log("멤버십 상품 소개 버튼 클릭");
-            showToast("info", "멤버십 상품 소개", "멤버십 상품 소개 화면으로 이동합니다.");
+            setCurrentScreen("membershipGuide");
           }}
           onFindIdPress={handleFindIdPress}
           onResetPasswordPress={handleResetPasswordPress}
@@ -297,7 +297,7 @@ function AppContent() {
     return (
       <>
         <MembershipGuideScreen
-          onBackPress={() => setCurrentScreen("membershipResult")}
+          onBackPress={() => setCurrentScreen("login")}
           onMenuItemPress={(itemId) => {
             console.log("멤버십 아이템 선택:", itemId);
             // 여기서 선택된 멤버십에 대한 상세 페이지로 이동하거나 다른 동작 수행
