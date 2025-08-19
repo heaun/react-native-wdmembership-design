@@ -10,8 +10,19 @@ import { AppNavigator } from "./navigation/AppNavigator";
 import { ToastProvider, useToast } from "./src/context/ToastContext";
 import { SignUpScreen } from "./src/screens/SignUpScreen";
 import { MembershipResultScreen } from "./src/screens/MembershipResultScreen";
+import { MembershipGuideScreen } from "./src/screens/MembershipGuideScreen";
 
-type ScreenType = "splash" | "intro" | "login" | "findId" | "resetPassword" | "resetPasswordScreen" | "signup" | "membershipResult" | "main";
+type ScreenType =
+  | "splash"
+  | "intro"
+  | "login"
+  | "findId"
+  | "resetPassword"
+  | "resetPasswordScreen"
+  | "signup"
+  | "membershipResult"
+  | "membershipGuide"
+  | "main";
 
 function AppContent() {
   const [currentScreen, setCurrentScreen] = useState<ScreenType>("splash");
@@ -269,15 +280,28 @@ function AppContent() {
             console.log("MembershipResultScreen 결과:", result);
             if (result?.action === "navigateToLogin") {
               setCurrentScreen("login");
-            } else if (result?.action === "navigateToInquiry") {
-              // 멤버십 승인 문의 페이지로 이동
-              console.log("멤버십 승인 문의 페이지로 이동");
             } else if (result?.action === "navigateToBenefits") {
               // 멤버십 혜택 둘러보기 페이지로 이동
-              console.log("멤버십 혜택 둘러보기 페이지로 이동");
+              setCurrentScreen("membershipGuide");
             }
           }}
           approveStatus={membershipResultData.approveStatus}
+        />
+        <Toast config={toastConfig} />
+      </>
+    );
+  }
+
+  if (currentScreen === "membershipGuide") {
+    console.log("MembershipGuideScreen 렌더링");
+    return (
+      <>
+        <MembershipGuideScreen
+          onBackPress={() => setCurrentScreen("membershipResult")}
+          onMenuItemPress={(itemId) => {
+            console.log("멤버십 아이템 선택:", itemId);
+            // 여기서 선택된 멤버십에 대한 상세 페이지로 이동하거나 다른 동작 수행
+          }}
         />
         <Toast config={toastConfig} />
       </>

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image, Linking, Alert } from "react-native";
 import { CommonLayout } from "../components/CommonLayout";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
@@ -20,16 +20,16 @@ const initialData: MembershipResultData = {
 
 const message = {
   approved: {
-    title: "멤버쉽 회원\n가입을 축하합니다!",
+    title: "멤버십 회원\n가입을 축하합니다!",
     subtitle: "회원님만을 위한 특별한 서비스와 혜택이\n지금부터 시작됩니다.",
     primaryButton: "로그인 하기",
     secondaryButton: null
   },
   unapproved: {
-    title: "멤버쉽\n회원승인중입니다.",
+    title: "멤버십\n회원승인중입니다.",
     subtitle: "회원님의 멤버십 가입 신청이\n승인대기중입니다.\n현재 승인 절차가 진행 중이며,\n곧 결과를 안내드리겠습니다.",
-    primaryButton: "맴버쉽 승인 문의하기",
-    secondaryButton: "멤버쉽 혜택 둘러보기"
+    primaryButton: "멤버십 승인 문의하기",
+    secondaryButton: "멤버십 혜택 둘러보기"
   }
 };
 
@@ -46,9 +46,20 @@ export const MembershipResultScreen: React.FC<MembershipResultProps> = ({ onBack
   };
 
   const handleMembershipInquiryPress = () => {
-    // 멤버십 승인 문의 페이지로 이동
-    console.log("멤버십 승인 문의 페이지로 이동");
-    onSuccess?.({ action: "navigateToInquiry" });
+    // 전화걸기 기능
+    const phoneNumber = "1588-1234"; // 실제 문의 전화번호로 변경
+    Alert.alert("멤버십 승인 문의", `${phoneNumber}로 전화를 걸까요?`, [
+      {
+        text: "취소",
+        style: "cancel"
+      },
+      {
+        text: "전화걸기",
+        onPress: () => {
+          Linking.openURL(`tel:${phoneNumber}`);
+        }
+      }
+    ]);
   };
 
   const handleMembershipBenefitsPress = () => {
@@ -65,15 +76,13 @@ export const MembershipResultScreen: React.FC<MembershipResultProps> = ({ onBack
   const renderResultContent = () => {
     return (
       <View style={styles.resultContainer}>
-        {/* 배경 그라데이션 */}
-
+        {/* 배경 */}
         <Image source={require("../assets/signup/bg_membership.png")} style={styles.resultBackgroundImage} />
 
         {/* 멤버십 로고 */}
         <View style={styles.membershipLogoSection}>
           <View style={styles.membershipLogo}>
             <Image source={require("../assets/signup/logo_membership.png")} style={styles.membershipLogoImage} />
-            <Text style={styles.membershipLogoText}>MEMBERSHIP</Text>
           </View>
         </View>
 
@@ -90,67 +99,62 @@ export const MembershipResultScreen: React.FC<MembershipResultProps> = ({ onBack
     const currentMessage = getCurrentMessage();
 
     if (data.approveStatus) {
+      // 승인된 경우 - 로그인 버튼만 (흰색 배경, 검은색 텍스트)
       return [
         {
           text: currentMessage.primaryButton,
-          onPress: handleLoginPress
+          onPress: handleLoginPress,
+          style: "custom" as const,
+          customStyle: {
+            backgroundColor: "#FFFFFF",
+            textColor: "#2B2B2B"
+          }
         }
       ];
     } else {
+      // 미승인된 경우 - 두 개의 버튼
       return [
         {
           text: currentMessage.secondaryButton || "",
-          onPress: handleMembershipBenefitsPress
+          onPress: handleMembershipBenefitsPress,
+          style: "custom" as const,
+          customStyle: {
+            backgroundColor: "#B48327",
+            borderColor: "#B48327",
+            textColor: "#FFFFFF"
+          }
         },
         {
           text: currentMessage.primaryButton,
-          onPress: handleMembershipInquiryPress
+          onPress: handleMembershipInquiryPress,
+          style: "custom" as const,
+          customStyle: {
+            backgroundColor: "#FFFFFF",
+            textColor: "#2B2B2B"
+          }
         }
       ];
     }
   };
 
   return (
-    // <CommonLayout
-    //   title="회원가입 완료"
-    //   showBackButton={false}
-    //   showTabBar={false}
-    //   showTopIcons={false}
-    //   onBackPress={onBackPress}
-    //   onMenuPress={() => {}}
-    //   onCouponPress={() => {}}
-    //   onNotificationPress={() => {}}
-    //   buttons={getButtons()}
-    //   isWideLayout={true}
-    // >
-    //   <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
-    //     {renderResultContent()}
-    //   </ScrollView>
-    // </CommonLayout>
-
-    <View style={styles.resultContainer}>
-      <Image source={require("../assets/signup/bg_membership.png")} style={styles.resultBackgroundImage} />
-      <View style={styles.scrollView}>{renderResultContent()}</View>
-      {/* 버튼들 */}
-      <View style={styles.resultButtonSection}>
-        {data.approveStatus ? (
-          // 승인된 경우 - 로그인 버튼만
-          <TouchableOpacity style={styles.resultButton} onPress={handleLoginPress}>
-            <Text style={styles.resultButtonText}>{currentMessage.primaryButton}</Text>
-          </TouchableOpacity>
-        ) : (
-          // 미승인된 경우 - 두 개의 버튼
-          <>
-            <TouchableOpacity style={styles.resultButtonSecondary} onPress={handleMembershipBenefitsPress}>
-              <Text style={styles.resultButtonTextSecondary}>{currentMessage.secondaryButton}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.resultButton} onPress={handleMembershipInquiryPress}>
-              <Text style={styles.resultButtonText}>{currentMessage.primaryButton}</Text>
-            </TouchableOpacity>
-          </>
-        )}
+    <CommonLayout
+      title="회원가입 완료"
+      showBackButton={false}
+      showTabBar={false}
+      showTopIcons={false}
+      onBackPress={onBackPress}
+      onMenuPress={() => {}}
+      onCouponPress={() => {}}
+      onNotificationPress={() => {}}
+      buttons={getButtons()}
+      isWideLayout={true}
+      showTitle={false}
+    >
+      <View style={styles.resultContainer}>
+        <View style={styles.scrollView}>{renderResultContent()}</View>
       </View>
-    </View>
+    </CommonLayout>
   );
 };
 
@@ -159,40 +163,37 @@ const styles = StyleSheet.create({
     flex: 1
   },
   resultContainer: {
-    flex: 1,
-    backgroundColor: "#FFFFFF",
-    minHeight: 812
+    flex: 1
   },
   resultBackgroundImage: {
+    flex: 1,
     position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
     width: "100%",
     height: "100%"
   },
   membershipLogoSection: {
-    alignItems: "center",
+    alignItems: "flex-start",
     marginTop: 145,
-    marginBottom: 20
+    marginBottom: 20,
+    paddingHorizontal: 20
   },
   membershipLogo: {
-    width: 98.27,
-    height: 34.47,
-    justifyContent: "center",
-    alignItems: "center"
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+    flexDirection: "column"
   },
   membershipLogoImage: {
-    width: 98.27,
-    height: 34.47
+    width: 335,
+    height: 64,
+    resizeMode: "contain"
   },
   membershipLogoText: {
     fontSize: 20,
     fontWeight: "400",
     color: "#FFFFFF",
     lineHeight: 26,
-    letterSpacing: 0.6
+    letterSpacing: 0.6,
+    marginBottom: 4
   },
   resultContent: {
     paddingHorizontal: 20,
@@ -211,41 +212,6 @@ const styles = StyleSheet.create({
     fontWeight: "400",
     color: "#FFFFFF",
     lineHeight: 24,
-    letterSpacing: -0.64
-  },
-  resultButtonSection: {
-    position: "absolute",
-    bottom: 70,
-    left: 24,
-    right: 24,
-    gap: 12
-  },
-  resultButton: {
-    backgroundColor: "#FFFFFF",
-    borderRadius: 48,
-    height: 50,
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  resultButtonText: {
-    fontSize: 16,
-    fontWeight: "700",
-    color: "#2B2B2B",
-    lineHeight: 18,
-    letterSpacing: -0.64
-  },
-  resultButtonSecondary: {
-    backgroundColor: "#B48327",
-    borderRadius: 48,
-    height: 50,
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  resultButtonTextSecondary: {
-    fontSize: 16,
-    fontWeight: "700",
-    color: "#FFFFFF",
-    lineHeight: 18,
     letterSpacing: -0.64
   }
 });
