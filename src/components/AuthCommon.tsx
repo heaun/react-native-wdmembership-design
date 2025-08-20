@@ -221,6 +221,51 @@ export const authCommonStyles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "400",
     color: "#505866"
+  },
+
+  // 비밀번호 입력 관련 스타일
+
+  passwordInputContainer: {
+    flexDirection: "row",
+    alignItems: "center"
+  },
+  passwordInput: {
+    flex: 1,
+    fontSize: 18,
+    fontWeight: "700",
+    color: "#2B2B2B",
+    paddingVertical: 12
+  },
+  eyeButton: {
+    padding: 4
+  },
+  // 유효성 검사 관련 스타일
+  validationSection: {
+    marginBottom: 20,
+    flexDirection: "row",
+    gap: 8
+  },
+  validationItem: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    gap: 8
+  },
+  validationIcon: {
+    width: 15,
+    height: 15,
+    borderRadius: 9,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  validationText: {
+    fontSize: 12,
+    fontWeight: "400",
+    color: "#B1B8C0",
+    lineHeight: 18,
+    letterSpacing: -0.48
+  },
+  validationTextActive: {
+    color: "#B48327"
   }
 });
 
@@ -429,6 +474,90 @@ export const VerificationInput: React.FC<VerificationInputProps> = ({ value, onC
     {isVerificationCompleted && <Text style={authCommonStyles.statusMessage}>휴대폰 번호 인증이 완료되었습니다.</Text>}
   </View>
 );
+
+// 비밀번호 입력 관련 인터페이스
+export interface PasswordInputProps {
+  value: string;
+  onChangeText: (text: string) => void;
+  placeholder?: string;
+  showPassword: boolean;
+  onTogglePassword: () => void;
+  returnKeyType?: "next" | "done";
+  onSubmitEditing?: () => void;
+}
+
+export interface PasswordValidationProps {
+  password: string;
+  confirmPassword?: string;
+}
+
+// 비밀번호 입력 컴포넌트
+export const PasswordInput: React.FC<PasswordInputProps> = ({
+  value,
+  onChangeText,
+  placeholder = "비밀번호 입력",
+  showPassword,
+  onTogglePassword,
+  returnKeyType = "next",
+  onSubmitEditing
+}) => (
+  <View style={authCommonStyles.inputContainer}>
+    <Text style={authCommonStyles.inputLabel}>{placeholder.replace("입력", "")}</Text>
+    <View style={authCommonStyles.passwordInputContainer}>
+      <TextInput
+        style={authCommonStyles.passwordInput}
+        placeholder={placeholder}
+        placeholderTextColor="#B1B8C0"
+        value={value}
+        onChangeText={onChangeText}
+        secureTextEntry={!showPassword}
+        keyboardType="default"
+        returnKeyType={returnKeyType}
+        blurOnSubmit={false}
+        autoCorrect={false}
+        autoCapitalize="none"
+        showSoftInputOnFocus={false}
+        onSubmitEditing={onSubmitEditing}
+      />
+      <TouchableOpacity style={authCommonStyles.eyeButton} onPress={onTogglePassword}>
+        <Ionicons name={showPassword ? "eye" : "eye-off"} size={24} color="#505866" />
+      </TouchableOpacity>
+    </View>
+    <View style={authCommonStyles.inputBorder} />
+  </View>
+);
+
+// 비밀번호 유효성 검사 컴포넌트
+export const PasswordValidation: React.FC<PasswordValidationProps> = ({ password, confirmPassword }) => {
+  const hasLength = password.length >= 8 && password.length <= 20;
+  const hasComplexity = /[A-Z]/.test(password) && /[a-z]/.test(password) && /\d/.test(password) && /[!@#$%^&*(),.?":{}|<>]/.test(password);
+  const isMatch = confirmPassword ? password === confirmPassword : false;
+
+  return (
+    <View style={authCommonStyles.validationSection}>
+      <View style={authCommonStyles.validationItem}>
+        <View style={authCommonStyles.validationIcon}>
+          <Ionicons name={"checkmark"} size={18} color={hasLength ? "#B48327" : "#B1B8C0"} />
+        </View>
+        <Text style={[authCommonStyles.validationText, hasLength && authCommonStyles.validationTextActive]}>8-20자 이내</Text>
+      </View>
+      <View style={authCommonStyles.validationItem}>
+        <View style={authCommonStyles.validationIcon}>
+          <Ionicons name={"checkmark"} size={18} color={hasComplexity ? "#B48327" : "#B1B8C0"} />
+        </View>
+        <Text style={[authCommonStyles.validationText, hasComplexity && authCommonStyles.validationTextActive]}>대소문자,숫자,특수문자 포함</Text>
+      </View>
+      {confirmPassword && (
+        <View style={authCommonStyles.validationItem}>
+          <View style={authCommonStyles.validationIcon}>
+            <Ionicons name={"checkmark"} size={18} color={isMatch ? "#B48327" : "#B1B8C0"} />
+          </View>
+          <Text style={[authCommonStyles.validationText, isMatch && authCommonStyles.validationTextActive]}>비밀번호 일치</Text>
+        </View>
+      )}
+    </View>
+  );
+};
 
 interface AuthButtonSectionProps {
   primaryButton: {

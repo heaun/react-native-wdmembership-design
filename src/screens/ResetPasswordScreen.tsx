@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView } from "react-native";
 import { CommonLayout } from "../components/CommonLayout";
 import { Ionicons } from "@expo/vector-icons";
-import { AuthResultStep } from "../components/AuthCommon";
+import { AuthResultStep, PasswordInput, PasswordValidation } from "../components/AuthCommon";
 
 interface ResetPasswordScreenProps {
   onBackPress?: () => void;
@@ -126,128 +126,25 @@ export const ResetPasswordScreen: React.FC<ResetPasswordScreenProps> = ({ onBack
                 <View style={styles.inputBorder} />
               </View>
 
-              <View style={styles.inputContainer}>
-                <Text style={styles.inputLabel}>비밀번호</Text>
-                <View style={styles.passwordInputContainer}>
-                  <TextInput
-                    style={styles.passwordInput}
-                    placeholder="비밀번호 입력"
-                    placeholderTextColor="#B1B8C0"
-                    value={data.form.newPassword}
-                    onChangeText={(text) => updateForm({ newPassword: text })}
-                    secureTextEntry={!data.status.showPassword}
-                    keyboardType="default"
-                    returnKeyType="next"
-                    blurOnSubmit={false}
-                    autoCorrect={false}
-                    autoCapitalize="none"
-                    showSoftInputOnFocus={false}
-                  />
-                  <TouchableOpacity style={styles.eyeButton} onPress={() => updateStatus({ showPassword: !data.status.showPassword })}>
-                    <Ionicons name={data.status.showPassword ? "eye" : "eye-off"} size={24} color="#505866" />
-                  </TouchableOpacity>
-                </View>
-                <View style={styles.inputBorder} />
+              <PasswordInput
+                value={data.form.newPassword}
+                onChangeText={(text) => updateForm({ newPassword: text })}
+                placeholder="비밀번호 입력"
+                showPassword={data.status.showPassword}
+                onTogglePassword={() => updateStatus({ showPassword: !data.status.showPassword })}
+                returnKeyType="next"
+              />
+              <PasswordValidation password={data.form.newPassword} />
 
-                <View style={styles.validationSection}>
-                  <View style={styles.validationItem}>
-                    <View style={styles.validationIcon}>
-                      <Ionicons
-                        name={"checkmark"}
-                        size={18}
-                        color={data.form.newPassword.length >= 8 && data.form.newPassword.length <= 20 ? "#B48327" : "#B1B8C0"}
-                      />
-                    </View>
-                    <Text
-                      style={[
-                        styles.validationText,
-                        data.form.newPassword.length >= 8 && data.form.newPassword.length <= 20 && styles.validationTextActive
-                      ]}
-                    >
-                      8-20자 이내
-                    </Text>
-                  </View>
-                  <View style={styles.validationItem}>
-                    <View style={styles.validationIcon}>
-                      <Ionicons
-                        name={"checkmark"}
-                        size={18}
-                        color={
-                          /[A-Z]/.test(data.form.newPassword) &&
-                          /[a-z]/.test(data.form.newPassword) &&
-                          /\d/.test(data.form.newPassword) &&
-                          /[!@#$%^&*(),.?":{}|<>]/.test(data.form.newPassword)
-                            ? "#B48327"
-                            : "#B1B8C0"
-                        }
-                      />
-                    </View>
-                    <Text
-                      style={[
-                        styles.validationText,
-                        /[A-Z]/.test(data.form.newPassword) &&
-                          /[a-z]/.test(data.form.newPassword) &&
-                          /\d/.test(data.form.newPassword) &&
-                          /[!@#$%^&*(),.?":{}|<>]/.test(data.form.newPassword) &&
-                          styles.validationTextActive
-                      ]}
-                    >
-                      대소문자,숫자,특수문자 포함
-                    </Text>
-                  </View>
-                </View>
-              </View>
-
-              <View style={styles.inputContainer}>
-                <Text style={styles.inputLabel}>비밀번호 확인</Text>
-                <View style={styles.passwordInputContainer}>
-                  <TextInput
-                    style={styles.passwordInput}
-                    placeholder="비밀번호 확인"
-                    placeholderTextColor="#B1B8C0"
-                    value={data.form.confirmPassword}
-                    onChangeText={(text) => updateForm({ confirmPassword: text })}
-                    secureTextEntry={!data.status.showConfirmPassword}
-                    keyboardType="default"
-                    returnKeyType="done"
-                    blurOnSubmit={false}
-                    autoCorrect={false}
-                    autoCapitalize="none"
-                    showSoftInputOnFocus={false}
-                  />
-                  <TouchableOpacity style={styles.eyeButton} onPress={() => updateStatus({ showConfirmPassword: !data.status.showConfirmPassword })}>
-                    <Ionicons name={data.status.showConfirmPassword ? "eye" : "eye-off"} size={24} color="#505866" />
-                  </TouchableOpacity>
-                </View>
-                <View style={styles.inputBorder} />
-
-                <View style={styles.validationSection}>
-                  <View style={styles.validationItem}>
-                    <View style={styles.validationIcon}>
-                      <Ionicons
-                        name={"checkmark"}
-                        size={18}
-                        color={
-                          data.form.newPassword && data.form.confirmPassword && data.form.newPassword === data.form.confirmPassword
-                            ? "#B48327"
-                            : "#B1B8C0"
-                        }
-                      />
-                    </View>
-                    <Text
-                      style={[
-                        styles.validationText,
-                        data.form.newPassword &&
-                          data.form.confirmPassword &&
-                          data.form.newPassword === data.form.confirmPassword &&
-                          styles.validationTextActive
-                      ]}
-                    >
-                      비밀번호 일치
-                    </Text>
-                  </View>
-                </View>
-              </View>
+              <PasswordInput
+                value={data.form.confirmPassword}
+                onChangeText={(text) => updateForm({ confirmPassword: text })}
+                placeholder="비밀번호 확인"
+                showPassword={data.status.showConfirmPassword}
+                onTogglePassword={() => updateStatus({ showConfirmPassword: !data.status.showConfirmPassword })}
+                returnKeyType="done"
+              />
+              <PasswordValidation password={data.form.newPassword} confirmPassword={data.form.confirmPassword} />
             </View>
           </View>
         ) : (
@@ -313,20 +210,7 @@ const styles = StyleSheet.create({
     color: "#2B2B2B",
     paddingVertical: 12
   },
-  passwordInputContainer: {
-    flexDirection: "row",
-    alignItems: "center"
-  },
-  passwordInput: {
-    flex: 1,
-    fontSize: 18,
-    fontWeight: "700",
-    color: "#2B2B2B",
-    paddingVertical: 12
-  },
-  eyeButton: {
-    padding: 8
-  },
+
   inputBorder: {
     height: 1,
     backgroundColor: "#D6DADF",
@@ -351,27 +235,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingBottom: 20,
     backgroundColor: "#FFFFFF"
-  },
-  validationSection: {
-    paddingVertical: 10,
-    flexDirection: "row",
-    gap: 10
-  },
-  validationItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 12
-  },
-  validationIcon: {
-    marginRight: 3
-  },
-  validationText: {
-    fontSize: 12,
-    fontWeight: "400",
-    color: "#B1B8C0",
-    lineHeight: 18
-  },
-  validationTextActive: {
-    color: "#B48327"
   }
 });

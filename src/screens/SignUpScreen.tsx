@@ -9,7 +9,9 @@ import {
   PhoneInput,
   VerificationInput,
   usePhoneAutoSend,
-  usePhoneVerificationStep
+  usePhoneVerificationStep,
+  PasswordInput,
+  PasswordValidation
 } from "../components/AuthCommon";
 
 interface SignUpScreenProps {
@@ -62,6 +64,7 @@ interface SignUpData {
     selectedTermsId: string | null;
     showResidentNumberInput: boolean;
     showCarrierInput: boolean;
+    isExistingUser: boolean;
   };
 }
 
@@ -111,7 +114,8 @@ const initialData: SignUpData = {
     showTermsModal: false,
     selectedTermsId: null,
     showResidentNumberInput: false,
-    showCarrierInput: false
+    showCarrierInput: false,
+    isExistingUser: false
   }
 };
 
@@ -291,6 +295,13 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
       });
       stopTimer();
     }
+  };
+
+  // isExistingUser 값을 변경하는 함수 (테스트용)
+  const setExistingUser = (isExisting: boolean) => {
+    updateStatus({
+      isExistingUser: isExisting
+    });
   };
 
   // 휴대폰 인증 단계 관리 훅 사용
@@ -489,9 +500,7 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
         ];
 
       case AuthInfoStep.verificationComplete: {
-        const isExistingUser = true; // 신규회원 화면 테스트용
-
-        if (isExistingUser) {
+        if (data.status.isExistingUser) {
           return [
             {
               text: "로그인하러 가기",
@@ -672,39 +681,50 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
   };
 
   const renderVerificationCompleteStep = () => {
-    const isExistingUser = true; // 신규회원 화면 테스트용
+    return (
+      <View style={[styles.container, { paddingBottom: 120 }]}>
+        {/* 테스트용 버튼들 */}
+        <View style={{ flexDirection: "row", justifyContent: "space-around", marginBottom: 20 }}>
+          <TouchableOpacity style={[styles.testButton, data.status.isExistingUser && styles.testButtonActive]} onPress={() => setExistingUser(true)}>
+            <Text style={styles.testButtonText}>기존 사용자</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.testButton, !data.status.isExistingUser && styles.testButtonActive]}
+            onPress={() => setExistingUser(false)}
+          >
+            <Text style={styles.testButtonText}>신규 사용자</Text>
+          </TouchableOpacity>
+        </View>
 
-    if (isExistingUser) {
-      return (
-        <AuthResultStep
-          mode="register"
-          message={{
-            title: "이미 가입된 계정이 있어요",
-            subtitle: "가입하신 정보의 계정을 찾았습니다.\n아래 계정으로 로그인 하세요."
-          }}
-          primaryButton={{
-            text: "",
-            onPress: () => {}
-          }}
-          userId="abcd1234@email.com"
-          registrationDate="2026.04.28 가입"
-        />
-      );
-    } else {
-      return (
-        <AuthResultStep
-          mode="register"
-          message={{
-            title: "인증이 완료되었습니다.\n멤버십 회원 가입을\n계속 진행해 주세요",
-            subtitle: ""
-          }}
-          primaryButton={{
-            text: "다음",
-            onPress: () => setData((prev) => ({ ...prev, step: AuthInfoStep.uwerAgreement }))
-          }}
-        />
-      );
-    }
+        {data.status.isExistingUser ? (
+          <AuthResultStep
+            mode="register"
+            message={{
+              title: "이미 가입된 계정이 있어요",
+              subtitle: "가입하신 정보의 계정을 찾았습니다.\n아래 계정으로 로그인 하세요."
+            }}
+            primaryButton={{
+              text: "",
+              onPress: () => {}
+            }}
+            userId="abcd1234@email.com"
+            registrationDate="2026.04.28 가입"
+          />
+        ) : (
+          <AuthResultStep
+            mode="register"
+            message={{
+              title: "인증이 완료되었습니다.\n멤버십 회원 가입을\n계속 진행해 주세요",
+              subtitle: ""
+            }}
+            primaryButton={{
+              text: "다음",
+              onPress: () => setData((prev) => ({ ...prev, step: AuthInfoStep.uwerAgreement }))
+            }}
+          />
+        )}
+      </View>
+    );
   };
 
   // 휴대폰 인증 단계 렌더링
@@ -777,105 +797,32 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
   );
 
   const renderPasswordInputStep = () => {
-    const passwordValidation = validatePassword(data.form.password);
-
     return (
       <View style={[styles.container, { paddingBottom: 120 }]}>
         <View style={styles.headerSection}>
-          <Text style={styles.title}>로그인에 사용할{"\n"}비밀번호를 입력해 주세요.</Text>
+          <Text style={styles.title}>로그인에 사용할{"\n"}비밀번호를 입력해 주세요</Text>
         </View>
 
         <View style={styles.inputSection}>
-          {/* 비밀번호 입력 */}
-          <View style={styles.inputContainer}>
-            <Text style={styles.inputLabel}>비밀번호</Text>
-            <View style={styles.passwordInputContainer}>
-              <TextInput
-                style={styles.passwordInput}
-                placeholder="비밀번호 입력"
-                placeholderTextColor="#B1B8C0"
-                value={data.form.password}
-                onChangeText={handlePasswordChange}
-                secureTextEntry={!data.status.showPassword}
-                autoCapitalize="none"
-                autoCorrect={false}
-                showSoftInputOnFocus={false}
-              />
-              <TouchableOpacity style={styles.eyeButton} onPress={() => updateStatus({ showPassword: !data.status.showPassword })}>
-                <Ionicons name={data.status.showPassword ? "eye-off" : "eye"} size={20} color="#505866" />
-              </TouchableOpacity>
-            </View>
-            <View style={styles.inputBorder} />
-          </View>
+          <PasswordInput
+            value={data.form.password}
+            onChangeText={handlePasswordChange}
+            placeholder="비밀번호 입력"
+            showPassword={data.status.showPassword}
+            onTogglePassword={() => updateStatus({ showPassword: !data.status.showPassword })}
+            returnKeyType="next"
+          />
+          <PasswordValidation password={data.form.password} />
 
-          {/* 비밀번호 확인 입력 */}
-          <View style={styles.inputContainer}>
-            <Text style={styles.inputLabel}>비밀번호 확인</Text>
-            <View style={styles.passwordInputContainer}>
-              <TextInput
-                style={styles.passwordInput}
-                placeholder="비밀번호 확인"
-                placeholderTextColor="#B1B8C0"
-                value={data.form.confirmPassword}
-                onChangeText={handleConfirmPasswordChange}
-                secureTextEntry={!data.status.showConfirmPassword}
-                autoCapitalize="none"
-                autoCorrect={false}
-                showSoftInputOnFocus={false}
-              />
-              <TouchableOpacity style={styles.eyeButton} onPress={() => updateStatus({ showConfirmPassword: !data.status.showConfirmPassword })}>
-                <Ionicons name={data.status.showConfirmPassword ? "eye-off" : "eye"} size={20} color="#505866" />
-              </TouchableOpacity>
-            </View>
-            <View style={styles.inputBorder} />
-          </View>
-
-          {/* 비밀번호 유효성 검사 결과 */}
-          <View style={styles.passwordValidationSection}>
-            <View style={styles.validationItem}>
-              <View style={[styles.validationIcon, passwordValidation.hasLength && styles.validationIconValid]}>
-                {passwordValidation.hasLength && <Ionicons name="checkmark" size={12} color="#FFFFFF" />}
-              </View>
-              <Text style={[styles.validationText, passwordValidation.hasLength && styles.validationTextValid]}>8-20자 이내</Text>
-            </View>
-            <View style={styles.validationItem}>
-              <View
-                style={[
-                  styles.validationIcon,
-                  passwordValidation.hasUpperCase &&
-                    passwordValidation.hasLowerCase &&
-                    passwordValidation.hasNumber &&
-                    passwordValidation.hasSpecialChar &&
-                    styles.validationIconValid
-                ]}
-              >
-                {passwordValidation.hasUpperCase &&
-                  passwordValidation.hasLowerCase &&
-                  passwordValidation.hasNumber &&
-                  passwordValidation.hasSpecialChar && <Ionicons name="checkmark" size={12} color="#FFFFFF" />}
-              </View>
-              <Text
-                style={[
-                  styles.validationText,
-                  passwordValidation.hasUpperCase &&
-                    passwordValidation.hasLowerCase &&
-                    passwordValidation.hasNumber &&
-                    passwordValidation.hasSpecialChar &&
-                    styles.validationTextValid
-                ]}
-              >
-                대소문자,숫자,특수문자 포함
-              </Text>
-            </View>
-            <View style={styles.validationItem}>
-              <View style={[styles.validationIcon, data.status.isPasswordMatch && data.form.confirmPassword && styles.validationIconValid]}>
-                {data.status.isPasswordMatch && data.form.confirmPassword && <Ionicons name="checkmark" size={12} color="#FFFFFF" />}
-              </View>
-              <Text style={[styles.validationText, data.status.isPasswordMatch && data.form.confirmPassword && styles.validationTextValid]}>
-                비밀번호 일치
-              </Text>
-            </View>
-          </View>
+          <PasswordInput
+            value={data.form.confirmPassword}
+            onChangeText={handleConfirmPasswordChange}
+            placeholder="비밀번호 확인"
+            showPassword={data.status.showConfirmPassword}
+            onTogglePassword={() => updateStatus({ showConfirmPassword: !data.status.showConfirmPassword })}
+            returnKeyType="done"
+          />
+          <PasswordValidation password={data.form.password} confirmPassword={data.form.confirmPassword} />
         </View>
       </View>
     );
@@ -1484,5 +1431,22 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     color: "#B1B8C0",
     marginLeft: 4
+  },
+  testButton: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: "#D6DADF",
+    backgroundColor: "#FFFFFF"
+  },
+  testButtonActive: {
+    backgroundColor: "#B48327",
+    borderColor: "#B48327"
+  },
+  testButtonText: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: "#2B2B2B"
   }
 });
