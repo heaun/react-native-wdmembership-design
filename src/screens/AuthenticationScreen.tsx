@@ -242,12 +242,7 @@ export const AuthenticationScreen: React.FC<AuthenticationProps> = ({ onBackPres
         isEmailVerificationCompleted: true
       });
       stopTimer();
-      // 인증 완료 후 현재 화면에 머물면서 링크 전송 완료 정보 표시
     }
-  };
-
-  const handleBackToInput = () => {
-    updateData({ step: "input" });
   };
 
   const getTitle = () => {
@@ -436,6 +431,23 @@ export const AuthenticationScreen: React.FC<AuthenticationProps> = ({ onBackPres
     </View>
   );
 
+  const renderLinkStep = () => (
+    <View style={[styles.container, { paddingBottom: 120 }]}>
+      <View style={styles.linkInfoSection}>
+        <View style={styles.linkInfoCard}>
+          <View style={styles.linkIconContainer}>
+            <Ionicons name="mail-outline" size={32} color="#B48327" />
+          </View>
+          <Text style={styles.linkInfoTitle}>이메일을 확인해주세요</Text>
+          <Text style={styles.linkInfoSubtitle}>
+            입력하신 이메일 주소로{"\n"}
+            아이디 찾기 링크가 전송되었습니다.
+          </Text>
+        </View>
+      </View>
+    </View>
+  );
+
   // 버튼 설정을 동적으로 생성하는 함수
   const getButtons = () => {
     switch (data.step) {
@@ -468,7 +480,7 @@ export const AuthenticationScreen: React.FC<AuthenticationProps> = ({ onBackPres
         if (data.status.isEmailVerificationCompleted) {
           return [
             {
-              text: "다음",
+              text: message?.[mode]?.buttonText || "확인",
               onPress: () => {
                 // 비밀번호 재설정 화면으로 이동
                 const result = {
@@ -481,22 +493,48 @@ export const AuthenticationScreen: React.FC<AuthenticationProps> = ({ onBackPres
                   foundUserId: data.form.email
                 };
                 onSuccess?.(result);
-              }
+              },
+              disabled: false
+            }
+          ];
+        } else if (data.status.isEmailCodeSent) {
+          return [
+            {
+              text: message?.[mode]?.buttonText || "확인",
+              onPress: handleVerifyEmailCode,
+              disabled: true
+            }
+          ];
+        } else {
+          return [
+            {
+              text: message?.[mode]?.buttonText || "확인",
+
+              disabled: true
             }
           ];
         }
-        return []; // EmailInputWithButton에서 버튼을 처리하므로 하단 버튼 불필요
+
       case "link":
         return [
           {
-            text: "다시 입력하기",
-            onPress: () => updateData({ step: "input" })
-          },
-          {
-            text: "로그인으로 돌아가기",
-            onPress: handleSuccess
+            text: "아이디 찾기",
+            onPress: () => {
+              // 비밀번호 재설정 화면으로 이동
+              const result = {
+                mode: "resetPassword",
+                form: {
+                  ...data.form,
+                  id: data.form.email // 이메일을 아이디로 사용
+                },
+                action: "navigateToResetPassword",
+                foundUserId: data.form.email
+              };
+              onSuccess?.(result);
+            }
           }
         ];
+
       case "result":
         const buttons = [];
 
