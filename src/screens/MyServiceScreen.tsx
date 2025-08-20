@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Image, Dimensions } from "react-native";
 import { CommonLayout } from "../components/CommonLayout";
+import { LabelText, ButtonText, SmallText } from "../components/CommonText";
 
 // 서비스 이미지 import
 import mindAndBodyImage from "../assets/services/mind-and-body.png";
@@ -135,7 +136,7 @@ export const MyServiceScreen: React.FC<MyServiceScreenProps> = ({
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.categoryScrollView}>
           {categories.map((category) => (
             <TouchableOpacity key={category} style={styles.categoryTab} onPress={() => handleCategoryPress(category)}>
-              <Text style={[styles.categoryText, activeCategory === category && styles.activeCategoryText]}>{category}</Text>
+              <LabelText style={[styles.categoryText, activeCategory === category && styles.activeCategoryText]}>{category}</LabelText>
               {activeCategory === category && <View style={styles.activeIndicator} />}
             </TouchableOpacity>
           ))}
@@ -150,9 +151,9 @@ export const MyServiceScreen: React.FC<MyServiceScreenProps> = ({
               {service.image && <Image source={service.image} style={styles.serviceImageContent} resizeMode="cover" />}
             </View>
             <View style={styles.serviceInfo}>
-              <Text style={styles.serviceCategory}>{service.category}</Text>
-              <Text style={styles.serviceTitle}>{service.title}</Text>
-              <Text style={styles.serviceTags}>{service.tags}</Text>
+              <LabelText style={styles.serviceCategory}>{service.category}</LabelText>
+              <LabelText style={styles.serviceTitle}>{service.title}</LabelText>
+              <LabelText style={styles.serviceTags}>{service.tags}</LabelText>
             </View>
           </TouchableOpacity>
         ))}

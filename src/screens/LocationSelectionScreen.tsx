@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Image, Dimensions } from "react-native";
 import { CommonLayout } from "../components/CommonLayout";
+import { LabelText, ButtonText, SmallText, BodyText } from "../components/CommonText";
 
 const { width: screenWidth } = Dimensions.get("window");
 
@@ -379,7 +380,7 @@ export const LocationSelectionScreen: React.FC<LocationSelectionScreenProps> = (
       onSideMenuItemPress={onSideMenuItemPress}
     >
       <View style={styles.container}>
-        <Text style={styles.title}>원하시는 장소를 선택해주세요.</Text>
+        <LabelText style={styles.title}>원하시는 장소를 선택해주세요.</LabelText>
 
         <ScrollView style={styles.locationList} showsVerticalScrollIndicator={false}>
           {locations.map((location) => (
@@ -392,8 +393,8 @@ export const LocationSelectionScreen: React.FC<LocationSelectionScreenProps> = (
                 <Image source={location.image} style={styles.locationImage} resizeMode="cover" />
               </View>
               <View style={styles.locationInfo}>
-                <Text style={styles.locationName}>{location.name}</Text>
-                <Text style={styles.locationAddress}>{location.address}</Text>
+                <LabelText style={styles.locationName}>{location.name}</LabelText>
+                <LabelText style={styles.locationAddress}>{location.address}</LabelText>
               </View>
             </TouchableOpacity>
           ))}
@@ -405,7 +406,7 @@ export const LocationSelectionScreen: React.FC<LocationSelectionScreenProps> = (
             onPress={handleConfirmPress}
             disabled={!selectedLocation}
           >
-            <Text style={styles.confirmButtonText}>장소 선택</Text>
+            <LabelText style={styles.confirmButtonText}>장소 선택</LabelText>
           </TouchableOpacity>
         </View>
       </View>

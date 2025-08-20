@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions, ScrollView, Animated, Image } from "react-native";
-
+import { LabelText, ButtonText } from "../components/CommonText";
 interface IntroScreenProps {
   onSignupPress?: () => void;
   onLoginPress?: () => void;
@@ -128,7 +128,7 @@ export const IntroScreen: React.FC<IntroScreenProps> = ({ onSignupPress, onLogin
               <Image source={image.imageSource} style={styles.backgroundImage} resizeMode="cover" />
               <View style={styles.gradientOverlay} />
               <Animated.View style={[styles.textContainer, { opacity: fadeAnim }]}>
-                <Text style={[styles.mainText]}>{image.text}</Text>
+                <LabelText style={[styles.mainText]}>{image.text}</LabelText>
               </Animated.View>
             </View>
           ))}
@@ -149,11 +149,11 @@ export const IntroScreen: React.FC<IntroScreenProps> = ({ onSignupPress, onLogin
       {/* 하단 버튼 영역 */}
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.signupButton} onPress={onSignupPress}>
-          <Text style={styles.signupButtonText}>멤버십 가입하기</Text>
+          <ButtonText style={styles.signupButtonText}>멤버십 가입하기</ButtonText>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.loginButton} onPress={onLoginPress}>
-          <Text style={styles.loginButtonText}>계정이 있으신가요? 로그인</Text>
+          <ButtonText style={styles.loginButtonText}>계정이 있으신가요? 로그인</ButtonText>
         </TouchableOpacity>
       </View>
     </View>

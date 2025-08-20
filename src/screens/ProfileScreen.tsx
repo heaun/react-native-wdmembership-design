@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { CommonLayout } from "../components/CommonLayout";
+import { LabelText, ButtonText, SmallText } from "../components/CommonText";
 
 interface ProfileScreenProps {
   currentTab?: string;
@@ -89,13 +90,13 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({ currentTab, onTabP
           </View>
 
           <View style={styles.userInfo}>
-            <Text style={styles.userName}>{userProfileData.name}</Text>
-            <Text style={styles.userNameSuffix}>님</Text>
+            <LabelText style={styles.userName}>{userProfileData.name}</LabelText>
+            <LabelText style={styles.userNameSuffix}>님</LabelText>
           </View>
 
-          <Text style={styles.userDetails}>
+          <LabelText style={styles.userDetails}>
             {userProfileData.birthDate} ㅣ {userProfileData.gender}
-          </Text>
+          </LabelText>
         </View>
 
         {/* 구분선 */}
@@ -103,11 +104,11 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({ currentTab, onTabP
 
         {/* 휴대전화 번호 */}
         <View style={styles.infoSection}>
-          <Text style={styles.infoLabel}>휴대전화 번호</Text>
+          <LabelText style={styles.infoLabel}>휴대전화 번호</LabelText>
           <View style={styles.infoRow}>
-            <Text style={styles.infoValue}>{userProfileData.phoneNumber}</Text>
+            <LabelText style={styles.infoValue}>{userProfileData.phoneNumber}</LabelText>
             <TouchableOpacity style={styles.editButton} onPress={handlePhoneEditPress}>
-              <Text style={styles.editButtonText}>수정</Text>
+              <LabelText style={styles.editButtonText}>수정</LabelText>
             </TouchableOpacity>
           </View>
         </View>
@@ -117,11 +118,11 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({ currentTab, onTabP
 
         {/* 이메일 */}
         <View style={styles.infoSection}>
-          <Text style={styles.infoLabel}>이메일</Text>
+          <LabelText style={styles.infoLabel}>이메일</LabelText>
           <View style={styles.infoRow}>
-            <Text style={styles.infoValue}>{userProfileData.email}</Text>
+            <LabelText style={styles.infoValue}>{userProfileData.email}</LabelText>
             <TouchableOpacity style={styles.editButton} onPress={handleEmailEditPress}>
-              <Text style={styles.editButtonText}>수정</Text>
+              <LabelText style={styles.editButtonText}>수정</LabelText>
             </TouchableOpacity>
           </View>
         </View>
@@ -132,9 +133,9 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({ currentTab, onTabP
         {/* 비밀번호 변경 */}
         <View style={styles.infoSection}>
           <View style={styles.infoRow}>
-            <Text style={styles.infoValue}>비밀번호 변경</Text>
+            <LabelText style={styles.infoValue}>비밀번호 변경</LabelText>
             <TouchableOpacity style={styles.editButton} onPress={handlePasswordChangePress}>
-              <Text style={styles.editButtonText}>변경</Text>
+              <LabelText style={styles.editButtonText}>변경</LabelText>
             </TouchableOpacity>
           </View>
         </View>
@@ -144,11 +145,11 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({ currentTab, onTabP
 
         {/* 기본 장소 */}
         <View style={styles.infoSection}>
-          <Text style={styles.infoLabel}>기본 장소</Text>
+          <LabelText style={styles.infoLabel}>기본 장소</LabelText>
           <View style={styles.infoRow}>
-            <Text style={styles.infoValue}>{userProfileData.defaultLocation}</Text>
+            <LabelText style={styles.infoValue}>{userProfileData.defaultLocation}</LabelText>
             <TouchableOpacity style={styles.editButton} onPress={handleLocationEditPress}>
-              <Text style={styles.editButtonText}>변경</Text>
+              <LabelText style={styles.editButtonText}>변경</LabelText>
             </TouchableOpacity>
           </View>
         </View>

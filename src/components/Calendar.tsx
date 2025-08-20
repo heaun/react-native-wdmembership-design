@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-
+import { LabelText, ButtonText, SmallText } from "../components/CommonText";
 interface CalendarProps {
   currentDate: Date;
   selectedDate: Date;
@@ -54,9 +54,9 @@ export const Calendar: React.FC<CalendarProps> = ({
     for (let i = adjustedFirstDayOfWeek - 1; i >= 0; i--) {
       const day = prevMonthLastDay.getDate() - i;
       days.push(
-        <Text key={`prev-${day}`} style={[styles.dateText, styles.otherMonthText]}>
+        <LabelText key={`prev-${day}`} style={[styles.dateText, styles.otherMonthText]}>
           {day}
-        </Text>
+        </LabelText>
       );
     }
 
@@ -87,7 +87,7 @@ export const Calendar: React.FC<CalendarProps> = ({
       if (isSelected(day)) {
         days.push(
           <View key={`current-${day}`} style={styles.selectedDateContainer}>
-            <Text style={[styles.dateText, styles.selectedDate]}>{day}</Text>
+            <LabelText style={[styles.dateText, styles.selectedDate]}>{day}</LabelText>
             {showDots && <View style={hasReservationOnDay ? styles.dot : styles.dotInactive} />}
           </View>
         );
@@ -99,7 +99,7 @@ export const Calendar: React.FC<CalendarProps> = ({
             onPress={() => !disabled && onDateSelect(day)}
             disabled={disabled}
           >
-            <Text style={[styles.dateText, styles.todayDate]}>{day}</Text>
+            <LabelText style={[styles.dateText, styles.todayDate]}>{day}</LabelText>
             {showDots && <View style={hasReservationOnDay ? styles.dot : styles.dotInactive} />}
           </TouchableOpacity>
         );
@@ -111,7 +111,7 @@ export const Calendar: React.FC<CalendarProps> = ({
             onPress={() => !disabled && onDateSelect(day)}
             disabled={disabled}
           >
-            <Text style={[styles.dateText, disabled && styles.disabledDateText]}>{day}</Text>
+            <LabelText style={[styles.dateText, disabled && styles.disabledDateText]}>{day}</LabelText>
             {showDots && <View style={hasReservationOnDay ? styles.dot : styles.dotInactive} />}
           </TouchableOpacity>
         );
@@ -122,9 +122,9 @@ export const Calendar: React.FC<CalendarProps> = ({
     const remainingDays = 42 - days.length;
     for (let day = 1; day <= remainingDays; day++) {
       days.push(
-        <Text key={`next-${day}`} style={[styles.dateText, styles.otherMonthText]}>
+        <LabelText key={`next-${day}`} style={[styles.dateText, styles.otherMonthText]}>
           {day}
-        </Text>
+        </LabelText>
       );
     }
 
@@ -136,15 +136,15 @@ export const Calendar: React.FC<CalendarProps> = ({
       {/* 월 헤더 */}
       <View style={[styles.monthHeader, headerOnly && styles.headerOnly]}>
         <TouchableOpacity style={styles.arrowButton} onPress={onPrevMonth}>
-          <Text style={styles.arrowIcon}>‹</Text>
+          <LabelText style={styles.arrowIcon}>‹</LabelText>
         </TouchableOpacity>
-        <Text style={styles.monthText}>{currentMonth}</Text>
+        <LabelText style={styles.monthText}>{currentMonth}</LabelText>
         <TouchableOpacity style={styles.arrowButton} onPress={onNextMonth}>
-          <Text style={styles.arrowIcon}>›</Text>
+          <LabelText style={styles.arrowIcon}>›</LabelText>
         </TouchableOpacity>
         {showTodayButton && (
           <TouchableOpacity style={styles.todayContainer} onPress={onTodayPress}>
-            <Text style={styles.todayText}>오늘</Text>
+            <LabelText style={styles.todayText}>오늘</LabelText>
           </TouchableOpacity>
         )}
       </View>
@@ -154,13 +154,13 @@ export const Calendar: React.FC<CalendarProps> = ({
         <>
           {/* 요일 헤더 */}
           <View style={styles.weekdayHeader}>
-            <Text style={styles.weekdayText}>월</Text>
-            <Text style={styles.weekdayText}>화</Text>
-            <Text style={styles.weekdayText}>수</Text>
-            <Text style={styles.weekdayText}>목</Text>
-            <Text style={styles.weekdayText}>금</Text>
-            <Text style={styles.weekdayText}>토</Text>
-            <Text style={styles.weekdayText}>일</Text>
+            <LabelText style={styles.weekdayText}>월</LabelText>
+            <LabelText style={styles.weekdayText}>화</LabelText>
+            <LabelText style={styles.weekdayText}>수</LabelText>
+            <LabelText style={styles.weekdayText}>목</LabelText>
+            <LabelText style={styles.weekdayText}>금</LabelText>
+            <LabelText style={styles.weekdayText}>토</LabelText>
+            <LabelText style={styles.weekdayText}>일</LabelText>
           </View>
 
           <View style={styles.calendarGrid}>{generateCalendarDays()}</View>

@@ -1,6 +1,7 @@
-import React, { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text, TouchableOpacity, StyleSheet, Linking, Alert } from "react-native";
 import Toast, { BaseToast, ErrorToast, InfoToast } from "react-native-toast-message";
+import * as Font from "expo-font";
 import { SplashScreen } from "./src/screens/SplashScreen";
 import { IntroScreen } from "./src/screens/IntroScreen";
 import { LoginScreen } from "./src/screens/LoginScreen";
@@ -11,6 +12,7 @@ import { ToastProvider, useToast } from "./src/context/ToastContext";
 import { SignUpScreen } from "./src/screens/SignUpScreen";
 import { MembershipResultScreen } from "./src/screens/MembershipResultScreen";
 import { MembershipGuideScreen } from "./src/screens/MembershipGuideScreen";
+import { MembershipDetailScreen } from "./src/screens/MembershipDetailScreen";
 
 type ScreenType =
   | "splash"
@@ -22,13 +24,31 @@ type ScreenType =
   | "signup"
   | "membershipResult"
   | "membershipGuide"
+  | "membershipDetail"
   | "main";
 
 function AppContent() {
   const [currentScreen, setCurrentScreen] = useState<ScreenType>("splash");
   const [foundUserId, setFoundUserId] = useState<string>("");
   const [membershipResultData, setMembershipResultData] = useState<{ approveStatus: boolean }>({ approveStatus: true });
+  const [selectedMembershipId, setSelectedMembershipId] = useState<string>("");
+  const [fontsLoaded, setFontsLoaded] = useState(false);
   const { showToast } = useToast();
+
+  // 폰트 로드
+  useEffect(() => {
+    async function loadFonts() {
+      await Font.loadAsync({
+        "NanumSquareNeo-aLt": require("./src/assets/fonts/NanumSquareNeo-aLt.ttf"),
+        "NanumSquareNeo-bRg": require("./src/assets/fonts/NanumSquareNeo-bRg.ttf"),
+        "NanumSquareNeo-cBd": require("./src/assets/fonts/NanumSquareNeo-cBd.ttf"),
+        "NanumSquareNeo-dEb": require("./src/assets/fonts/NanumSquareNeo-dEb.ttf"),
+        "NanumSquareNeo-eHv": require("./src/assets/fonts/NanumSquareNeo-eHv.ttf")
+      });
+      setFontsLoaded(true);
+    }
+    loadFonts();
+  }, []);
 
   // Toast 커스텀 설정
   const toastConfig = {
@@ -208,6 +228,16 @@ function AppContent() {
 
   printLog("현재 화면:", { currentScreen });
 
+  // 폰트가 로드되지 않았으면 스플래시 화면 표시
+  if (!fontsLoaded) {
+    return (
+      <>
+        <SplashScreen onFinish={() => {}} />
+        <Toast config={toastConfig} />
+      </>
+    );
+  }
+
   if (currentScreen === "splash") {
     printLog("SplashScreen 렌더링");
     return (
@@ -305,7 +335,33 @@ function AppContent() {
           onBackPress={() => setCurrentScreen("login")}
           onMenuItemPress={(itemId) => {
             printLog("멤버십 아이템 선택:", itemId);
-            // 여기서 선택된 멤버십에 대한 상세 페이지로 이동하거나 다른 동작 수행
+            setSelectedMembershipId(itemId);
+            setCurrentScreen("membershipDetail");
+          }}
+        />
+        <Toast config={toastConfig} />
+      </>
+    );
+  }
+
+  if (currentScreen === "membershipDetail") {
+    printLog("MembershipDetailScreen 렌더링");
+    return (
+      <>
+        <MembershipDetailScreen
+          membershipId={selectedMembershipId}
+          onBackPress={() => setCurrentScreen("membershipGuide")}
+          onConsultationPress={async () => {
+            // 상담 문의 처리
+            printLog("멤버십 상담 문의");
+            const phoneNumber = "1588-1234";
+            try {
+              const supported = await Linking.canOpenURL(`tel:${phoneNumber}`);
+              if (supported) await Linking.openURL(`tel:${phoneNumber}`);
+              else Alert.alert("전화 연결 실패", "전화 앱을 열 수 없습니다. 직접 전화를 걸어주세요.");
+            } catch (error) {
+              Alert.alert("오류 발생", "전화 연결 중 오류가 발생했습니다.");
+            }
           }}
         />
         <Toast config={toastConfig} />

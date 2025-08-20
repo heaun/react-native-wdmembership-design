@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Dimensions, Image
 import { CommonModal } from "../components/CommonModal";
 import { CommonLayout } from "../components/CommonLayout";
 import Toast from "react-native-toast-message";
+import { LabelText, ButtonText, SmallText } from "../components/CommonText";
 
 interface ReservationData {
   id: string;
@@ -104,49 +105,51 @@ export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = (
           {/* 예약 상태 배지 */}
           <View style={styles.statusContainer}>
             <View style={styles.statusBadge}>
-              <Text style={styles.statusText}>{data.status === "confirmed" ? "예약확정" : data.status === "pending" ? "예약대기" : "예약취소"}</Text>
+              <LabelText style={styles.statusText}>
+                {data.status === "confirmed" ? "예약확정" : data.status === "pending" ? "예약대기" : "예약취소"}
+              </LabelText>
             </View>
           </View>
 
           {/* 클래스 제목 */}
-          <Text style={styles.classTitle}>{data?.title || "예약 상세"}</Text>
+          <LabelText style={styles.classTitle}>{data?.title || "예약 상세"}</LabelText>
 
           {/* 예약 정보 */}
           <View style={styles.infoContainer}>
             {/* 강사 정보 */}
             <View style={styles.infoRow}>
-              <Text style={styles.infoLabel}>강사</Text>
-              <Text style={styles.infoValue}>{data.instructor}</Text>
+              <LabelText style={styles.infoLabel}>강사</LabelText>
+              <LabelText style={styles.infoValue}>{data.instructor}</LabelText>
             </View>
 
             {/* 일정 정보 */}
             <View style={styles.infoRow}>
-              <Text style={styles.infoLabel}>일정</Text>
-              <Text style={styles.infoValue}>
+              <LabelText style={styles.infoLabel}>일정</LabelText>
+              <LabelText style={styles.infoValue}>
                 {data.date} {data.time}
-              </Text>
+              </LabelText>
             </View>
 
             {/* 장소 정보 */}
             <View style={styles.infoRow}>
-              <Text style={styles.infoLabel}>장소</Text>
-              <Text style={styles.infoValue}>{data.location}</Text>
+              <LabelText style={styles.infoLabel}>장소</LabelText>
+              <LabelText style={styles.infoValue}>{data.location}</LabelText>
             </View>
 
             {/* 구분선 */}
             <View style={styles.divider} />
 
             {/* 예약 변경/취소 안내 */}
-            <Text style={styles.infoTitleLabel}>예약 취소 및 변경</Text>
-            <Text style={styles.infoDescription}>{data.cancellationPolicy}</Text>
+            <LabelText style={styles.infoTitleLabel}>예약 취소 및 변경</LabelText>
+            <LabelText style={styles.infoDescription}>{data.cancellationPolicy}</LabelText>
 
             {/* 부가정보 */}
-            <Text style={styles.infoTitleLabel}>부가정보</Text>
-            <Text style={styles.infoDescription}>
+            <LabelText style={styles.infoTitleLabel}>부가정보</LabelText>
+            <LabelText style={styles.infoDescription}>
               {data.additionalInfo}
               {"\n"}
               {data.description}
-            </Text>
+            </LabelText>
           </View>
         </ScrollView>
 
@@ -154,10 +157,10 @@ export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = (
         <View style={styles.bottomButtonContainer}>
           <View style={styles.buttonRow}>
             <TouchableOpacity style={styles.changeButton} onPress={handleReservationPress}>
-              <Text style={styles.changeButtonText}>예약변경</Text>
+              <LabelText style={styles.changeButtonText}>예약변경</LabelText>
             </TouchableOpacity>
             <TouchableOpacity style={styles.cancelButton} onPress={handleCancelPress}>
-              <Text style={styles.cancelButtonText}>취소</Text>
+              <LabelText style={styles.cancelButtonText}>취소</LabelText>
             </TouchableOpacity>
           </View>
         </View>
@@ -168,14 +171,14 @@ export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = (
         <View style={styles.popoverOverlay}>
           <View style={styles.popoverContainer}>
             <View style={styles.popoverContent}>
-              <Text style={styles.popoverTitle}>예약취소</Text>
-              <Text style={styles.popoverMessage}>예약을 취소하시겠습니까?</Text>
+              <LabelText style={styles.popoverTitle}>예약취소</LabelText>
+              <LabelText style={styles.popoverMessage}>예약을 취소하시겠습니까?</LabelText>
               <View style={styles.popoverButtonContainer}>
                 <TouchableOpacity style={styles.popoverPrimaryButton} onPress={handleConfirmCancel}>
-                  <Text style={styles.popoverPrimaryButtonText}>네, 취소하겠습니다.</Text>
+                  <LabelText style={styles.popoverPrimaryButtonText}>네, 취소하겠습니다.</LabelText>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.popoverSecondaryButton} onPress={handleCancelModalClose}>
-                  <Text style={styles.popoverSecondaryButtonText}>아니요</Text>
+                  <LabelText style={styles.popoverSecondaryButtonText}>아니요</LabelText>
                 </TouchableOpacity>
               </View>
             </View>
@@ -265,7 +268,7 @@ const styles = StyleSheet.create({
     marginBottom: 20
   },
   bottomButtonContainer: {
-    paddingTop: 10,
+    paddingVertical: 10,
     borderTopWidth: 1,
     borderTopColor: "#EFF1F3"
   },

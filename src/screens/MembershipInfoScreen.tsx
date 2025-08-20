@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { CommonLayout } from "../components/CommonLayout";
+import { LabelText, ButtonText, SmallText } from "../components/CommonText";
 
 interface MembershipInfoScreenProps {
   onBackPress?: () => void;
@@ -149,9 +150,9 @@ export const MembershipInfoScreen: React.FC<MembershipInfoScreenProps> = ({
         {/* 멤버십 정보 섹션 */}
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>멤버십 정보</Text>
+            <LabelText style={styles.sectionTitle}>멤버십 정보</LabelText>
             <TouchableOpacity style={styles.moreButton} onPress={handleMembershipBenefitsPress}>
-              <Text style={styles.moreButtonText}>멤버십 혜택 안내</Text>
+              <LabelText style={styles.moreButtonText}>멤버십 혜택 안내</LabelText>
               <Image source={require("../assets/icons/ic-chevron-right.png")} style={styles.chevron} />
             </TouchableOpacity>
           </View>
@@ -159,19 +160,19 @@ export const MembershipInfoScreen: React.FC<MembershipInfoScreenProps> = ({
           <View style={styles.membershipCard}>
             {/* 카드 헤더: 좌우 이동 버튼 */}
 
-            <Text style={styles.memberName}>{membershipData.member.name} 님은</Text>
-            <Text style={styles.memberAddress}>{membershipData.member.residence}</Text>
-            <Text style={styles.memberStatus}>{membershipData.member.statusText}</Text>
+            <LabelText style={styles.memberName}>{membershipData.member.name} 님은</LabelText>
+            <LabelText style={styles.memberAddress}>{membershipData.member.residence}</LabelText>
+            <LabelText style={styles.memberStatus}>{membershipData.member.statusText}</LabelText>
 
             <View style={styles.divider} />
             <View style={styles.membershipDetails}>
               <View style={styles.detailRow}>
-                <Text style={styles.detailLabel}>멤버십 회원 번호</Text>
-                <Text style={styles.detailValue}>{membershipData.details.memberNumber}</Text>
+                <LabelText style={styles.detailLabel}>멤버십 회원 번호</LabelText>
+                <LabelText style={styles.detailValue}>{membershipData.details.memberNumber}</LabelText>
               </View>
               <View style={styles.detailRow}>
-                <Text style={styles.detailLabel}>멤버십 기간</Text>
-                <Text style={styles.detailValue}>{membershipData.details.period}</Text>
+                <LabelText style={styles.detailLabel}>멤버십 기간</LabelText>
+                <LabelText style={styles.detailValue}>{membershipData.details.period}</LabelText>
               </View>
             </View>
           </View>
@@ -179,22 +180,22 @@ export const MembershipInfoScreen: React.FC<MembershipInfoScreenProps> = ({
           {/* 연회비 납부 안내 */}
           <View style={styles.paymentNoticeContainer}>
             <View style={styles.paymentNotice}>
-              <Text style={styles.paymentTitle}>연회비 납부안내</Text>
+              <LabelText style={styles.paymentTitle}>연회비 납부안내</LabelText>
               <View style={styles.paymentDetails}>
                 <View style={styles.detailRow}>
-                  <Text style={styles.detailLabel}>납부 기한</Text>
-                  <Text style={styles.detailValue}>{membershipData.payment.due}</Text>
+                  <LabelText style={styles.detailLabel}>납부 기한</LabelText>
+                  <LabelText style={styles.detailValue}>{membershipData.payment.due}</LabelText>
                 </View>
                 <View style={styles.detailRow}>
-                  <Text style={styles.detailLabel}>문의전화</Text>
-                  <Text style={styles.detailValue}>{membershipData.payment.phone}</Text>
+                  <LabelText style={styles.detailLabel}>문의전화</LabelText>
+                  <LabelText style={styles.detailValue}>{membershipData.payment.phone}</LabelText>
                 </View>
               </View>
-              <Text style={styles.paymentDescription}>{paymentDescription}</Text>
+              <LabelText style={styles.paymentDescription}>{paymentDescription}</LabelText>
             </View>
             <View style={styles.paymentButton}>
               <TouchableOpacity onPress={handlePaymentPress}>
-                <Text style={styles.paymentButtonText}>연회비 납부하기</Text>
+                <LabelText style={styles.paymentButtonText}>연회비 납부하기</LabelText>
               </TouchableOpacity>
             </View>
           </View>
@@ -202,18 +203,18 @@ export const MembershipInfoScreen: React.FC<MembershipInfoScreenProps> = ({
         {/* 멤버십 이용권 섹션 */}
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>멤버십 이용권</Text>
+            <LabelText style={styles.sectionTitle}>멤버십 이용권</LabelText>
             <TouchableOpacity style={styles.moreButton} onPress={handleMoreTicketsPress}>
-              <Text style={styles.moreButtonText}>사용 이력 보기</Text>
+              <LabelText style={styles.moreButtonText}>사용 이력 보기</LabelText>
               <Image source={require("../assets/icons/ic-chevron-right.png")} style={styles.chevron} />
             </TouchableOpacity>
           </View>
           <View style={styles.divider} />
 
           <View style={styles.ticketContainer}>
-            <Text style={styles.availableTickets}>
-              사용가능 이용권 <Text style={styles.ticketCount}>{membershipData.tickets.length}</Text>
-            </Text>
+            <LabelText style={styles.availableTickets}>
+              사용가능 이용권 <LabelText style={styles.ticketCount}>{membershipData.tickets.length}</LabelText>
+            </LabelText>
 
             {membershipData.tickets.map((t) => (
               <View key={t.id} style={styles.ticketCard}>
@@ -221,8 +222,8 @@ export const MembershipInfoScreen: React.FC<MembershipInfoScreenProps> = ({
                 <View style={styles.ticketTopSection}>
                   <Image source={t.icon} style={styles.ticketIcon} resizeMode="cover" />
                   <View style={styles.ticketTextInfo}>
-                    <Text style={styles.ticketTitle}>{t.title}</Text>
-                    <Text style={styles.ticketProvider}>{t.provider}</Text>
+                    <LabelText style={styles.ticketTitle}>{t.title}</LabelText>
+                    <LabelText style={styles.ticketProvider}>{t.provider}</LabelText>
                   </View>
                 </View>
 
@@ -232,12 +233,12 @@ export const MembershipInfoScreen: React.FC<MembershipInfoScreenProps> = ({
                 {/* 하단 섹션 */}
                 <View style={styles.ticketBottomSection}>
                   <View style={styles.ticketDetailRow}>
-                    <Text style={styles.ticketDetailLabel}>유효기간</Text>
-                    <Text style={styles.ticketDetailValue}>{t.period}</Text>
+                    <LabelText style={styles.ticketDetailLabel}>유효기간</LabelText>
+                    <LabelText style={styles.ticketDetailValue}>{t.period}</LabelText>
                   </View>
                   <View style={styles.ticketDetailRow}>
-                    <Text style={styles.ticketDetailLabel}>사용가능지역</Text>
-                    <Text style={styles.ticketDetailValue}>{t.region}</Text>
+                    <LabelText style={styles.ticketDetailLabel}>사용가능지역</LabelText>
+                    <LabelText style={styles.ticketDetailValue}>{t.region}</LabelText>
                   </View>
                 </View>
               </View>
@@ -245,7 +246,7 @@ export const MembershipInfoScreen: React.FC<MembershipInfoScreenProps> = ({
 
             <View style={styles.moreSection}>
               <TouchableOpacity style={styles.moreButton} onPress={handleMoreTicketsPress}>
-                <Text style={styles.moreTitle}>멤버십 이용권 더보기</Text>
+                <LabelText style={styles.moreTitle}>멤버십 이용권 더보기</LabelText>
               </TouchableOpacity>
             </View>
           </View>
@@ -254,28 +255,28 @@ export const MembershipInfoScreen: React.FC<MembershipInfoScreenProps> = ({
         {/* 멤버십 혜택 섹션 */}
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>멤버십 혜택</Text>
+            <LabelText style={styles.sectionTitle}>멤버십 혜택</LabelText>
           </View>
 
-          <Text style={styles.benefitsDescription}>멤버십 회원님들께만 드리는 특별한 할인 혜택을 누려보세요.</Text>
+          <LabelText style={styles.benefitsDescription}>멤버십 회원님들께만 드리는 특별한 할인 혜택을 누려보세요.</LabelText>
 
           {membershipData.benefits.map((b) => (
             <View key={b.id} style={styles.benefitCard}>
               <Image source={b.icon} style={styles.benefitIcon} resizeMode="cover" />
               <View style={styles.benefitInfo}>
-                <Text style={styles.benefitCategory}>{b.category}</Text>
-                <Text style={styles.benefitTitle}>{b.title}</Text>
-                <Text style={styles.benefitProvider}>{b.provider}</Text>
+                <LabelText style={styles.benefitCategory}>{b.category}</LabelText>
+                <LabelText style={styles.benefitTitle}>{b.title}</LabelText>
+                <LabelText style={styles.benefitProvider}>{b.provider}</LabelText>
               </View>
               <TouchableOpacity style={styles.downloadButton}>
                 <Image source={require("../assets/icons/ic_download.png")} style={styles.downloadIcon} />
-                <Text style={styles.downloadText}>다운로드</Text>
+                <LabelText style={styles.downloadText}>다운로드</LabelText>
               </TouchableOpacity>
             </View>
           ))}
           <View style={styles.moreSection}>
             <TouchableOpacity style={styles.moreButton} onPress={handleMoreTicketsPress}>
-              <Text style={styles.moreTitle}>혜택 더보기</Text>
+              <LabelText style={styles.moreTitle}>혜택 더보기</LabelText>
             </TouchableOpacity>
           </View>
         </View>

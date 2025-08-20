@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Image, Dimensions } from "react-native";
 import { CommonLayout } from "../components/CommonLayout";
-
+import { LabelText, ButtonText, SmallText, BodyText } from "../components/CommonText";
 const { width: screenWidth } = Dimensions.get("window");
 
 interface ServiceDetailScreenProps {
@@ -312,9 +312,9 @@ export const ServiceDetailScreen: React.FC<ServiceDetailScreenProps> = ({
 
         {/* Service Info Card */}
         <View style={styles.infoCard}>
-          <Text style={styles.serviceTitle}>{serviceDetailData.title}</Text>
-          <Text style={styles.serviceSubtitle}>{serviceDetailData.subtitle}</Text>
-          <Text style={styles.serviceDescription}>{serviceDetailData.description}</Text>
+          <LabelText style={styles.serviceTitle}>{serviceDetailData.title}</LabelText>
+          <LabelText style={styles.serviceSubtitle}>{serviceDetailData.subtitle}</LabelText>
+          <LabelText style={styles.serviceDescription}>{serviceDetailData.description}</LabelText>
         </View>
 
         {/* Service Content */}
@@ -327,7 +327,7 @@ export const ServiceDetailScreen: React.FC<ServiceDetailScreenProps> = ({
                   // index가 1번째인 경우 (두 번째 항목): 텍스트가 왼쪽, 이미지가 오른쪽
                   <>
                     <View style={styles.serviceTextContainer}>
-                      <Text style={styles.descriptionText}>{item.description}</Text>
+                      <LabelText style={styles.descriptionText}>{item.description}</LabelText>
                     </View>
                     <Image source={item.image} style={styles.serviceImage} resizeMode="cover" />
                   </>
@@ -336,7 +336,7 @@ export const ServiceDetailScreen: React.FC<ServiceDetailScreenProps> = ({
                   <>
                     <Image source={item.image} style={styles.serviceImage} resizeMode="cover" />
                     <View style={styles.serviceTextContainer}>
-                      <Text style={styles.descriptionText}>{item.description}</Text>
+                      <LabelText style={styles.descriptionText}>{item.description}</LabelText>
                     </View>
                   </>
                 )}
@@ -346,17 +346,17 @@ export const ServiceDetailScreen: React.FC<ServiceDetailScreenProps> = ({
 
           {/* Location Information */}
           <View style={styles.locationSection}>
-            <Text style={styles.sectionTitle}>지점위치</Text>
+            <LabelText style={styles.sectionTitle}>지점위치</LabelText>
             <View style={styles.divider} />
 
             {serviceDetailData.locations.map((location, index) => (
               <View key={index} style={styles.locationInfo}>
-                <Text style={styles.regionLabel}>{location.region}</Text>
+                <SmallText style={styles.regionLabel}>{location.region}</SmallText>
                 <View style={styles.branchList}>
                   {location.branches.map((branch, branchIndex) => (
-                    <Text key={branchIndex} style={styles.branchName}>
+                    <BodyText key={branchIndex} style={styles.branchName}>
                       {branch}
-                    </Text>
+                    </BodyText>
                   ))}
                 </View>
               </View>
@@ -365,10 +365,10 @@ export const ServiceDetailScreen: React.FC<ServiceDetailScreenProps> = ({
 
           {/* Contact Information */}
           <View style={styles.contactSection}>
-            <Text style={styles.sectionTitle}>대표번호</Text>
+            <LabelText style={styles.sectionTitle}>대표번호</LabelText>
             <View style={styles.divider} />
-            <Text style={styles.phoneNumber}>{serviceDetailData.contact.phoneNumber}</Text>
-            <Text style={styles.operatingHours}>{serviceDetailData.contact.operatingHours}</Text>
+            <LabelText style={styles.phoneNumber}>{serviceDetailData.contact.phoneNumber}</LabelText>
+            <LabelText style={styles.operatingHours}>{serviceDetailData.contact.operatingHours}</LabelText>
           </View>
         </View>
       </ScrollView>
@@ -376,7 +376,7 @@ export const ServiceDetailScreen: React.FC<ServiceDetailScreenProps> = ({
       {/* Reservation Button */}
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.reservationButton} onPress={handleReservationPress}>
-          <Text style={styles.reservationButtonText}>예약 시작하기</Text>
+          <LabelText style={styles.reservationButtonText}>예약 시작하기</LabelText>
         </TouchableOpacity>
       </View>
     </CommonLayout>
@@ -441,7 +441,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30
   },
   serviceList: {
-    marginBottom: 40
+    marginBottom: 40,
+    marginTop: 30
   },
   serviceListItem: {
     flexDirection: "row",

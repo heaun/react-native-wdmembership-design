@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image } from "react-native";
 import { CommonLayout } from "../components/CommonLayout";
+import { LabelText, ButtonText, SmallText, BodyText } from "../components/CommonText";
 
 interface PaymentScreenProps {
   service: {
@@ -51,6 +52,7 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<"card" | "transfer">("card");
   const [selectedInstallment, setSelectedInstallment] = useState<"lump" | "installment">("lump");
   const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const [showInstallmentDropdown, setShowInstallmentDropdown] = useState(false);
 
   const handlePaymentMethodSelect = (method: "card" | "transfer") => {
     setSelectedPaymentMethod(method);
@@ -58,6 +60,11 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({
 
   const handleInstallmentSelect = (type: "lump" | "installment") => {
     setSelectedInstallment(type);
+    setShowInstallmentDropdown(false);
+  };
+
+  const handleInstallmentDropdownToggle = () => {
+    setShowInstallmentDropdown(!showInstallmentDropdown);
   };
 
   const handleAgreementToggle = () => {
@@ -84,28 +91,18 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({
       onSideMenuItemPress={onSideMenuItemPress}
     >
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+        <LabelText style={styles.sectionTitle}>내 결제수단</LabelText>
+
         {/* 결제 금액 */}
         <View style={styles.paymentSection}>
-          <Text style={styles.sectionLabel}>결제금액</Text>
-          <Text style={styles.paymentAmount}>{selectedOptions.totalPrice.toLocaleString()}원</Text>
+          <LabelText style={styles.sectionLabel}>결제금액</LabelText>
+          <LabelText style={styles.paymentAmount}>{selectedOptions.totalPrice.toLocaleString()}원</LabelText>
         </View>
 
         <View style={styles.divider} />
 
         {/* 내 결제수단 */}
         <View style={styles.paymentMethodSection}>
-          <Text style={styles.sectionTitle}>내 결제수단</Text>
-          
-          {/* 카드 정보 */}
-          <View style={styles.cardInfo}>
-            <Image source={require("../assets/payment/card-image.png")} style={styles.cardImage} resizeMode="cover" />
-            <Text style={styles.cardName}>
-              JADE CLESSIC{'\n'}하나카드
-            </Text>
-          </View>
-
-          <View style={styles.divider} />
-
           {/* 결제 방법 선택 */}
           <View style={styles.paymentOptions}>
             <TouchableOpacity
@@ -115,9 +112,55 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({
               <View style={[styles.radioButton, selectedPaymentMethod === "card" && styles.selectedRadioButton]}>
                 {selectedPaymentMethod === "card" && <View style={styles.radioButtonInner} />}
               </View>
-              <Text style={styles.paymentOptionText}>카드결제</Text>
+              <LabelText style={styles.paymentOptionText}>카드결제</LabelText>
             </TouchableOpacity>
 
+            {/* 카드결제 선택 시에만 할부 정보 표시 */}
+            {selectedPaymentMethod === "card" && (
+              <>
+                {/* 카드 정보 */}
+                <View style={styles.cardInfo}>
+                  <Image source={require("../assets/payment/card-image.png")} style={styles.cardImage} resizeMode="cover" />
+                  <LabelText style={styles.cardName}>JADE CLESSIC{"\n"}하나카드</LabelText>
+                </View>
+
+                <View style={styles.installmentSection}>
+                  <View style={styles.installmentRow}>
+                    <LabelText style={styles.installmentLabel}>카드할부</LabelText>
+                    <TouchableOpacity style={styles.selectBox} onPress={handleInstallmentDropdownToggle}>
+                      <LabelText style={styles.selectBoxText}>{selectedInstallment === "lump" ? "일시불" : "할부"}</LabelText>
+                      <LabelText style={styles.selectBoxArrow}>{showInstallmentDropdown ? "▲" : "▼"}</LabelText>
+                    </TouchableOpacity>
+                  </View>
+
+                  {/* 드롭다운 옵션 */}
+                  {showInstallmentDropdown && (
+                    <View style={styles.dropdownContainer}>
+                      <TouchableOpacity
+                        style={[styles.dropdownOption, selectedInstallment === "lump" && styles.selectedDropdownOption]}
+                        onPress={() => handleInstallmentSelect("lump")}
+                      >
+                        <LabelText style={[styles.dropdownOptionText, selectedInstallment === "lump" && styles.selectedDropdownOptionText]}>
+                          일시불
+                        </LabelText>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={[styles.dropdownOption, selectedInstallment === "installment" && styles.selectedDropdownOption]}
+                        onPress={() => handleInstallmentSelect("installment")}
+                      >
+                        <LabelText style={[styles.dropdownOptionText, selectedInstallment === "installment" && styles.selectedDropdownOptionText]}>
+                          할부
+                        </LabelText>
+                      </TouchableOpacity>
+                    </View>
+                  )}
+                </View>
+              </>
+            )}
+
+            <View style={styles.divider} />
+
+            {/* 계좌이체 선택 */}
             <TouchableOpacity
               style={[styles.paymentOption, selectedPaymentMethod === "transfer" && styles.selectedPaymentOption]}
               onPress={() => handlePaymentMethodSelect("transfer")}
@@ -125,41 +168,20 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({
               <View style={[styles.radioButton, selectedPaymentMethod === "transfer" && styles.selectedRadioButton]}>
                 {selectedPaymentMethod === "transfer" && <View style={styles.radioButtonInner} />}
               </View>
-              <Text style={styles.paymentOptionText}>계좌이체</Text>
+              <LabelText style={styles.paymentOptionText}>계좌이체</LabelText>
             </TouchableOpacity>
           </View>
 
           <View style={styles.divider} />
-
-          {/* 할부 선택 */}
-          <View style={styles.installmentSection}>
-            <Text style={styles.installmentLabel}>카드할부</Text>
-            <View style={styles.installmentOptions}>
-              <TouchableOpacity
-                style={[styles.installmentOption, selectedInstallment === "lump" && styles.selectedInstallmentOption]}
-                onPress={() => handleInstallmentSelect("lump")}
-              >
-                <Text style={[styles.installmentText, selectedInstallment === "lump" && styles.selectedInstallmentText]}>일시불</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[styles.installmentOption, selectedInstallment === "installment" && styles.selectedInstallmentOption]}
-                onPress={() => handleInstallmentSelect("installment")}
-              >
-                <Text style={[styles.installmentText, selectedInstallment === "installment" && styles.selectedInstallmentText]}>할부</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
         </View>
 
         {/* 동의 체크박스 */}
         <View style={styles.agreementSection}>
           <TouchableOpacity style={styles.agreementCheckbox} onPress={handleAgreementToggle}>
             <View style={[styles.checkbox, agreedToTerms && styles.checkedCheckbox]}>
-              {agreedToTerms && <Text style={styles.checkmark}>✓</Text>}
+              {agreedToTerms && <LabelText style={styles.checkmark}>✓</LabelText>}
             </View>
-            <Text style={styles.agreementText}>
-              결제내용 확인 및 개인정보 제공에 동의합니다. 상세보기
-            </Text>
+            <LabelText style={styles.agreementText}>결제내용 확인 및 개인정보 제공에 동의합니다. 상세보기</LabelText>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -170,7 +192,7 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({
           onPress={handleConfirmPress}
           disabled={!agreedToTerms}
         >
-          <Text style={styles.confirmButtonText}>동의하고 결제하기</Text>
+          <LabelText style={styles.confirmButtonText}>동의하고 결제하기</LabelText>
         </TouchableOpacity>
       </View>
     </CommonLayout>
@@ -186,7 +208,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingHorizontal: 20,
     paddingVertical: 15
   },
   sectionLabel: {
@@ -202,24 +223,20 @@ const styles = StyleSheet.create({
   },
   divider: {
     height: 1,
-    backgroundColor: "#D6DADF",
-    marginHorizontal: 20
+    backgroundColor: "#D6DADF"
   },
-  paymentMethodSection: {
-    paddingHorizontal: 20,
-    paddingVertical: 20
-  },
+  paymentMethodSection: {},
   sectionTitle: {
     fontSize: 16,
     fontWeight: "800",
     color: "#2B2B2B",
-    marginBottom: 20,
+    marginVertical: 20,
     letterSpacing: -0.64
   },
   cardInfo: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 20
+    marginVertical: 10
   },
   cardImage: {
     width: 114,
@@ -235,12 +252,13 @@ const styles = StyleSheet.create({
     letterSpacing: -0.6
   },
   paymentOptions: {
-    marginBottom: 20
+    marginVertical: 10,
+    gap: 10
   },
   paymentOption: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 15
+    paddingVertical: 5
   },
   selectedPaymentOption: {
     // 선택된 옵션 스타일
@@ -272,13 +290,12 @@ const styles = StyleSheet.create({
     letterSpacing: -0.56
   },
   installmentSection: {
-    marginBottom: 20
+    marginVertical: 10
   },
   installmentLabel: {
     fontSize: 14,
     fontWeight: "700",
     color: "#505866",
-    marginBottom: 10,
     letterSpacing: -0.56
   },
   installmentOptions: {
@@ -302,8 +319,58 @@ const styles = StyleSheet.create({
   selectedInstallmentText: {
     color: "#B48327"
   },
+  selectBox: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    gap: 10
+  },
+  selectBoxText: {
+    fontSize: 16,
+    fontWeight: "800",
+    color: "#2B2B2B",
+    letterSpacing: -0.64
+  },
+  selectBoxArrow: {
+    fontSize: 12,
+    fontWeight: "700",
+    color: "#505866"
+  },
+  installmentRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center"
+  },
+  dropdownContainer: {
+    marginTop: 10,
+    zIndex: 1000,
+    alignItems: "flex-end",
+    justifyContent: "flex-end",
+    borderRadius: 6,
+    backgroundColor: "#FFFFFF",
+    borderWidth: 1,
+    borderColor: "#D6DADF"
+  },
+  dropdownOption: {
+    width: "100%",
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: "#EFF1F3"
+  },
+  selectedDropdownOption: {
+    backgroundColor: "#F8F9FA"
+  },
+  dropdownOptionText: {
+    fontSize: 16,
+    fontWeight: "800",
+    color: "#2B2B2B",
+    letterSpacing: -0.64
+  },
+  selectedDropdownOptionText: {
+    color: "#B48327"
+  },
   agreementSection: {
-    paddingHorizontal: 20,
     paddingVertical: 20
   },
   agreementCheckbox: {

@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image, Dimensions } from "react-native";
 import { CommonLayout } from "../components/CommonLayout";
+import { LabelText, ButtonText, SmallText } from "../components/CommonText";
 
 const { width: screenWidth } = Dimensions.get("window");
 
@@ -100,15 +101,15 @@ export const MainScreen: React.FC<MainScreenProps> = ({
           <View style={styles.profileInfo}>
             <Image source={require("../assets/main/profile-avatar.png")} style={styles.profileAvatar} />
             <View style={styles.profileText}>
-              <Text style={styles.greeting}>안녕하세요!</Text>
-              <Text style={styles.userName}>
-                박기용<Text style={styles.userNameSuffix}>님</Text>
-              </Text>
+              <LabelText style={styles.greeting}>안녕하세요!</LabelText>
+              <LabelText style={styles.userName}>
+                박기용<LabelText style={styles.userNameSuffix}>님</LabelText>
+              </LabelText>
             </View>
           </View>
           <TouchableOpacity style={styles.editProfileButton} onPress={onEditProfilePress}>
-            <Text style={styles.editProfileText}>내 정보 변경</Text>
-            <Text style={styles.arrowIcon}>›</Text>
+            <LabelText style={styles.editProfileText}>내 정보 변경</LabelText>
+            <LabelText style={styles.arrowIcon}>›</LabelText>
           </TouchableOpacity>
         </View>
 
@@ -116,22 +117,22 @@ export const MainScreen: React.FC<MainScreenProps> = ({
         <View style={styles.membershipCard}>
           <Image source={require("../assets/main/membership-card.png")} style={styles.cardImage} />
           <View style={styles.cardContent}>
-            <Text style={styles.cardLabel}>My 멤버십</Text>
-            <Text style={styles.cardTitle}>PH 1603 RESIDENCE</Text>
-            <Text style={styles.cardNumber}>9869 4586 2335 3698</Text>
+            <LabelText style={styles.cardLabel}>My 멤버십</LabelText>
+            <LabelText style={styles.cardTitle}>PH 1603 RESIDENCE</LabelText>
+            <LabelText style={styles.cardNumber}>9869 4586 2335 3698</LabelText>
           </View>
           <TouchableOpacity style={styles.membershipManageButton} onPress={onMembershipManagePress}>
-            <Text style={styles.membershipManageText}>멤버십 관리</Text>
-            <Text style={styles.arrowIcon}>›</Text>
+            <LabelText style={styles.membershipManageText}>멤버십 관리</LabelText>
+            <LabelText style={styles.arrowIcon}>›</LabelText>
           </TouchableOpacity>
         </View>
 
         {/* Reservation Section */}
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>예약일정 체크</Text>
+            <LabelText style={styles.sectionTitle}>예약일정 체크</LabelText>
             <View style={styles.notificationCount}>
-              <Text style={styles.notificationCountText}>3</Text>
+              <LabelText style={styles.notificationCountText}>3</LabelText>
             </View>
           </View>
           <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.reservationScroll}>
@@ -139,28 +140,28 @@ export const MainScreen: React.FC<MainScreenProps> = ({
               <TouchableOpacity key={reservation.id} style={styles.reservationCard} onPress={onReservationDetailPress}>
                 <Image source={reservation.image} style={styles.reservationImage} />
                 <View style={styles.reservationBadge}>
-                  <Text style={styles.reservationBadgeText}>{reservation.badge}</Text>
+                  <LabelText style={styles.reservationBadgeText}>{reservation.badge}</LabelText>
                 </View>
                 <View style={styles.reservationInfo}>
-                  <Text style={styles.reservationLocation}>{reservation.location}</Text>
-                  <Text style={styles.reservationTitle}>{reservation.title}</Text>
-                  <Text style={styles.reservationTime}>{reservation.time}</Text>
+                  <LabelText style={styles.reservationLocation}>{reservation.location}</LabelText>
+                  <LabelText style={styles.reservationTitle}>{reservation.title}</LabelText>
+                  <LabelText style={styles.reservationTime}>{reservation.time}</LabelText>
                 </View>
               </TouchableOpacity>
             ))}
           </ScrollView>
           <TouchableOpacity style={styles.viewAllButton}>
-            <Text style={styles.viewAllText}>예약 관리 바로가기</Text>
-            <Text style={styles.arrowIcon}>›</Text>
+            <LabelText style={styles.viewAllText}>예약 관리 바로가기</LabelText>
+            <LabelText style={styles.arrowIcon}>›</LabelText>
           </TouchableOpacity>
         </View>
 
         {/* Recommended Services */}
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>추천 서비스</Text>
+            <LabelText style={styles.sectionTitle}>추천 서비스</LabelText>
             <TouchableOpacity>
-              <Text style={styles.viewAllText}>모두보기</Text>
+              <LabelText style={styles.viewAllText}>모두보기</LabelText>
             </TouchableOpacity>
           </View>
           <View style={styles.servicesContainer}>
@@ -168,9 +169,9 @@ export const MainScreen: React.FC<MainScreenProps> = ({
               <View key={service.id} style={styles.serviceCard}>
                 <Image source={service.image} style={styles.serviceImage} />
                 <View style={styles.serviceInfo}>
-                  <Text style={styles.serviceLocation}>{service.location}</Text>
-                  <Text style={styles.serviceTitle}>{service.title}</Text>
-                  <Text style={styles.serviceDescription}>{service.description}</Text>
+                  <LabelText style={styles.serviceLocation}>{service.location}</LabelText>
+                  <LabelText style={styles.serviceTitle}>{service.title}</LabelText>
+                  <LabelText style={styles.serviceDescription}>{service.description}</LabelText>
                 </View>
               </View>
             ))}

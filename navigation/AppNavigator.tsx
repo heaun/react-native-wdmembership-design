@@ -15,7 +15,7 @@ import { PersonSelectionScreen } from "../src/screens/PersonSelectionScreen";
 import { ReservationConfirmScreen } from "../src/screens/ReservationConfirmScreen";
 import { ProductSelectionScreen } from "../src/screens/ProductSelectionScreen";
 import { ProductOptionScreen } from "../src/screens/ProductOptionScreen";
-import { OrderConfirmScreen } from "../src/screens/OrderConfirmScreen";
+// import { OrderConfirmScreen } from "../src/screens/OrderConfirmScreen";
 import { PaymentScreen } from "../src/screens/PaymentScreen";
 import { PasswordInputScreen } from "../src/screens/PasswordInputScreen";
 import { PaymentCompleteScreen } from "../src/screens/PaymentCompleteScreen";
@@ -512,15 +512,16 @@ export const AppNavigator: React.FC<AppNavigatorProps> = ({ onLogout }) => {
         );
       case "OrderConfirm":
         return (
-          <OrderConfirmScreen
-            service={selectedService}
-            selectedLocation={selectedLocation}
-            selectedDate={selectedDate}
-            selectedProduct={selectedProduct}
-            selectedOptions={selectedOptions}
+          <ReservationConfirmScreen
+            reservationData={{
+              service: selectedService,
+              location: selectedLocation,
+              date: selectedDate,
+              time: selectedTime || "14:30", // 기본값 설정
+              personCount: selectedPersonCount || 1 // 기본값 설정
+            }}
             onBackPress={handleBackToProductOption}
-            onConfirmOrder={handleConfirmOrder}
-            onPaymentStart={handlePaymentStart}
+            onConfirmReservation={handlePaymentStart} // 결제 시작으로 연결
             currentTab={currentScreen}
             onTabPress={handleTabPress}
             onSideMenuItemPress={handleSideMenuItemPress}

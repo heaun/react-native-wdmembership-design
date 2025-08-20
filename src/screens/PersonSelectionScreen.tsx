@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { CommonLayout } from "../components/CommonLayout";
+import { LabelText, ButtonText, SmallText, BodyText } from "../components/CommonText";
 
 interface PersonSelectionScreenProps {
   service: {
@@ -68,7 +69,7 @@ export const PersonSelectionScreen: React.FC<PersonSelectionScreenProps> = ({
       onSideMenuItemPress={onSideMenuItemPress}
     >
       <View style={styles.container}>
-        <Text style={styles.title}>방문하실 인원을 선택해주세요</Text>
+        <LabelText style={styles.title}>방문하실 인원을 선택해주세요</LabelText>
 
         <View style={styles.counterContainer}>
           <TouchableOpacity
@@ -76,11 +77,11 @@ export const PersonSelectionScreen: React.FC<PersonSelectionScreenProps> = ({
             onPress={handleDecrease}
             disabled={selectedPersonCount <= 1}
           >
-            <Text style={[styles.counterButtonText, selectedPersonCount <= 1 && styles.disabledButtonText]}>-</Text>
+            <LabelText style={[styles.counterButtonText, selectedPersonCount <= 1 && styles.disabledButtonText]}>-</LabelText>
           </TouchableOpacity>
 
           <View style={styles.numberContainer}>
-            <Text style={styles.numberText}>{selectedPersonCount}</Text>
+            <LabelText style={styles.numberText}>{selectedPersonCount}</LabelText>
           </View>
 
           <TouchableOpacity
@@ -88,13 +89,13 @@ export const PersonSelectionScreen: React.FC<PersonSelectionScreenProps> = ({
             onPress={handleIncrease}
             disabled={selectedPersonCount >= 10}
           >
-            <Text style={[styles.counterButtonText, selectedPersonCount >= 10 && styles.disabledButtonText]}>+</Text>
+            <LabelText style={[styles.counterButtonText, selectedPersonCount >= 10 && styles.disabledButtonText]}>+</LabelText>
           </TouchableOpacity>
         </View>
 
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.confirmButton} onPress={handleConfirmPress}>
-            <Text style={styles.confirmButtonText}>인원 선택</Text>
+            <LabelText style={styles.confirmButtonText}>인원 선택</LabelText>
           </TouchableOpacity>
         </View>
       </View>

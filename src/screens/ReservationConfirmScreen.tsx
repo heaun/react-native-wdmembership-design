@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image } from "react-native";
 import { CommonLayout } from "../components/CommonLayout";
+import { LabelText, ButtonText, SmallText } from "../components/CommonText";
 
 interface ReservationData {
   service: {
@@ -97,8 +98,8 @@ export const ReservationConfirmScreen: React.FC<ReservationConfirmScreenProps> =
               <Image source={require("../assets/icons/ic_location.png")} style={styles.iconStyle} />
             </View>
             <View style={styles.sectionContent}>
-              <Text style={styles.sectionTitle}>{data.location.name}</Text>
-              <Text style={styles.sectionSubtitle}>{data.location.address}</Text>
+              <LabelText style={styles.sectionTitle}>{data.location.name}</LabelText>
+              <LabelText style={styles.sectionSubtitle}>{data.location.address}</LabelText>
             </View>
           </View>
         </View>
@@ -110,7 +111,7 @@ export const ReservationConfirmScreen: React.FC<ReservationConfirmScreenProps> =
               <Image source={require("../assets/icons/ic_day.png")} style={styles.iconStyle} />
             </View>
             <View style={styles.sectionContent}>
-              <Text style={styles.sectionTitle}>{formatDate(data.date)}</Text>
+              <LabelText style={styles.sectionTitle}>{formatDate(data.date)}</LabelText>
             </View>
           </View>
         </View>
@@ -122,7 +123,7 @@ export const ReservationConfirmScreen: React.FC<ReservationConfirmScreenProps> =
               <Image source={require("../assets/icons/ic_time.png")} style={styles.iconStyle} />
             </View>
             <View style={styles.sectionContent}>
-              <Text style={styles.sectionTitle}>{formatTime(data.time)}</Text>
+              <LabelText style={styles.sectionTitle}>{formatTime(data.time)}</LabelText>
             </View>
           </View>
         </View>
@@ -134,37 +135,36 @@ export const ReservationConfirmScreen: React.FC<ReservationConfirmScreenProps> =
               <Image source={require("../assets/icons/ic_people.png")} style={styles.iconStyle} />
             </View>
             <View style={styles.sectionContent}>
-              <Text style={styles.sectionTitle}>{data.personCount}명</Text>
+              <LabelText style={styles.sectionTitle}>{data.personCount}명</LabelText>
             </View>
           </View>
         </View>
 
         {/* 예약 요약 카드 */}
         <View style={styles.summaryCard}>
-          <Text style={styles.summaryTitle}>{data.service.title}</Text>
-          <Text style={styles.summaryName}>{data.location.name}</Text>
-          <Text style={styles.summaryLocation}>{data.location.address})</Text>
+          <LabelText style={styles.summaryTitle}>{data.service.title}</LabelText>
+          <LabelText style={styles.summaryName}>{data.location.name}</LabelText>
+          <LabelText style={styles.summaryLocation}>({data.location.address})</LabelText>
           <View style={styles.summaryDivider} />
-          <Text style={styles.summaryDetails}>
+          <LabelText style={styles.summaryDetails}>
             {formatDate(data.date)} {formatTime(data.time)}
-            {"\n"}
-            참여인원 : {data.personCount}명
-          </Text>
+          </LabelText>
+          <LabelText style={styles.summaryDetails}>참여인원 : {data.personCount}명</LabelText>
         </View>
 
         {/* 안내 메시지 */}
         <View style={styles.messageContainer}>
-          <Text style={styles.messageText}>
+          <LabelText style={styles.messageText}>
             선택하신 예약 내용입니다.{"\n"}
             예약 확정을 위해 다시 한 번 확인해주세요.{"\n"}각 항목마다 변경 및 수정이 가능하며,{"\n"}
             처음부터 다시 예약을 시작하실 수 있습니다.
-          </Text>
+          </LabelText>
         </View>
       </ScrollView>
 
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.confirmButton} onPress={handleConfirmPress}>
-          <Text style={styles.confirmButtonText}>예약 확정</Text>
+          <LabelText style={styles.confirmButtonText}>예약 확정</LabelText>
         </TouchableOpacity>
       </View>
     </CommonLayout>

@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, StyleProp, TextStyle } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { LabelText, SmallText, ButtonText, CommonText } from "./CommonText";
 
 // 공통 스타일
 export const authCommonStyles = StyleSheet.create({
@@ -331,7 +332,7 @@ interface EmailInputProps {
 
 export const EmailInput: React.FC<EmailInputProps> = ({ value, onChangeText, placeholder = "이메일 주소를 입력하세요" }) => (
   <View style={authCommonStyles.inputContainer}>
-    <Text style={authCommonStyles.inputLabel}>이메일 주소</Text>
+    <LabelText style={authCommonStyles.inputLabel}>이메일 주소</LabelText>
     <TextInput
       style={authCommonStyles.input}
       placeholder={placeholder}
@@ -366,7 +367,7 @@ export const EmailInputWithButton: React.FC<EmailInputWithButtonProps> = ({
   buttonText = "인증번호 받기"
 }) => (
   <View style={authCommonStyles.inputContainer}>
-    <Text style={authCommonStyles.inputLabel}>이메일(아이디)</Text>
+    <LabelText style={authCommonStyles.inputLabel}>이메일(아이디)</LabelText>
     <View style={authCommonStyles.phoneInputContainer}>
       <TextInput
         style={authCommonStyles.phoneInput}
@@ -384,7 +385,7 @@ export const EmailInputWithButton: React.FC<EmailInputWithButtonProps> = ({
         onPress={onSendCode}
         disabled={!value || isVerificationSent}
       >
-        <Text style={authCommonStyles.verifyButtonText}>{buttonText}</Text>
+        <ButtonText style={authCommonStyles.verifyButtonText}>{buttonText}</ButtonText>
       </TouchableOpacity>
     </View>
     <View style={authCommonStyles.inputBorder} />
@@ -400,7 +401,7 @@ interface UserIdInputProps {
 
 export const UserIdInput: React.FC<UserIdInputProps> = ({ value, onChangeText, placeholder = "가입하신 아이디(이메일)를 입력해주세요." }) => (
   <View style={authCommonStyles.inputContainer}>
-    <Text style={authCommonStyles.inputLabel}>아이디(이메일)</Text>
+    <LabelText style={authCommonStyles.inputLabel}>아이디(이메일)</LabelText>
     <TextInput
       style={authCommonStyles.input}
       placeholder={placeholder}
@@ -417,7 +418,7 @@ export const UserIdInput: React.FC<UserIdInputProps> = ({ value, onChangeText, p
 
 export const PhoneInput: React.FC<PhoneInputProps> = ({ value, onChangeText, onSendCode, disabled, isVerificationSent }) => (
   <View style={authCommonStyles.inputContainer}>
-    <Text style={authCommonStyles.inputLabel}>휴대전화 번호</Text>
+    <LabelText style={authCommonStyles.inputLabel}>휴대전화 번호</LabelText>
     <View style={authCommonStyles.phoneInputContainer}>
       <TextInput
         key="phone-input"
@@ -437,17 +438,17 @@ export const PhoneInput: React.FC<PhoneInputProps> = ({ value, onChangeText, onS
         onPress={onSendCode}
         disabled={!value || isVerificationSent}
       >
-        <Text style={authCommonStyles.verifyButtonText}>인증번호 받기</Text>
+        <ButtonText style={authCommonStyles.verifyButtonText}>인증번호 받기</ButtonText>
       </TouchableOpacity>
     </View>
     <View style={authCommonStyles.inputBorder} />
-    {isVerificationSent && <Text style={authCommonStyles.statusMessage}>인증번호가 발송되었습니다.</Text>}
+    {isVerificationSent && <SmallText style={authCommonStyles.statusMessage}>인증번호가 발송되었습니다.</SmallText>}
   </View>
 );
 
 export const VerificationInput: React.FC<VerificationInputProps> = ({ value, onChangeText, onVerify, isVerificationCompleted }) => (
   <View style={authCommonStyles.inputContainer}>
-    <Text style={authCommonStyles.inputLabel}>인증번호</Text>
+    <LabelText style={authCommonStyles.inputLabel}>인증번호</LabelText>
     <View style={authCommonStyles.verificationInputContainer}>
       <TextInput
         key="verification-input"
@@ -467,7 +468,7 @@ export const VerificationInput: React.FC<VerificationInputProps> = ({ value, onC
         onPress={onVerify}
         disabled={!value || isVerificationCompleted}
       >
-        <Text style={authCommonStyles.verifyButtonText}>인증확인</Text>
+        <ButtonText style={authCommonStyles.verifyButtonText}>인증확인</ButtonText>
       </TouchableOpacity>
     </View>
     <View style={authCommonStyles.inputBorder} />
@@ -510,7 +511,7 @@ export const PasswordInput: React.FC<PasswordInputProps> = ({
   onSubmitEditing
 }) => (
   <View style={authCommonStyles.inputContainer}>
-    <Text style={authCommonStyles.inputLabel}>{mode === PasswordInputMode.INPUT ? "비밀번호" : "비밀번호 확인"}</Text>
+    <LabelText style={authCommonStyles.inputLabel}>{mode === PasswordInputMode.INPUT ? "비밀번호" : "비밀번호 확인"}</LabelText>
     <View style={authCommonStyles.passwordInputContainer}>
       <TextInput
         style={authCommonStyles.passwordInput}
@@ -549,7 +550,7 @@ export const PasswordValidation: React.FC<PasswordValidationProps> = ({ mode, pa
           <View style={authCommonStyles.validationIcon}>
             <Ionicons name={"checkmark"} size={18} color={isMatch ? "#B48327" : "#B1B8C0"} />
           </View>
-          <Text style={[authCommonStyles.validationText, isMatch && authCommonStyles.validationTextActive]}>비밀번호 일치</Text>
+          <LabelText style={[authCommonStyles.validationText, isMatch && authCommonStyles.validationTextActive]}>비밀번호 일치</LabelText>
         </View>
       </View>
     );
@@ -562,13 +563,15 @@ export const PasswordValidation: React.FC<PasswordValidationProps> = ({ mode, pa
         <View style={authCommonStyles.validationIcon}>
           <Ionicons name={"checkmark"} size={18} color={hasLength ? "#B48327" : "#B1B8C0"} />
         </View>
-        <Text style={[authCommonStyles.validationText, hasLength && authCommonStyles.validationTextActive]}>8-20자 이내</Text>
+        <LabelText style={[authCommonStyles.validationText, hasLength && authCommonStyles.validationTextActive]}>8-20자 이내</LabelText>
       </View>
       <View style={authCommonStyles.validationItem}>
         <View style={authCommonStyles.validationIcon}>
           <Ionicons name={"checkmark"} size={18} color={hasComplexity ? "#B48327" : "#B1B8C0"} />
         </View>
-        <Text style={[authCommonStyles.validationText, hasComplexity && authCommonStyles.validationTextActive]}>대소문자,숫자,특수문자 포함</Text>
+        <LabelText style={[authCommonStyles.validationText, hasComplexity && authCommonStyles.validationTextActive]}>
+          대소문자,숫자,특수문자 포함
+        </LabelText>
       </View>
     </View>
   );
@@ -594,7 +597,7 @@ export const AuthButtonSection: React.FC<AuthButtonSectionProps> = ({ primaryBut
       onPress={primaryButton.onPress}
       disabled={primaryButton.disabled}
     >
-      <Text style={authCommonStyles.primaryButtonText}>{primaryButton.text}</Text>
+      <ButtonText style={authCommonStyles.primaryButtonText}>{primaryButton.text}</ButtonText>
     </TouchableOpacity>
 
     {secondaryButton && (
@@ -603,7 +606,7 @@ export const AuthButtonSection: React.FC<AuthButtonSectionProps> = ({ primaryBut
         onPress={secondaryButton.onPress}
         disabled={secondaryButton.disabled}
       >
-        <Text style={authCommonStyles.secondaryButtonText}>{secondaryButton.text}</Text>
+        <ButtonText style={authCommonStyles.secondaryButtonText}>{secondaryButton.text}</ButtonText>
       </TouchableOpacity>
     )}
   </View>
@@ -659,10 +662,10 @@ export const AuthResultStep: React.FC<AuthResultStepProps> = ({
         {userId && (
           <View style={authCommonStyles.userIdContainer}>
             <View style={authCommonStyles.userIdRow}>
-              <Text style={authCommonStyles.userIdLabel}>가입일</Text>
-              <Text style={authCommonStyles.userIdDate}>{registrationDate}</Text>
+              <LabelText style={authCommonStyles.userIdLabel}>가입일</LabelText>
+              <LabelText style={authCommonStyles.userIdDate}>{registrationDate}</LabelText>
             </View>
-            <Text style={authCommonStyles.userId}>{userId}</Text>
+            <LabelText style={authCommonStyles.userId}>{userId}</LabelText>
           </View>
         )}
       </View>

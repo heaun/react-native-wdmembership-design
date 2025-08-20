@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from "react-native";
 import { CommonLayout } from "../components/CommonLayout";
-
+import { LabelText, ButtonText, SmallText, BodyText } from "../components/CommonText";
 interface TimeSelectionScreenProps {
   service: {
     id: number;
@@ -100,12 +100,12 @@ export const TimeSelectionScreen: React.FC<TimeSelectionScreenProps> = ({
       onSideMenuItemPress={onSideMenuItemPress}
     >
       <View style={styles.container}>
-        <Text style={styles.title}>원하시는 시간을 선택해주세요.</Text>
+        <LabelText style={styles.title}>원하시는 시간을 선택해주세요.</LabelText>
 
         <ScrollView style={styles.timeContainer} showsVerticalScrollIndicator={false}>
           {/* 오전 시간대 */}
           <View style={styles.timeSection}>
-            <Text style={styles.periodLabel}>오전</Text>
+            <LabelText style={styles.periodLabel}>오전</LabelText>
             <View style={styles.timeGrid}>
               {morningSlots.map((slot) => (
                 <TouchableOpacity
@@ -114,11 +114,11 @@ export const TimeSelectionScreen: React.FC<TimeSelectionScreenProps> = ({
                   onPress={() => handleTimePress(slot)}
                   disabled={!slot.isAvailable}
                 >
-                  <Text
+                  <LabelText
                     style={[styles.timeText, !slot.isAvailable && styles.unavailableTimeText, selectedTime === slot.id && styles.selectedTimeText]}
                   >
                     {slot.time}
-                  </Text>
+                  </LabelText>
                 </TouchableOpacity>
               ))}
             </View>
@@ -126,7 +126,7 @@ export const TimeSelectionScreen: React.FC<TimeSelectionScreenProps> = ({
 
           {/* 오후 시간대 */}
           <View style={styles.timeSection}>
-            <Text style={styles.periodLabel}>오후</Text>
+            <LabelText style={styles.periodLabel}>오후</LabelText>
             <View style={styles.timeGrid}>
               {afternoonSlots.map((slot) => (
                 <TouchableOpacity
@@ -135,11 +135,11 @@ export const TimeSelectionScreen: React.FC<TimeSelectionScreenProps> = ({
                   onPress={() => handleTimePress(slot)}
                   disabled={!slot.isAvailable}
                 >
-                  <Text
+                  <LabelText
                     style={[styles.timeText, !slot.isAvailable && styles.unavailableTimeText, selectedTime === slot.id && styles.selectedTimeText]}
                   >
                     {slot.time}
-                  </Text>
+                  </LabelText>
                 </TouchableOpacity>
               ))}
             </View>
@@ -149,11 +149,11 @@ export const TimeSelectionScreen: React.FC<TimeSelectionScreenProps> = ({
           <View style={styles.legend}>
             <View style={styles.legendItem}>
               <View style={styles.legendBox} />
-              <Text style={styles.legendText}>선택 불가</Text>
+              <LabelText style={styles.legendText}>선택 불가</LabelText>
             </View>
             <View style={styles.legendItem}>
               <View style={[styles.legendBox, styles.unavailableLegendBox]} />
-              <Text style={styles.legendText}>선택가능</Text>
+              <LabelText style={styles.legendText}>선택가능</LabelText>
             </View>
           </View>
         </ScrollView>
@@ -164,7 +164,7 @@ export const TimeSelectionScreen: React.FC<TimeSelectionScreenProps> = ({
             onPress={handleConfirmPress}
             disabled={!selectedTime}
           >
-            <Text style={styles.confirmButtonText}>시간 선택</Text>
+            <LabelText style={styles.confirmButtonText}>시간 선택</LabelText>
           </TouchableOpacity>
         </View>
       </View>

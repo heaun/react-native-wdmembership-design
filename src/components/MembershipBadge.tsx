@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet, ViewStyle } from "react-native";
 import { colors, membershipLevels } from "../../utils/colors";
 import { MembershipLevel } from "../../types";
+import { LabelText, ButtonText, SmallText } from "../components/CommonText";
 
 interface MembershipBadgeProps {
   level: MembershipLevel;
@@ -17,8 +18,8 @@ export const MembershipBadge: React.FC<MembershipBadgeProps> = ({ level, size = 
 
   return (
     <View style={badgeStyle}>
-      <Text style={textStyle}>{level.name}</Text>
-      {showPoints && <Text style={[textStyle, styles.pointsText]}>{level.minPoints.toLocaleString()} pts</Text>}
+      <LabelText style={textStyle}>{level.name}</LabelText>
+      {showPoints && <LabelText style={[textStyle, styles.pointsText]}>{level.minPoints.toLocaleString()} pts</LabelText>}
     </View>
   );
 };

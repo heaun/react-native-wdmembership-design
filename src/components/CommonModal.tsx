@@ -1,5 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity, Modal, SafeAreaView, Image } from "react-native";
+import { LabelText, ButtonText, SmallText } from "../components/CommonText";
 
 interface CommonModalProps {
   visible: boolean;
@@ -15,7 +16,7 @@ export const CommonModal: React.FC<CommonModalProps> = ({ visible, title, onClos
         <View style={styles.modalContainer}>
           {/* Top Bar */}
           <View style={styles.modalTopBar}>
-            <Text style={styles.modalTitle}>{title}</Text>
+            <LabelText style={styles.modalTitle}>{title}</LabelText>
 
             <View style={styles.topBarIcons}>
               <View style={styles.leftSide}>

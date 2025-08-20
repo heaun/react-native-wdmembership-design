@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, Dimensions } from "react-native";
 import { CommonLayout } from "../components/CommonLayout";
 import { Calendar } from "../components/Calendar";
+import { LabelText, ButtonText, SmallText, BodyText } from "../components/CommonText";
 
 const { width: screenWidth } = Dimensions.get("window");
 
@@ -70,7 +71,7 @@ export const DateSelectionScreen: React.FC<DateSelectionScreenProps> = ({
       onSideMenuItemPress={onSideMenuItemPress}
     >
       <View style={styles.container}>
-        <Text style={styles.title}>원하시는 날짜를 선택해주세요.</Text>
+        <LabelText style={styles.title}>원하시는 날짜를 선택해주세요.</LabelText>
 
         <Calendar
           currentDate={currentMonth}
@@ -105,11 +106,11 @@ export const DateSelectionScreen: React.FC<DateSelectionScreenProps> = ({
         <View style={styles.legend}>
           <View style={styles.legendItem}>
             <View style={styles.legendBox} />
-            <Text style={styles.legendText}>선택가능</Text>
+            <LabelText style={styles.legendText}>선택가능</LabelText>
           </View>
           <View style={styles.legendItem}>
             <View style={[styles.legendBox, styles.unavailableLegendBox]} />
-            <Text style={styles.legendText}>선택 불가</Text>
+            <LabelText style={styles.legendText}>선택 불가</LabelText>
           </View>
         </View>
 
@@ -119,7 +120,7 @@ export const DateSelectionScreen: React.FC<DateSelectionScreenProps> = ({
             onPress={handleConfirmPress}
             disabled={!selectedDate}
           >
-            <Text style={styles.confirmButtonText}>날짜 선택</Text>
+            <LabelText style={styles.confirmButtonText}>날짜 선택</LabelText>
           </TouchableOpacity>
         </View>
       </View>

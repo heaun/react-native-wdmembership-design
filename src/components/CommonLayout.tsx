@@ -1,15 +1,6 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  StatusBar,
-  SafeAreaView,
-  Platform,
-  Image,
-} from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { View, Text, TouchableOpacity, StyleSheet, StatusBar, SafeAreaView, Platform, Image } from "react-native";
+import { LabelText, ButtonText } from "./CommonText";
 import { SideMenu } from "./SideMenu";
 import { typography } from "../../utils/typography";
 
@@ -65,7 +56,7 @@ export const CommonLayout: React.FC<CommonLayoutProps> = ({
   isWideLayout = false,
   onSideMenuItemPress,
   buttons,
-  showTitle = true,
+  showTitle = true
 }) => {
   const [sideMenuVisible, setSideMenuVisible] = useState(false);
 
@@ -87,26 +78,26 @@ export const CommonLayout: React.FC<CommonLayoutProps> = ({
       name: "Home",
       icon: require("../assets/icons/ic_tap_01_off.png"),
       activeIcon: require("../assets/icons/ic_tap_01_on.png"),
-      label: "홈",
+      label: "홈"
     },
     {
       name: "Schedule",
       icon: require("../assets/icons/ic_tap_02_off.png"),
       activeIcon: require("../assets/icons/ic_tap_02_on.png"),
-      label: "나의일정",
+      label: "나의일정"
     },
     {
       name: "MembershipCard",
       icon: require("../assets/icons/ic_tap_03_off.png"),
       activeIcon: require("../assets/icons/ic_tap_03_on.png"),
-      label: "멤버십카드",
+      label: "멤버십카드"
     },
     {
       name: "MyService",
       icon: require("../assets/icons/ic_tap_04_off.png"),
       activeIcon: require("../assets/icons/ic_tap_04_on.png"),
-      label: "멤버십서비스",
-    },
+      label: "멤버십서비스"
+    }
   ];
   return (
     <View style={[styles.container, isWideLayout && styles.wideContainer]}>
@@ -117,20 +108,15 @@ export const CommonLayout: React.FC<CommonLayoutProps> = ({
       <SafeAreaView style={styles.safeAreaTop} />
 
       {/* Top Bar */}
-      <View
-        style={[styles.topBar, isWideLayout && styles.wideTopBar, !showTitle && styles.noTitle]}
-      >
-        {showTitle && <Text style={styles.topBarTitle}>{title}</Text>}
+      <View style={[styles.topBar, isWideLayout && styles.wideTopBar, !showTitle && styles.noTitle]}>
+        {showTitle && <LabelText style={styles.topBarTitle}>{title}</LabelText>}
 
         {/* Left side */}
         <View style={styles.topBarIcons}>
           <View style={styles.leftSide}>
             {showBackButton ? (
               <TouchableOpacity style={styles.backButton} onPress={onBackPress}>
-                <Image
-                  source={require("../assets/icons/ic-chevron-left.png")}
-                  style={styles.backButtonIcon}
-                />
+                <Image source={require("../assets/icons/ic-chevron-left.png")} style={styles.backButtonIcon} />
               </TouchableOpacity>
             ) : showTopIcons ? (
               <TouchableOpacity style={styles.menuButton} onPress={handleMenuPress}>
@@ -146,17 +132,11 @@ export const CommonLayout: React.FC<CommonLayoutProps> = ({
             {showTopIcons && !showBackButton ? (
               <View style={styles.rightIcons}>
                 <TouchableOpacity style={styles.iconButton} onPress={onCouponPress}>
-                  <Image
-                    source={require("../assets/icons/ic_coupon.png")}
-                    style={styles.iconImage}
-                  />
+                  <Image source={require("../assets/icons/ic_coupon.png")} style={styles.iconImage} />
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.iconButton} onPress={onNotificationPress}>
                   <View style={styles.notificationContainer}>
-                    <Image
-                      source={require("../assets/icons/ic_notification.png")}
-                      style={styles.iconImage}
-                    />
+                    <Image source={require("../assets/icons/ic_notification.png")} style={styles.iconImage} />
                     <View style={styles.notificationDot} />
                   </View>
                 </TouchableOpacity>
@@ -169,13 +149,7 @@ export const CommonLayout: React.FC<CommonLayoutProps> = ({
       </View>
 
       {/* Main Content */}
-      <View
-        style={[
-          styles.content,
-          !showTabBar && styles.contentWithoutTabBar,
-          isWideLayout && styles.wideContent,
-        ]}
-      >
+      <View style={[styles.content, !showTabBar && styles.contentWithoutTabBar, isWideLayout && styles.wideContent]}>
         {children}
 
         {/* Common Button Container */}
@@ -193,27 +167,27 @@ export const CommonLayout: React.FC<CommonLayoutProps> = ({
                         justifyContent: "center",
                         alignItems: "center",
                         borderWidth: buttons[0].customStyle.borderColor ? 1 : 0,
-                        borderColor: buttons[0].customStyle.borderColor,
+                        borderColor: buttons[0].customStyle.borderColor
                       }
                     : styles.solidButton,
-                  buttons[0].disabled && styles.buttonDisabled,
+                  buttons[0].disabled && styles.buttonDisabled
                 ]}
                 onPress={buttons[0].onPress}
                 disabled={buttons[0].disabled}
               >
-                <Text
+                <ButtonText
                   style={[
                     buttons[0].style === "custom" && buttons[0].customStyle
                       ? {
                           fontSize: 16,
                           fontWeight: "700",
-                          color: buttons[0].customStyle.textColor || "#FFFFFF",
+                          color: buttons[0].customStyle.textColor || "#FFFFFF"
                         }
-                      : styles.solidButtonText,
+                      : styles.solidButtonText
                   ]}
                 >
                   {buttons[0].text}
-                </Text>
+                </ButtonText>
               </TouchableOpacity>
             ) : (
               // 다중 버튼
@@ -228,27 +202,27 @@ export const CommonLayout: React.FC<CommonLayoutProps> = ({
                           justifyContent: "center",
                           alignItems: "center",
                           borderWidth: 1,
-                          borderColor: buttons[0].customStyle.borderColor || "#D6DADF",
+                          borderColor: buttons[0].customStyle.borderColor || "#D6DADF"
                         }
                       : styles.outlineButton,
-                    buttons[0].disabled && styles.buttonDisabled,
+                    buttons[0].disabled && styles.buttonDisabled
                   ]}
                   onPress={buttons[0].onPress}
                   disabled={buttons[0].disabled}
                 >
-                  <Text
+                  <ButtonText
                     style={[
                       buttons[0].style === "custom" && buttons[0].customStyle
                         ? {
                             fontSize: 16,
                             fontWeight: "700",
-                            color: buttons[0].customStyle.textColor || "#505866",
+                            color: buttons[0].customStyle.textColor || "#505866"
                           }
-                        : styles.outlineButtonText,
+                        : styles.outlineButtonText
                     ]}
                   >
                     {buttons[0].text}
-                  </Text>
+                  </ButtonText>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={[
@@ -260,27 +234,27 @@ export const CommonLayout: React.FC<CommonLayoutProps> = ({
                           justifyContent: "center",
                           alignItems: "center",
                           borderWidth: buttons[1].customStyle.borderColor ? 1 : 0,
-                          borderColor: buttons[1].customStyle.borderColor,
+                          borderColor: buttons[1].customStyle.borderColor
                         }
                       : styles.solidButton,
-                    buttons[1].disabled && styles.buttonDisabled,
+                    buttons[1].disabled && styles.buttonDisabled
                   ]}
                   onPress={buttons[1].onPress}
                   disabled={buttons[1].disabled}
                 >
-                  <Text
+                  <ButtonText
                     style={[
                       buttons[1].style === "custom" && buttons[1].customStyle
                         ? {
                             fontSize: 16,
                             fontWeight: "700",
-                            color: buttons[1].customStyle.textColor || "#FFFFFF",
+                            color: buttons[1].customStyle.textColor || "#FFFFFF"
                           }
-                        : styles.solidButtonText,
+                        : styles.solidButtonText
                     ]}
                   >
                     {buttons[1].text}
-                  </Text>
+                  </ButtonText>
                 </TouchableOpacity>
               </>
             )}
@@ -292,18 +266,9 @@ export const CommonLayout: React.FC<CommonLayoutProps> = ({
       {showTabBar && (
         <View style={styles.bottomTabBar}>
           {tabs.map((tab) => (
-            <TouchableOpacity
-              key={tab.name}
-              style={styles.tabItem}
-              onPress={() => onTabPress?.(tab.name)}
-            >
-              <Image
-                source={currentTab === tab.name ? tab.activeIcon : tab.icon}
-                style={styles.tabIcon}
-              />
-              <Text style={[styles.tabText, currentTab === tab.name && styles.activeTabText]}>
-                {tab.label}
-              </Text>
+            <TouchableOpacity key={tab.name} style={styles.tabItem} onPress={() => onTabPress?.(tab.name)}>
+              <Image source={currentTab === tab.name ? tab.activeIcon : tab.icon} style={styles.tabIcon} />
+              <LabelText style={[styles.tabText, currentTab === tab.name && styles.activeTabText]}>{tab.label}</LabelText>
             </TouchableOpacity>
           ))}
         </View>
@@ -313,11 +278,7 @@ export const CommonLayout: React.FC<CommonLayoutProps> = ({
       <SafeAreaView style={styles.safeAreaBottom} />
 
       {/* Side Menu */}
-      <SideMenu
-        visible={sideMenuVisible}
-        onClose={handleSideMenuClose}
-        onMenuItemPress={handleSideMenuItemPress}
-      />
+      <SideMenu visible={sideMenuVisible} onClose={handleSideMenuClose} onMenuItemPress={handleSideMenuItemPress} />
     </View>
   );
 };
@@ -327,60 +288,60 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#EFF1F3",
     marginHorizontal: 5,
-    fontFamily: typography.fontFamily,
+    fontFamily: typography.fontFamily
   },
 
   wideContainer: {
-    marginHorizontal: 0,
+    marginHorizontal: 0
   },
 
   safeAreaTop: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "#FFFFFF"
   },
   safeAreaBottom: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "#FFFFFF"
   },
   topBar: {
     backgroundColor: "#FFFFFF",
     position: "relative",
     flexDirection: "row",
     alignItems: "center",
-    height: 60,
+    height: 60
   },
   noTitle: {
     height: 0,
-    paddingTop: 0,
+    paddingTop: 0
   },
   wideTopBar: {
-    paddingHorizontal: 5,
+    paddingHorizontal: 5
   },
   backButton: {
     width: 40,
     height: 40,
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "center"
   },
   backButtonText: {
     fontSize: 24,
-    color: "#2B2B2B",
+    color: "#2B2B2B"
   },
   backButtonIcon: {
     width: 24,
-    height: 24,
+    height: 24
   },
   menuButton: {
     width: 40,
     height: 40,
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "center"
   },
   menuIcon: {
     width: 24,
-    height: 24,
+    height: 24
   },
   emptyButton: {
     width: 40,
-    height: 40,
+    height: 40
   },
   topBarTitle: {
     position: "absolute",
@@ -390,7 +351,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     color: "#2B2B2B",
     textAlign: "center",
-    zIndex: 1,
+    zIndex: 1
   },
   topBarIcons: {
     position: "absolute",
@@ -399,43 +360,43 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    zIndex: 2,
+    zIndex: 2
   },
   leftSide: {
     flexDirection: "row",
     justifyContent: "flex-start",
-    alignItems: "center",
+    alignItems: "center"
   },
   rightSide: {
     flexDirection: "row",
     justifyContent: "flex-end",
     alignItems: "center",
-    gap: 10,
+    gap: 10
   },
   centeredTitle: {
     position: "absolute",
     left: 0,
     right: 0,
-    textAlign: "center",
+    textAlign: "center"
   },
   rightIcons: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 10,
+    gap: 10
   },
   iconButton: {
     width: 40,
     height: 40,
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "center"
   },
   iconImage: {
     width: 24,
-    height: 24,
+    height: 24
   },
 
   notificationContainer: {
-    position: "relative",
+    position: "relative"
   },
   notificationDot: {
     position: "absolute",
@@ -444,17 +405,17 @@ const styles = StyleSheet.create({
     width: 8,
     height: 8,
     borderRadius: 4,
-    backgroundColor: "#ECA31D",
+    backgroundColor: "#ECA31D"
   },
   content: {
     flex: 1,
     paddingHorizontal: 10,
     backgroundColor: "#FFFFFF",
-    fontFamily: typography.fontFamily,
+    fontFamily: typography.fontFamily
   },
   wideContent: {
     paddingHorizontal: 0,
-    backgroundColor: "transparent",
+    backgroundColor: "transparent"
   },
   contentWithoutTabBar: {},
   bottomTabBar: {
@@ -464,26 +425,26 @@ const styles = StyleSheet.create({
     borderTopColor: "#EFF1F3",
     paddingBottom: 8,
     paddingTop: 8,
-    height: 56,
+    height: 56
   },
   tabItem: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: 4,
+    paddingVertical: 4
   },
   tabIcon: {
     width: 24,
-    height: 24,
+    height: 24
   },
   tabText: {
     fontSize: 11,
     fontWeight: "400",
     color: "#505866",
-    marginTop: 4,
+    marginTop: 4
   },
   activeTabText: {
-    color: "#6C7072",
+    color: "#6C7072"
   },
   buttonContainer: {
     position: "absolute",
@@ -492,14 +453,14 @@ const styles = StyleSheet.create({
     right: 0,
     paddingHorizontal: 20,
     paddingBottom: 20,
-    gap: 12,
+    gap: 12
   },
   solidButton: {
     backgroundColor: "#2B2B2B",
     borderRadius: 25,
     height: 50,
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "center"
   },
   outlineButton: {
     backgroundColor: "#FFFFFF",
@@ -508,19 +469,19 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 1,
-    borderColor: "#D6DADF",
+    borderColor: "#D6DADF"
   },
   buttonDisabled: {
-    backgroundColor: "#D6DADF",
+    backgroundColor: "#D6DADF"
   },
   solidButtonText: {
     fontSize: 16,
     fontWeight: "700",
-    color: "#FFFFFF",
+    color: "#FFFFFF"
   },
   outlineButtonText: {
     fontSize: 16,
     fontWeight: "700",
-    color: "#505866",
-  },
+    color: "#505866"
+  }
 });

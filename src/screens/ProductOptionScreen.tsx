@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image } from "react-native";
 import { CommonLayout } from "../components/CommonLayout";
+import { LabelText, ButtonText, SmallText, BodyText } from "../components/CommonText";
 
 interface ProductOptionScreenProps {
   service: {
@@ -94,38 +95,38 @@ export const ProductOptionScreen: React.FC<ProductOptionScreenProps> = ({
       onSideMenuItemPress={onSideMenuItemPress}
     >
       <View style={styles.container}>
-        <Text style={styles.title}>상품의 옵션을 선택해주세요.</Text>
+        <LabelText style={styles.title}>상품의 옵션을 선택해주세요.</LabelText>
 
         <ScrollView style={styles.contentContainer} showsVerticalScrollIndicator={false}>
           {/* 상품 정보 */}
           <View style={styles.productInfoCard}>
             <Image source={selectedProduct.image} style={styles.productImage} resizeMode="cover" />
             <View style={styles.productDetails}>
-              <Text style={styles.productName}>{selectedProduct.name}</Text>
-              <Text style={styles.productDescription}>
+              <LabelText style={styles.productName}>{selectedProduct.name}</LabelText>
+              <LabelText style={styles.productDescription}>
                 부드러운 에그와 고소한 바게트가 어우러진 샌드위치에 신선한 과일과 음료를 더한 든든한 도시락 세트입니다.
-              </Text>
+              </LabelText>
             </View>
           </View>
 
           {/* 가격 정보 */}
           <View style={styles.priceSection}>
-            <Text style={styles.sectionLabel}>가격</Text>
-            <Text style={styles.priceText}>{(selectedProduct.price * quantity).toLocaleString()} 원</Text>
+            <LabelText style={styles.sectionLabel}>가격</LabelText>
+            <LabelText style={styles.priceText}>{(selectedProduct.price * quantity).toLocaleString()} 원</LabelText>
           </View>
 
           <View style={styles.divider} />
 
           {/* 드레싱 선택 */}
           <View style={styles.dressingSection}>
-            <Text style={styles.sectionLabel}>드레싱 선택</Text>
+            <LabelText style={styles.sectionLabel}>드레싱 선택</LabelText>
             {dressingOptions.map((dressing) => (
               <TouchableOpacity key={dressing.id} style={styles.dressingOption} onPress={() => handleDressingSelect(dressing.id)}>
                 <View style={[styles.radioButton, selectedDressing === dressing.id && styles.selectedRadioButton]}>
                   {selectedDressing === dressing.id && <View style={styles.radioButtonInner} />}
                 </View>
-                <Text style={styles.dressingName}>{dressing.name}</Text>
-                <Text style={styles.dressingPrice}>{dressing.price} 원</Text>
+                <LabelText style={styles.dressingName}>{dressing.name}</LabelText>
+                <LabelText style={styles.dressingPrice}>{dressing.price} 원</LabelText>
               </TouchableOpacity>
             ))}
           </View>
@@ -134,14 +135,14 @@ export const ProductOptionScreen: React.FC<ProductOptionScreenProps> = ({
 
           {/* 수량 선택 */}
           <View style={styles.quantitySection}>
-            <Text style={styles.sectionLabel}>수량</Text>
+            <LabelText style={styles.sectionLabel}>수량</LabelText>
             <View style={styles.quantitySelector}>
               <TouchableOpacity style={styles.quantityButton} onPress={() => handleQuantityChange(-1)} disabled={quantity <= 1}>
-                <Text style={[styles.quantityButtonText, quantity <= 1 && styles.disabledText]}>−</Text>
+                <LabelText style={[styles.quantityButtonText, quantity <= 1 && styles.disabledText]}>−</LabelText>
               </TouchableOpacity>
-              <Text style={styles.quantityText}>{quantity}</Text>
+              <LabelText style={styles.quantityText}>{quantity}</LabelText>
               <TouchableOpacity style={styles.quantityButton} onPress={() => handleQuantityChange(1)} disabled={quantity >= 10}>
-                <Text style={[styles.quantityButtonText, quantity >= 10 && styles.disabledText]}>+</Text>
+                <LabelText style={[styles.quantityButtonText, quantity >= 10 && styles.disabledText]}>+</LabelText>
               </TouchableOpacity>
             </View>
           </View>
@@ -153,7 +154,7 @@ export const ProductOptionScreen: React.FC<ProductOptionScreenProps> = ({
             onPress={handleConfirmPress}
             disabled={!selectedDressing}
           >
-            <Text style={styles.confirmButtonText}>옵션 선택 완료</Text>
+            <LabelText style={styles.confirmButtonText}>옵션 선택 완료</LabelText>
           </TouchableOpacity>
         </View>
       </View>
@@ -170,14 +171,12 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "800",
     color: "#2B2B2B",
-    marginHorizontal: 20,
     marginTop: 20,
     marginBottom: 20,
     letterSpacing: -0.8
   },
   contentContainer: {
-    flex: 1,
-    paddingHorizontal: 20
+    flex: 1
   },
   productInfoCard: {
     backgroundColor: "#FFFFFF",
@@ -221,7 +220,8 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "700",
     color: "#505866",
-    letterSpacing: -0.56
+    letterSpacing: -0.56,
+    marginBottom: 10
   },
   priceText: {
     fontSize: 20,
@@ -234,7 +234,8 @@ const styles = StyleSheet.create({
     marginVertical: 20
   },
   dressingSection: {
-    marginBottom: 20
+    marginBottom: 20,
+    gap: 10
   },
   dressingOption: {
     flexDirection: "row",

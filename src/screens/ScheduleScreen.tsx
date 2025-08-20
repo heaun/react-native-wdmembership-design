@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Dimensions, Image } from "react-native";
 import { CommonLayout } from "../components/CommonLayout";
 import { Calendar } from "../components/Calendar";
-
+import { LabelText, ButtonText, SmallText } from "../components/CommonText";
 const { width: screenWidth } = Dimensions.get("window");
 
 interface ScheduleScreenProps {
@@ -210,7 +210,7 @@ export const ScheduleScreen: React.FC<ScheduleScreenProps> = ({
       {/* 선택된 날짜의 예약 섹션 */}
       <View style={styles.section}>
         <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}>오늘 예약</Text>
+          <LabelText style={styles.sectionTitle}>오늘 예약</LabelText>
         </View>
 
         {getReservationsForSelectedDate().length > 0 ? (
@@ -218,37 +218,47 @@ export const ScheduleScreen: React.FC<ScheduleScreenProps> = ({
             // ReservationDetailScreen에서 사용할 수 있는 형식으로 변환
 
             return (
-              <TouchableOpacity key={index} style={styles.reservationCard} onPress={() => onReservationDetailPress?.(reservation)}>
+              <TouchableOpacity
+                key={index}
+                style={[styles.reservationCard, reservation.status === "completed" && { opacity: 0.6 }]}
+                onPress={() => {
+                  // 이용완료 상태가 아닌 경우에만 상세 페이지로 이동
+                  if (reservation.status !== "completed") {
+                    onReservationDetailPress?.(reservation);
+                  }
+                }}
+                disabled={reservation.status === "completed"}
+              >
                 <Image source={require("../assets/main/reservation-1.png")} style={styles.reservationImage} resizeMode="cover" />
                 <View style={styles.reservationInfo}>
-                  <Text style={styles.reservationLocation}>{reservation.location}</Text>
-                  <Text style={styles.reservationTitle}>{reservation.title}</Text>
-                  <Text style={styles.reservationTime}>{reservation.time}</Text>
+                  <LabelText style={styles.reservationLocation}>{reservation.location}</LabelText>
+                  <LabelText style={styles.reservationTitle}>{reservation.title}</LabelText>
+                  <LabelText style={styles.reservationTime}>{reservation.time}</LabelText>
                 </View>
                 <View style={[styles.reservationStatus, getStatusBadgeStyle(reservation.status)]}>
-                  <Text style={styles.statusText}>{getStatusText(reservation.status)}</Text>
+                  <LabelText style={styles.statusText}>{getStatusText(reservation.status)}</LabelText>
                 </View>
               </TouchableOpacity>
             );
           })
         ) : (
           <View style={styles.noReservationCard}>
-            <Text style={styles.noReservationText}>예약된 일정이 없습니다.</Text>
+            <LabelText style={styles.noReservationText}>예약된 일정이 없습니다.</LabelText>
           </View>
         )}
 
         {/* 추천 서비스 섹션 */}
 
         <View style={[styles.sectionHeader, { marginTop: 20 }]}>
-          <Text style={styles.sectionTitle}>추천 서비스</Text>
+          <LabelText style={styles.sectionTitle}>추천 서비스</LabelText>
         </View>
 
         <View style={styles.reservationCard}>
           <Image source={require("../assets/services/service-image-1.png")} style={styles.reservationImage} resizeMode="cover" />
           <View style={styles.reservationInfo}>
-            <Text style={styles.reservationLocation}>건강 프로그램</Text>
-            <Text style={styles.reservationTitle}>웰리스컴 Wellness Come</Text>
-            <Text style={styles.reservationTime}>#회복운동 #기초체력강화</Text>
+            <LabelText style={styles.reservationLocation}>건강 프로그램</LabelText>
+            <LabelText style={styles.reservationTitle}>웰리스컴 Wellness Come</LabelText>
+            <LabelText style={styles.reservationTime}>#회복운동 #기초체력강화</LabelText>
           </View>
         </View>
       </View>
@@ -324,22 +334,28 @@ export const ScheduleScreen: React.FC<ScheduleScreenProps> = ({
               const dateReservations = groupedReservations[date];
               return (
                 <View key={date} style={styles.dateGroup}>
-                  <Text style={styles.dateTitle}>{new Date(date).getDate()}일</Text>
+                  <LabelText style={styles.dateTitle}>{new Date(date).getDate()}일</LabelText>
                   <View style={styles.reservationsContainer}>
                     {dateReservations.map((reservation: any, index: number) => {
                       return (
                         <TouchableOpacity
                           key={reservation.id}
-                          style={[styles.reservationItem]}
-                          onPress={() => onReservationDetailPress?.(reservation)}
+                          style={[styles.reservationItem, reservation.status === "completed" && { opacity: 0.6 }]}
+                          onPress={() => {
+                            // 이용완료 상태가 아닌 경우에만 상세 페이지로 이동
+                            if (reservation.status !== "completed") {
+                              onReservationDetailPress?.(reservation);
+                            }
+                          }}
+                          disabled={reservation.status === "completed"}
                         >
                           <View style={styles.reservationContent}>
-                            <Text style={styles.reservationTitle}>{reservation.title}</Text>
-                            <Text style={styles.reservationLocation}>{reservation.location}</Text>
-                            <Text style={styles.reservationTime}>{reservation.time}</Text>
+                            <LabelText style={styles.reservationTitle}>{reservation.title}</LabelText>
+                            <LabelText style={styles.reservationLocation}>{reservation.location}</LabelText>
+                            <LabelText style={styles.reservationTime}>{reservation.time}</LabelText>
                           </View>
                           <View style={[styles.reservationStatus, getStatusBadgeStyle(reservation.status)]}>
-                            <Text style={styles.statusText}>{getStatusText(reservation.status)}</Text>
+                            <LabelText style={styles.statusText}>{getStatusText(reservation.status)}</LabelText>
                           </View>
                         </TouchableOpacity>
                       );
@@ -350,7 +366,7 @@ export const ScheduleScreen: React.FC<ScheduleScreenProps> = ({
             })
           ) : (
             <View style={styles.noReservationContainer}>
-              <Text style={styles.noReservationText}>이번 달 예약이 없습니다.</Text>
+              <LabelText style={styles.noReservationText}>이번 달 예약이 없습니다.</LabelText>
             </View>
           )}
         </View>
@@ -373,13 +389,13 @@ export const ScheduleScreen: React.FC<ScheduleScreenProps> = ({
       {/* Tab Navigation */}
       <View style={styles.tabContainer}>
         <TouchableOpacity style={[styles.tabButton, activeTab === "calendar" && styles.activeTabButton]} onPress={() => handleTabPress("calendar")}>
-          <Text style={[styles.tabText, activeTab === "calendar" && styles.activeTabText]}>캘린더</Text>
+          <LabelText style={[styles.tabText, activeTab === "calendar" && styles.activeTabText]}>캘린더</LabelText>
         </TouchableOpacity>
         <TouchableOpacity
           style={[styles.tabButton, activeTab === "reservation" && styles.activeTabButton]}
           onPress={() => handleTabPress("reservation")}
         >
-          <Text style={[styles.tabText, activeTab === "reservation" && styles.activeTabText]}>예약 관리</Text>
+          <LabelText style={[styles.tabText, activeTab === "reservation" && styles.activeTabText]}>예약 관리</LabelText>
         </TouchableOpacity>
       </View>
 
@@ -445,12 +461,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#ffffff",
     paddingHorizontal: 20
-  },
-  reservationItem: {
-    flexDirection: "row",
-    paddingVertical: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: "#EFF1F3"
   },
   reservationContent: {
     flex: 1,
@@ -552,6 +562,12 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     justifyContent: "space-between"
   },
+  reservationItem: {
+    flexDirection: "row",
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: "#EFF1F3"
+  },
   reservationImage: {
     width: 50,
     height: 50,
@@ -561,7 +577,8 @@ const styles = StyleSheet.create({
   },
   reservationInfo: {
     flex: 1,
-    marginRight: 10
+    marginRight: 10,
+    gap: 5
   },
   noReservationCard: {
     backgroundColor: "#F8F9FA",

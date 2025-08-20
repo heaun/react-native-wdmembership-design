@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, TextInput } from "react-native";
 import { CommonLayout } from "../components/CommonLayout";
+import { LabelText, ButtonText, SmallText } from "../components/CommonText";
 
 interface LoginScreenProps {
   onBackPress?: () => void;
@@ -44,8 +45,8 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
     >
       {/* Welcome Text */}
       <View style={styles.welcomeSection}>
-        <Text style={styles.welcomeText}>반갑습니다.</Text>
-        <Text style={styles.subtitleText}>가입하신 계정으로 로그인하세요.</Text>
+        <LabelText style={styles.welcomeText}>반갑습니다.</LabelText>
+        <SmallText style={styles.subtitleText}>가입하신 계정으로 로그인하세요.</SmallText>
       </View>
 
       {/* Input Fields */}
@@ -81,7 +82,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
         <TouchableOpacity style={[styles.checkbox, keepLoggedIn && styles.checkboxChecked]} onPress={handleKeepLoggedInToggle}>
           {keepLoggedIn && <Text style={styles.checkmark}>✓</Text>}
         </TouchableOpacity>
-        <Text style={styles.keepLoggedInText}>로그인 상태 유지</Text>
+        <LabelText style={styles.keepLoggedInText}>로그인 상태 유지</LabelText>
       </View>
 
       {/* Login Button */}
@@ -90,24 +91,24 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
         onPress={handleLogin}
         disabled={!username || !password}
       >
-        <Text style={styles.loginButtonText}>로그인 하기</Text>
+        <ButtonText style={styles.loginButtonText}>로그인 하기</ButtonText>
       </TouchableOpacity>
 
       {/* Links */}
       <View style={styles.linksSection}>
         <TouchableOpacity style={styles.linkButton} onPress={onFindIdPress}>
-          <Text style={styles.linkText}>아이디 찾기</Text>
+          <ButtonText style={styles.linkText}>아이디 찾기</ButtonText>
         </TouchableOpacity>
         <View style={styles.linkDivider} />
         <TouchableOpacity style={styles.linkButton} onPress={onResetPasswordPress}>
-          <Text style={styles.linkText}>비밀번호 재설정</Text>
+          <ButtonText style={styles.linkText}>비밀번호 재설정</ButtonText>
         </TouchableOpacity>
       </View>
 
       {/* Membership Info Text */}
       <View style={styles.membershipInfoSection}>
         <TouchableOpacity onPress={onMembershipInfoPress}>
-          <Text style={styles.membershipInfoText}>멤버십 상품 소개</Text>
+          <ButtonText style={styles.membershipInfoText}>멤버십 상품 소개</ButtonText>
         </TouchableOpacity>
       </View>
     </CommonLayout>

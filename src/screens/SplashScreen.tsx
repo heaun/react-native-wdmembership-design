@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { StyleSheet, Text, View, Image, StatusBar, Dimensions } from "react-native";
 import { typography } from "../../utils/typography";
+import { LabelText, ButtonText, SmallText } from "../components/CommonText";
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
@@ -27,14 +28,14 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onFinish }) => {
 
         {/* Title Section */}
         <View style={styles.titleSection}>
-          <Text style={styles.title}>WITH DOCTORS</Text>
-          <Text style={styles.subtitle}>FIRST CARE</Text>
-          <Text style={styles.subtitle}>MEMBERSHIP</Text>
+          <LabelText style={styles.title}>WITH DOCTORS</LabelText>
+          <LabelText style={styles.subtitle}>FIRST CARE</LabelText>
+          <LabelText style={styles.subtitle}>MEMBERSHIP</LabelText>
         </View>
       </View>
       {/* Copyright */}
       <View style={styles.copyrightSection}>
-        <Text style={styles.copyrightText}>© {thisYear} WithDoctors Co. Ltd. All rights reserved</Text>
+        <LabelText style={styles.copyrightText}>© {thisYear} WithDoctors Co. Ltd. All rights reserved</LabelText>
       </View>
 
       {/* Home Indicator */}

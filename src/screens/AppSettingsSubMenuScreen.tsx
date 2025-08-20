@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Switch, Image } f
 import { CommonLayout } from "../components/CommonLayout";
 import { VersionInfo } from "../../types/version";
 import Constants from "expo-constants";
+import { LabelText, ButtonText, SmallText } from "../components/CommonText";
 
 interface AppSettingsSubMenuScreenProps {
   onBackPress?: () => void;
@@ -157,7 +158,7 @@ export const AppSettingsSubMenuScreen: React.FC<AppSettingsSubMenuScreenProps> =
     if (item.type === "toggle") {
       return (
         <View key={item.id} style={styles.settingItem}>
-          <Text style={styles.settingTitle}>{item.title}</Text>
+          <LabelText style={styles.settingTitle}>{item.title}</LabelText>
           <Switch
             value={item.value}
             onValueChange={item.onToggleChange}
@@ -173,13 +174,13 @@ export const AppSettingsSubMenuScreen: React.FC<AppSettingsSubMenuScreenProps> =
         <View style={styles.settingLeft}>
           {item.id === "versionUpdate" ? (
             <View style={styles.versionContainer}>
-              <Text style={styles.settingTitle}>{item.title}</Text>
-              <Text style={[styles.versionStatus, versionInfo.status ? styles.versionStatusActive : {}]}>
+              <LabelText style={styles.settingTitle}>{item.title}</LabelText>
+              <LabelText style={[styles.versionStatus, versionInfo.status ? styles.versionStatusActive : {}]}>
                 {versionInfo.status ? "업데이트 필요" : "최신 버전 사용 중"}
-              </Text>
+              </LabelText>
             </View>
           ) : (
-            <Text style={styles.settingTitle}>{item.title}</Text>
+            <LabelText style={styles.settingTitle}>{item.title}</LabelText>
           )}
         </View>
         <Image source={require("../assets/icons/ic-chevron-right.png")} style={styles.chevron} />

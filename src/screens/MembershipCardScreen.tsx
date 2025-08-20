@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image, Dimensions } from "react-native";
 import { CommonLayout } from "../components/CommonLayout";
 import { CommonModal } from "../components/CommonModal";
-
+import { LabelText, ButtonText, SmallText } from "../components/CommonText";
 const { width: screenWidth } = Dimensions.get("window");
 
 interface MembershipCardData {
@@ -123,8 +123,8 @@ export const MembershipCardScreen: React.FC<MembershipCardScreenProps> = ({
         <View style={styles.membershipCardContainer}>
           <View style={[styles.membershipCard, { backgroundColor: membershipCardData.backgroundColor }]}>
             <View style={styles.cardInfo}>
-              <Text style={styles.cardTitle}>{membershipCardData.title}</Text>
-              <Text style={styles.cardSubtitle}>{membershipCardData.subtitle}</Text>
+              <LabelText style={styles.cardTitle}>{membershipCardData.title}</LabelText>
+              <LabelText style={styles.cardSubtitle}>{membershipCardData.subtitle}</LabelText>
             </View>
 
             <View style={styles.cardContent}>
@@ -136,12 +136,12 @@ export const MembershipCardScreen: React.FC<MembershipCardScreenProps> = ({
               {/* Right Side - Membership Details */}
               <View style={styles.membershipDetails}>
                 <View style={styles.detailRow}>
-                  <Text style={styles.detailLabel}>멤버십 번호</Text>
-                  <Text style={styles.detailValue}>{membershipCardData.membershipNumber}</Text>
+                  <LabelText style={styles.detailLabel}>멤버십 번호</LabelText>
+                  <LabelText style={styles.detailValue}>{membershipCardData.membershipNumber}</LabelText>
                 </View>
                 <View style={styles.detailRow}>
-                  <Text style={styles.detailLabel}>가입기간</Text>
-                  <Text style={styles.detailValue}>{membershipCardData.expiryDate}</Text>
+                  <LabelText style={styles.detailLabel}>가입기간</LabelText>
+                  <LabelText style={styles.detailValue}>{membershipCardData.expiryDate}</LabelText>
                 </View>
               </View>
             </View>
@@ -154,7 +154,7 @@ export const MembershipCardScreen: React.FC<MembershipCardScreenProps> = ({
               {section.type === "verification" && (
                 <TouchableOpacity style={styles.listSection} onPress={section.onPress}>
                   <View style={styles.verificationHeader}>
-                    <Text style={styles.verificationTitle}>{section.title}</Text>
+                    <LabelText style={styles.verificationTitle}>{section.title}</LabelText>
                     <View style={styles.qrCodeContainer}>
                       <Image source={section.image} style={styles.qrCode} />
                     </View>
@@ -166,8 +166,8 @@ export const MembershipCardScreen: React.FC<MembershipCardScreenProps> = ({
                 <View style={styles.listSection}>
                   <View style={styles.divider} />
                   <View style={styles.couponHeader}>
-                    <Text style={styles.couponTitle}>{section.title}</Text>
-                    <Text style={styles.couponCount}>{section.value}</Text>
+                    <LabelText style={styles.couponTitle}>{section.title}</LabelText>
+                    <LabelText style={styles.couponCount}>{section.value}</LabelText>
                   </View>
                 </View>
               )}
@@ -176,7 +176,7 @@ export const MembershipCardScreen: React.FC<MembershipCardScreenProps> = ({
                 <View style={styles.listSection}>
                   <View style={styles.divider} />
                   <TouchableOpacity style={styles.actionLink} onPress={section.onPress}>
-                    <Text style={styles.actionLinkText}>{section.title}</Text>
+                    <LabelText style={styles.actionLinkText}>{section.title}</LabelText>
                   </TouchableOpacity>
                 </View>
               )}
@@ -191,7 +191,7 @@ export const MembershipCardScreen: React.FC<MembershipCardScreenProps> = ({
           <TouchableOpacity onPress={handleCloseQrModal}>
             <Image source={membershipCardData.qrCodeImage} style={styles.qrModalImage} />
           </TouchableOpacity>
-          <Text style={styles.qrModalText}>{membershipCardData.membershipNumber}</Text>
+          <LabelText style={styles.qrModalText}>{membershipCardData.membershipNumber}</LabelText>
         </View>
       </CommonModal>
     </CommonLayout>

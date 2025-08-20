@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import Modal from "react-native-modal";
 import LottieView from "lottie-react-native";
+import { LabelText } from "./CommonText";
 
 interface FaceIdModalProps {
   isVisible: boolean;
@@ -25,14 +26,14 @@ export const FaceIdModalAlternative: React.FC<FaceIdModalProps> = ({ isVisible, 
         </TouchableOpacity>
 
         <View style={styles.faceIdContainer}>
-          <Text style={styles.title}>등록하신 비밀번호를 입력하세요.</Text>
-          <Text style={styles.subtitle}>비밀번호 6자리를 입력해 주세요.</Text>
+          <LabelText style={styles.title}>등록하신 비밀번호를 입력하세요.</LabelText>
+          <LabelText style={styles.subtitle}>비밀번호 6자리를 입력해 주세요.</LabelText>
 
           <View style={styles.lottieContainer}>
             <LottieView source={require("../assets/face-id.json")} autoPlay loop style={styles.lottieAnimation} />
           </View>
 
-          <Text style={styles.faceIdText}>Face ID</Text>
+          <LabelText style={styles.faceIdText}>Face ID</LabelText>
         </View>
       </View>
     </Modal>

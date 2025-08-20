@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image } from "rea
 import { Ionicons } from "@expo/vector-icons";
 import { CommonLayout } from "../components/CommonLayout";
 import { useToast } from "../context/ToastContext";
+import { LabelText, ButtonText, SmallText, BodyText } from "../components/CommonText";
 
 interface Vehicle {
   id: string;
@@ -62,44 +63,46 @@ export const VehicleManagementScreen: React.FC<VehicleManagementScreenProps> = (
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         {/* 등록 차량 섹션 */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>
-            등록 차량 <Text style={styles.vehicleCount}>{vehicles.length}</Text>
-          </Text>
+          <LabelText style={styles.sectionTitle}>
+            등록 차량 <LabelText style={styles.vehicleCount}>{vehicles.length}</LabelText>
+          </LabelText>
         </View>
 
         {/* 등록된 차량 카드들 */}
         {vehicles.map((vehicle) => (
           <View key={vehicle.id} style={styles.vehicleCard}>
             <View style={styles.vehicleHeader}>
-              <Text style={styles.vehicleNumber}>{vehicle.number}</Text>
+              <LabelText style={styles.vehicleNumber}>{vehicle.number}</LabelText>
               <TouchableOpacity style={styles.editButton} onPress={() => handleEditVehicle(vehicle.id)}>
                 <Ionicons name="pencil" size={20} color="#B1B8C0" />
               </TouchableOpacity>
             </View>
 
-            <Text style={styles.vehicleStatus}>{vehicle.isResidentVehicle ? "해당 차량은 입주차량입니다." : "해당 차량은 방문차량입니다."}</Text>
+            <LabelText style={styles.vehicleStatus}>
+              {vehicle.isResidentVehicle ? "해당 차량은 입주차량입니다." : "해당 차량은 방문차량입니다."}
+            </LabelText>
 
             <View style={styles.divider} />
 
             <View style={styles.vehicleDetails}>
               <View style={styles.detailRow}>
-                <Text style={styles.detailLabel}>차종</Text>
-                <Text style={styles.detailValue}>{vehicle.model}</Text>
+                <LabelText style={styles.detailLabel}>차종</LabelText>
+                <LabelText style={styles.detailValue}>{vehicle.model}</LabelText>
               </View>
               <View style={styles.detailRow}>
-                <Text style={styles.detailLabel}>등록세대</Text>
-                <Text style={styles.detailValue}>{vehicle.household}</Text>
+                <LabelText style={styles.detailLabel}>등록세대</LabelText>
+                <LabelText style={styles.detailValue}>{vehicle.household}</LabelText>
               </View>
               <View style={styles.detailRow}>
-                <Text style={styles.detailLabel}>등록일</Text>
-                <Text style={styles.detailValue}>{vehicle.registrationDate}</Text>
+                <LabelText style={styles.detailLabel}>등록일</LabelText>
+                <LabelText style={styles.detailValue}>{vehicle.registrationDate}</LabelText>
               </View>
             </View>
 
             <View style={styles.divider} />
 
             <TouchableOpacity style={styles.parkingInfoButton} onPress={() => handleParkingInfoPress(vehicle.id)}>
-              <Text style={styles.parkingInfoText}>입차정보 보기</Text>
+              <LabelText style={styles.parkingInfoText}>입차정보 보기</LabelText>
               <Ionicons name="chevron-forward" size={24} color="#505866" />
             </TouchableOpacity>
           </View>
@@ -111,8 +114,8 @@ export const VehicleManagementScreen: React.FC<VehicleManagementScreenProps> = (
             <View style={styles.carIconContainer}>
               <Image source={require("../assets/vehicle/car-icon.png")} style={styles.carIcon} resizeMode="contain" />
             </View>
-            <Text style={styles.addVehicleTitle}>추가 차량 등록</Text>
-            <Text style={styles.addVehicleDescription}>추가로 등록/이용하실 차량을 등록해 주세요.</Text>
+            <LabelText style={styles.addVehicleTitle}>추가 차량 등록</LabelText>
+            <LabelText style={styles.addVehicleDescription}>추가로 등록/이용하실 차량을 등록해 주세요.</LabelText>
           </View>
         </TouchableOpacity>
       </ScrollView>
@@ -146,13 +149,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 10
+    paddingVertical: 10
   },
   vehicleNumber: {
     fontSize: 30,
     fontWeight: "900",
-    color: "#B48327",
-    lineHeight: 28
+    color: "#B48327"
   },
   editButton: {
     width: 40,

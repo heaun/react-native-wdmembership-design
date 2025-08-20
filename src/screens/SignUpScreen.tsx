@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useRef } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, TextInput, Image } from "react-native";
 import { CommonLayout } from "../components/CommonLayout";
+import { LabelText, ButtonText, SmallText } from "../components/CommonText";
 import { Ionicons } from "@expo/vector-icons";
 import {
   useAuthTimer,
@@ -551,50 +552,14 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
     }
   };
 
-  // VerificationInput 컴포넌트 (AuthenticationScreen에서 가져온 스타일)
-  // const VerificationInput: React.FC<{
-  //   value: string;
-  //   onChangeText: (text: string) => void;
-  //   onVerify: () => void;
-  //   isVerificationCompleted: boolean;
-  // }> = ({ value, onChangeText, onVerify, isVerificationCompleted }) => (
-  //   <View style={styles.inputContainer}>
-  //     <Text style={styles.inputLabel}>인증번호</Text>
-  //     <View style={styles.verificationInputContainer}>
-  //       <TextInput
-  //         ref={verificationInputRef}
-  //         style={styles.verificationInput}
-  //         placeholder="인증번호 입력"
-  //         placeholderTextColor="#B1B8C0"
-  //         value={value}
-  //         onChangeText={onChangeText}
-  //         keyboardType="number-pad"
-  //         maxLength={6}
-  //         autoCorrect={false}
-  //         autoCapitalize="none"
-  //         showSoftInputOnFocus={false}
-  //       />
-  //       <TouchableOpacity
-  //         style={[styles.verifyButton, (!value || isVerificationCompleted) && styles.verifyButtonDisabled]}
-  //         onPress={onVerify}
-  //         disabled={!value || isVerificationCompleted}
-  //       >
-  //         <Text style={styles.verifyButtonText}>인증확인</Text>
-  //       </TouchableOpacity>
-  //     </View>
-  //     <View style={styles.inputBorder} />
-  //     {isVerificationCompleted && <Text style={styles.statusMessage}>휴대폰 번호 인증이 완료되었습니다.</Text>}
-  //   </View>
-  // );
-
   const renderVerificationTypeStep = () => (
     <View style={[styles.container, { paddingBottom: 120 }]}>
       <View style={styles.headerSection}>
-        <Text style={styles.title}>
+        <LabelText style={styles.title}>
           회원 가입을 위해{"\n"}
           본인인증을{"\n"}
           진행해 주세요.
-        </Text>
+        </LabelText>
       </View>
 
       <View style={styles.cardSection}>
@@ -605,8 +570,8 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
         >
           <View style={styles.cardContent}>
             <View style={styles.cardTextSection}>
-              <Text style={styles.cardTitle}>내국인</Text>
-              <Text style={styles.cardSubtitle}>휴대폰 인증</Text>
+              <LabelText style={styles.cardTitle}>내국인</LabelText>
+              <SmallText style={styles.cardSubtitle}>휴대폰 인증</SmallText>
             </View>
             <View style={styles.cardIconSection}>
               <Image source={require("../assets/icons/ic_local.png")} style={styles.ic_local} />
@@ -621,8 +586,8 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
         >
           <View style={styles.cardContent}>
             <View style={styles.cardTextSection}>
-              <Text style={styles.cardTitle}>외국인</Text>
-              <Text style={styles.cardSubtitle}>이메일로 인증</Text>
+              <LabelText style={styles.cardTitle}>외국인</LabelText>
+              <SmallText style={styles.cardSubtitle}>이메일로 인증</SmallText>
             </View>
             <View style={styles.cardIconSection}>
               <Image source={require("../assets/icons/ic_foreigner.png")} style={styles.ic_foreign} />
@@ -668,13 +633,13 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
         <TouchableOpacity style={styles.modalBackdrop} onPress={handleCloseTermsModal} />
         <View style={styles.modalContainer}>
           <View style={styles.modalHeader}>
-            <Text style={styles.modalTitle}>{termsContent.title}</Text>
+            <LabelText style={styles.modalTitle}>{termsContent.title}</LabelText>
             <TouchableOpacity onPress={handleCloseTermsModal}>
               <Ionicons name="close" size={24} color="#2B2B2B" />
             </TouchableOpacity>
           </View>
           <ScrollView style={styles.modalContent}>
-            <Text style={styles.termsContentText}>{termsContent.content}</Text>
+            <LabelText style={styles.termsContentText}>{termsContent.content}</LabelText>
           </ScrollView>
         </View>
       </View>
@@ -884,14 +849,14 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
     return (
       <View style={[styles.container, { paddingBottom: 120 }]}>
         <View style={styles.headerSection}>
-          <Text style={styles.title}>{title}</Text>
-          <Text style={styles.subtitle}>{subtitle}</Text>
+          <LabelText style={styles.title}>{title}</LabelText>
+          <SmallText style={styles.subtitle}>{subtitle}</SmallText>
         </View>
 
         <View style={styles.inputSection}>
           {/* 이름 입력 */}
           <View style={styles.inputContainer}>
-            <Text style={styles.inputLabel}>이름</Text>
+            <LabelText style={styles.inputLabel}>이름</LabelText>
             <TextInput
               ref={nameInputRef}
               style={styles.input}

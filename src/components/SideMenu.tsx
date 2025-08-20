@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Dimensions, Modal, Switch, Animated, Image, SafeAreaView } from "react-native";
 import { FaceIdModal } from "./FaceIdModal";
+import { LabelText, ButtonText, SmallText } from "../components/CommonText";
 import { Ionicons } from "@expo/vector-icons";
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
@@ -240,7 +241,7 @@ export const SideMenu: React.FC<SideMenuProps> = ({ visible, onClose, onMenuItem
         onPress={() => handleMenuPress(item.id)}
         disabled={isToggle}
       >
-        <Text style={[styles.menuText, isHeader ? styles.headerText : styles.regularText]}>{item.title}</Text>
+        <LabelText style={[styles.menuText, isHeader ? styles.headerText : styles.regularText]}>{item.title}</LabelText>
 
         {isToggle && (
           <Switch
@@ -276,7 +277,7 @@ export const SideMenu: React.FC<SideMenuProps> = ({ visible, onClose, onMenuItem
             {/* Header */}
             <View style={styles.header}>
               <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-                <Text style={styles.closeIcon}>✕</Text>
+                <LabelText style={styles.closeIcon}>✕</LabelText>
               </TouchableOpacity>
               <TouchableOpacity style={styles.settingsButton}>
                 <Image source={require("../assets/icons/ic-side-menu-setting.png")} style={styles.settingsIcon} />

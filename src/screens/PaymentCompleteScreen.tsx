@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { CommonLayout } from "../components/CommonLayout";
+import { LabelText } from "../components/CommonText";
 
 interface PaymentCompleteScreenProps {
   service: {
@@ -61,8 +62,9 @@ export const PaymentCompleteScreen: React.FC<PaymentCompleteScreenProps> = ({
 
   return (
     <CommonLayout
-      title=""
-      showBackButton={true}
+      title="결제 완료"
+      showTopIcons={false}
+      showBackButton={false}
       showTabBar={false}
       onBackPress={onBackPress}
       onMenuPress={() => console.log("메뉴 버튼 클릭")}
@@ -73,28 +75,31 @@ export const PaymentCompleteScreen: React.FC<PaymentCompleteScreenProps> = ({
       onSideMenuItemPress={onSideMenuItemPress}
     >
       <View style={styles.container}>
-        <Text style={styles.title}>결제가 완료되었습니다</Text>
-        
+        <LabelText style={styles.title}>결제가 완료되었습니다</LabelText>
+
         <View style={styles.orderCard}>
-          <Text style={styles.serviceTitle}>{service.title}</Text>
-          
-          <Text style={styles.locationText}>
-            {selectedLocation.name}{'\n'}({selectedLocation.address})
-          </Text>
-          
+          <LabelText style={styles.serviceTitle}>{service.title}</LabelText>
+
+          <LabelText style={styles.locationText}>
+            {selectedLocation.name}
+            {"\n"}({selectedLocation.address})
+          </LabelText>
+
           <View style={styles.divider} />
-          
-          <Text style={styles.orderDetails}>
-            {selectedProduct.name}{'\n'}
-            옵션선택 : {getDressingName(selectedOptions.dressing)} | 수량 {selectedOptions.quantity}{'\n'}
+
+          <LabelText style={styles.orderDetails}>
+            {selectedProduct.name}
+            {"\n"}
+            옵션선택 : {getDressingName(selectedOptions.dressing)} | 수량 {selectedOptions.quantity}
+            {"\n"}
             결제금액 : {selectedOptions.totalPrice.toLocaleString()}원
-          </Text>
+          </LabelText>
         </View>
       </View>
 
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.confirmButton} onPress={onGoToMyService}>
-          <Text style={styles.confirmButtonText}>마이 서비스 돌아가기</Text>
+          <LabelText style={styles.confirmButtonText}>마이 서비스 돌아가기</LabelText>
         </TouchableOpacity>
       </View>
     </CommonLayout>
@@ -104,8 +109,7 @@ export const PaymentCompleteScreen: React.FC<PaymentCompleteScreenProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFFFFF",
-    paddingHorizontal: 20
+    backgroundColor: "#FFFFFF"
   },
   title: {
     fontSize: 20,

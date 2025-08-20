@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image } from "react-native";
 import { CommonLayout } from "../components/CommonLayout";
+import { LabelText, ButtonText, SmallText, BodyText } from "../components/CommonText";
 
 interface ProductSelectionScreenProps {
   service: {
@@ -99,7 +100,7 @@ export const ProductSelectionScreen: React.FC<ProductSelectionScreenProps> = ({
       onSideMenuItemPress={onSideMenuItemPress}
     >
       <View style={styles.container}>
-        <Text style={styles.title}>원하시는 제품을 선택해주세요.</Text>
+        <LabelText style={styles.title}>원하시는 제품을 선택해주세요.</LabelText>
 
         <ScrollView style={styles.productContainer} showsVerticalScrollIndicator={false}>
           {products.map((product) => (
@@ -112,9 +113,9 @@ export const ProductSelectionScreen: React.FC<ProductSelectionScreenProps> = ({
                 <Image source={product.image} style={styles.productImage} resizeMode="cover" />
               </View>
               <View style={styles.productInfo}>
-                <Text style={styles.productDescription}>{product.description}</Text>
-                <Text style={styles.productName}>{product.name}</Text>
-                <Text style={styles.productPrice}>{product.price.toLocaleString()}원</Text>
+                <LabelText style={styles.productDescription}>{product.description}</LabelText>
+                <LabelText style={styles.productName}>{product.name}</LabelText>
+                <LabelText style={styles.productPrice}>{product.price.toLocaleString()}원</LabelText>
               </View>
             </TouchableOpacity>
           ))}
@@ -126,7 +127,7 @@ export const ProductSelectionScreen: React.FC<ProductSelectionScreenProps> = ({
             onPress={handleConfirmPress}
             disabled={!selectedProduct}
           >
-            <Text style={styles.confirmButtonText}>상품 선택</Text>
+            <LabelText style={styles.confirmButtonText}>상품 선택</LabelText>
           </TouchableOpacity>
         </View>
       </View>
@@ -143,14 +144,12 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "800",
     color: "#2B2B2B",
-    marginHorizontal: 20,
     marginTop: 20,
     marginBottom: 20,
     letterSpacing: -0.8
   },
   productContainer: {
-    flex: 1,
-    paddingHorizontal: 20
+    flex: 1
   },
   productCard: {
     flexDirection: "row",

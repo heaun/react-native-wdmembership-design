@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image, Linking, Alert } from "react-native";
 import { CommonLayout } from "../components/CommonLayout";
+import { LabelText, ButtonText, SmallText } from "../components/CommonText";
 import { Ionicons } from "@expo/vector-icons";
 
 interface MembershipDetail {
@@ -162,6 +163,17 @@ export const MembershipDetailScreen: React.FC<MembershipDetailScreenProps> = ({ 
   const currentKey = membershipOrder[currentIndex];
   const membership = membershipDetails[currentKey];
 
+  // 멤버십이 존재하지 않을 경우 에러 처리
+  if (!membership) {
+    return (
+      <CommonLayout title="멤버십 안내" showBackButton={true} onBackPress={onBackPress} showTabBar={false} isWideLayout={true}>
+        <View style={styles.errorContainer}>
+          <LabelText style={styles.errorText}>멤버십 정보를 찾을 수 없습니다.</LabelText>
+        </View>
+      </CommonLayout>
+    );
+  }
+
   const slidesCount = membershipOrder.length;
   const goPrev = () => setCurrentIndex((i) => (i - 1 + slidesCount) % slidesCount);
   const goNext = () => setCurrentIndex((i) => (i + 1) % slidesCount);
@@ -187,7 +199,7 @@ export const MembershipDetailScreen: React.FC<MembershipDetailScreenProps> = ({ 
             <TouchableOpacity onPress={goPrev} style={styles.switchArrow}>
               <Ionicons name="chevron-back" size={22} color="#FFFFFF" />
             </TouchableOpacity>
-            <Text style={styles.switchTitle}>{membership.title}</Text>
+            <LabelText style={styles.switchTitle}>{membership.title}</LabelText>
             <TouchableOpacity onPress={goNext} style={styles.switchArrow}>
               <Ionicons name="chevron-forward" size={22} color="#FFFFFF" />
             </TouchableOpacity>
@@ -201,18 +213,18 @@ export const MembershipDetailScreen: React.FC<MembershipDetailScreenProps> = ({ 
 
           {membership.id === "ph-1603" ? (
             <View style={styles.feeSection_ph1603}>
-              <Text style={styles.feeLabel_ph1603}>가입비 / 연회비</Text>
-              <Text style={styles.feeBigValue_ph1603}>{membership.joinFee}</Text>
-              <Text style={styles.feeSmallInfo_ph1603}>{membership.returnType}</Text>
+              <LabelText style={styles.feeLabel_ph1603}>가입비 / 연회비</LabelText>
+              <LabelText style={styles.feeBigValue_ph1603}>{membership.joinFee}</LabelText>
+              <LabelText style={styles.feeSmallInfo_ph1603}>{membership.returnType}</LabelText>
             </View>
           ) : (
             <View style={styles.feeSection}>
               {/* 가입비 */}
               <View style={styles.feeRow}>
-                <Text style={styles.feeLabel}>가입비</Text>
+                <LabelText style={styles.feeLabel}>가입비</LabelText>
                 <View style={styles.feeRight}>
-                  <Text style={styles.feeBigValue}>{membership.joinFee}</Text>
-                  {!!membership.returnType && <Text style={styles.feeSmallInfo}>{membership.returnType}</Text>}
+                  <LabelText style={styles.feeBigValue}>{membership.joinFee}</LabelText>
+                  {!!membership.returnType && <LabelText style={styles.feeSmallInfo}>{membership.returnType}</LabelText>}
                 </View>
               </View>
 
@@ -220,10 +232,10 @@ export const MembershipDetailScreen: React.FC<MembershipDetailScreenProps> = ({ 
 
               {/* 연회비 */}
               <View style={styles.feeRow}>
-                <Text style={styles.feeLabel}>연회비</Text>
+                <LabelText style={styles.feeLabel}>연회비</LabelText>
                 <View style={styles.feeRight}>
-                  <Text style={styles.feeBigValue}>{membership.annualFee}</Text>
-                  {!!membership.familyDiscount && <Text style={styles.feeSmallInfo}>{membership.familyDiscount}</Text>}
+                  <LabelText style={styles.feeBigValue}>{membership.annualFee}</LabelText>
+                  {!!membership.familyDiscount && <LabelText style={styles.feeSmallInfo}>{membership.familyDiscount}</LabelText>}
                 </View>
               </View>
             </View>
@@ -232,9 +244,9 @@ export const MembershipDetailScreen: React.FC<MembershipDetailScreenProps> = ({ 
           {membership.notes && (
             <View style={{ marginTop: 16 }}>
               {membership.notes.map((n, idx) => (
-                <Text key={idx} style={styles.noteText}>
+                <LabelText key={idx} style={styles.noteText}>
                   {n}
-                </Text>
+                </LabelText>
               ))}
             </View>
           )}
@@ -242,16 +254,16 @@ export const MembershipDetailScreen: React.FC<MembershipDetailScreenProps> = ({ 
 
         {/* Benefits Section */}
         <View style={styles.benefitsSection}>
-          <Text style={styles.benefitTitle}>멤버십 혜택 안내</Text>
+          <LabelText style={styles.benefitTitle}>멤버십 혜택 안내</LabelText>
           <View style={styles.divider} />
           {membership.benefits.map((benefit, index) => (
             <View key={index} style={styles.benefitGroup}>
-              <Text style={styles.benefitTitle}>{benefit.title}</Text>
+              <LabelText style={styles.benefitTitle}>{benefit.title}</LabelText>
               <View style={styles.benefitItems}>
                 {benefit.items.map((item, itemIndex) => (
                   <View key={itemIndex} style={styles.bulletRow}>
                     <View style={styles.bulletDot} />
-                    <Text style={styles.bulletText}>{item}</Text>
+                    <SmallText style={styles.bulletText}>{item}</SmallText>
                   </View>
                 ))}
               </View>
@@ -262,8 +274,8 @@ export const MembershipDetailScreen: React.FC<MembershipDetailScreenProps> = ({ 
 
         {/* Consultation Button */}
         <View style={styles.buttonSection}>
-          <TouchableOpacity style={styles.consultationButton} onPress={handleConsultationPress}>
-            <Text style={styles.consultationButtonText}>멤버십 상담 문의</Text>
+          <TouchableOpacity style={styles.consultationButton} onPress={onConsultationPress || handleConsultationPress}>
+            <LabelText style={styles.consultationButtonText}>멤버십 상담 문의</LabelText>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -307,10 +319,10 @@ const styles = StyleSheet.create({
   feeSmallInfo: { fontSize: 14, fontWeight: "400", color: "#D6DADF", marginTop: 4 },
   noteText: { fontSize: 14, color: "#FFFFFF", textAlign: "center", marginTop: 8 },
 
-  benefitsSection: { paddingHorizontal: 20, paddingTop: 20 },
+  benefitsSection: { paddingHorizontal: 20, paddingTop: 30 },
   benefitGroup: { marginBottom: 20 },
   benefitTitle: { fontSize: 16, fontWeight: "800", color: "#000000", marginBottom: 16, letterSpacing: -0.64 },
-  benefitItems: { marginBottom: 20 },
+  benefitItems: { marginBottom: 20, marginTop: 10 },
   bulletRow: { flexDirection: "row", alignItems: "flex-start", marginBottom: 8 },
   bulletDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: "#505866", marginTop: 9, marginRight: 8 },
   bulletText: { flex: 1, fontSize: 16, fontWeight: "400", color: "#505866", lineHeight: 24, letterSpacing: -0.64 },

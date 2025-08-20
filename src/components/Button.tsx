@@ -1,6 +1,7 @@
 import React from "react";
 import { TouchableOpacity, Text, StyleSheet, ViewStyle, TextStyle, ActivityIndicator } from "react-native";
 import { colors } from "../../utils/colors";
+import { LabelText, ButtonText, SmallText } from "../components/CommonText";
 
 interface ButtonProps {
   title: string;
@@ -32,7 +33,7 @@ export const Button: React.FC<ButtonProps> = ({
       {loading ? (
         <ActivityIndicator color={variant === "primary" ? colors.textInverse : colors.primary} size="small" />
       ) : (
-        <Text style={textStyleCombined}>{title}</Text>
+        <LabelText style={textStyleCombined}>{title}</LabelText>
       )}
     </TouchableOpacity>
   );

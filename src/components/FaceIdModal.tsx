@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import Modal from "react-native-modal";
 import LottieView from "lottie-react-native";
+import { LabelText } from "./CommonText";
 
 interface FaceIdModalProps {
   isVisible: boolean;
@@ -25,14 +26,14 @@ export const FaceIdModal: React.FC<FaceIdModalProps> = ({ isVisible, onClose }) 
         </TouchableOpacity>
 
         <View style={styles.faceIdContainer}>
-          <Text style={styles.title}>생체 인증</Text>
-          <Text style={styles.subtitle}>얼굴을 인식해 주세요.</Text>
+          <LabelText style={styles.title}>생체 인증</LabelText>
+          <LabelText style={styles.subtitle}>얼굴을 인식해 주세요.</LabelText>
 
           <View style={styles.lottieContainer}>
             <LottieView source={require("../assets/authentication/face-id.json")} loop autoPlay style={styles.lottieAnimation} />
           </View>
 
-          <Text style={styles.faceIdText}>- - - - - -</Text>
+          <LabelText style={styles.faceIdText}>- - - - - -</LabelText>
         </View>
       </View>
     </Modal>

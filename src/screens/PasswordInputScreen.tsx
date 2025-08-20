@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, TextInput } from "react-native";
 import { CommonLayout } from "../components/CommonLayout";
 import { FaceIdModal } from "../components/FaceIdModal";
+import { LabelText } from "../components/CommonText";
 
 interface PasswordInputScreenProps {
   onBackPress?: () => void;
@@ -121,15 +122,15 @@ export const PasswordInputScreen: React.FC<PasswordInputScreenProps> = ({
         onSideMenuItemPress={onSideMenuItemPress}
       >
         <View style={styles.container}>
-          <Text style={styles.title}>등록하신 비밀번호를 입력하세요.</Text>
-          <Text style={styles.subtitle}>비밀번호 6자리를 입력해 주세요.</Text>
+          <LabelText style={styles.title}>등록하신 비밀번호를 입력하세요.</LabelText>
+          <LabelText style={styles.subtitle}>비밀번호 6자리를 입력해 주세요.</LabelText>
 
           <View style={styles.passwordDotsContainer}>{renderPasswordDots()}</View>
 
           <View style={styles.numberPadContainer}>{renderNumberPad()}</View>
 
           <TouchableOpacity style={styles.biometricButton} onPress={handleBiometricAuth}>
-            <Text style={styles.biometricButtonText}>생체인식 인증하기</Text>
+            <LabelText style={styles.biometricButtonText}>생체인식 인증하기</LabelText>
           </TouchableOpacity>
         </View>
       </CommonLayout>
@@ -144,8 +145,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#FFFFFF",
     justifyContent: "center",
-    alignItems: "center",
-    paddingHorizontal: 20
+    alignItems: "center"
   },
   title: {
     fontSize: 20,

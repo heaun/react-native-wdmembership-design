@@ -4,6 +4,7 @@ import { CommonLayout } from "../components/CommonLayout";
 import { Ionicons } from "@expo/vector-icons";
 import { AuthResultStep, PasswordInput, PasswordValidation } from "../components/AuthCommon";
 import { PasswordInputMode } from "../components/AuthCommon";
+import { LabelText } from "../components/CommonText";
 
 interface ResetPasswordScreenProps {
   onBackPress?: () => void;
@@ -107,12 +108,12 @@ export const ResetPasswordScreen: React.FC<ResetPasswordScreenProps> = ({ onBack
         {data.step === "input" ? (
           <View style={[styles.container, { paddingBottom: 120 }]}>
             <View style={styles.headerSection}>
-              <Text style={styles.title}>새로 사용하실{"\n"}비밀번호를 입력해 주세요</Text>
+              <LabelText style={styles.title}>새로 사용하실{"\n"}비밀번호를 입력해 주세요</LabelText>
             </View>
 
             <View style={styles.inputSection}>
               <View style={styles.inputContainer}>
-                <Text style={styles.inputLabel}>아이디(이메일)</Text>
+                <LabelText style={styles.inputLabel}>아이디(이메일)</LabelText>
                 <TextInput
                   style={styles.input}
                   placeholder="가입하신 아이디(이메일)를 입력해주세요."
