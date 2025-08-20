@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View, TouchableOpacity, TextInput } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, StyleProp, TextStyle } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 // 공통 스타일
@@ -232,6 +232,21 @@ export interface AuthFormData {
   userId?: string;
 }
 
+export interface PhoneInputProps {
+  value: string;
+  onChangeText: (text: string) => void;
+  onSendCode: () => void;
+  disabled: boolean;
+  isVerificationSent: boolean;
+}
+
+export interface VerificationInputProps {
+  value: string;
+  onChangeText: (text: string) => void;
+  onVerify: () => void;
+  isVerificationCompleted: boolean;
+}
+
 export interface AuthStatusData {
   isCodeSent: boolean;
   isVerificationSent: boolean;
@@ -287,6 +302,51 @@ export const EmailInput: React.FC<EmailInputProps> = ({ value, onChangeText, pla
   </View>
 );
 
+// 이메일 입력과 버튼이 함께 있는 컴포넌트
+interface EmailInputWithButtonProps {
+  value: string;
+  onChangeText: (text: string) => void;
+  onSendCode: () => void;
+  disabled?: boolean;
+  isVerificationSent?: boolean;
+  buttonText?: string;
+}
+
+export const EmailInputWithButton: React.FC<EmailInputWithButtonProps> = ({
+  value,
+  onChangeText,
+  onSendCode,
+  disabled = false,
+  isVerificationSent = false,
+  buttonText = "인증번호 받기"
+}) => (
+  <View style={authCommonStyles.inputContainer}>
+    <Text style={authCommonStyles.inputLabel}>이메일(아이디)</Text>
+    <View style={authCommonStyles.phoneInputContainer}>
+      <TextInput
+        style={authCommonStyles.phoneInput}
+        placeholder="abc@email.com"
+        placeholderTextColor="#B1B8C0"
+        value={value}
+        onChangeText={onChangeText}
+        keyboardType="email-address"
+        autoCapitalize="none"
+        autoCorrect={false}
+        showSoftInputOnFocus={false}
+      />
+      <TouchableOpacity
+        style={[authCommonStyles.verifyButton, (!value || isVerificationSent) && authCommonStyles.verifyButtonDisabled]}
+        onPress={onSendCode}
+        disabled={!value || isVerificationSent}
+      >
+        <Text style={authCommonStyles.verifyButtonText}>{buttonText}</Text>
+      </TouchableOpacity>
+    </View>
+    <View style={authCommonStyles.inputBorder} />
+    {isVerificationSent && <Text style={authCommonStyles.statusMessage}>인증번호가 발송되었습니다.</Text>}
+  </View>
+);
+
 interface UserIdInputProps {
   value: string;
   onChangeText: (text: string) => void;
@@ -307,6 +367,66 @@ export const UserIdInput: React.FC<UserIdInputProps> = ({ value, onChangeText, p
       showSoftInputOnFocus={false}
     />
     <View style={authCommonStyles.inputBorder} />
+  </View>
+);
+
+export const PhoneInput: React.FC<PhoneInputProps> = ({ value, onChangeText, onSendCode, disabled, isVerificationSent }) => (
+  <View style={authCommonStyles.inputContainer}>
+    <Text style={authCommonStyles.inputLabel}>휴대전화 번호</Text>
+    <View style={authCommonStyles.phoneInputContainer}>
+      <TextInput
+        key="phone-input"
+        style={authCommonStyles.phoneInput}
+        placeholder="(-)제외하고 숫자만 입력"
+        placeholderTextColor="#B1B8C0"
+        value={value}
+        onChangeText={onChangeText}
+        keyboardType="phone-pad"
+        maxLength={11}
+        blurOnSubmit={false}
+        autoCorrect={false}
+        autoCapitalize="none"
+      />
+      <TouchableOpacity
+        style={[authCommonStyles.verifyButton, (!value || isVerificationSent) && authCommonStyles.verifyButtonDisabled]}
+        onPress={onSendCode}
+        disabled={!value || isVerificationSent}
+      >
+        <Text style={authCommonStyles.verifyButtonText}>인증번호 받기</Text>
+      </TouchableOpacity>
+    </View>
+    <View style={authCommonStyles.inputBorder} />
+    {isVerificationSent && <Text style={authCommonStyles.statusMessage}>인증번호가 발송되었습니다.</Text>}
+  </View>
+);
+
+export const VerificationInput: React.FC<VerificationInputProps> = ({ value, onChangeText, onVerify, isVerificationCompleted }) => (
+  <View style={authCommonStyles.inputContainer}>
+    <Text style={authCommonStyles.inputLabel}>인증번호</Text>
+    <View style={authCommonStyles.verificationInputContainer}>
+      <TextInput
+        key="verification-input"
+        style={authCommonStyles.verificationInput}
+        placeholder="인증번호 입력"
+        placeholderTextColor="#B1B8C0"
+        value={value}
+        onChangeText={onChangeText}
+        keyboardType="number-pad"
+        maxLength={6}
+        blurOnSubmit={false}
+        autoCorrect={false}
+        autoCapitalize="none"
+      />
+      <TouchableOpacity
+        style={[authCommonStyles.verifyButton, (!value || isVerificationCompleted) && authCommonStyles.verifyButtonDisabled]}
+        onPress={onVerify}
+        disabled={!value || isVerificationCompleted}
+      >
+        <Text style={authCommonStyles.verifyButtonText}>인증확인</Text>
+      </TouchableOpacity>
+    </View>
+    <View style={authCommonStyles.inputBorder} />
+    {isVerificationCompleted && <Text style={authCommonStyles.statusMessage}>휴대폰 번호 인증이 완료되었습니다.</Text>}
   </View>
 );
 
@@ -354,7 +474,7 @@ interface AuthResultStepProps {
     title: string;
     subtitle?: string;
   };
-  primaryButton: {
+  primaryButton?: {
     text: string;
     onPress: () => void;
   };
@@ -443,5 +563,53 @@ export const useAuthTimer = (initialTime: number = 180) => {
     isTimerActive,
     startTimer,
     stopTimer
+  };
+};
+
+// 휴대폰 번호 자동 발송 훅
+export const usePhoneAutoSend = (phoneNumber: string, isVerificationSent: boolean, onSendCode: () => void) => {
+  const handlePhoneNumberChange = React.useCallback(
+    (text: string) => {
+      const cleaned = text.replace(/[^0-9]/g, "");
+      // 11자리로 제한
+      const limitedText = cleaned.slice(0, 11);
+
+      // 11자리 입력 시 자동으로 인증번호 발송
+      if (limitedText.length === 11 && !isVerificationSent) {
+        setTimeout(() => {
+          onSendCode();
+        }, 100);
+      }
+
+      return limitedText;
+    },
+    [isVerificationSent, onSendCode]
+  );
+
+  return {
+    handlePhoneNumberChange,
+    isPhoneNumberValid: phoneNumber.length === 11,
+    isButtonDisabled: !phoneNumber || phoneNumber.length !== 11
+  };
+};
+
+// 휴대폰 인증 단계 관리 훅
+export const usePhoneVerificationStep = (
+  phoneNumber: string,
+  verificationCode: string,
+  isCodeSent: boolean,
+  isVerificationCompleted: boolean,
+  onSendCode: () => void,
+  onVerifyCode: () => void
+) => {
+  const shouldShowVerificationInput = isCodeSent;
+  const shouldShowTimer = isCodeSent && !isVerificationCompleted;
+
+  return {
+    shouldShowVerificationInput,
+    shouldShowTimer,
+    isPhoneInputComplete: phoneNumber.length === 11,
+    isVerificationInputComplete: verificationCode.length === 6,
+    isVerificationStepComplete: isVerificationCompleted
   };
 };

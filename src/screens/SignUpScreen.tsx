@@ -1,16 +1,16 @@
 import React, { useState, useMemo, useRef } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  ScrollView,
-  TextInput,
-  Image,
-} from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, TextInput, Image } from "react-native";
 import { CommonLayout } from "../components/CommonLayout";
 import { Ionicons } from "@expo/vector-icons";
-import { useAuthTimer, AuthResultStep } from "../components/AuthCommon";
+import {
+  useAuthTimer,
+  AuthResultStep,
+  Timer,
+  PhoneInput,
+  VerificationInput,
+  usePhoneAutoSend,
+  usePhoneVerificationStep
+} from "../components/AuthCommon";
 
 interface SignUpScreenProps {
   onBackPress?: () => void;
@@ -24,7 +24,7 @@ enum AuthInfoStep {
   verificationComplete = 3,
   uwerAgreement = 4,
   userAccountInput = 5,
-  passwordInput = 6,
+  passwordInput = 6
 }
 
 interface SignUpData {
@@ -88,7 +88,7 @@ const initialData: SignUpData = {
     verificationCode: "",
     email: "",
     password: "",
-    confirmPassword: "",
+    confirmPassword: ""
   },
   status: {
     isCodeSent: false,
@@ -111,15 +111,15 @@ const initialData: SignUpData = {
     showTermsModal: false,
     selectedTermsId: null,
     showResidentNumberInput: false,
-    showCarrierInput: false,
-  },
+    showCarrierInput: false
+  }
 };
 
 export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegisterSuccess }) => {
   const [data, setData] = useState<SignUpData>(initialData);
   const { timeRemaining, isTimerActive, startTimer, stopTimer } = useAuthTimer(180);
   const membershipResult: MembershipResult = {
-    approveStatus: true,
+    approveStatus: true
   };
 
   // TextInput refs 추가
@@ -141,17 +141,17 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
     if (!data.status.showResidentNumberInput) {
       return {
         title: "이름을 입력해주세요",
-        subtitle: "실명으로 입력해주세요.",
+        subtitle: "실명으로 입력해주세요."
       };
     } else if (!data.status.showCarrierInput) {
       return {
         title: "주민등록번호를 입력해주세요",
-        subtitle: "본인인증을 위해 주민등록번호를 입력해주세요.",
+        subtitle: "본인인증을 위해 주민등록번호를 입력해주세요."
       };
     } else {
       return {
         title: "통신사를 선택해주세요",
-        subtitle: "본인인증을 위해 통신사를 선택해주세요.",
+        subtitle: "본인인증을 위해 통신사를 선택해주세요."
       };
     }
   };
@@ -164,65 +164,57 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
         title: "[필수] 서비스 이용약관 동의",
         isRequired: true,
         isAgreed: data.status.isTosAgreed,
-        hasDetail: true,
+        hasDetail: true
       },
       {
         id: "privacy",
         title: "[필수] 개인정보 수집 및 이용 동의",
         isRequired: true,
         isAgreed: data.status.isPrivacyAgreed,
-        hasDetail: true,
+        hasDetail: true
       },
       {
         id: "points",
         title: "[필수] WD 멤버스 포인트 이용약관",
         isRequired: true,
         isAgreed: data.status.isPointsAgreed,
-        hasDetail: true,
+        hasDetail: true
       },
       {
         id: "marketing",
         title: "[선택] 마케팅 수신 동의",
         isRequired: false,
         isAgreed: data.status.isMarketingAgreed,
-        hasDetail: false,
+        hasDetail: false
       },
       {
         id: "age",
         title: "[필수] 만 19세 이상입니다.",
         isRequired: true,
         isAgreed: data.status.isAgeAgreed,
-        hasDetail: false,
-      },
+        hasDetail: false
+      }
     ],
-    [
-      data.status.isTosAgreed,
-      data.status.isPrivacyAgreed,
-      data.status.isPointsAgreed,
-      data.status.isMarketingAgreed,
-      data.status.isAgeAgreed,
-    ],
+    [data.status.isTosAgreed, data.status.isPrivacyAgreed, data.status.isPointsAgreed, data.status.isMarketingAgreed, data.status.isAgeAgreed]
   );
 
   // 전체 동의 상태 계산
   const isAllAgreed = termsList.every((term) => term.isAgreed);
 
   // 필수 약관 동의 상태 계산
-  const isRequiredAgreed = termsList
-    .filter((term) => term.isRequired)
-    .every((term) => term.isAgreed);
+  const isRequiredAgreed = termsList.filter((term) => term.isRequired).every((term) => term.isAgreed);
 
   const updateForm = (updates: Partial<SignUpData["form"]>) => {
     setData((prev) => ({
       ...prev,
-      form: { ...prev.form, ...updates },
+      form: { ...prev.form, ...updates }
     }));
   };
 
   const updateStatus = (updates: Partial<SignUpData["status"]>) => {
     setData((prev) => ({
       ...prev,
-      status: { ...prev.status, ...updates },
+      status: { ...prev.status, ...updates }
     }));
   };
 
@@ -232,7 +224,7 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
     setData((prev) => ({
       ...prev,
       form: { ...prev.form, verificationType: type },
-      step: AuthInfoStep.nameAndResidentNumber,
+      step: AuthInfoStep.nameAndResidentNumber
     }));
   };
 
@@ -256,7 +248,7 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
       // 통신사 입력 필드 표시 및 모달 자동 열기
       updateStatus({
         showCarrierInput: true,
-        showCarrierModal: true,
+        showCarrierModal: true
       });
     }
   };
@@ -265,7 +257,7 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
     updateForm({ carrier: carrierName });
     updateStatus({
       showCarrierModal: false,
-      isCarrierSelected: true,
+      isCarrierSelected: true
     });
   };
 
@@ -277,22 +269,39 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
   const handleSendVerificationCode = () => {
     if (data.form.phoneNumber) {
       updateStatus({
-        isCodeSent: true,
+        isCodeSent: true
       });
       startTimer();
       // 실제로는 API 호출로 인증번호 전송
     }
   };
 
+  // 휴대폰 자동 발송 훅 사용
+  const { handlePhoneNumberChange, isPhoneNumberValid, isButtonDisabled } = usePhoneAutoSend(
+    data.form.phoneNumber,
+    data.status.isCodeSent,
+    handleSendVerificationCode
+  );
+
   const handleVerifyCode = () => {
     if (data.form.verificationCode) {
       // 실제로는 API 호출로 인증번호 확인
       updateStatus({
-        isVerificationCompleted: true,
+        isVerificationCompleted: true
       });
       stopTimer();
     }
   };
+
+  // 휴대폰 인증 단계 관리 훅 사용
+  const { shouldShowVerificationInput, shouldShowTimer } = usePhoneVerificationStep(
+    data.form.phoneNumber,
+    data.form.verificationCode,
+    data.status.isCodeSent,
+    data.status.isVerificationCompleted,
+    handleSendVerificationCode,
+    handleVerifyCode
+  );
 
   const handlePhoneVerificationComplete = () => {
     setData((prev) => ({ ...prev, step: AuthInfoStep.verificationComplete }));
@@ -314,13 +323,14 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
     // MembershipResultScreen으로 이동
     const result = {
       action: "navigateToMembershipResult",
-      approveStatus: membershipResult.approveStatus,
+      approveStatus: membershipResult.approveStatus
     };
     onRegisterSuccess?.(result);
   };
 
   const handleGoToLogin = () => {
     // 로그인 페이지로 이동
+    onRegisterSuccess?.({ action: "navigateToLogin" });
   };
 
   // 약관 동의 관련 핸들러
@@ -331,7 +341,7 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
       isPrivacyAgreed: newAgreedState,
       isPointsAgreed: newAgreedState,
       isMarketingAgreed: newAgreedState,
-      isAgeAgreed: newAgreedState,
+      isAgeAgreed: newAgreedState
     });
   };
 
@@ -371,7 +381,7 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
         return {
           title: "서비스 이용약관",
           content: `제1조 (목적)
-본 약관은 WD 멤버십(이하 "회사")이 제공하는 서비스의 이용과 관련하여 회사와 회원과의 권리, 의무 및 책임사항, 기타 필요한 사항을 규정함을 목적으로 합니다.`,
+본 약관은 WD 멤버십(이하 "회사")이 제공하는 서비스의 이용과 관련하여 회사와 회원과의 권리, 의무 및 책임사항, 기타 필요한 사항을 규정함을 목적으로 합니다.`
         };
       case "privacy":
         return {
@@ -379,7 +389,7 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
           content: `개인정보 수집 및 이용 동의
 
 1. 개인정보의 수집 및 이용 목적
-회사는 다음의 목적을 위하여 개인정보를 처리합니다.`,
+회사는 다음의 목적을 위하여 개인정보를 처리합니다.`
         };
       case "points":
         return {
@@ -387,12 +397,12 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
           content: `WD 멤버스 포인트 이용약관
 
 제1조 (목적)
-본 약관은 WD 멤버십(이하 "회사")이 제공하는 WD 멤버스 포인트 서비스의 이용과 관련하여 회사와 회원 간의 권리, 의무 및 책임사항을 규정함을 목적으로 합니다.`,
+본 약관은 WD 멤버십(이하 "회사")이 제공하는 WD 멤버스 포인트 서비스의 이용과 관련하여 회사와 회원 간의 권리, 의무 및 책임사항을 규정함을 목적으로 합니다.`
         };
       default:
         return {
           title: "약관",
-          content: "약관 내용이 없습니다.",
+          content: "약관 내용이 없습니다."
         };
     }
   };
@@ -411,7 +421,7 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
       hasUpperCase,
       hasLowerCase,
       hasNumber,
-      hasSpecialChar,
+      hasSpecialChar
     };
   };
 
@@ -439,7 +449,7 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
     { id: "lg", name: "LG U+" },
     { id: "sktmvno", name: "SKT 알뜰폰" },
     { id: "ktmvno", name: "KT 알뜰폰" },
-    { id: "lgmvno", name: "LG U+ 알뜰폰" },
+    { id: "lgmvno", name: "LG U+ 알뜰폰" }
   ];
 
   const getButtons = () => {
@@ -459,8 +469,8 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
               text: "다음",
               onPress: handleMoveToPhoneVerification,
               disabled: !isNameValid || !isResidentNumberValid || !isCarrierSelected,
-              style: "primary" as const,
-            },
+              style: "primary" as const
+            }
           ];
         }
 
@@ -474,26 +484,39 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
             text: "다음",
             onPress: handlePhoneVerificationComplete,
             disabled: !data.status.isVerificationCompleted,
-            style: "primary" as const,
-          },
+            style: "primary" as const
+          }
         ];
 
-      case AuthInfoStep.verificationComplete:
-        return [
-          {
-            text: "다음",
-            onPress: handleVerificationCompleteConfirm,
-            style: "primary" as const,
-          },
-        ];
+      case AuthInfoStep.verificationComplete: {
+        const isExistingUser = true; // 신규회원 화면 테스트용
+
+        if (isExistingUser) {
+          return [
+            {
+              text: "로그인하러 가기",
+              onPress: handleGoToLogin,
+              style: "primary" as const
+            }
+          ];
+        } else {
+          return [
+            {
+              text: "다음",
+              onPress: handleVerificationCompleteConfirm,
+              style: "primary" as const
+            }
+          ];
+        }
+      }
       case AuthInfoStep.uwerAgreement:
         return [
           {
             text: "동의하고 가입하기",
             onPress: handleUserAgreementComplete,
             disabled: !isRequiredAgreed,
-            style: "primary" as const,
-          },
+            style: "primary" as const
+          }
         ];
       case AuthInfoStep.userAccountInput:
         return [
@@ -501,8 +524,8 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
             text: "다음",
             onPress: handleUserAccountInputComplete,
             disabled: !data.status.isEmailValid,
-            style: "primary" as const,
-          },
+            style: "primary" as const
+          }
         ];
       case AuthInfoStep.passwordInput:
         return [
@@ -510,110 +533,49 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
             text: "가입하기",
             onPress: handlePasswordInputComplete,
             disabled: !data.status.isPasswordValid || !data.status.isPasswordMatch,
-            style: "primary" as const,
-          },
+            style: "primary" as const
+          }
         ];
       default:
         return [];
     }
   };
 
-  // PhoneInput 컴포넌트 (AuthenticationScreen에서 가져온 스타일)
-  const PhoneInput: React.FC<{
-    value: string;
-    onChangeText: (text: string) => void;
-    onSendCode: () => void;
-    disabled: boolean;
-    isCodeSent: boolean;
-  }> = ({ value, onChangeText, onSendCode, disabled, isCodeSent }) => (
-    <View style={styles.inputContainer}>
-      <Text style={styles.inputLabel}>휴대전화 번호</Text>
-      <View style={styles.phoneInputContainer}>
-        <TextInput
-          ref={phoneNumberInputRef}
-          style={styles.phoneInput}
-          placeholder="(-)제외하고 숫자만 입력"
-          placeholderTextColor="#B1B8C0"
-          value={value}
-          onChangeText={onChangeText}
-          keyboardType="phone-pad"
-          autoCorrect={false}
-          autoCapitalize="none"
-          showSoftInputOnFocus={false}
-        />
-        <TouchableOpacity
-          style={[styles.verifyButton, (!value || isCodeSent) && styles.verifyButtonDisabled]}
-          onPress={onSendCode}
-          disabled={!value || isCodeSent}
-        >
-          <Text style={styles.verifyButtonText}>인증번호 받기</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.inputBorder} />
-      {isCodeSent && <Text style={styles.statusMessage}>인증번호가 발송되었습니다.</Text>}
-    </View>
-  );
-
   // VerificationInput 컴포넌트 (AuthenticationScreen에서 가져온 스타일)
-  const VerificationInput: React.FC<{
-    value: string;
-    onChangeText: (text: string) => void;
-    onVerify: () => void;
-    isVerificationCompleted: boolean;
-  }> = ({ value, onChangeText, onVerify, isVerificationCompleted }) => (
-    <View style={styles.inputContainer}>
-      <Text style={styles.inputLabel}>인증번호</Text>
-      <View style={styles.verificationInputContainer}>
-        <TextInput
-          ref={verificationInputRef}
-          style={styles.verificationInput}
-          placeholder="인증번호 입력"
-          placeholderTextColor="#B1B8C0"
-          value={value}
-          onChangeText={onChangeText}
-          keyboardType="number-pad"
-          maxLength={6}
-          autoCorrect={false}
-          autoCapitalize="none"
-          showSoftInputOnFocus={false}
-        />
-        <TouchableOpacity
-          style={[
-            styles.verifyButton,
-            (!value || isVerificationCompleted) && styles.verifyButtonDisabled,
-          ]}
-          onPress={onVerify}
-          disabled={!value || isVerificationCompleted}
-        >
-          <Text style={styles.verifyButtonText}>인증확인</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.inputBorder} />
-      {isVerificationCompleted && (
-        <Text style={styles.statusMessage}>휴대폰 번호 인증이 완료되었습니다.</Text>
-      )}
-    </View>
-  );
-
-  // Timer 컴포넌트
-  const Timer: React.FC<{ timeRemaining: number; isTimerActive: boolean }> = ({
-    timeRemaining,
-    isTimerActive,
-  }) => {
-    if (!isTimerActive) return null;
-
-    const minutes = Math.floor(timeRemaining / 60);
-    const seconds = timeRemaining % 60;
-    const formattedTime = `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
-    const isWarning = timeRemaining <= 30;
-
-    return (
-      <View style={styles.timerContainer}>
-        <Text style={styles.timerLabel}>남은 시간</Text>
-        <Text style={[styles.timerText, isWarning && styles.timerWarning]}>{formattedTime}</Text>
-      </View>
-    );
-  };
+  // const VerificationInput: React.FC<{
+  //   value: string;
+  //   onChangeText: (text: string) => void;
+  //   onVerify: () => void;
+  //   isVerificationCompleted: boolean;
+  // }> = ({ value, onChangeText, onVerify, isVerificationCompleted }) => (
+  //   <View style={styles.inputContainer}>
+  //     <Text style={styles.inputLabel}>인증번호</Text>
+  //     <View style={styles.verificationInputContainer}>
+  //       <TextInput
+  //         ref={verificationInputRef}
+  //         style={styles.verificationInput}
+  //         placeholder="인증번호 입력"
+  //         placeholderTextColor="#B1B8C0"
+  //         value={value}
+  //         onChangeText={onChangeText}
+  //         keyboardType="number-pad"
+  //         maxLength={6}
+  //         autoCorrect={false}
+  //         autoCapitalize="none"
+  //         showSoftInputOnFocus={false}
+  //       />
+  //       <TouchableOpacity
+  //         style={[styles.verifyButton, (!value || isVerificationCompleted) && styles.verifyButtonDisabled]}
+  //         onPress={onVerify}
+  //         disabled={!value || isVerificationCompleted}
+  //       >
+  //         <Text style={styles.verifyButtonText}>인증확인</Text>
+  //       </TouchableOpacity>
+  //     </View>
+  //     <View style={styles.inputBorder} />
+  //     {isVerificationCompleted && <Text style={styles.statusMessage}>휴대폰 번호 인증이 완료되었습니다.</Text>}
+  //   </View>
+  // );
 
   const renderVerificationTypeStep = () => (
     <View style={[styles.container, { paddingBottom: 120 }]}>
@@ -627,10 +589,7 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
 
       <View style={styles.cardSection}>
         <TouchableOpacity
-          style={[
-            styles.verificationCard,
-            data.form.verificationType === "domestic" && styles.verificationCardSelected,
-          ]}
+          style={[styles.verificationCard, data.form.verificationType === "domestic" && styles.verificationCardSelected]}
           onPress={() => handleVerificationTypeSelect("domestic")}
           activeOpacity={0.7}
         >
@@ -646,10 +605,7 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[
-            styles.verificationCard,
-            data.form.verificationType === "foreign" && styles.verificationCardSelected,
-          ]}
+          style={[styles.verificationCard, data.form.verificationType === "foreign" && styles.verificationCardSelected]}
           onPress={() => handleVerificationTypeSelect("foreign")}
           activeOpacity={0.7}
         >
@@ -659,10 +615,7 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
               <Text style={styles.cardSubtitle}>이메일로 인증</Text>
             </View>
             <View style={styles.cardIconSection}>
-              <Image
-                source={require("../assets/icons/ic_foreigner.png")}
-                style={styles.ic_foreign}
-              />
+              <Image source={require("../assets/icons/ic_foreigner.png")} style={styles.ic_foreign} />
             </View>
           </View>
         </TouchableOpacity>
@@ -675,10 +628,7 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
 
     return (
       <View style={styles.modalOverlay}>
-        <TouchableOpacity
-          style={styles.modalBackdrop}
-          onPress={() => updateStatus({ showCarrierModal: false })}
-        />
+        <TouchableOpacity style={styles.modalBackdrop} onPress={() => updateStatus({ showCarrierModal: false })} />
         <View style={styles.modalContainer}>
           <View style={styles.modalHeader}>
             <Text style={styles.modalTitle}>통신사 선택</Text>
@@ -688,11 +638,7 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
           </View>
           <ScrollView style={styles.modalContent}>
             {carriers.map((carrier) => (
-              <TouchableOpacity
-                key={carrier.id}
-                style={styles.carrierItem}
-                onPress={() => handleCarrierSelection(carrier.name)}
-              >
+              <TouchableOpacity key={carrier.id} style={styles.carrierItem} onPress={() => handleCarrierSelection(carrier.name)}>
                 <Text style={styles.carrierItemText}>{carrier.name}</Text>
               </TouchableOpacity>
             ))}
@@ -726,7 +672,7 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
   };
 
   const renderVerificationCompleteStep = () => {
-    const isExistingUser = false; // 신규회원 화면 테스트용
+    const isExistingUser = true; // 신규회원 화면 테스트용
 
     if (isExistingUser) {
       return (
@@ -734,11 +680,11 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
           mode="register"
           message={{
             title: "이미 가입된 계정이 있어요",
-            subtitle: "가입하신 정보의 계정을 찾았습니다.\n아래 계정으로 로그인 하세요.",
+            subtitle: "가입하신 정보의 계정을 찾았습니다.\n아래 계정으로 로그인 하세요."
           }}
           primaryButton={{
-            text: "로그인하러 가기",
-            onPress: handleGoToLogin,
+            text: "",
+            onPress: () => {}
           }}
           userId="abcd1234@email.com"
           registrationDate="2026.04.28 가입"
@@ -750,11 +696,11 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
           mode="register"
           message={{
             title: "인증이 완료되었습니다.\n멤버십 회원 가입을\n계속 진행해 주세요",
-            subtitle: "10초 후 화면이 자동종료 됩니다.",
+            subtitle: ""
           }}
           primaryButton={{
-            text: "",
-            onPress: () => {},
+            text: "다음",
+            onPress: () => setData((prev) => ({ ...prev, step: AuthInfoStep.uwerAgreement }))
           }}
         />
       );
@@ -765,24 +711,26 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
   const renderPhoneVerificationStep = () => (
     <View style={[styles.container, { paddingBottom: 120 }]}>
       <View style={styles.headerSection}>
-        <Text style={styles.title}>휴대폰 인증을 해주세요</Text>
-        <Text style={styles.subtitle}>가입하신 휴대폰 번호를 입력해주세요.</Text>
+        <Text style={styles.title}>{data.status.isCodeSent ? "인증번호를 입력해주세요" : "휴대폰 인증을 해주세요"}</Text>
+        <Text style={styles.subtitle}>
+          {data.status.isCodeSent ? "휴대폰으로 전송된 인증번호를 입력해주세요." : "가입하신 휴대폰 번호를 입력해주세요."}
+        </Text>
       </View>
 
       <View style={styles.inputSection}>
         <PhoneInput
           value={data.form.phoneNumber}
           onChangeText={(text) => {
-            const cleaned = text.replace(/[^0-9]/g, "");
-            updateForm({ phoneNumber: cleaned });
-            updateStatus({ isPhoneNumberValid: cleaned.length >= 10 });
+            const limitedText = handlePhoneNumberChange(text);
+            updateForm({ phoneNumber: limitedText });
+            updateStatus({ isPhoneNumberValid: isPhoneNumberValid });
           }}
           onSendCode={handleSendVerificationCode}
-          disabled={!data.form.phoneNumber}
-          isCodeSent={data.status.isCodeSent}
+          disabled={isButtonDisabled}
+          isVerificationSent={data.status.isCodeSent}
         />
 
-        {data.status.isCodeSent && (
+        {shouldShowVerificationInput && (
           <VerificationInput
             value={data.form.verificationCode}
             onChangeText={(text) => updateForm({ verificationCode: text })}
@@ -791,7 +739,7 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
           />
         )}
 
-        <Timer timeRemaining={timeRemaining} isTimerActive={isTimerActive} />
+        {shouldShowTimer && <Timer timeRemaining={timeRemaining} isTimerActive={isTimerActive} />}
       </View>
     </View>
   );
@@ -822,9 +770,7 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
             showSoftInputOnFocus={false}
           />
           <View style={styles.inputBorder} />
-          {data.form.email && !data.status.isEmailValid && (
-            <Text style={styles.errorMessage}>이메일 형식이 올바르지 않습니다.</Text>
-          )}
+          {data.form.email && !data.status.isEmailValid && <Text style={styles.errorMessage}>이메일 형식이 올바르지 않습니다.</Text>}
         </View>
       </View>
     </View>
@@ -855,15 +801,8 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
                 autoCorrect={false}
                 showSoftInputOnFocus={false}
               />
-              <TouchableOpacity
-                style={styles.eyeButton}
-                onPress={() => updateStatus({ showPassword: !data.status.showPassword })}
-              >
-                <Ionicons
-                  name={data.status.showPassword ? "eye-off" : "eye"}
-                  size={20}
-                  color="#505866"
-                />
+              <TouchableOpacity style={styles.eyeButton} onPress={() => updateStatus({ showPassword: !data.status.showPassword })}>
+                <Ionicons name={data.status.showPassword ? "eye-off" : "eye"} size={20} color="#505866" />
               </TouchableOpacity>
             </View>
             <View style={styles.inputBorder} />
@@ -884,17 +823,8 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
                 autoCorrect={false}
                 showSoftInputOnFocus={false}
               />
-              <TouchableOpacity
-                style={styles.eyeButton}
-                onPress={() =>
-                  updateStatus({ showConfirmPassword: !data.status.showConfirmPassword })
-                }
-              >
-                <Ionicons
-                  name={data.status.showConfirmPassword ? "eye-off" : "eye"}
-                  size={20}
-                  color="#505866"
-                />
+              <TouchableOpacity style={styles.eyeButton} onPress={() => updateStatus({ showConfirmPassword: !data.status.showConfirmPassword })}>
+                <Ionicons name={data.status.showConfirmPassword ? "eye-off" : "eye"} size={20} color="#505866" />
               </TouchableOpacity>
             </View>
             <View style={styles.inputBorder} />
@@ -903,24 +833,10 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
           {/* 비밀번호 유효성 검사 결과 */}
           <View style={styles.passwordValidationSection}>
             <View style={styles.validationItem}>
-              <View
-                style={[
-                  styles.validationIcon,
-                  passwordValidation.hasLength && styles.validationIconValid,
-                ]}
-              >
-                {passwordValidation.hasLength && (
-                  <Ionicons name="checkmark" size={12} color="#FFFFFF" />
-                )}
+              <View style={[styles.validationIcon, passwordValidation.hasLength && styles.validationIconValid]}>
+                {passwordValidation.hasLength && <Ionicons name="checkmark" size={12} color="#FFFFFF" />}
               </View>
-              <Text
-                style={[
-                  styles.validationText,
-                  passwordValidation.hasLength && styles.validationTextValid,
-                ]}
-              >
-                8-20자 이내
-              </Text>
+              <Text style={[styles.validationText, passwordValidation.hasLength && styles.validationTextValid]}>8-20자 이내</Text>
             </View>
             <View style={styles.validationItem}>
               <View
@@ -930,15 +846,13 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
                     passwordValidation.hasLowerCase &&
                     passwordValidation.hasNumber &&
                     passwordValidation.hasSpecialChar &&
-                    styles.validationIconValid,
+                    styles.validationIconValid
                 ]}
               >
                 {passwordValidation.hasUpperCase &&
                   passwordValidation.hasLowerCase &&
                   passwordValidation.hasNumber &&
-                  passwordValidation.hasSpecialChar && (
-                    <Ionicons name="checkmark" size={12} color="#FFFFFF" />
-                  )}
+                  passwordValidation.hasSpecialChar && <Ionicons name="checkmark" size={12} color="#FFFFFF" />}
               </View>
               <Text
                 style={[
@@ -947,33 +861,17 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
                     passwordValidation.hasLowerCase &&
                     passwordValidation.hasNumber &&
                     passwordValidation.hasSpecialChar &&
-                    styles.validationTextValid,
+                    styles.validationTextValid
                 ]}
               >
                 대소문자,숫자,특수문자 포함
               </Text>
             </View>
             <View style={styles.validationItem}>
-              <View
-                style={[
-                  styles.validationIcon,
-                  data.status.isPasswordMatch &&
-                    data.form.confirmPassword &&
-                    styles.validationIconValid,
-                ]}
-              >
-                {data.status.isPasswordMatch && data.form.confirmPassword && (
-                  <Ionicons name="checkmark" size={12} color="#FFFFFF" />
-                )}
+              <View style={[styles.validationIcon, data.status.isPasswordMatch && data.form.confirmPassword && styles.validationIconValid]}>
+                {data.status.isPasswordMatch && data.form.confirmPassword && <Ionicons name="checkmark" size={12} color="#FFFFFF" />}
               </View>
-              <Text
-                style={[
-                  styles.validationText,
-                  data.status.isPasswordMatch &&
-                    data.form.confirmPassword &&
-                    styles.validationTextValid,
-                ]}
-              >
+              <Text style={[styles.validationText, data.status.isPasswordMatch && data.form.confirmPassword && styles.validationTextValid]}>
                 비밀번호 일치
               </Text>
             </View>
@@ -987,7 +885,7 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
     <View style={[styles.container, { paddingBottom: 120 }]}>
       <View style={styles.headerSection}>
         <Text style={styles.welcomeTitle}>환영합니다.</Text>
-        <Text style={styles.welcomeSubtitle}>WD 멤버쉽 회원으로 초대합니다.</Text>
+        <Text style={styles.welcomeSubtitle}>WD 멤버십 회원으로 초대합니다.</Text>
       </View>
 
       {/* 약관 전체 동의 */}
@@ -1005,20 +903,14 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
       <View style={styles.termsListSection}>
         {termsList.map((term) => (
           <View key={term.id} style={styles.termsItem}>
-            <TouchableOpacity
-              style={styles.termsCheckboxContainer}
-              onPress={() => handleTermsAgree(term.id)}
-            >
+            <TouchableOpacity style={styles.termsCheckboxContainer} onPress={() => handleTermsAgree(term.id)}>
               <View style={[styles.checkbox, term.isAgreed && styles.checkboxChecked]}>
                 {term.isAgreed && <Ionicons name="checkmark" size={16} color="#FFFFFF" />}
               </View>
               <Text style={styles.termsText}>{term.title}</Text>
             </TouchableOpacity>
             {term.hasDetail && (
-              <TouchableOpacity
-                style={styles.termsDetailButton}
-                onPress={() => handleTermsDetail(term.id)}
-              >
+              <TouchableOpacity style={styles.termsDetailButton} onPress={() => handleTermsDetail(term.id)}>
                 <Ionicons name="chevron-forward" size={20} color="#2B2B2B" />
               </TouchableOpacity>
             )}
@@ -1029,9 +921,8 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
       {/* 개인정보 보호 안내 */}
       <View style={styles.privacyNoticeSection}>
         <Text style={styles.privacyNoticeText}>
-          정보주체의 개인정보 및 권리 보호를 위해 [개인정보 보호법] 및 관계 법령이 정한 바를
-          준수하여 안전하게 관리하고 있습니다. 자세한 사항은 개인정보처리방침에서 확인할 수
-          있습니다.
+          정보주체의 개인정보 및 권리 보호를 위해 [개인정보 보호법] 및 관계 법령이 정한 바를 준수하여 안전하게 관리하고 있습니다. 자세한 사항은
+          개인정보처리방침에서 확인할 수 있습니다.
         </Text>
       </View>
     </View>
@@ -1068,9 +959,7 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
               showSoftInputOnFocus={false}
             />
             <View style={styles.inputBorder} />
-            {data.form.name && data.form.name.trim().length < 2 && (
-              <Text style={styles.errorMessage}>이름을 2자 이상 입력해주세요.</Text>
-            )}
+            {data.form.name && data.form.name.trim().length < 2 && <Text style={styles.errorMessage}>이름을 2자 이상 입력해주세요.</Text>}
           </View>
 
           {/* 주민등록번호 입력 - 조건부 렌더링 */}
@@ -1083,17 +972,11 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
                   style={styles.residentNumberInput}
                   placeholder="000000"
                   placeholderTextColor="#B1B8C0"
-                  value={
-                    data.form.residentNumber.includes("-")
-                      ? data.form.residentNumber.split("-")[0]
-                      : data.form.residentNumber.slice(0, 6)
-                  }
+                  value={data.form.residentNumber.includes("-") ? data.form.residentNumber.split("-")[0] : data.form.residentNumber.slice(0, 6)}
                   onChangeText={(text) => {
                     const cleaned = text.replace(/[^0-9]/g, "");
                     if (cleaned.length <= 6) {
-                      const currentBackPart = data.form.residentNumber.includes("-")
-                        ? data.form.residentNumber.split("-")[1] || ""
-                        : "";
+                      const currentBackPart = data.form.residentNumber.includes("-") ? data.form.residentNumber.split("-")[1] || "" : "";
 
                       let newValue = cleaned;
                       if (currentBackPart || cleaned.length === 6) {
@@ -1133,11 +1016,10 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
                         ? data.form.residentNumber.split("-")[0]
                         : data.form.residentNumber.slice(0, 6);
 
-                      const newValue =
-                        frontPart + "-" + cleaned + (cleaned.length === 1 ? "******" : "");
+                      const newValue = frontPart + "-" + cleaned + (cleaned.length === 1 ? "******" : "");
                       updateForm({ residentNumber: newValue });
                       updateStatus({
-                        isResidentNumberValid: frontPart.length === 6 && cleaned.length === 1,
+                        isResidentNumberValid: frontPart.length === 6 && cleaned.length === 1
                       });
 
                       if (cleaned.length === 1 && frontPart.length === 6) {
@@ -1195,11 +1077,7 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
       onNotificationPress={() => {}}
       buttons={getButtons()}
     >
-      <ScrollView
-        ref={scrollViewRef}
-        style={styles.scrollView}
-        showsVerticalScrollIndicator={false}
-      >
+      <ScrollView ref={scrollViewRef} style={styles.scrollView} showsVerticalScrollIndicator={false}>
         {data.step === AuthInfoStep.verificationType && renderVerificationTypeStep()}
         {data.step === AuthInfoStep.nameAndResidentNumber && renderNameAndResidentNumberStep()}
         {data.step === AuthInfoStep.phoneVerification && renderPhoneVerificationStep()}
@@ -1216,18 +1094,17 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
 
 const styles = StyleSheet.create({
   scrollView: {
-    flex: 1,
+    flex: 1
   },
   container: {
     flex: 1,
-    paddingHorizontal: 20,
     justifyContent: "space-between",
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "#FFFFFF"
   },
   headerSection: {
     marginBottom: 40,
     paddingTop: 20,
-    alignItems: "flex-start",
+    alignItems: "flex-start"
   },
   title: {
     fontSize: 20,
@@ -1235,16 +1112,16 @@ const styles = StyleSheet.create({
     color: "#2B2B2B",
     marginBottom: 8,
     lineHeight: 30,
-    letterSpacing: -0.8,
+    letterSpacing: -0.8
   },
   subtitle: {
     fontSize: 16,
     fontWeight: "400",
     color: "#505866",
-    lineHeight: 24,
+    lineHeight: 24
   },
   cardSection: {
-    gap: 12,
+    gap: 12
   },
   verificationCard: {
     backgroundColor: "#FFFFFF",
@@ -1252,139 +1129,139 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#D6DADF",
     padding: 20,
-    height: 100,
+    height: 100
   },
   verificationCardSelected: {
     borderColor: "#B48327",
-    borderWidth: 2,
+    borderWidth: 2
   },
   cardContent: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    height: "100%",
+    height: "100%"
   },
   cardTextSection: {
-    flex: 1,
+    flex: 1
   },
   cardTitle: {
     fontSize: 20,
     fontWeight: "800",
     color: "#2B2B2B",
     marginBottom: 4,
-    letterSpacing: -0.8,
+    letterSpacing: -0.8
   },
   cardSubtitle: {
     fontSize: 16,
     fontWeight: "400",
     color: "#2B2B2B",
-    letterSpacing: -0.64,
+    letterSpacing: -0.64
   },
   cardIconSection: {
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "center"
   },
   ic_local: {
     width: 60,
     height: 60,
-    resizeMode: "contain",
+    resizeMode: "contain"
   },
   ic_foreign: {
     width: 60,
     height: 60,
-    resizeMode: "contain",
+    resizeMode: "contain"
   },
   inputSection: {
-    marginBottom: 40,
+    marginBottom: 40
   },
   inputContainer: {
-    marginBottom: 30,
+    marginBottom: 30
   },
   inputLabel: {
     fontSize: 16,
     fontWeight: "700",
     color: "#2B2B2B",
-    marginBottom: 8,
+    marginBottom: 8
   },
   input: {
     fontSize: 18,
     fontWeight: "700",
     color: "#2B2B2B",
-    paddingVertical: 12,
+    paddingVertical: 12
   },
   phoneInputContainer: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 12,
+    gap: 12
   },
   phoneInput: {
     flex: 1,
     fontSize: 18,
     fontWeight: "700",
     color: "#2B2B2B",
-    paddingVertical: 12,
+    paddingVertical: 12
   },
   verificationInputContainer: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 12,
+    gap: 12
   },
   verificationInput: {
     flex: 1,
     fontSize: 18,
     fontWeight: "700",
     color: "#2B2B2B",
-    paddingVertical: 12,
+    paddingVertical: 12
   },
   verifyButton: {
     backgroundColor: "#B48327",
     borderRadius: 24,
     paddingHorizontal: 32,
     paddingVertical: 16,
-    minWidth: 105,
+    minWidth: 105
   },
   verifyButtonDisabled: {
-    backgroundColor: "#B1B8C0",
+    backgroundColor: "#B1B8C0"
   },
   verifyButtonText: {
     fontSize: 14,
     fontWeight: "700",
     color: "#FFFFFF",
-    textAlign: "center",
+    textAlign: "center"
   },
   inputBorder: {
     height: 1,
     backgroundColor: "#D6DADF",
-    marginTop: 8,
+    marginTop: 8
   },
   statusMessage: {
     fontSize: 12,
     fontWeight: "400",
     color: "#B48327",
     marginTop: 8,
-    textAlign: "left",
+    textAlign: "left"
   },
   errorMessage: {
     fontSize: 12,
     fontWeight: "400",
     color: "#FF3A4A",
     marginTop: 8,
-    textAlign: "left",
+    textAlign: "left"
   },
   passwordInputContainer: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 12,
+    gap: 12
   },
   passwordInput: {
     flex: 1,
     fontSize: 18,
     fontWeight: "700",
     color: "#2B2B2B",
-    paddingVertical: 12,
+    paddingVertical: 12
   },
   eyeButton: {
-    padding: 4,
+    padding: 4
   },
   checkbox: {
     width: 24,
@@ -1394,26 +1271,26 @@ const styles = StyleSheet.create({
     borderColor: "#D6DADF",
     marginRight: 12,
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "center"
   },
   checkboxChecked: {
     backgroundColor: "#B48327",
-    borderColor: "#B48327",
+    borderColor: "#B48327"
   },
   carrierSelector: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingVertical: 12,
+    paddingVertical: 12
   },
   carrierText: {
     fontSize: 18,
     fontWeight: "700",
-    color: "#2B2B2B",
+    color: "#2B2B2B"
   },
   carrierPlaceholder: {
     color: "#B1B8C0",
-    fontWeight: "400",
+    fontWeight: "400"
   },
   modalOverlay: {
     position: "absolute",
@@ -1422,7 +1299,7 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     justifyContent: "flex-end",
-    zIndex: 1000,
+    zIndex: 1000
   },
   modalBackdrop: {
     position: "absolute",
@@ -1430,13 +1307,13 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    backgroundColor: "rgba(0, 0, 0, 0.5)"
   },
   modalContainer: {
     backgroundColor: "#FFFFFF",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    maxHeight: "100%",
+    maxHeight: "100%"
   },
   modalHeader: {
     flexDirection: "row",
@@ -1444,26 +1321,26 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 20,
     borderBottomWidth: 1,
-    borderBottomColor: "#E5E5E5",
+    borderBottomColor: "#E5E5E5"
   },
   modalTitle: {
     fontSize: 18,
     fontWeight: "700",
-    color: "#2B2B2B",
+    color: "#2B2B2B"
   },
   modalContent: {
-    maxHeight: 400,
+    maxHeight: 400
   },
   carrierItem: {
     paddingVertical: 16,
     paddingHorizontal: 20,
     borderBottomWidth: 1,
-    borderBottomColor: "#E5E5E5",
+    borderBottomColor: "#E5E5E5"
   },
   carrierItemText: {
     fontSize: 16,
     fontWeight: "400",
-    color: "#2B2B2B",
+    color: "#2B2B2B"
   },
   welcomeTitle: {
     fontSize: 30,
@@ -1471,22 +1348,22 @@ const styles = StyleSheet.create({
     color: "#2B2B2B",
     lineHeight: 36,
     letterSpacing: -1.2,
-    marginBottom: 10,
+    marginBottom: 10
   },
   welcomeSubtitle: {
     fontSize: 14,
     fontWeight: "400",
     color: "#2B2B2B",
     lineHeight: 18,
-    letterSpacing: -0.56,
+    letterSpacing: -0.56
   },
   allTermsSection: {
-    marginBottom: 20,
+    marginBottom: 20
   },
   allTermsItem: {
     flexDirection: "row",
     alignItems: "center",
-    paddingVertical: 12,
+    paddingVertical: 12
   },
   allTermsText: {
     fontSize: 14,
@@ -1494,26 +1371,26 @@ const styles = StyleSheet.create({
     color: "#2B2B2B",
     lineHeight: 18,
     letterSpacing: -0.56,
-    marginLeft: 10,
+    marginLeft: 10
   },
   divider: {
     height: 1,
     backgroundColor: "#D6DADF",
-    marginVertical: 10,
+    marginVertical: 10
   },
   termsListSection: {
-    marginBottom: 20,
+    marginBottom: 20
   },
   termsItem: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingVertical: 12,
+    paddingVertical: 12
   },
   termsCheckboxContainer: {
     flexDirection: "row",
     alignItems: "center",
-    flex: 1,
+    flex: 1
   },
   termsText: {
     fontSize: 14,
@@ -1522,29 +1399,29 @@ const styles = StyleSheet.create({
     lineHeight: 18,
     letterSpacing: -0.56,
     marginLeft: 10,
-    flex: 1,
+    flex: 1
   },
   termsDetailButton: {
-    padding: 4,
+    padding: 4
   },
   privacyNoticeSection: {
-    marginTop: 20,
+    marginTop: 20
   },
   privacyNoticeText: {
     fontSize: 12,
     fontWeight: "400",
     color: "#2B2B2B",
     lineHeight: 18,
-    letterSpacing: -0.48,
+    letterSpacing: -0.48
   },
   passwordValidationSection: {
     marginTop: 20,
-    gap: 8,
+    gap: 8
   },
   validationItem: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 8,
+    gap: 8
   },
   validationIcon: {
     width: 18,
@@ -1552,20 +1429,20 @@ const styles = StyleSheet.create({
     borderRadius: 9,
     backgroundColor: "#D6DADF",
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "center"
   },
   validationIconValid: {
-    backgroundColor: "#B48327",
+    backgroundColor: "#B48327"
   },
   validationText: {
     fontSize: 12,
     fontWeight: "400",
     color: "#B1B8C0",
     lineHeight: 18,
-    letterSpacing: -0.48,
+    letterSpacing: -0.48
   },
   validationTextValid: {
-    color: "#B48327",
+    color: "#B48327"
   },
   termsContentText: {
     fontSize: 14,
@@ -1574,59 +1451,38 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     letterSpacing: -0.56,
     paddingHorizontal: 20,
-    paddingBottom: 20,
+    paddingBottom: 20
   },
   // 주민등록번호 입력 관련 스타일
   residentNumberContainer: {
     flexDirection: "row",
     alignItems: "center",
-    paddingVertical: 12,
+    paddingVertical: 12
   },
   residentNumberInput: {
     fontSize: 18,
     fontWeight: "700",
     color: "#2B2B2B",
     textAlign: "left",
-    minWidth: 100,
+    minWidth: 100
   },
   hyphenText: {
     fontSize: 18,
     fontWeight: "700",
     color: "#2B2B2B",
-    marginHorizontal: 8,
+    marginHorizontal: 8
   },
   residentNumberBackInput: {
     fontSize: 18,
     fontWeight: "700",
     color: "#2B2B2B",
     textAlign: "center",
-    width: 20,
+    width: 20
   },
   maskingText: {
     fontSize: 18,
     fontWeight: "700",
     color: "#B1B8C0",
-    marginLeft: 4,
-  },
-  // Timer 관련 스타일 (AuthenticationScreen에서 가져옴)
-  timerContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginTop: 16,
-    paddingHorizontal: 24,
-  },
-  timerLabel: {
-    fontSize: 16,
-    fontWeight: "700",
-    color: "#505866",
-    marginRight: 10,
-  },
-  timerText: {
-    fontSize: 16,
-    fontWeight: "700",
-    color: "#2B2B2B",
-  },
-  timerWarning: {
-    color: "#FF3A4A",
-  },
+    marginLeft: 4
+  }
 });

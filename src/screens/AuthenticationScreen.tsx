@@ -2,7 +2,18 @@ import React, { useState, useEffect, useCallback } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView } from "react-native";
 import { CommonLayout } from "../components/CommonLayout";
 import { Ionicons } from "@expo/vector-icons";
-import { authCommonStyles, Timer, useAuthTimer, EmailInput, AuthResultStep } from "../components/AuthCommon";
+import {
+  authCommonStyles,
+  Timer,
+  useAuthTimer,
+  EmailInput,
+  EmailInputWithButton,
+  AuthResultStep,
+  PhoneInput,
+  VerificationInput,
+  usePhoneAutoSend,
+  usePhoneVerificationStep
+} from "../components/AuthCommon";
 
 interface AuthenticationProps {
   onBackPress?: () => void;
@@ -31,6 +42,9 @@ interface AuthenticationData {
     isVerificationCompleted: boolean;
     timeRemaining: number;
     isTimerActive: boolean;
+    showEmailInput: boolean;
+    isEmailCodeSent: boolean;
+    isEmailVerificationCompleted: boolean;
   };
   result: {
     foundUserId: string;
@@ -53,7 +67,10 @@ const initialData: AuthenticationData = {
     isVerificationSent: false,
     isVerificationCompleted: false,
     timeRemaining: 180,
-    isTimerActive: false
+    isTimerActive: false,
+    showEmailInput: false,
+    isEmailCodeSent: false,
+    isEmailVerificationCompleted: false
   },
   result: {
     foundUserId: "",
@@ -88,22 +105,6 @@ const message = {
   }
 };
 
-// 공통 컴포넌트들
-interface PhoneInputProps {
-  value: string;
-  onChangeText: (text: string) => void;
-  onSendCode: () => void;
-  disabled: boolean;
-  isVerificationSent: boolean;
-}
-
-interface VerificationInputProps {
-  value: string;
-  onChangeText: (text: string) => void;
-  onVerify: () => void;
-  isVerificationCompleted: boolean;
-}
-
 export const AuthenticationScreen: React.FC<AuthenticationProps> = ({ onBackPress, onSuccess, mode = "findId", params = {} }) => {
   const [data, setData] = useState<AuthenticationData>(() => ({
     ...initialData,
@@ -113,73 +114,6 @@ export const AuthenticationScreen: React.FC<AuthenticationProps> = ({ onBackPres
       password: params?.password || ""
     }
   }));
-
-  const PhoneInput = useCallback<React.FC<PhoneInputProps>>(
-    ({ value, onChangeText, onSendCode, disabled, isVerificationSent }) => (
-      <View style={authCommonStyles.inputContainer}>
-        <Text style={authCommonStyles.inputLabel}>휴대전화 번호</Text>
-        <View style={authCommonStyles.phoneInputContainer}>
-          <TextInput
-            key="phone-input"
-            style={authCommonStyles.phoneInput}
-            placeholder="(-)제외하고 숫자만 입력"
-            placeholderTextColor="#B1B8C0"
-            value={value}
-            onChangeText={onChangeText}
-            keyboardType="phone-pad"
-            blurOnSubmit={false}
-            autoCorrect={false}
-            autoCapitalize="none"
-            showSoftInputOnFocus={false}
-          />
-          <TouchableOpacity
-            style={[authCommonStyles.verifyButton, (!value || isVerificationSent) && authCommonStyles.verifyButtonDisabled]}
-            onPress={onSendCode}
-            disabled={!value || isVerificationSent}
-          >
-            <Text style={authCommonStyles.verifyButtonText}>인증번호 받기</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={authCommonStyles.inputBorder} />
-        {isVerificationSent && <Text style={authCommonStyles.statusMessage}>인증번호가 발송되었습니다.</Text>}
-      </View>
-    ),
-    []
-  );
-
-  const VerificationInput = useCallback<React.FC<VerificationInputProps>>(
-    ({ value, onChangeText, onVerify, isVerificationCompleted }) => (
-      <View style={authCommonStyles.inputContainer}>
-        <Text style={authCommonStyles.inputLabel}>인증번호</Text>
-        <View style={authCommonStyles.verificationInputContainer}>
-          <TextInput
-            key="verification-input"
-            style={authCommonStyles.verificationInput}
-            placeholder="인증번호 입력"
-            placeholderTextColor="#B1B8C0"
-            value={value}
-            onChangeText={onChangeText}
-            keyboardType="number-pad"
-            maxLength={6}
-            blurOnSubmit={false}
-            autoCorrect={false}
-            autoCapitalize="none"
-            showSoftInputOnFocus={false}
-          />
-          <TouchableOpacity
-            style={[authCommonStyles.verifyButton, (!value || isVerificationCompleted) && authCommonStyles.verifyButtonDisabled]}
-            onPress={onVerify}
-            disabled={!value || isVerificationCompleted}
-          >
-            <Text style={authCommonStyles.verifyButtonText}>인증확인</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={authCommonStyles.inputBorder} />
-        {isVerificationCompleted && <Text style={authCommonStyles.statusMessage}>휴대폰 번호 인증이 완료되었습니다.</Text>}
-      </View>
-    ),
-    []
-  );
 
   const { timeRemaining, isTimerActive, startTimer, stopTimer } = useAuthTimer(180);
 
@@ -220,16 +154,34 @@ export const AuthenticationScreen: React.FC<AuthenticationProps> = ({ onBackPres
     }
   };
 
+  // 휴대폰 자동 발송 훅 사용
+  const { handlePhoneNumberChange, isPhoneNumberValid, isButtonDisabled } = usePhoneAutoSend(
+    data.form.phoneNumber,
+    data.status.isVerificationSent,
+    handleSendVerificationCode
+  );
+
   const handleVerifyCode = () => {
     if (data.form.verificationCode) {
       // 실제로는 API 호출로 인증번호 확인
       console.log("인증번호 확인:", data.form.verificationCode);
       updateStatus({
-        isVerificationCompleted: true
+        isVerificationCompleted: true,
+        showEmailInput: true // 인증번호 확인 후 이메일 입력 필드 노출
       });
       stopTimer();
     }
   };
+
+  // 휴대폰 인증 단계 관리 훅 사용
+  const { shouldShowVerificationInput, shouldShowTimer } = usePhoneVerificationStep(
+    data.form.phoneNumber,
+    data.form.verificationCode,
+    data.status.isCodeSent,
+    data.status.isVerificationCompleted,
+    handleSendVerificationCode,
+    handleVerifyCode
+  );
 
   const handleAuthentication = () => {
     if (mode === "findId") {
@@ -275,8 +227,22 @@ export const AuthenticationScreen: React.FC<AuthenticationProps> = ({ onBackPres
 
   const handleSendEmailLink = () => {
     if (data.form.email) {
-      console.log("이메일 링크 전송:", { email: data.form.email });
-      updateData({ step: "link" });
+      console.log("이메일 인증번호 전송:", { email: data.form.email });
+      updateStatus({
+        isEmailCodeSent: true
+      });
+      startTimer();
+    }
+  };
+
+  const handleVerifyEmailCode = () => {
+    if (data.form.verificationCode) {
+      console.log("이메일 인증번호 확인:", data.form.verificationCode);
+      updateStatus({
+        isEmailVerificationCompleted: true
+      });
+      stopTimer();
+      // 인증 완료 후 현재 화면에 머물면서 링크 전송 완료 정보 표시
     }
   };
 
@@ -305,8 +271,6 @@ export const AuthenticationScreen: React.FC<AuthenticationProps> = ({ onBackPres
         return getTitle();
       case "verification":
         return "인증번호 확인";
-      case "emailInput":
-        return "이메일 주소 입력";
       case "link":
         return "링크 전송 완료";
       case "result":
@@ -317,10 +281,15 @@ export const AuthenticationScreen: React.FC<AuthenticationProps> = ({ onBackPres
   };
 
   // AuthHeader 컴포넌트를 내부에 정의
-  const AuthHeader: React.FC<{ title: string; subtitle?: string }> = ({ title, subtitle = "가입하신 휴대폰 번호를 입력해주세요." }) => (
+  const AuthHeader: React.FC<{ title: string; subtitle?: string; inputType?: "phone" | "email" }> = ({
+    title,
+    subtitle = "가입하신 휴대폰 번호를 입력해주세요.",
+    inputType = "phone"
+  }) => (
     <View style={authCommonStyles.headerSection}>
       <Text style={authCommonStyles.title}>{title}</Text>
-      <Text style={authCommonStyles.title}>휴대폰 인증을 해주세요</Text>
+      {inputType === "phone" && <Text style={authCommonStyles.title}>휴대폰 인증을 해주세요</Text>}
+      {inputType === "email" && <Text style={authCommonStyles.title}>이메일 인증을 해주세요</Text>}
       {subtitle && <Text style={authCommonStyles.subtitle}>{subtitle}</Text>}
     </View>
   );
@@ -332,22 +301,27 @@ export const AuthenticationScreen: React.FC<AuthenticationProps> = ({ onBackPres
       <View style={authCommonStyles.inputSection}>
         <PhoneInput
           value={data.form.phoneNumber}
-          onChangeText={(text) => updateForm({ phoneNumber: text })}
+          onChangeText={(text) => {
+            const limitedText = handlePhoneNumberChange(text);
+            updateForm({ phoneNumber: limitedText });
+          }}
           onSendCode={handleSendVerificationCode}
-          disabled={!data.form.phoneNumber}
+          disabled={isButtonDisabled}
           isVerificationSent={data.status.isVerificationSent}
         />
 
-        <VerificationInput
-          value={data.form.verificationCode}
-          onChangeText={(text) => updateForm({ verificationCode: text })}
-          onVerify={handleVerifyCode}
-          isVerificationCompleted={data.status.isVerificationCompleted}
-        />
+        {shouldShowVerificationInput && (
+          <VerificationInput
+            value={data.form.verificationCode}
+            onChangeText={(text) => updateForm({ verificationCode: text })}
+            onVerify={handleVerifyCode}
+            isVerificationCompleted={data.status.isVerificationCompleted}
+          />
+        )}
 
-        <Timer timeRemaining={timeRemaining} isTimerActive={isTimerActive} />
+        {shouldShowTimer && <Timer timeRemaining={timeRemaining} isTimerActive={isTimerActive} />}
 
-        {mode === "resetPassword" && (
+        {mode === "resetPassword" && data.status.showEmailInput && (
           <View style={authCommonStyles.inputContainer}>
             <Text style={authCommonStyles.inputLabel}>아이디(이메일)</Text>
             <TextInput
@@ -419,32 +393,45 @@ export const AuthenticationScreen: React.FC<AuthenticationProps> = ({ onBackPres
   );
   const renderEmailInputStep = () => (
     <View style={[authCommonStyles.container, { paddingBottom: 120 }]}>
-      <AuthHeader title="이메일 주소 입력" subtitle="가입하신 이메일 주소를\n입력해주세요." />
+      <AuthHeader
+        title={data.status.isEmailCodeSent ? "인증번호를 입력해주세요" : "가입하신 아이디를 찾기 위해"}
+        subtitle={data.status.isEmailCodeSent ? "이메일로 전송된 인증번호를 입력해주세요." : "가입하신 이메일 주소를 입력해주세요."}
+        inputType="email"
+      />
 
       <View style={authCommonStyles.inputSection}>
-        <EmailInput value={data.form.email} onChangeText={(text) => updateForm({ email: text })} />
+        <EmailInputWithButton
+          value={data.form.email}
+          onChangeText={(text) => updateForm({ email: text })}
+          onSendCode={handleSendEmailLink}
+          isVerificationSent={data.status.isEmailCodeSent}
+          buttonText={"인증번호 받기"}
+        />
+
+        {data.status.isEmailCodeSent && (
+          <>
+            <VerificationInput
+              value={data.form.verificationCode}
+              onChangeText={(text) => updateForm({ verificationCode: text })}
+              onVerify={handleVerifyEmailCode}
+              isVerificationCompleted={data.status.isEmailVerificationCompleted}
+            />
+            {!data.status.isEmailVerificationCompleted && <Timer timeRemaining={timeRemaining} isTimerActive={isTimerActive} />}
+            {/* {renderEmailDescription()} */}
+          </>
+        )}
       </View>
     </View>
   );
 
-  const renderLinkStep = () => (
-    <View style={[styles.container, { paddingBottom: 120 }]}>
-      <View style={styles.headerSection}>
-        <Text style={styles.title}>링크 전송 완료</Text>
-        <Text style={styles.subtitle}>아이디 찾기 링크가{"\n"}이메일로 전송되었습니다.</Text>
+  const renderEmailDescription = () => (
+    <View style={styles.linkInfoRow}>
+      <View style={styles.linkIconContainer}>
+        <Ionicons name="mail-outline" size={24} color="#B48327" />
       </View>
-
-      <View style={styles.linkInfoSection}>
-        <View style={styles.linkInfoCard}>
-          <View style={styles.linkIconContainer}>
-            <Ionicons name="mail-outline" size={32} color="#B48327" />
-          </View>
-          <Text style={styles.linkInfoTitle}>이메일을 확인해주세요</Text>
-          <Text style={styles.linkInfoSubtitle}>
-            입력하신 이메일 주소로{"\n"}
-            아이디 찾기 링크가 전송되었습니다.
-          </Text>
-        </View>
+      <View style={styles.linkInfoTextContainer}>
+        <Text style={styles.linkInfoTitle}>이메일을 확인해주세요</Text>
+        <Text style={styles.linkInfoSubtitle}>입력하신 이메일 주소로 인증번호가 전송되었습니다.</Text>
       </View>
     </View>
   );
@@ -472,23 +459,33 @@ export const AuthenticationScreen: React.FC<AuthenticationProps> = ({ onBackPres
               onPress: handleAuthentication,
               disabled:
                 mode === "resetPassword"
-                  ? !data.status.isVerificationSent || !data.status.isVerificationCompleted || !data.form.id
+                  ? !data.status.isVerificationSent || !data.status.isVerificationCompleted || (data.status.showEmailInput && !data.form.id)
                   : !data.status.isVerificationSent || !data.status.isVerificationCompleted
             }
           ];
         }
       case "emailInput":
-        return [
-          {
-            text: "뒤로가기",
-            onPress: handleBackToInput
-          },
-          {
-            text: "링크 전송하기",
-            onPress: handleSendEmailLink,
-            disabled: !data.form.email
-          }
-        ];
+        if (data.status.isEmailVerificationCompleted) {
+          return [
+            {
+              text: "다음",
+              onPress: () => {
+                // 비밀번호 재설정 화면으로 이동
+                const result = {
+                  mode: "resetPassword",
+                  form: {
+                    ...data.form,
+                    id: data.form.email // 이메일을 아이디로 사용
+                  },
+                  action: "navigateToResetPassword",
+                  foundUserId: data.form.email
+                };
+                onSuccess?.(result);
+              }
+            }
+          ];
+        }
+        return []; // EmailInputWithButton에서 버튼을 처리하므로 하단 버튼 불필요
       case "link":
         return [
           {
@@ -775,27 +772,39 @@ const styles = StyleSheet.create({
     borderColor: "#E5E5E5",
     width: "100%"
   },
+  linkInfoRow: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    backgroundColor: "#F8F9FA",
+    borderRadius: 12,
+    padding: 16,
+    marginTop: 20,
+    borderWidth: 1,
+    borderColor: "#E5E5E5"
+  },
   linkIconContainer: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
     backgroundColor: "#FFF3E0",
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 24
+    marginRight: 12
+  },
+  linkInfoTextContainer: {
+    flex: 1
   },
   linkInfoTitle: {
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: "700",
     color: "#2B2B2B",
     marginBottom: 12,
-    textAlign: "center"
+    textAlign: "left"
   },
   linkInfoSubtitle: {
-    fontSize: 16,
     fontWeight: "400",
     color: "#505866",
-    textAlign: "center",
+    textAlign: "left",
     lineHeight: 24
   },
   linkActionsSection: {
