@@ -475,8 +475,14 @@ export const VerificationInput: React.FC<VerificationInputProps> = ({ value, onC
   </View>
 );
 
+export enum PasswordInputMode {
+  INPUT = "input",
+  CONFIRM = "confirm"
+}
+
 // 비밀번호 입력 관련 인터페이스
 export interface PasswordInputProps {
+  mode: PasswordInputMode;
   value: string;
   onChangeText: (text: string) => void;
   placeholder?: string;
@@ -487,12 +493,14 @@ export interface PasswordInputProps {
 }
 
 export interface PasswordValidationProps {
+  mode: PasswordInputMode;
   password: string;
   confirmPassword?: string;
 }
 
 // 비밀번호 입력 컴포넌트
 export const PasswordInput: React.FC<PasswordInputProps> = ({
+  mode,
   value,
   onChangeText,
   placeholder = "비밀번호 입력",
@@ -502,7 +510,7 @@ export const PasswordInput: React.FC<PasswordInputProps> = ({
   onSubmitEditing
 }) => (
   <View style={authCommonStyles.inputContainer}>
-    <Text style={authCommonStyles.inputLabel}>{placeholder.replace("입력", "")}</Text>
+    <Text style={authCommonStyles.inputLabel}>{mode === PasswordInputMode.INPUT ? "비밀번호" : "비밀번호 확인"}</Text>
     <View style={authCommonStyles.passwordInputContainer}>
       <TextInput
         style={authCommonStyles.passwordInput}
@@ -528,11 +536,26 @@ export const PasswordInput: React.FC<PasswordInputProps> = ({
 );
 
 // 비밀번호 유효성 검사 컴포넌트
-export const PasswordValidation: React.FC<PasswordValidationProps> = ({ password, confirmPassword }) => {
+export const PasswordValidation: React.FC<PasswordValidationProps> = ({ mode, password, confirmPassword }) => {
   const hasLength = password.length >= 8 && password.length <= 20;
   const hasComplexity = /[A-Z]/.test(password) && /[a-z]/.test(password) && /\d/.test(password) && /[!@#$%^&*(),.?":{}|<>]/.test(password);
   const isMatch = confirmPassword ? password === confirmPassword : false;
 
+  // confirmPassword가 있으면 비밀번호 일치 검증만 표시
+  if (mode === PasswordInputMode.CONFIRM) {
+    return (
+      <View style={authCommonStyles.validationSection}>
+        <View style={authCommonStyles.validationItem}>
+          <View style={authCommonStyles.validationIcon}>
+            <Ionicons name={"checkmark"} size={18} color={isMatch ? "#B48327" : "#B1B8C0"} />
+          </View>
+          <Text style={[authCommonStyles.validationText, isMatch && authCommonStyles.validationTextActive]}>비밀번호 일치</Text>
+        </View>
+      </View>
+    );
+  }
+
+  // confirmPassword가 없으면 비밀번호 복잡도 검증만 표시
   return (
     <View style={authCommonStyles.validationSection}>
       <View style={authCommonStyles.validationItem}>
@@ -547,14 +570,6 @@ export const PasswordValidation: React.FC<PasswordValidationProps> = ({ password
         </View>
         <Text style={[authCommonStyles.validationText, hasComplexity && authCommonStyles.validationTextActive]}>대소문자,숫자,특수문자 포함</Text>
       </View>
-      {confirmPassword && (
-        <View style={authCommonStyles.validationItem}>
-          <View style={authCommonStyles.validationIcon}>
-            <Ionicons name={"checkmark"} size={18} color={isMatch ? "#B48327" : "#B1B8C0"} />
-          </View>
-          <Text style={[authCommonStyles.validationText, isMatch && authCommonStyles.validationTextActive]}>비밀번호 일치</Text>
-        </View>
-      )}
     </View>
   );
 };

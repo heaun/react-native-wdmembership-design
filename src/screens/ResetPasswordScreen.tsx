@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView } from 
 import { CommonLayout } from "../components/CommonLayout";
 import { Ionicons } from "@expo/vector-icons";
 import { AuthResultStep, PasswordInput, PasswordValidation } from "../components/AuthCommon";
+import { PasswordInputMode } from "../components/AuthCommon";
 
 interface ResetPasswordScreenProps {
   onBackPress?: () => void;
@@ -127,6 +128,7 @@ export const ResetPasswordScreen: React.FC<ResetPasswordScreenProps> = ({ onBack
               </View>
 
               <PasswordInput
+                mode={PasswordInputMode.INPUT}
                 value={data.form.newPassword}
                 onChangeText={(text) => updateForm({ newPassword: text })}
                 placeholder="비밀번호 입력"
@@ -134,9 +136,10 @@ export const ResetPasswordScreen: React.FC<ResetPasswordScreenProps> = ({ onBack
                 onTogglePassword={() => updateStatus({ showPassword: !data.status.showPassword })}
                 returnKeyType="next"
               />
-              <PasswordValidation password={data.form.newPassword} />
+              <PasswordValidation mode={PasswordInputMode.INPUT} password={data.form.newPassword} />
 
               <PasswordInput
+                mode={PasswordInputMode.CONFIRM}
                 value={data.form.confirmPassword}
                 onChangeText={(text) => updateForm({ confirmPassword: text })}
                 placeholder="비밀번호 확인"
@@ -144,7 +147,7 @@ export const ResetPasswordScreen: React.FC<ResetPasswordScreenProps> = ({ onBack
                 onTogglePassword={() => updateStatus({ showConfirmPassword: !data.status.showConfirmPassword })}
                 returnKeyType="done"
               />
-              <PasswordValidation password={data.form.newPassword} confirmPassword={data.form.confirmPassword} />
+              <PasswordValidation mode={PasswordInputMode.CONFIRM} password={data.form.newPassword} confirmPassword={data.form.confirmPassword} />
             </View>
           </View>
         ) : (

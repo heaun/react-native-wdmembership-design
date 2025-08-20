@@ -13,6 +13,7 @@ import {
   PasswordInput,
   PasswordValidation
 } from "../components/AuthCommon";
+import { PasswordInputMode } from "../components/AuthCommon";
 
 interface SignUpScreenProps {
   onBackPress?: () => void;
@@ -805,6 +806,7 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
 
         <View style={styles.inputSection}>
           <PasswordInput
+            mode={PasswordInputMode.INPUT}
             value={data.form.password}
             onChangeText={handlePasswordChange}
             placeholder="비밀번호 입력"
@@ -812,9 +814,10 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
             onTogglePassword={() => updateStatus({ showPassword: !data.status.showPassword })}
             returnKeyType="next"
           />
-          <PasswordValidation password={data.form.password} />
+          <PasswordValidation mode={PasswordInputMode.INPUT} password={data.form.password} />
 
           <PasswordInput
+            mode={PasswordInputMode.CONFIRM}
             value={data.form.confirmPassword}
             onChangeText={handleConfirmPasswordChange}
             placeholder="비밀번호 확인"
@@ -822,7 +825,7 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
             onTogglePassword={() => updateStatus({ showConfirmPassword: !data.status.showConfirmPassword })}
             returnKeyType="done"
           />
-          <PasswordValidation password={data.form.password} confirmPassword={data.form.confirmPassword} />
+          <PasswordValidation mode={PasswordInputMode.CONFIRM} password={data.form.password} confirmPassword={data.form.confirmPassword} />
         </View>
       </View>
     );
