@@ -7,17 +7,23 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		01BF20CE05434A2680E19A07 /* NanumMyeongjoBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AC33BA5920F44896AF426679 /* NanumMyeongjoBold.ttf */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		35DFA184002203F3E390B9DA /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755116E1D0DBEF6F6DAE2080 /* ExpoModulesProvider.swift */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
+		473F1EF5F28441BF9DCA0D95 /* NanumMyeongjoExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EF9A4D0BBD0449EEB026854F /* NanumMyeongjoExtraBold.ttf */; };
+		98AA79AB75674B1788602263 /* NanumMyeongjoBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = EEC71F5E49034BD2B6F05EB3 /* NanumMyeongjoBold.otf */; };
 		AAAEE684F8A426450A67790E /* libPods-WDMembershipApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 75B9ADD112B4A8A8802CF586 /* libPods-WDMembershipApp.a */; };
-		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
-		E95C034E1015425CA7CDAC73 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 3B8367C37B0E3255946F0EFC /* PrivacyInfo.xcprivacy */; };
-		F11748422D0307B40044C1D9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11748412D0307B40044C1D9 /* AppDelegate.swift */; };
 		B8E9D88616F546CAAFA4CFE9 /* NanumSquareNeo-aLt.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A2F5C5C7C96A4335AA13A083 /* NanumSquareNeo-aLt.ttf */; };
-		E8F8804157A74CD186C057DE /* NanumSquareNeo-bRg.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 581935325AA643218A36D946 /* NanumSquareNeo-bRg.ttf */; };
-		F0835DA245104E879F5886DB /* NanumSquareNeo-cBd.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4EB56F9D286B4C6CA3403D1B /* NanumSquareNeo-cBd.ttf */; };
+		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
 		C1D5285419584AF1A2D2C8C3 /* NanumSquareNeo-dEb.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5BEBC701E74649F49A7707DE /* NanumSquareNeo-dEb.ttf */; };
+		CDCA25B7E2544E1183D4E100 /* NanumMyeongjo.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2511698A570B48B9AE1208E5 /* NanumMyeongjo.otf */; };
+		E8F8804157A74CD186C057DE /* NanumSquareNeo-bRg.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 581935325AA643218A36D946 /* NanumSquareNeo-bRg.ttf */; };
+		E95C034E1015425CA7CDAC73 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 3B8367C37B0E3255946F0EFC /* PrivacyInfo.xcprivacy */; };
+		F0835DA245104E879F5886DB /* NanumSquareNeo-cBd.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4EB56F9D286B4C6CA3403D1B /* NanumSquareNeo-cBd.ttf */; };
+		F11748422D0307B40044C1D9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11748412D0307B40044C1D9 /* AppDelegate.swift */; };
+		F1526C8E2F5E47DD86240E42 /* NanumMyeongjoExtraBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 978D043D55BB451798EDEE68 /* NanumMyeongjoExtraBold.otf */; };
+		F48E9A072A71469EA345B3E1 /* NanumMyeongjo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B9E6EAF025D24567BADA7DBF /* NanumMyeongjo.ttf */; };
 		FDB5F26EF4DB46F498F28FE8 /* NanumSquareNeo-eHv.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 61EB9763790A42A0B8211518 /* NanumSquareNeo-eHv.ttf */; };
 /* End PBXBuildFile section */
 
@@ -25,21 +31,27 @@
 		13B07F961A680F5B00A75B9A /* WDMembershipApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WDMembershipApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = WDMembershipApp/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = WDMembershipApp/Info.plist; sourceTree = "<group>"; };
+		2511698A570B48B9AE1208E5 /* NanumMyeongjo.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = NanumMyeongjo.otf; path = ./assets/fonts/NanumMyeongjo.otf; sourceTree = "<group>"; };
 		301BE2E54033A901B266867C /* Pods-WDMembershipApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WDMembershipApp.debug.xcconfig"; path = "Target Support Files/Pods-WDMembershipApp/Pods-WDMembershipApp.debug.xcconfig"; sourceTree = "<group>"; };
 		349E80181CA7BDCB149DCBAE /* Pods-WDMembershipApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WDMembershipApp.release.xcconfig"; path = "Target Support Files/Pods-WDMembershipApp/Pods-WDMembershipApp.release.xcconfig"; sourceTree = "<group>"; };
 		3B8367C37B0E3255946F0EFC /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = WDMembershipApp/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		4EB56F9D286B4C6CA3403D1B /* NanumSquareNeo-cBd.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "NanumSquareNeo-cBd.ttf"; path = "./assets/fonts/NanumSquareNeo-cBd.ttf"; sourceTree = "<group>"; };
+		581935325AA643218A36D946 /* NanumSquareNeo-bRg.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "NanumSquareNeo-bRg.ttf"; path = "./assets/fonts/NanumSquareNeo-bRg.ttf"; sourceTree = "<group>"; };
+		5BEBC701E74649F49A7707DE /* NanumSquareNeo-dEb.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "NanumSquareNeo-dEb.ttf"; path = "./assets/fonts/NanumSquareNeo-dEb.ttf"; sourceTree = "<group>"; };
+		61EB9763790A42A0B8211518 /* NanumSquareNeo-eHv.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "NanumSquareNeo-eHv.ttf"; path = "./assets/fonts/NanumSquareNeo-eHv.ttf"; sourceTree = "<group>"; };
 		755116E1D0DBEF6F6DAE2080 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-WDMembershipApp/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 		75B9ADD112B4A8A8802CF586 /* libPods-WDMembershipApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-WDMembershipApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		978D043D55BB451798EDEE68 /* NanumMyeongjoExtraBold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = NanumMyeongjoExtraBold.otf; path = ./assets/fonts/NanumMyeongjoExtraBold.otf; sourceTree = "<group>"; };
+		A2F5C5C7C96A4335AA13A083 /* NanumSquareNeo-aLt.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "NanumSquareNeo-aLt.ttf"; path = "./assets/fonts/NanumSquareNeo-aLt.ttf"; sourceTree = "<group>"; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = WDMembershipApp/SplashScreen.storyboard; sourceTree = "<group>"; };
+		AC33BA5920F44896AF426679 /* NanumMyeongjoBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = NanumMyeongjoBold.ttf; path = ./assets/fonts/NanumMyeongjoBold.ttf; sourceTree = "<group>"; };
+		B9E6EAF025D24567BADA7DBF /* NanumMyeongjo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = NanumMyeongjo.ttf; path = ./assets/fonts/NanumMyeongjo.ttf; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		EEC71F5E49034BD2B6F05EB3 /* NanumMyeongjoBold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = NanumMyeongjoBold.otf; path = ./assets/fonts/NanumMyeongjoBold.otf; sourceTree = "<group>"; };
+		EF9A4D0BBD0449EEB026854F /* NanumMyeongjoExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = NanumMyeongjoExtraBold.ttf; path = ./assets/fonts/NanumMyeongjoExtraBold.ttf; sourceTree = "<group>"; };
 		F11748412D0307B40044C1D9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = WDMembershipApp/AppDelegate.swift; sourceTree = "<group>"; };
 		F11748442D0722820044C1D9 /* WDMembershipApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "WDMembershipApp-Bridging-Header.h"; path = "WDMembershipApp/WDMembershipApp-Bridging-Header.h"; sourceTree = "<group>"; };
-		A2F5C5C7C96A4335AA13A083 /* NanumSquareNeo-aLt.ttf */ = {isa = PBXFileReference; name = "NanumSquareNeo-aLt.ttf"; path = "../src/assets/fonts/NanumSquareNeo-aLt.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		581935325AA643218A36D946 /* NanumSquareNeo-bRg.ttf */ = {isa = PBXFileReference; name = "NanumSquareNeo-bRg.ttf"; path = "../src/assets/fonts/NanumSquareNeo-bRg.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		4EB56F9D286B4C6CA3403D1B /* NanumSquareNeo-cBd.ttf */ = {isa = PBXFileReference; name = "NanumSquareNeo-cBd.ttf"; path = "../src/assets/fonts/NanumSquareNeo-cBd.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		5BEBC701E74649F49A7707DE /* NanumSquareNeo-dEb.ttf */ = {isa = PBXFileReference; name = "NanumSquareNeo-dEb.ttf"; path = "../src/assets/fonts/NanumSquareNeo-dEb.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		61EB9763790A42A0B8211518 /* NanumSquareNeo-eHv.ttf */ = {isa = PBXFileReference; name = "NanumSquareNeo-eHv.ttf"; path = "../src/assets/fonts/NanumSquareNeo-eHv.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,6 +136,25 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		AF5C9555C1E14C47B2361D05 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A2F5C5C7C96A4335AA13A083 /* NanumSquareNeo-aLt.ttf */,
+				581935325AA643218A36D946 /* NanumSquareNeo-bRg.ttf */,
+				4EB56F9D286B4C6CA3403D1B /* NanumSquareNeo-cBd.ttf */,
+				5BEBC701E74649F49A7707DE /* NanumSquareNeo-dEb.ttf */,
+				61EB9763790A42A0B8211518 /* NanumSquareNeo-eHv.ttf */,
+				2511698A570B48B9AE1208E5 /* NanumMyeongjo.otf */,
+				EEC71F5E49034BD2B6F05EB3 /* NanumMyeongjoBold.otf */,
+				978D043D55BB451798EDEE68 /* NanumMyeongjoExtraBold.otf */,
+				B9E6EAF025D24567BADA7DBF /* NanumMyeongjo.ttf */,
+				AC33BA5920F44896AF426679 /* NanumMyeongjoBold.ttf */,
+				EF9A4D0BBD0449EEB026854F /* NanumMyeongjoExtraBold.ttf */,
+			);
+			name = Resources;
+			path = "";
+			sourceTree = "<group>";
+		};
 		BB2F792B24A3F905000567C9 /* Supporting */ = {
 			isa = PBXGroup;
 			children = (
@@ -142,19 +173,6 @@
 			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
-		};
-		AF5C9555C1E14C47B2361D05 /* Resources */ = {
-			isa = "PBXGroup";
-			children = (
-				A2F5C5C7C96A4335AA13A083 /* NanumSquareNeo-aLt.ttf */,
-				581935325AA643218A36D946 /* NanumSquareNeo-bRg.ttf */,
-				4EB56F9D286B4C6CA3403D1B /* NanumSquareNeo-cBd.ttf */,
-				5BEBC701E74649F49A7707DE /* NanumSquareNeo-dEb.ttf */,
-				61EB9763790A42A0B8211518 /* NanumSquareNeo-eHv.ttf */,
-			);
-			name = Resources;
-			sourceTree = "<group>";
-			path = "";
 		};
 /* End PBXGroup section */
 
@@ -226,6 +244,12 @@
 				F0835DA245104E879F5886DB /* NanumSquareNeo-cBd.ttf in Resources */,
 				C1D5285419584AF1A2D2C8C3 /* NanumSquareNeo-dEb.ttf in Resources */,
 				FDB5F26EF4DB46F498F28FE8 /* NanumSquareNeo-eHv.ttf in Resources */,
+				CDCA25B7E2544E1183D4E100 /* NanumMyeongjo.otf in Resources */,
+				98AA79AB75674B1788602263 /* NanumMyeongjoBold.otf in Resources */,
+				F1526C8E2F5E47DD86240E42 /* NanumMyeongjoExtraBold.otf in Resources */,
+				F48E9A072A71469EA345B3E1 /* NanumMyeongjo.ttf in Resources */,
+				01BF20CE05434A2680E19A07 /* NanumMyeongjoBold.ttf in Resources */,
+				473F1EF5F28441BF9DCA0D95 /* NanumMyeongjoExtraBold.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

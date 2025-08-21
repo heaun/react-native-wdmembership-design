@@ -34,7 +34,7 @@ export const MembershipVerificationScreen: React.FC<MembershipVerificationScreen
         {/* QR Code Section */}
         <View style={styles.qrCodeSection}>
           <View style={styles.qrCodeContainer}>
-            <Image source={require("../assets/membership/qr-code.png")} style={styles.qrCode} resizeMode="cover" />
+            <Image source={require("../../assets/membership/qr-code.png")} style={styles.qrCode} resizeMode="cover" />
           </View>
         </View>
 

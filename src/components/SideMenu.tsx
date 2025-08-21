@@ -294,7 +294,7 @@ export const SideMenu: React.FC<SideMenuProps> = ({ visible, onClose, onMenuItem
 
         {item.hasChevron && !isToggle && (
           <View style={styles.chevronContainer}>
-            <Image source={require("../assets/icons/ic-chevron-right.png")} style={styles.chevron} />
+            <Image source={require("../../assets/icons/ic-chevron-right.png")} style={styles.chevron} />
           </View>
         )}
       </TouchableOpacity>
@@ -318,7 +318,7 @@ export const SideMenu: React.FC<SideMenuProps> = ({ visible, onClose, onMenuItem
                 <LabelText style={styles.closeIcon}>✕</LabelText>
               </TouchableOpacity>
               <TouchableOpacity style={styles.settingsButton}>
-                <Image source={require("../assets/icons/ic-side-menu-setting.png")} style={styles.settingsIcon} />
+                <Image source={require("../../assets/icons/ic-side-menu-setting.png")} style={styles.settingsIcon} />
               </TouchableOpacity>
             </View>
 

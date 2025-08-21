@@ -45,7 +45,7 @@ export const UserMembershipInfoScreen: React.FC<UserMembershipInfoScreenProps> =
       annualFee: "10,000,000 원",
       returnType: "10년 반환형",
       familyDiscount: "가족형(기명) : 1인 30% DC",
-      cardImage: require("../assets/membership/with-doctors-member.png"),
+      cardImage: require("../../assets/membership/with-doctors-member.png"),
       backgroundColor: "#5C6969",
       benefits: [
         {
@@ -96,7 +96,7 @@ export const UserMembershipInfoScreen: React.FC<UserMembershipInfoScreenProps> =
       annualFee: "별도 협의",
       returnType: "",
       familyDiscount: "",
-      cardImage: require("../assets/membership/ph-1603-residence.png"),
+      cardImage: require("../../assets/membership/ph-1603-residence.png"),
       backgroundColor: "#605B51",
       benefits: [
         {
@@ -133,7 +133,7 @@ export const UserMembershipInfoScreen: React.FC<UserMembershipInfoScreenProps> =
       annualFee: "7,000,000 원",
       returnType: "가족형 (2인 기준) : 150,000,000 원",
       familyDiscount: "가족형 (2인 기준) : 14,000,000 원",
-      cardImage: require("../assets/membership/saint-paul-school.png"),
+      cardImage: require("../../assets/membership/saint-paul-school.png"),
       backgroundColor: "#505F65",
       benefits: [
         {

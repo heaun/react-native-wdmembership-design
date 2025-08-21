@@ -33,7 +33,7 @@ export const MainScreen: React.FC<MainScreenProps> = ({
   const reservations = [
     {
       id: 1,
-      image: require("../assets/main/reservation-1.png"),
+      image: require("../../assets/main/reservation-1.png"),
       badge: "2일전",
       location: "서울시 서초구",
       title: "위드닥터스 케어센터 서초점",
@@ -41,7 +41,7 @@ export const MainScreen: React.FC<MainScreenProps> = ({
     },
     {
       id: 2,
-      image: require("../assets/main/reservation-2.png"),
+      image: require("../../assets/main/reservation-2.png"),
       badge: "5일전",
       location: "서울시 서초구",
       title: "GCC 골프 서초점",
@@ -49,7 +49,7 @@ export const MainScreen: React.FC<MainScreenProps> = ({
     },
     {
       id: 3,
-      image: require("../assets/main/reservation-1.png"),
+      image: require("../../assets/main/reservation-1.png"),
       badge: "6일전",
       location: "서울시 서초구",
       title: "위드닥터스 케어센터 서초점",
@@ -57,7 +57,7 @@ export const MainScreen: React.FC<MainScreenProps> = ({
     },
     {
       id: 4,
-      image: require("../assets/main/reservation-2.png"),
+      image: require("../../assets/main/reservation-2.png"),
       badge: "7일전",
       location: "서울시 서초구",
       title: "GCC 골프 서초점",
@@ -68,21 +68,21 @@ export const MainScreen: React.FC<MainScreenProps> = ({
   const services = [
     {
       id: 1,
-      image: require("../assets/main/service-1.png"),
+      image: require("../../assets/main/service-1.png"),
       location: "서울 서초동",
       title: "마인드앤바디 포 어덜트",
       description: "전문트레이너에게 체계적인 운동을 시작하세요.\n#전신근육강화 #코어근육 #다이어트"
     },
     {
       id: 6,
-      image: require("../assets/main/service-2.png"),
+      image: require("../../assets/main/service-2.png"),
       location: "서울 서대문구",
       title: "에코스 스파",
       description: "단 한 번의 세션으로 두피 건강을 개선하도록 설계된 맞춤형 트리트먼트를 즐기세요."
     },
     {
       id: 5,
-      image: require("../assets/main/service-3.png"),
+      image: require("../../assets/main/service-3.png"),
       location: "서울 종로구",
       title: "GCC 스크린 골프",
       description: "골프입문부터 싱글플레이까지 실력에 맞춘\n전문 프로골프 강사 래슨"
@@ -93,7 +93,7 @@ export const MainScreen: React.FC<MainScreenProps> = ({
     return (
       <TouchableOpacity style={[globalStyles.chevronContainer, style]} onPress={onPress}>
         <LabelText style={globalStyles.chevronText}>{title}</LabelText>
-        <Image source={require("../assets/icons/ic-chevron-right.png")} style={globalStyles.chevron} />
+        <Image source={require("../../assets/icons/ic-chevron-right.png")} style={globalStyles.chevron} />
       </TouchableOpacity>
     );
   };
@@ -115,7 +115,7 @@ export const MainScreen: React.FC<MainScreenProps> = ({
         <View style={[styles.section]}>
           <View style={styles.profileInfoSection}>
             <View style={styles.profileAvatarContainer}>
-              <Image source={require("../assets/main/profile-avatar.png")} style={styles.profileAvatar} />
+              <Image source={require("../../assets/main/profile-avatar.png")} style={styles.profileAvatar} />
               <View style={styles.profileText}>
                 <LabelText style={styles.greeting}>안녕하세요!</LabelText>
                 <LabelText style={styles.userName}>
@@ -131,7 +131,7 @@ export const MainScreen: React.FC<MainScreenProps> = ({
           {/* Membership Card */}
           <View style={styles.membershipCardSection}>
             <View style={styles.membershipCardContainer}>
-              <Image source={require("../assets/main/membership-card.png")} style={styles.cardImage} />
+              <Image source={require("../../assets/main/membership-card.png")} style={styles.cardImage} />
               <View style={styles.cardContainer}>
                 <LabelText style={styles.cardLabel}>My 멤버십</LabelText>
                 <ExtraBoldText style={styles.cardTitle}>PH 1603 RESIDENCE</ExtraBoldText>

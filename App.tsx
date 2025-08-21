@@ -39,13 +39,13 @@ function AppContent() {
   useEffect(() => {
     async function loadFonts() {
       await Font.loadAsync({
-        "NanumSquareNeo-aLt": require("./src/assets/fonts/NanumSquareNeo-aLt.ttf"),
-        "NanumSquareNeo-bRg": require("./src/assets/fonts/NanumSquareNeo-bRg.ttf"),
-        "NanumSquareNeo-cBd": require("./src/assets/fonts/NanumSquareNeo-cBd.ttf"),
-        "NanumSquareNeo-dEb": require("./src/assets/fonts/NanumSquareNeo-dEb.ttf"),
-        "NanumSquareNeo-eHv": require("./src/assets/fonts/NanumSquareNeo-eHv.ttf"),
-        NanumMyeongjo: require("./src/assets/fonts/NanumMyeongjo.ttf"),
-        NanumMyeongjoExtraBold: require("./src/assets/fonts/NanumMyeongjoExtraBold.ttf")
+        "NanumSquareNeo-aLt": require("./assets/fonts/NanumSquareNeo-aLt.ttf"),
+        "NanumSquareNeo-bRg": require("./assets/fonts/NanumSquareNeo-bRg.ttf"),
+        "NanumSquareNeo-cBd": require("./assets/fonts/NanumSquareNeo-cBd.ttf"),
+        "NanumSquareNeo-dEb": require("./assets/fonts/NanumSquareNeo-dEb.ttf"),
+        "NanumSquareNeo-eHv": require("./assets/fonts/NanumSquareNeo-eHv.ttf"),
+        NanumMyeongjo: require("./assets/fonts/NanumMyeongjo.ttf"),
+        NanumMyeongjoExtraBold: require("./assets/fonts/NanumMyeongjoExtraBold.ttf")
       });
       setFontsLoaded(true);
     }

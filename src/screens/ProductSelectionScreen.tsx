@@ -51,28 +51,28 @@ export const ProductSelectionScreen: React.FC<ProductSelectionScreenProps> = ({
       name: "수비드 닭가슴살 셀러드 도시락",
       description: "닭가슴살을 수비드 방식으로 조리한 건강도시락",
       price: 13900,
-      image: require("../assets/products/chicken-salad.png")
+      image: require("../../assets/products/chicken-salad.png")
     },
     {
       id: 2,
       name: "모닝 샌드위치 셋트 메뉴",
       description: "저칼로리, 신선한 재료의 균형잡힌 아침식사",
       price: 12900,
-      image: require("../assets/products/morning-sandwich.png")
+      image: require("../../assets/products/morning-sandwich.png")
     },
     {
       id: 3,
       name: "에그 바게트 샌드위치 도시락 셋트",
       description: "신선한 과일 셀러드와 에그샌드위치의 조합",
       price: 14900,
-      image: require("../assets/products/egg-baguette-73893a.png")
+      image: require("../../assets/products/egg-baguette-73893a.png")
     },
     {
       id: 4,
       name: "씨푸트 샌드위치 셀러드 셋트",
       description: "연어 샌드위치와 해산물 셀러드를 함께",
       price: 10000,
-      image: require("../assets/products/seafood-salad.png")
+      image: require("../../assets/products/seafood-salad.png")
     }
   ];
 

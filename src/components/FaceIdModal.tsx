@@ -46,7 +46,7 @@ export const FaceIdModal: React.FC<FaceIdModalProps> = ({ isVisible, onClose, on
 
           <View style={styles.lottieContainer}>
             <LottieView
-              source={require("../assets/authentication/biometric.json")}
+              source={require("../../assets/authentication/biometric.json")}
               loop
               autoPlay
               style={styles.lottieAnimation}

@@ -56,6 +56,12 @@
 		<string>NanumSquareNeo-cBd.ttf</string>
 		<string>NanumSquareNeo-dEb.ttf</string>
 		<string>NanumSquareNeo-eHv.ttf</string>
+		<string>NanumMyeongjo.otf</string>
+		<string>NanumMyeongjoBold.otf</string>
+		<string>NanumMyeongjoExtraBold.otf</string>
+		<string>NanumMyeongjo.ttf</string>
+		<string>NanumMyeongjoBold.ttf</string>
+		<string>NanumMyeongjoExtraBold.ttf</string>
 	</array>
 </dict>
 </plist>

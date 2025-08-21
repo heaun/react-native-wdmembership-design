@@ -24,7 +24,7 @@ export const CommonModal: React.FC<CommonModalProps> = ({ visible, title, onClos
               </View>
               <View style={styles.rightSide}>
                 <TouchableOpacity onPress={onClose} style={styles.iconButton}>
-                  <Image source={require("../assets/icons/ic_close.png")} style={styles.iconImage} />
+                  <Image source={require("../../assets/icons/ic_close.png")} style={styles.iconImage} />
                 </TouchableOpacity>
               </View>
             </View>

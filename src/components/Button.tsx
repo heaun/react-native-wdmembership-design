@@ -28,7 +28,7 @@ export const ChevronButton: React.FC<ButtonProps> = ({
   return (
     <TouchableOpacity style={[globalStyles.chevronContainer, style]} onPress={onPress}>
       <LabelText style={globalStyles.chevronText}>{title}</LabelText>
-      <Image source={require("../assets/icons/ic-chevron-right.png")} style={globalStyles.chevron} />
+      <Image source={require("../../assets/icons/ic-chevron-right.png")} style={globalStyles.chevron} />
     </TouchableOpacity>
   );
 };

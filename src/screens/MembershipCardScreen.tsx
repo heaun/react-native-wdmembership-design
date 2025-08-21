@@ -54,16 +54,16 @@ export const MembershipCardScreen: React.FC<MembershipCardScreenProps> = ({
     subtitle: "PH1603 레지던스 전용",
     membershipNumber: "9869 4586 2335 3698",
     expiryDate: "2030년 10월 25일 까지",
-    cardImage: require("../assets/membership/card-bg.png"),
+    cardImage: require("../../assets/membership/card-bg.png"),
     backgroundColor: "#4D4132",
-    qrCodeImage: require("../assets/membership/qr-code.png"),
+    qrCodeImage: require("../../assets/membership/qr-code.png"),
     couponCount: 13,
     infoSections: [
       {
         id: "verification",
         title: "멤버십 확인",
         type: "verification",
-        image: require("../assets/membership/qr-code.png"),
+        image: require("../../assets/membership/qr-code.png"),
         onPress: handleQrCodePress
       },
       {

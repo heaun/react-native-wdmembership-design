@@ -112,7 +112,7 @@ export const VehicleManagementScreen: React.FC<VehicleManagementScreenProps> = (
         <TouchableOpacity style={styles.addVehicleCard} onPress={handleAddVehiclePress}>
           <View style={styles.addVehicleContent}>
             <View style={styles.carIconContainer}>
-              <Image source={require("../assets/vehicle/car-icon.png")} style={styles.carIcon} resizeMode="contain" />
+              <Image source={require("../../assets/vehicle/car-icon.png")} style={styles.carIcon} resizeMode="contain" />
             </View>
             <LabelText style={styles.addVehicleTitle}>추가 차량 등록</LabelText>
             <LabelText style={styles.addVehicleDescription}>추가로 등록/이용하실 차량을 등록해 주세요.</LabelText>

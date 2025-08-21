@@ -572,7 +572,7 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
               <SmallText style={styles.cardSubtitle}>휴대폰 인증</SmallText>
             </View>
             <View style={styles.cardIconSection}>
-              <Image source={require("../assets/icons/ic_local.png")} style={styles.ic_local} />
+              <Image source={require("../../assets/icons/ic_local.png")} style={styles.ic_local} />
             </View>
           </View>
         </TouchableOpacity>
@@ -588,7 +588,7 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
               <SmallText style={styles.cardSubtitle}>이메일로 인증</SmallText>
             </View>
             <View style={styles.cardIconSection}>
-              <Image source={require("../assets/icons/ic_foreigner.png")} style={styles.ic_foreign} />
+              <Image source={require("../../assets/icons/ic_foreigner.png")} style={styles.ic_foreign} />
             </View>
           </View>
         </TouchableOpacity>
@@ -648,7 +648,7 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
     return (
       <View style={[styles.container, { paddingBottom: 120 }]}>
         {/* 테스트용 버튼들 */}
-        <View style={{ flexDirection: "row", justifyContent: "space-around", marginBottom: 20 }}>
+        {/* <View style={{ flexDirection: "row", justifyContent: "space-around", marginBottom: 20 }}>
           <TouchableOpacity style={[styles.testButton, data.status.isExistingUser && styles.testButtonActive]} onPress={() => setExistingUser(true)}>
             <Text style={styles.testButtonText}>기존 사용자</Text>
           </TouchableOpacity>
@@ -658,7 +658,7 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
           >
             <Text style={styles.testButtonText}>신규 사용자</Text>
           </TouchableOpacity>
-        </View>
+        </View> */}
 
         {data.status.isExistingUser ? (
           <AuthResultStep

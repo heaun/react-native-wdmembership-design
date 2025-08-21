@@ -1,8 +1,11 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, TextInput } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, Dimensions } from "react-native";
 import { CommonLayout } from "../components/CommonLayout";
 import { LabelText, ButtonText, SmallText, ExtraBoldText } from "../components/CommonText";
 import { globalStyles } from "../../styles/globalStyles";
+
+const { height: screenHeight } = Dimensions.get("window");
+const isSmallScreen = screenHeight < 700; // iPhone SE 기준
 
 interface LoginScreenProps {
   onBackPress?: () => void;
@@ -59,78 +62,87 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
       onNotificationPress={() => {}}
       buttons={buttons}
     >
-      {/* Welcome Text */}
-      <View style={styles.welcomeSection}>
-        <ExtraBoldText style={styles.welcomeText}>반갑습니다.</ExtraBoldText>
-        <LabelText style={styles.subtitleText}>가입하신 계정으로 로그인하세요.</LabelText>
-      </View>
-
-      {/* Input Fields */}
-      <View style={styles.inputSection}>
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
-            placeholder="아이디"
-            placeholderTextColor="#B1B8C0"
-            value={username}
-            onChangeText={setUsername}
-            showSoftInputOnFocus={false}
-            onFocus={() => setUsernameFocused(true)}
-            onBlur={() => setUsernameFocused(false)}
-          />
-          <View style={[styles.inputBorder, usernameFocused && styles.inputBorderFocused]} />
+      <View style={styles.container}>
+        {/* Welcome Text */}
+        <View style={styles.welcomeSection}>
+          <ExtraBoldText style={styles.welcomeText}>반갑습니다.</ExtraBoldText>
+          <LabelText style={styles.subtitleText}>가입하신 계정으로 로그인하세요.</LabelText>
         </View>
 
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
-            placeholder="비밀번호"
-            placeholderTextColor="#B1B8C0"
-            secureTextEntry
-            value={password}
-            onChangeText={setPassword}
-            showSoftInputOnFocus={false}
-            onFocus={() => setPasswordFocused(true)}
-            onBlur={() => setPasswordFocused(false)}
-          />
-          <View style={[styles.inputBorder, passwordFocused && styles.inputBorderFocused]} />
+        {/* Input Fields */}
+        <View style={styles.inputSection}>
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.input}
+              placeholder="아이디"
+              placeholderTextColor="#B1B8C0"
+              value={username}
+              onChangeText={setUsername}
+              showSoftInputOnFocus={false}
+              onFocus={() => setUsernameFocused(true)}
+              onBlur={() => setUsernameFocused(false)}
+            />
+            <View style={[styles.inputBorder, usernameFocused && styles.inputBorderFocused]} />
+          </View>
+
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.input}
+              placeholder="비밀번호"
+              placeholderTextColor="#B1B8C0"
+              secureTextEntry
+              value={password}
+              onChangeText={setPassword}
+              showSoftInputOnFocus={false}
+              onFocus={() => setPasswordFocused(true)}
+              onBlur={() => setPasswordFocused(false)}
+            />
+            <View style={[styles.inputBorder, passwordFocused && styles.inputBorderFocused]} />
+          </View>
+          {/* Keep Logged In */}
+          <View style={styles.keepLoggedInSection}>
+            <TouchableOpacity style={[styles.checkbox, keepLoggedIn && styles.checkboxChecked]} onPress={handleKeepLoggedInToggle}>
+              {keepLoggedIn && <Text style={styles.checkmark}>✓</Text>}
+            </TouchableOpacity>
+            <LabelText style={styles.keepLoggedInText}>로그인 상태 유지</LabelText>
+          </View>
         </View>
-      </View>
 
-      {/* Keep Logged In */}
-      <View style={styles.keepLoggedInSection}>
-        <TouchableOpacity style={[styles.checkbox, keepLoggedIn && styles.checkboxChecked]} onPress={handleKeepLoggedInToggle}>
-          {keepLoggedIn && <Text style={styles.checkmark}>✓</Text>}
+        {/* Login Button */}
+        <TouchableOpacity
+          style={[styles.loginButton, (!username || !password) && styles.loginButtonDisabled]}
+          onPress={handleLogin}
+          disabled={!username || !password}
+        >
+          <ButtonText style={styles.loginButtonText}>로그인 하기</ButtonText>
         </TouchableOpacity>
-        <LabelText style={styles.keepLoggedInText}>로그인 상태 유지</LabelText>
-      </View>
 
-      {/* Login Button */}
-      <TouchableOpacity
-        style={[styles.loginButton, (!username || !password) && styles.loginButtonDisabled]}
-        onPress={handleLogin}
-        disabled={!username || !password}
-      >
-        <ButtonText style={styles.loginButtonText}>로그인 하기</ButtonText>
-      </TouchableOpacity>
-
-      {/* Links */}
-      <View style={styles.linksSection}>
-        <TouchableOpacity style={styles.linkButton} onPress={onFindIdPress}>
-          <ButtonText style={styles.linkText}>아이디 찾기</ButtonText>
-        </TouchableOpacity>
-        <View style={styles.linkDivider} />
-        <TouchableOpacity style={styles.linkButton} onPress={onResetPasswordPress}>
-          <ButtonText style={styles.linkText}>비밀번호 재설정</ButtonText>
-        </TouchableOpacity>
+        {/* Links */}
+        <View style={styles.linksSection}>
+          <TouchableOpacity style={styles.linkButton} onPress={onFindIdPress}>
+            <ButtonText style={styles.linkText}>아이디 찾기</ButtonText>
+          </TouchableOpacity>
+          <View style={styles.linkDivider} />
+          <TouchableOpacity style={styles.linkButton} onPress={onResetPasswordPress}>
+            <ButtonText style={styles.linkText}>비밀번호 재설정</ButtonText>
+          </TouchableOpacity>
+        </View>
       </View>
     </CommonLayout>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+
+    paddingHorizontal: 20,
+    paddingVertical: isSmallScreen ? 20 : 40
+  },
   welcomeSection: {
-    marginVertical: 40
+    marginBottom: isSmallScreen ? 40 : 60,
+    alignItems: "flex-start"
   },
   welcomeText: {
     fontSize: 30,
@@ -145,9 +157,12 @@ const styles = StyleSheet.create({
     color: "#2B2B2B",
     letterSpacing: -0.64
   },
-  inputSection: {},
+  inputSection: {
+    width: "100%",
+    marginBottom: isSmallScreen ? 30 : 40
+  },
   inputContainer: {
-    marginVertical: 10
+    marginBottom: isSmallScreen ? 20 : 25
   },
   input: {
     fontSize: 16,
@@ -165,8 +180,7 @@ const styles = StyleSheet.create({
   },
   keepLoggedInSection: {
     flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 40
+    alignItems: "center"
   },
   checkbox: {
     width: 24,
@@ -200,7 +214,8 @@ const styles = StyleSheet.create({
     height: 50,
     justifyContent: "center",
     alignItems: "center",
-    marginVertical: 30
+    marginBottom: isSmallScreen ? 30 : 40,
+    width: "100%"
   },
   loginButtonDisabled: {
     backgroundColor: "#E5E5E5"
@@ -215,7 +230,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 40
+    marginTop: isSmallScreen ? 15 : 20
   },
   linkButton: {
     paddingHorizontal: 10

@@ -191,13 +191,13 @@ export const AppNavigator: React.FC<AppNavigatorProps> = ({ onLogout }) => {
           title: selectedReservation.title || "서비스 미정",
           category: "건강 프로그램",
           tags: "자세교정, 심신안정",
-          image: selectedReservation.image || require("../src/assets/services/service-image-1.png")
+          image: selectedReservation.image || require("../assets/services/service-image-1.png")
         },
         location: {
           id: 1,
           name: selectedReservation.location || "장소 미정",
           address: "서울 서초구 서초대로 396",
-          image: require("../src/assets/locations/mediwell-house.png")
+          image: require("../assets/locations/mediwell-house.png")
         },
         date: selectedReservation.date || "2026-10-31",
         time: selectedReservation.time || "14:30",

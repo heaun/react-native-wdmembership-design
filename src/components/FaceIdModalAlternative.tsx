@@ -30,7 +30,7 @@ export const FaceIdModalAlternative: React.FC<FaceIdModalProps> = ({ isVisible, 
           <LabelText style={styles.subtitle}>비밀번호 6자리를 입력해 주세요.</LabelText>
 
           <View style={styles.lottieContainer}>
-            <LottieView source={require("../assets/face-id.json")} autoPlay loop style={styles.lottieAnimation} />
+            <LottieView source={require("../../assets/face-id.json")} autoPlay loop style={styles.lottieAnimation} />
           </View>
 
           <LabelText style={styles.faceIdText}>Face ID</LabelText>

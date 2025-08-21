@@ -34,7 +34,7 @@ export const VersionUpdateScreen: React.FC<VersionUpdateScreenProps> = ({ onBack
       <View style={styles.container}>
         {/* 앱 아이콘 */}
         <View style={styles.appIconContainer}>
-          <Image source={require("../assets/icon.png")} style={styles.appIcon} />
+          <Image source={require("../../assets/icon.png")} style={styles.appIcon} />
         </View>
 
         {/* 버전 정보 */}

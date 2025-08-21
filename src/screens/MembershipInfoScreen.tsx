@@ -64,7 +64,7 @@ export const MembershipInfoScreen: React.FC<MembershipInfoScreenProps> = ({
     tickets: [
       {
         id: "t1",
-        icon: require("../assets/membership/healthy-meal-plan-icon.png"),
+        icon: require("../../assets/membership/healthy-meal-plan-icon.png"),
         title: "전 메뉴 30% 할인 이용권",
         provider: "Healthy Meal Plan",
         period: "2027.10.01 ~ 2027.10.31",
@@ -72,7 +72,7 @@ export const MembershipInfoScreen: React.FC<MembershipInfoScreenProps> = ({
       },
       {
         id: "t2",
-        icon: require("../assets/membership/coffee-icon.png"),
+        icon: require("../../assets/membership/coffee-icon.png"),
         title: "무료 아이스 아메리카노 1잔 증정",
         provider: "The Coffee M&N",
         period: "2027.10.01 ~ 2027.10.31",
@@ -80,7 +80,7 @@ export const MembershipInfoScreen: React.FC<MembershipInfoScreenProps> = ({
       },
       {
         id: "t3",
-        icon: require("../assets/membership/mind-body-icon.png"),
+        icon: require("../../assets/membership/mind-body-icon.png"),
         title: "체형/체력 성장 정밀 검사 이용권",
         provider: "마인드앤바디 포 차일드",
         period: "2027.10.01 ~ 2027.10.31",
@@ -88,7 +88,7 @@ export const MembershipInfoScreen: React.FC<MembershipInfoScreenProps> = ({
       },
       {
         id: "t4",
-        icon: require("../assets/membership/gcc-golf-icon.png"),
+        icon: require("../../assets/membership/gcc-golf-icon.png"),
         title: "골프 프로 무료 레슨 이용권",
         provider: "GCC 스크린골프 연습장",
         period: "2027.10.01 ~ 2027.10.31",
@@ -98,28 +98,28 @@ export const MembershipInfoScreen: React.FC<MembershipInfoScreenProps> = ({
     benefits: [
       {
         id: "b1",
-        icon: require("../assets/membership/spa-icon.png"),
+        icon: require("../../assets/membership/spa-icon.png"),
         category: "스파/에스테틱",
         title: "메디컬 에스테틱 20%할인",
         provider: "에코스 스파"
       },
       {
         id: "b2",
-        icon: require("../assets/membership/golf-icon.png"),
+        icon: require("../../assets/membership/golf-icon.png"),
         category: "레저 스포츠",
         title: "골프용품 10%할인",
         provider: "GCC 스크린골프"
       },
       {
         id: "b3",
-        icon: require("../assets/membership/medical-icon.png"),
+        icon: require("../../assets/membership/medical-icon.png"),
         category: "의료",
         title: "성장주사 시술 20%할인",
         provider: "서울 정형외과"
       },
       {
         id: "b4",
-        icon: require("../assets/membership/health-icon.png"),
+        icon: require("../../assets/membership/health-icon.png"),
         category: "건강",
         title: "요가/SNPE 용품 40%할인",
         provider: "마인드앰바디 포 어덜트"
@@ -264,7 +264,7 @@ export const MembershipInfoScreen: React.FC<MembershipInfoScreenProps> = ({
                 <LabelText style={styles.benefitProvider}>{b.provider}</LabelText>
               </View>
               <TouchableOpacity style={styles.downloadButton}>
-                <Image source={require("../assets/icons/ic_download.png")} style={styles.downloadIcon} />
+                <Image source={require("../../assets/icons/ic_download.png")} style={styles.downloadIcon} />
                 <LabelText style={styles.downloadText}>다운로드</LabelText>
               </TouchableOpacity>
             </View>
@@ -281,7 +281,7 @@ export const MembershipInfoScreen: React.FC<MembershipInfoScreenProps> = ({
           <View style={styles.sectionHeader}>
             <LabelText style={styles.sectionTitle}>혜택 이용 상세 내역</LabelText>
             <TouchableOpacity style={styles.moreButton} onPress={handleUsageHistoryPress}>
-              <Image source={require("../assets/icons/ic-chevron-right.png")} style={styles.chevron} />
+              <Image source={require("../../assets/icons/ic-chevron-right.png")} style={styles.chevron} />
             </TouchableOpacity>
           </View>
         </View>

@@ -53,7 +53,7 @@ export const ScheduleScreen: React.FC<ScheduleScreenProps> = ({
       time: "오후 02:30 ~03:30",
       location: "서초 메디웰하우스 1층 마인드앤바디 201",
       status: "confirmed",
-      image: require("../assets/main/reservation-1.png"),
+      image: require("../../assets/main/reservation-1.png"),
       description: "호흡의 리듬을 따라 자연스럽게 자세를 교정하고 바른 신체 연결동작을 통해 체형교정및 심신안정을 찾도록 도움을 드립니다.",
       cancellationPolicy: "예약변경은 클래스 시작 4시간 전까지 가능합니다.\n클래스 시작 2시간 전까지 예약취소 가능합니다.",
       additionalInfo: "예약된 회원분만 참여 가능하며, 양도나 대리 수업참관을 지양합니다."
@@ -66,7 +66,7 @@ export const ScheduleScreen: React.FC<ScheduleScreenProps> = ({
       time: "오전 11:00 ~12:00",
       location: "서초 메디웰하우스 2층 웰니스존",
       status: "confirmed",
-      image: require("../assets/main/reservation-1.png"),
+      image: require("../../assets/main/reservation-1.png"),
       description: "전문적인 운동 프로그램을 통해 체력 향상과 건강한 라이프스타일을 만들어갑니다.",
       cancellationPolicy: "예약변경은 클래스 시작 4시간 전까지 가능합니다.\n클래스 시작 2시간 전까지 예약취소 가능합니다.",
       additionalInfo: "예약된 회원분만 참여 가능하며, 양도나 대리 수업참관을 지양합니다."
@@ -79,7 +79,7 @@ export const ScheduleScreen: React.FC<ScheduleScreenProps> = ({
       time: "오후 07:00 ~08:00",
       location: "서초 골프연습장 3층",
       status: "pending",
-      image: require("../assets/main/reservation-1.png"),
+      image: require("../../assets/main/reservation-1.png"),
       description: "스크린 골프를 통해 실전과 유사한 환경에서 골프 실력을 향상시킵니다.",
       cancellationPolicy: "예약변경은 클래스 시작 4시간 전까지 가능합니다.\n클래스 시작 2시간 전까지 예약취소 가능합니다.",
       additionalInfo: "예약된 회원분만 참여 가능하며, 양도나 대리 수업참관을 지양합니다."
@@ -93,7 +93,7 @@ export const ScheduleScreen: React.FC<ScheduleScreenProps> = ({
       time: "오전 09:00 ~10:00",
       location: "서초 메디웰하우스 1층 영양상담실",
       status: "confirmed",
-      image: require("../assets/main/reservation-1.png"),
+      image: require("../../assets/main/reservation-1.png"),
       description: "개인 맞춤형 영양 상담을 통해 건강한 식습관을 형성합니다.",
       cancellationPolicy: "예약변경은 클래스 시작 4시간 전까지 가능합니다.\n클래스 시작 2시간 전까지 예약취소 가능합니다.",
       additionalInfo: "예약된 회원분만 참여 가능하며, 양도나 대리 수업참관을 지양합니다."
@@ -230,7 +230,7 @@ export const ScheduleScreen: React.FC<ScheduleScreenProps> = ({
                 }}
                 disabled={reservation.status === "completed"}
               >
-                <Image source={require("../assets/main/reservation-1.png")} style={styles.reservationImage} resizeMode="cover" />
+                <Image source={require("../../assets/main/reservation-1.png")} style={styles.reservationImage} resizeMode="cover" />
                 <View style={styles.reservationInfo}>
                   <LabelText style={styles.reservationLocation}>{reservation.location}</LabelText>
                   <LabelText style={styles.reservationTitle}>{reservation.title}</LabelText>
@@ -255,7 +255,7 @@ export const ScheduleScreen: React.FC<ScheduleScreenProps> = ({
         </View>
 
         <View style={styles.reservationCard}>
-          <Image source={require("../assets/services/service-image-1.png")} style={styles.reservationImage} resizeMode="cover" />
+          <Image source={require("../../assets/services/service-image-1.png")} style={styles.reservationImage} resizeMode="cover" />
           <View style={styles.reservationInfo}>
             <LabelText style={styles.reservationLocation}>건강 프로그램</LabelText>
             <LabelText style={styles.reservationTitle}>웰리스컴 Wellness Come</LabelText>

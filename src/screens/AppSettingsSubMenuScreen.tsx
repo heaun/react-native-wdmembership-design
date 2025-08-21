@@ -216,7 +216,7 @@ export const AppSettingsSubMenuScreen: React.FC<AppSettingsSubMenuScreenProps> =
             <LabelText style={styles.settingTitle}>{item.title}</LabelText>
           )}
         </View>
-        <Image source={require("../assets/icons/ic-chevron-right.png")} style={styles.chevron} />
+        <Image source={require("../../assets/icons/ic-chevron-right.png")} style={styles.chevron} />
       </TouchableOpacity>
     );
   };

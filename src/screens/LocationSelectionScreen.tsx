@@ -46,49 +46,49 @@ export const LocationSelectionScreen: React.FC<LocationSelectionScreenProps> = (
           id: 1,
           name: "오르빗 라이프센터",
           address: "서울 종로구",
-          image: require("../assets/locations/orbit-life-center-655ee4.png")
+          image: require("../../assets/locations/orbit-life-center-655ee4.png")
         },
         {
           id: 2,
           name: "루미엘 센터",
           address: "경기도 인천시 연수구",
-          image: require("../assets/locations/lumiere-center.png")
+          image: require("../../assets/locations/lumiere-center.png")
         },
         {
           id: 3,
           name: "모브 루멘 레지던스",
           address: "서울 서대문구",
-          image: require("../assets/locations/mob-lumen-residence-6e118e.png")
+          image: require("../../assets/locations/mob-lumen-residence-6e118e.png")
         },
         {
           id: 4,
           name: "위드닥터스 케어센터",
           address: "경기도 하남시",
-          image: require("../assets/locations/withdoctors-care-center.png")
+          image: require("../../assets/locations/withdoctors-care-center.png")
         },
         {
           id: 5,
           name: "메디웰하우스",
           address: "서울 서초구",
-          image: require("../assets/locations/mediwell-house.png")
+          image: require("../../assets/locations/mediwell-house.png")
         },
         {
           id: 6,
           name: "에스카야 프라이빗",
           address: "서울 구로구",
-          image: require("../assets/locations/escaya-private-3fee92.png")
+          image: require("../../assets/locations/escaya-private-3fee92.png")
         },
         {
           id: 7,
           name: "세레노 타워",
           address: "서울 종로구",
-          image: require("../assets/locations/sereno-tower-d0b7ca.png")
+          image: require("../../assets/locations/sereno-tower-d0b7ca.png")
         },
         {
           id: 8,
           name: "디아망 레지던스",
           address: "세종특별별치시",
-          image: require("../assets/locations/diamond-residence-41faf3.png")
+          image: require("../../assets/locations/diamond-residence-41faf3.png")
         }
       ],
       2: [
@@ -96,49 +96,49 @@ export const LocationSelectionScreen: React.FC<LocationSelectionScreenProps> = (
           id: 1,
           name: "오르빗 라이프센터",
           address: "서울 종로구",
-          image: require("../assets/locations/orbit-life-center-655ee4.png")
+          image: require("../../assets/locations/orbit-life-center-655ee4.png")
         },
         {
           id: 2,
           name: "루미엘 센터",
           address: "경기도 인천시 연수구",
-          image: require("../assets/locations/lumiere-center.png")
+          image: require("../../assets/locations/lumiere-center.png")
         },
         {
           id: 3,
           name: "모브 루멘 레지던스",
           address: "서울 서대문구",
-          image: require("../assets/locations/mob-lumen-residence-6e118e.png")
+          image: require("../../assets/locations/mob-lumen-residence-6e118e.png")
         },
         {
           id: 4,
           name: "위드닥터스 케어센터",
           address: "경기도 하남시",
-          image: require("../assets/locations/withdoctors-care-center.png")
+          image: require("../../assets/locations/withdoctors-care-center.png")
         },
         {
           id: 5,
           name: "메디웰하우스",
           address: "서울 서초구",
-          image: require("../assets/locations/mediwell-house.png")
+          image: require("../../assets/locations/mediwell-house.png")
         },
         {
           id: 6,
           name: "에스카야 프라이빗",
           address: "서울 구로구",
-          image: require("../assets/locations/escaya-private-3fee92.png")
+          image: require("../../assets/locations/escaya-private-3fee92.png")
         },
         {
           id: 7,
           name: "세레노 타워",
           address: "서울 종로구",
-          image: require("../assets/locations/sereno-tower-d0b7ca.png")
+          image: require("../../assets/locations/sereno-tower-d0b7ca.png")
         },
         {
           id: 8,
           name: "디아망 레지던스",
           address: "세종특별별치시",
-          image: require("../assets/locations/diamond-residence-41faf3.png")
+          image: require("../../assets/locations/diamond-residence-41faf3.png")
         }
       ],
       3: [
@@ -146,49 +146,49 @@ export const LocationSelectionScreen: React.FC<LocationSelectionScreenProps> = (
           id: 1,
           name: "오르빗 라이프센터",
           address: "서울 종로구",
-          image: require("../assets/locations/orbit-life-center-655ee4.png")
+          image: require("../../assets/locations/orbit-life-center-655ee4.png")
         },
         {
           id: 2,
           name: "루미엘 센터",
           address: "경기도 인천시 연수구",
-          image: require("../assets/locations/lumiere-center.png")
+          image: require("../../assets/locations/lumiere-center.png")
         },
         {
           id: 3,
           name: "모브 루멘 레지던스",
           address: "서울 서대문구",
-          image: require("../assets/locations/mob-lumen-residence-6e118e.png")
+          image: require("../../assets/locations/mob-lumen-residence-6e118e.png")
         },
         {
           id: 4,
           name: "위드닥터스 케어센터",
           address: "경기도 하남시",
-          image: require("../assets/locations/withdoctors-care-center.png")
+          image: require("../../assets/locations/withdoctors-care-center.png")
         },
         {
           id: 5,
           name: "메디웰하우스",
           address: "서울 서초구",
-          image: require("../assets/locations/mediwell-house.png")
+          image: require("../../assets/locations/mediwell-house.png")
         },
         {
           id: 6,
           name: "에스카야 프라이빗",
           address: "서울 구로구",
-          image: require("../assets/locations/escaya-private-3fee92.png")
+          image: require("../../assets/locations/escaya-private-3fee92.png")
         },
         {
           id: 7,
           name: "세레노 타워",
           address: "서울 종로구",
-          image: require("../assets/locations/sereno-tower-d0b7ca.png")
+          image: require("../../assets/locations/sereno-tower-d0b7ca.png")
         },
         {
           id: 8,
           name: "디아망 레지던스",
           address: "세종특별별치시",
-          image: require("../assets/locations/diamond-residence-41faf3.png")
+          image: require("../../assets/locations/diamond-residence-41faf3.png")
         }
       ],
       4: [
@@ -196,49 +196,49 @@ export const LocationSelectionScreen: React.FC<LocationSelectionScreenProps> = (
           id: 1,
           name: "오르빗 라이프센터",
           address: "서울 종로구",
-          image: require("../assets/locations/orbit-life-center-655ee4.png")
+          image: require("../../assets/locations/orbit-life-center-655ee4.png")
         },
         {
           id: 2,
           name: "루미엘 센터",
           address: "경기도 인천시 연수구",
-          image: require("../assets/locations/lumiere-center.png")
+          image: require("../../assets/locations/lumiere-center.png")
         },
         {
           id: 3,
           name: "모브 루멘 레지던스",
           address: "서울 서대문구",
-          image: require("../assets/locations/mob-lumen-residence-6e118e.png")
+          image: require("../../assets/locations/mob-lumen-residence-6e118e.png")
         },
         {
           id: 4,
           name: "위드닥터스 케어센터",
           address: "경기도 하남시",
-          image: require("../assets/locations/withdoctors-care-center.png")
+          image: require("../../assets/locations/withdoctors-care-center.png")
         },
         {
           id: 5,
           name: "메디웰하우스",
           address: "서울 서초구",
-          image: require("../assets/locations/mediwell-house.png")
+          image: require("../../assets/locations/mediwell-house.png")
         },
         {
           id: 6,
           name: "에스카야 프라이빗",
           address: "서울 구로구",
-          image: require("../assets/locations/escaya-private-3fee92.png")
+          image: require("../../assets/locations/escaya-private-3fee92.png")
         },
         {
           id: 7,
           name: "세레노 타워",
           address: "서울 종로구",
-          image: require("../assets/locations/sereno-tower-d0b7ca.png")
+          image: require("../../assets/locations/sereno-tower-d0b7ca.png")
         },
         {
           id: 8,
           name: "디아망 레지던스",
           address: "세종특별별치시",
-          image: require("../assets/locations/diamond-residence-41faf3.png")
+          image: require("../../assets/locations/diamond-residence-41faf3.png")
         }
       ],
       5: [
@@ -246,49 +246,49 @@ export const LocationSelectionScreen: React.FC<LocationSelectionScreenProps> = (
           id: 1,
           name: "오르빗 라이프센터",
           address: "서울 종로구",
-          image: require("../assets/locations/orbit-life-center-655ee4.png")
+          image: require("../../assets/locations/orbit-life-center-655ee4.png")
         },
         {
           id: 2,
           name: "루미엘 센터",
           address: "경기도 인천시 연수구",
-          image: require("../assets/locations/lumiere-center.png")
+          image: require("../../assets/locations/lumiere-center.png")
         },
         {
           id: 3,
           name: "모브 루멘 레지던스",
           address: "서울 서대문구",
-          image: require("../assets/locations/mob-lumen-residence-6e118e.png")
+          image: require("../../assets/locations/mob-lumen-residence-6e118e.png")
         },
         {
           id: 4,
           name: "위드닥터스 케어센터",
           address: "경기도 하남시",
-          image: require("../assets/locations/withdoctors-care-center.png")
+          image: require("../../assets/locations/withdoctors-care-center.png")
         },
         {
           id: 5,
           name: "메디웰하우스",
           address: "서울 서초구",
-          image: require("../assets/locations/mediwell-house.png")
+          image: require("../../assets/locations/mediwell-house.png")
         },
         {
           id: 6,
           name: "에스카야 프라이빗",
           address: "서울 구로구",
-          image: require("../assets/locations/escaya-private-3fee92.png")
+          image: require("../../assets/locations/escaya-private-3fee92.png")
         },
         {
           id: 7,
           name: "세레노 타워",
           address: "서울 종로구",
-          image: require("../assets/locations/sereno-tower-d0b7ca.png")
+          image: require("../../assets/locations/sereno-tower-d0b7ca.png")
         },
         {
           id: 8,
           name: "디아망 레지던스",
           address: "세종특별별치시",
-          image: require("../assets/locations/diamond-residence-41faf3.png")
+          image: require("../../assets/locations/diamond-residence-41faf3.png")
         }
       ],
       6: [
@@ -296,49 +296,49 @@ export const LocationSelectionScreen: React.FC<LocationSelectionScreenProps> = (
           id: 1,
           name: "오르빗 라이프센터",
           address: "서울 종로구",
-          image: require("../assets/locations/orbit-life-center-655ee4.png")
+          image: require("../../assets/locations/orbit-life-center-655ee4.png")
         },
         {
           id: 2,
           name: "루미엘 센터",
           address: "경기도 인천시 연수구",
-          image: require("../assets/locations/lumiere-center.png")
+          image: require("../../assets/locations/lumiere-center.png")
         },
         {
           id: 3,
           name: "모브 루멘 레지던스",
           address: "서울 서대문구",
-          image: require("../assets/locations/mob-lumen-residence-6e118e.png")
+          image: require("../../assets/locations/mob-lumen-residence-6e118e.png")
         },
         {
           id: 4,
           name: "위드닥터스 케어센터",
           address: "경기도 하남시",
-          image: require("../assets/locations/withdoctors-care-center.png")
+          image: require("../../assets/locations/withdoctors-care-center.png")
         },
         {
           id: 5,
           name: "메디웰하우스",
           address: "서울 서초구",
-          image: require("../assets/locations/mediwell-house.png")
+          image: require("../../assets/locations/mediwell-house.png")
         },
         {
           id: 6,
           name: "에스카야 프라이빗",
           address: "서울 구로구",
-          image: require("../assets/locations/escaya-private-3fee92.png")
+          image: require("../../assets/locations/escaya-private-3fee92.png")
         },
         {
           id: 7,
           name: "세레노 타워",
           address: "서울 종로구",
-          image: require("../assets/locations/sereno-tower-d0b7ca.png")
+          image: require("../../assets/locations/sereno-tower-d0b7ca.png")
         },
         {
           id: 8,
           name: "디아망 레지던스",
           address: "세종특별별치시",
-          image: require("../assets/locations/diamond-residence-41faf3.png")
+          image: require("../../assets/locations/diamond-residence-41faf3.png")
         }
       ]
     };

@@ -16,7 +16,7 @@ export const MembershipGuideScreen: React.FC<MembershipGuideScreenProps> = ({ on
       title: "위드닥터스 멤버스 전용",
       subtitle: "With Drs. Member Only",
       description: "맞춤형 개인 건강 관리, 전문 의료 상담, 웰니스 프로그램 등 프리미엄 건강 케어 서비스를 제공합니다.",
-      image: require("../assets/membership/with-doctors-member.png"),
+      image: require("../../assets/membership/with-doctors-member.png"),
       type: "with-doctors"
     },
     {
@@ -24,7 +24,7 @@ export const MembershipGuideScreen: React.FC<MembershipGuideScreenProps> = ({ on
       title: "PH 1603 레지던스 전용",
       subtitle: "For PH 1603 Residence",
       description: "프라이빗 고급 주거 공간과 컨시어지, 커뮤니티 시설 등 품격 있는 라이프 스타일을 만나보십시오.",
-      image: require("../assets/membership/ph-1603-residence.png"),
+      image: require("../../assets/membership/ph-1603-residence.png"),
       type: "ph-1603"
     },
     {
@@ -32,7 +32,7 @@ export const MembershipGuideScreen: React.FC<MembershipGuideScreenProps> = ({ on
       title: "세인트폴 잉글리쉬 스쿨 전용",
       subtitle: "For Saint Paul",
       description: "맞춤형 영어 교육, 글로벌 인재 양성 프로그램, 자녀 성장 프로그램을 통한 맞춤 컨설팅 제공합니다.",
-      image: require("../assets/membership/saint-paul-school.png"),
+      image: require("../../assets/membership/saint-paul-school.png"),
       type: "saint-paul"
     }
   ];

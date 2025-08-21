@@ -4,12 +4,12 @@ import { CommonLayout } from "../components/CommonLayout";
 import { LabelText, ButtonText, SmallText } from "../components/CommonText";
 
 // 서비스 이미지 import
-import mindAndBodyImage from "../assets/services/mind-and-body.png";
-import wellnessComeImage from "../assets/services/wellness-come.png";
-import healthyMealPlan1Image from "../assets/services/healthy-meal-plan-1.png";
-import medicalHospitalImage from "../assets/services/medical-hospital.png";
-import gccScreenGolfImage from "../assets/services/gcc-screen-golf.png";
-import ecosSpaImage from "../assets/services/ecos-spa.png";
+import mindAndBodyImage from "../../assets/services/mind-and-body.png";
+import wellnessComeImage from "../../assets/services/wellness-come.png";
+import healthyMealPlan1Image from "../../assets/services/healthy-meal-plan-1.png";
+import medicalHospitalImage from "../../assets/services/medical-hospital.png";
+import gccScreenGolfImage from "../../assets/services/gcc-screen-golf.png";
+import ecosSpaImage from "../../assets/services/ecos-spa.png";
 
 const { width: screenWidth } = Dimensions.get("window");
 

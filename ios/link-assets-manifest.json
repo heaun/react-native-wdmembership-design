@@ -2,23 +2,47 @@
   "migIndex": 1,
   "data": [
     {
-      "path": "src/assets/fonts/NanumSquareNeo-aLt.ttf",
+      "path": "./assets/fonts/NanumMyeongjo.otf",
+      "sha1": "1b75cb9703613cb75bb8fc8a2fdb538853473017"
+    },
+    {
+      "path": "./assets/fonts/NanumMyeongjo.ttf",
+      "sha1": "fff5fd3f51dfff394c88948a703ea746b3ef52fb"
+    },
+    {
+      "path": "./assets/fonts/NanumMyeongjoBold.otf",
+      "sha1": "42590d385125e8eedf8d448ba02f4aa0a87458b5"
+    },
+    {
+      "path": "./assets/fonts/NanumMyeongjoBold.ttf",
+      "sha1": "4b5299e387fea8bab768cb78c228b304dfe35391"
+    },
+    {
+      "path": "./assets/fonts/NanumMyeongjoExtraBold.otf",
+      "sha1": "1c3a975ea921c56d429bbf30a689dbb6510f839a"
+    },
+    {
+      "path": "./assets/fonts/NanumMyeongjoExtraBold.ttf",
+      "sha1": "a891c3233a43468b46159004e253c095064b5de3"
+    },
+    {
+      "path": "./assets/fonts/NanumSquareNeo-aLt.ttf",
       "sha1": "75613883b6ec50b2338881b5f4485d0f41d0b87e"
     },
     {
-      "path": "src/assets/fonts/NanumSquareNeo-bRg.ttf",
+      "path": "./assets/fonts/NanumSquareNeo-bRg.ttf",
       "sha1": "71fe16804bfb047541786372fb85e7c0d5bc210c"
     },
     {
-      "path": "src/assets/fonts/NanumSquareNeo-cBd.ttf",
+      "path": "./assets/fonts/NanumSquareNeo-cBd.ttf",
       "sha1": "cd9e58031c41271195ad793ae6443f7ee7e9f1c1"
     },
     {
-      "path": "src/assets/fonts/NanumSquareNeo-dEb.ttf",
+      "path": "./assets/fonts/NanumSquareNeo-dEb.ttf",
       "sha1": "578941cfc4bf2ad7a06922b8bf16ca25fdb1e959"
     },
     {
-      "path": "src/assets/fonts/NanumSquareNeo-eHv.ttf",
+      "path": "./assets/fonts/NanumSquareNeo-eHv.ttf",
       "sha1": "55ed11e0bfa2165291ffcfdffb3d9ce17d50e3db"
     }
   ]
