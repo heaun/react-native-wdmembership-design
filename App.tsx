@@ -204,7 +204,7 @@ function AppContent() {
         // 입력한 이메일 값을 foundUserId로 설정
         setFoundUserId(result.foundUserId || "");
       } else {
-        printLog("비밀번호 재설정 성공:", result, true);
+        printLog("비밀번호 재설정 성공:", result);
         // showToast("success", "비밀번호 재설정 완료", "새로운 비밀번호로 재설정되었습니다.");
         setCurrentScreen("login");
       }

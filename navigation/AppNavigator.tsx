@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { SafeAreaView, Linking, Alert } from "react-native";
+import { SafeAreaView, Linking, Alert, Platform } from "react-native";
 import { MainScreen } from "../src/screens/MainScreen";
 import { BenefitsScreen } from "../src/screens/BenefitsScreen";
 import { ProfileScreen } from "../src/screens/ProfileScreen";
@@ -87,6 +87,7 @@ export const AppNavigator: React.FC<AppNavigatorProps> = ({ onLogout }) => {
   const [newOrder, setNewOrder] = useState<any>(null);
   const [selectedMembershipId, setSelectedMembershipId] = useState<string>("with-doctors");
   const [selectedReservation, setSelectedReservation] = useState<any>(null);
+  const [previousScreen, setPreviousScreen] = useState<ScreenType>("Home");
 
   useEffect(() => {
     console.log("currentScreen ::", currentScreen);
@@ -126,6 +127,26 @@ export const AppNavigator: React.FC<AppNavigatorProps> = ({ onLogout }) => {
     setCurrentScreen("MembershipCard");
   };
 
+  const handleUpdatePress = async () => {
+    try {
+      // 앱스토어 URL (실제 앱 ID로 변경 필요)
+      const appStoreUrl =
+        Platform.OS === "ios"
+          ? "https://apps.apple.com/app/id123456789" // iOS App Store URL
+          : "https://play.google.com/store/apps/details?id=com.wdmembership.app"; // Android Play Store URL
+
+      const supported = await Linking.canOpenURL(appStoreUrl);
+      if (supported) {
+        await Linking.openURL(appStoreUrl);
+      } else {
+        Alert.alert("앱스토어 연결 실패", "앱스토어를 열 수 없습니다. 수동으로 앱스토어에서 업데이트를 확인해주세요.");
+      }
+    } catch (error) {
+      console.error("앱스토어 연결 오류:", error);
+      Alert.alert("오류 발생", "앱스토어 연결 중 오류가 발생했습니다. 수동으로 앱스토어에서 업데이트를 확인해주세요.");
+    }
+  };
+
   const handleBackToHome = () => {
     setCurrentScreen("Home");
   };
@@ -155,6 +176,41 @@ export const AppNavigator: React.FC<AppNavigatorProps> = ({ onLogout }) => {
 
   const handleBackToMyService = () => {
     setCurrentScreen("MyService");
+  };
+
+  const handleBackToPreviousScreen = () => {
+    setCurrentScreen(previousScreen);
+  };
+
+  const handleReservationChangePress = () => {
+    // selectedReservation 데이터를 ReservationConfirmScreen에서 사용할 수 있는 형식으로 변환
+    if (selectedReservation) {
+      const reservationData = {
+        service: {
+          id: selectedReservation.id || 1,
+          title: selectedReservation.title || "서비스 미정",
+          category: "건강 프로그램",
+          tags: "자세교정, 심신안정",
+          image: selectedReservation.image || require("../src/assets/services/service-image-1.png")
+        },
+        location: {
+          id: 1,
+          name: selectedReservation.location || "장소 미정",
+          address: "서울 서초구 서초대로 396",
+          image: require("../src/assets/locations/mediwell-house.png")
+        },
+        date: selectedReservation.date || "2026-10-31",
+        time: selectedReservation.time || "14:30",
+        personCount: 1
+      };
+      setSelectedService(reservationData.service);
+      setSelectedLocation(reservationData.location);
+      setSelectedDate(reservationData.date);
+      setSelectedTime(reservationData.time);
+      setSelectedPersonCount(reservationData.personCount);
+    }
+    setPreviousScreen("ReservationDetail");
+    setCurrentScreen("ReservationConfirm");
   };
 
   const handleLocationSelectPress = () => {
@@ -192,6 +248,7 @@ export const AppNavigator: React.FC<AppNavigatorProps> = ({ onLogout }) => {
   const handlePersonSelect = (personCount: number) => {
     console.log("선택된 인원:", personCount);
     setSelectedPersonCount(personCount);
+    setPreviousScreen("PersonSelection");
     setCurrentScreen("ReservationConfirm");
   };
 
@@ -231,7 +288,7 @@ export const AppNavigator: React.FC<AppNavigatorProps> = ({ onLogout }) => {
     };
     console.log("주문 완료:", orderData);
     setNewOrder(orderData);
-    setCurrentScreen("MyService");
+    setCurrentScreen("Schedule");
   };
 
   const handleConfirmOrder = () => {
@@ -316,7 +373,7 @@ export const AppNavigator: React.FC<AppNavigatorProps> = ({ onLogout }) => {
         console.log("FAQ 화면으로 이동");
         break;
       case "chatbot":
-        console.log("쳇봇 상담 시작");
+        console.log("챗봇 상담 시작");
         break;
       case "butler":
         console.log("전담 버틀러 연결");
@@ -531,7 +588,8 @@ export const AppNavigator: React.FC<AppNavigatorProps> = ({ onLogout }) => {
               location: selectedLocation,
               date: selectedDate,
               time: selectedTime || "14:30", // 기본값 설정
-              personCount: selectedPersonCount || 1 // 기본값 설정
+              personCount: selectedPersonCount || 1, // 기본값 설정
+              type: selectedService.type
             }}
             onBackPress={handleBackToProductOption}
             onConfirmReservation={handlePaymentStart} // 결제 시작으로 연결
@@ -588,9 +646,10 @@ export const AppNavigator: React.FC<AppNavigatorProps> = ({ onLogout }) => {
               location: selectedLocation,
               date: selectedDate,
               time: selectedTime,
-              personCount: selectedPersonCount
+              personCount: selectedPersonCount,
+              type: selectedService.type
             }}
-            onBackPress={handleBackToPersonSelection}
+            onBackPress={handleBackToPreviousScreen}
             onConfirmReservation={handleConfirmReservation}
             currentTab={currentScreen}
             onTabPress={handleTabPress}
@@ -603,6 +662,7 @@ export const AppNavigator: React.FC<AppNavigatorProps> = ({ onLogout }) => {
             reservationData={selectedReservation}
             onBackPress={handleBackToSchedule}
             onReservationStart={() => setCurrentScreen("MyService")}
+            onReservationChangePress={handleReservationChangePress}
             currentTab={currentScreen}
             onTabPress={handleTabPress}
             onSideMenuItemPress={handleSideMenuItemPress}
@@ -675,7 +735,13 @@ export const AppNavigator: React.FC<AppNavigatorProps> = ({ onLogout }) => {
       case "AppSettings":
         return <AppSettingsSubMenuScreen onBackPress={handleBackToHome} onVersionUpdatePress={() => setCurrentScreen("VersionUpdate")} />;
       case "VersionUpdate":
-        return <VersionUpdateScreen onBackPress={() => setCurrentScreen("AppSettingsSubMenu")} versionInfo={versionInfo} />;
+        return (
+          <VersionUpdateScreen
+            onBackPress={() => setCurrentScreen("AppSettingsSubMenu")}
+            onUpdatePress={handleUpdatePress}
+            versionInfo={versionInfo}
+          />
+        );
       case "AppSettingsSubMenu":
         return (
           <AppSettingsSubMenuScreen

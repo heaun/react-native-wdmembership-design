@@ -1,9 +1,11 @@
 import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Dimensions, Modal, Switch, Animated, Image, SafeAreaView } from "react-native";
 import { FaceIdModal } from "./FaceIdModal";
+import { PasswordInputScreen } from "../screens/PasswordInputScreen";
 import { LabelText, ButtonText, SmallText } from "../components/CommonText";
 import { Ionicons } from "@expo/vector-icons";
-
+import { PaymentAuthenticationMode, PaymentPasswordMode, PaymentSettings } from "../../types/payment";
+import { useToast } from "../context/ToastContext";
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
 interface MenuItem {
@@ -31,6 +33,7 @@ interface SideMenuProps {
 export const SideMenu: React.FC<SideMenuProps> = ({ visible, onClose, onMenuItemPress }) => {
   const slideAnim = React.useRef(new Animated.Value(-screenWidth)).current;
   const fadeAnim = React.useRef(new Animated.Value(0)).current;
+  const { showToast } = useToast();
 
   const [toggleStates, setToggleStates] = React.useState({
     biometricAuth: false,
@@ -38,6 +41,7 @@ export const SideMenu: React.FC<SideMenuProps> = ({ visible, onClose, onMenuItem
   });
 
   const [showFaceIdModal, setShowFaceIdModal] = React.useState(false);
+  const [showPasswordInputModal, setShowPasswordInputModal] = React.useState(false);
 
   React.useEffect(() => {
     if (visible) {
@@ -79,6 +83,24 @@ export const SideMenu: React.FC<SideMenuProps> = ({ visible, onClose, onMenuItem
     if (key === "biometricAuth" && value) {
       setShowFaceIdModal(true);
     }
+
+    // PIN 코드 토글이 off에서 on으로 변경되면 PasswordInputScreen 모달 표시
+    if (key === "pinCode" && value && !toggleStates.pinCode) {
+      setShowPasswordInputModal(true);
+    }
+
+    // PIN 코드 토글이 on에서 off로 변경되면 PIN 코드 정보 초기화
+    if (key === "pinCode" && !value && toggleStates.pinCode) {
+      const resetSettings: PaymentSettings = {
+        authenticationMode: PaymentAuthenticationMode.BIOMETRIC,
+        passwordMode: PaymentPasswordMode.PAYMENT,
+        isPinCodeEnabled: false,
+        isBiometricEnabled: false,
+        pinCode: ""
+      };
+      handlePaymentSettingsUpdate(resetSettings);
+      showToast("info", "PIN 코드 비활성화", "PIN 코드가 초기화되었습니다.");
+    }
   };
 
   const handleMenuPress = (itemId: string) => {
@@ -93,6 +115,22 @@ export const SideMenu: React.FC<SideMenuProps> = ({ visible, onClose, onMenuItem
 
   const handleCloseFaceIdModal = () => {
     setShowFaceIdModal(false);
+  };
+
+  const handleClosePasswordInputModal = () => {
+    setShowPasswordInputModal(false);
+  };
+
+  const handlePasswordConfirm = () => {
+    console.log("PIN 코드 등록 완료");
+    setShowPasswordInputModal(false);
+  };
+
+  const handlePaymentSettingsUpdate = (settings: PaymentSettings) => {
+    console.log("결제 설정 업데이트:", settings);
+    console.log("저장된 PIN 코드:", settings.pinCode);
+    // 여기서 실제 결제 설정을 저장하거나 업데이트할 수 있습니다
+    showToast("success", "PIN 코드 등록 완료", "PIN 코드가 등록되었습니다.");
   };
 
   const menuData: MenuSection[] = [
@@ -192,7 +230,7 @@ export const SideMenu: React.FC<SideMenuProps> = ({ visible, onClose, onMenuItem
         },
         {
           id: "chatbot",
-          title: "쳇봇 상담",
+          title: "챗봇 상담",
           type: "item",
           hasChevron: true
         },
@@ -294,6 +332,17 @@ export const SideMenu: React.FC<SideMenuProps> = ({ visible, onClose, onMenuItem
 
       {/* Face ID Modal */}
       <FaceIdModal isVisible={showFaceIdModal} onClose={handleCloseFaceIdModal} />
+
+      {/* Password Input Modal */}
+      <Modal visible={showPasswordInputModal} animationType="slide" presentationStyle="fullScreen" onRequestClose={handleClosePasswordInputModal}>
+        <PasswordInputScreen
+          onBackPress={handleClosePasswordInputModal}
+          onPasswordConfirm={handlePasswordConfirm}
+          paymentAuthenticationMode={PaymentAuthenticationMode.PINCODE}
+          paymentPasswordMode={PaymentPasswordMode.REGISTER}
+          onPaymentSettingsUpdate={handlePaymentSettingsUpdate}
+        />
+      </Modal>
     </Modal>
   );
 };

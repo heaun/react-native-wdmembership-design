@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity, TextInput } from "react-nativ
 import { CommonLayout } from "../components/CommonLayout";
 import { FaceIdModal } from "../components/FaceIdModal";
 import { LabelText } from "../components/CommonText";
+import { PaymentAuthenticationMode, PaymentPasswordMode, PaymentSettings } from "../../types/payment";
 
 interface PasswordInputScreenProps {
   onBackPress?: () => void;
@@ -10,6 +11,9 @@ interface PasswordInputScreenProps {
   currentTab?: string;
   onTabPress?: (tabName: string) => void;
   onSideMenuItemPress?: (itemId: string) => void;
+  paymentAuthenticationMode?: PaymentAuthenticationMode;
+  paymentPasswordMode?: PaymentPasswordMode;
+  onPaymentSettingsUpdate?: (settings: PaymentSettings) => void;
 }
 
 export const PasswordInputScreen: React.FC<PasswordInputScreenProps> = ({
@@ -17,36 +21,52 @@ export const PasswordInputScreen: React.FC<PasswordInputScreenProps> = ({
   onPasswordConfirm,
   currentTab,
   onTabPress,
-  onSideMenuItemPress
+  onSideMenuItemPress,
+  paymentAuthenticationMode = PaymentAuthenticationMode.BIOMETRIC,
+  paymentPasswordMode = PaymentPasswordMode.REGISTER,
+  onPaymentSettingsUpdate
 }) => {
   const [password, setPassword] = useState("");
   const [showFaceIdModal, setShowFaceIdModal] = useState(false);
 
   useEffect(() => {
-    // 1초 후 Face ID 모달 표시
-    const showTimer = setTimeout(() => {
-      setShowFaceIdModal(true);
-    }, 1000);
+    if (paymentAuthenticationMode === PaymentAuthenticationMode.BIOMETRIC) {
+      // 1초 후 Face ID 모달 표시
+      const showTimer = setTimeout(() => {
+        setShowFaceIdModal(true);
+      }, 1000);
 
-    // 4초 후 Face ID 모달 숨김 (1초 + 3초)
-    const hideTimer = setTimeout(() => {
-      setShowFaceIdModal(false);
-    }, 4000);
+      // 4초 후 Face ID 모달 숨김 (1초 + 3초)
+      const hideTimer = setTimeout(() => {
+        setShowFaceIdModal(false);
+      }, 4000);
 
-    return () => {
-      clearTimeout(showTimer);
-      clearTimeout(hideTimer);
-    };
-  }, []);
+      return () => {
+        clearTimeout(showTimer);
+        clearTimeout(hideTimer);
+      };
+    }
+  }, [paymentAuthenticationMode]);
 
   useEffect(() => {
     // 비밀번호가 6자리가 되면 자동으로 다음 화면으로 이동
     if (password.length === 6) {
       setTimeout(() => {
+        // PIN 코드 등록 완료 시 결제 설정 업데이트
+        if (paymentAuthenticationMode === PaymentAuthenticationMode.PINCODE && onPaymentSettingsUpdate) {
+          const updatedSettings: PaymentSettings = {
+            authenticationMode: PaymentAuthenticationMode.PINCODE,
+            passwordMode: PaymentPasswordMode.REGISTER,
+            isPinCodeEnabled: true,
+            isBiometricEnabled: false,
+            pinCode: password
+          };
+          onPaymentSettingsUpdate(updatedSettings);
+        }
         onPasswordConfirm?.();
       }, 500);
     }
-  }, [password, onPasswordConfirm]);
+  }, [password, onPasswordConfirm, paymentAuthenticationMode, onPaymentSettingsUpdate]);
 
   const handleNumberPress = (number: string) => {
     if (password.length < 6) {
@@ -110,7 +130,7 @@ export const PasswordInputScreen: React.FC<PasswordInputScreenProps> = ({
     <>
       <CommonLayout
         title=""
-        showBackButton={true}
+        showBackButton={false}
         showTabBar={false}
         showTopIcons={false}
         onBackPress={onBackPress}
@@ -122,16 +142,22 @@ export const PasswordInputScreen: React.FC<PasswordInputScreenProps> = ({
         onSideMenuItemPress={onSideMenuItemPress}
       >
         <View style={styles.container}>
-          <LabelText style={styles.title}>등록하신 비밀번호를 입력하세요.</LabelText>
-          <LabelText style={styles.subtitle}>비밀번호 6자리를 입력해 주세요.</LabelText>
+          <LabelText style={styles.title}>
+            {paymentAuthenticationMode === PaymentAuthenticationMode.PINCODE
+              ? "결제 시 사용하실 PIN 코드를 입력하세요."
+              : "등록하신 비밀번호를 입력하세요."}
+          </LabelText>
+          <LabelText style={styles.subtitle}>
+            {paymentAuthenticationMode === PaymentAuthenticationMode.PINCODE ? "PIN 코드 6자리를 입력해 주세요." : "비밀번호 6자리를 입력해 주세요."}
+          </LabelText>
 
           <View style={styles.passwordDotsContainer}>{renderPasswordDots()}</View>
 
           <View style={styles.numberPadContainer}>{renderNumberPad()}</View>
-
+          {/* 
           <TouchableOpacity style={styles.biometricButton} onPress={handleBiometricAuth}>
             <LabelText style={styles.biometricButtonText}>생체인식 인증하기</LabelText>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </CommonLayout>
 
@@ -143,7 +169,7 @@ export const PasswordInputScreen: React.FC<PasswordInputScreenProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFFFFF",
+    marginVertical: 100,
     justifyContent: "center",
     alignItems: "center"
   },

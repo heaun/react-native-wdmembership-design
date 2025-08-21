@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Switch, Image } from "react-native";
 import { CommonLayout } from "../components/CommonLayout";
+import { FaceIdModal } from "../components/FaceIdModal";
 import { VersionInfo } from "../../types/version";
 import Constants from "expo-constants";
 import { LabelText, ButtonText, SmallText } from "../components/CommonText";
@@ -33,8 +34,10 @@ export const AppSettingsSubMenuScreen: React.FC<AppSettingsSubMenuScreenProps> =
   const [toggleStates, setToggleStates] = useState({
     pushNotification: true,
     autoLogin: false,
-    biometricLogin: true
+    biometricLogin: false
   });
+
+  const [showFaceIdModal, setShowFaceIdModal] = useState(false);
 
   const [versionInfo, setVersionInfo] = useState({
     currentVersion: "1.0.0",
@@ -91,10 +94,26 @@ export const AppSettingsSubMenuScreen: React.FC<AppSettingsSubMenuScreenProps> =
   }, [versionInfo.newVersion]); // newVersion이 변경될 때도 재실행
 
   const handleToggleChange = (key: keyof typeof toggleStates) => {
-    setToggleStates((prev) => ({
-      ...prev,
-      [key]: !prev[key]
-    }));
+    if (key === "biometricLogin") {
+      const newValue = !toggleStates.biometricLogin;
+
+      if (newValue) {
+        // 생체 인식 로그인을 on으로 설정할 때 Face ID 모달 표시
+        setShowFaceIdModal(true);
+      } else {
+        // 생체 인식 로그인을 off로 설정할 때 설정 해제
+        setToggleStates((prev) => ({
+          ...prev,
+          [key]: false
+        }));
+        console.log("생체 인식 로그인 설정 해제");
+      }
+    } else {
+      setToggleStates((prev) => ({
+        ...prev,
+        [key]: !prev[key]
+      }));
+    }
   };
 
   const handleVersionUpdatePress = () => {
@@ -102,6 +121,20 @@ export const AppSettingsSubMenuScreen: React.FC<AppSettingsSubMenuScreenProps> =
       // versionStatus 값을 전달하는 방식으로 수정
       onVersionUpdatePress(versionInfo);
     }
+  };
+
+  const handleCloseFaceIdModal = () => {
+    setShowFaceIdModal(false);
+  };
+
+  const handleBiometricAuthSuccess = () => {
+    // 생체 인증 성공 시 설정 활성화
+    setToggleStates((prev) => ({
+      ...prev,
+      biometricLogin: true
+    }));
+    setShowFaceIdModal(false);
+    console.log("생체 인식 로그인 설정 활성화");
   };
 
   // 데이터 바인딩 객체
@@ -189,11 +222,15 @@ export const AppSettingsSubMenuScreen: React.FC<AppSettingsSubMenuScreenProps> =
   };
 
   return (
-    <CommonLayout title="앱설정" showBackButton={true} showTabBar={false} onBackPress={onBackPress}>
-      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-        {settingsData.map(renderSettingItem)}
-      </ScrollView>
-    </CommonLayout>
+    <>
+      <CommonLayout title="앱설정" showBackButton={true} showTabBar={false} onBackPress={onBackPress}>
+        <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+          {settingsData.map(renderSettingItem)}
+        </ScrollView>
+      </CommonLayout>
+
+      <FaceIdModal isVisible={showFaceIdModal} onClose={handleCloseFaceIdModal} onSuccess={handleBiometricAuthSuccess} />
+    </>
   );
 };
 

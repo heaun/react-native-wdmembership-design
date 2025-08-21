@@ -1,5 +1,5 @@
-import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import React, { useState } from "react";
+import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import Modal from "react-native-modal";
 import LottieView from "lottie-react-native";
 import { LabelText } from "./CommonText";
@@ -7,9 +7,24 @@ import { LabelText } from "./CommonText";
 interface FaceIdModalProps {
   isVisible: boolean;
   onClose: () => void;
+  onSuccess?: () => void;
 }
 
-export const FaceIdModal: React.FC<FaceIdModalProps> = ({ isVisible, onClose }) => {
+export const FaceIdModal: React.FC<FaceIdModalProps> = ({ isVisible, onClose, onSuccess }) => {
+  const [lottieError, setLottieError] = useState(false);
+
+  // 생체 인증 시뮬레이션 (실제로는 생체 인증 API 사용)
+  React.useEffect(() => {
+    if (isVisible && onSuccess) {
+      // 3초 후 생체 인증 성공으로 가정
+      const timer = setTimeout(() => {
+        onSuccess();
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [isVisible, onSuccess]);
+
   return (
     <Modal
       isVisible={isVisible}
@@ -30,10 +45,17 @@ export const FaceIdModal: React.FC<FaceIdModalProps> = ({ isVisible, onClose }) 
           <LabelText style={styles.subtitle}>얼굴을 인식해 주세요.</LabelText>
 
           <View style={styles.lottieContainer}>
-            <LottieView source={require("../assets/authentication/face-id.json")} loop autoPlay style={styles.lottieAnimation} />
+            <LottieView
+              source={require("../assets/authentication/biometric.json")}
+              loop
+              autoPlay
+              style={styles.lottieAnimation}
+              speed={1}
+              resizeMode="cover"
+            />
           </View>
 
-          <LabelText style={styles.faceIdText}>- - - - - -</LabelText>
+          {lottieError && <LabelText style={styles.faceIdText}>- - - - - -</LabelText>}
         </View>
       </View>
     </Modal>
@@ -71,10 +93,10 @@ const styles = StyleSheet.create({
   },
   faceIdContainer: {
     alignItems: "center",
-    paddingVertical: 20,
     backgroundColor: "#505866",
     borderRadius: 20,
-    padding: 20,
+    paddingVertical: 30,
+    paddingHorizontal: 10,
     width: "90%",
     maxWidth: 350
   },
@@ -99,13 +121,13 @@ const styles = StyleSheet.create({
     height: 200,
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 20
+    marginBottom: 20,
+    backgroundColor: "transparent"
   },
   lottieAnimation: {
-    width: "100%",
-    height: "100%",
-    borderRadius: 20,
-    overflow: "hidden"
+    width: 200,
+    height: 200,
+    borderRadius: 20
   },
   faceIdText: {
     fontSize: 16,
