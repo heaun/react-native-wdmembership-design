@@ -1,7 +1,8 @@
 import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, StyleProp, TextStyle } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { LabelText, SmallText, ButtonText, CommonText } from "./CommonText";
+import { LabelText, SmallText, ButtonText, BoldText, ExtraBoldText } from "./CommonText";
+import { FONT_FAMILY, globalStyles } from "../utils/globalStyles";
 
 // 공통 스타일
 export const authCommonStyles = StyleSheet.create({
@@ -15,17 +16,16 @@ export const authCommonStyles = StyleSheet.create({
     alignItems: "flex-start"
   },
   title: {
-    fontSize: 24,
-    fontWeight: "700",
+    fontSize: 20,
     color: "#2B2B2B",
     marginBottom: 5
   },
   subtitle: {
-    fontSize: 16,
-    fontWeight: "400",
+    fontSize: 14,
     color: "#505866",
     lineHeight: 24
   },
+
   inputSection: {
     marginBottom: 40
   },
@@ -38,23 +38,11 @@ export const authCommonStyles = StyleSheet.create({
     color: "#2B2B2B",
     marginBottom: 8
   },
-  input: {
-    fontSize: 18,
-    fontWeight: "700",
-    color: "#2B2B2B",
-    paddingVertical: 12
-  },
+
   phoneInputContainer: {
     flexDirection: "row",
     alignItems: "center",
     gap: 12
-  },
-  phoneInput: {
-    flex: 1,
-    fontSize: 18,
-    fontWeight: "700",
-    color: "#2B2B2B",
-    paddingVertical: 12
   },
 
   verificationInputContainer: {
@@ -62,13 +50,7 @@ export const authCommonStyles = StyleSheet.create({
     alignItems: "center",
     gap: 12
   },
-  verificationInput: {
-    flex: 1,
-    fontSize: 18,
-    fontWeight: "700",
-    color: "#2B2B2B",
-    paddingVertical: 12
-  },
+
   verifyButton: {
     backgroundColor: "#B48327",
     borderRadius: 24,
@@ -189,8 +171,8 @@ export const authCommonStyles = StyleSheet.create({
     gap: 3
   },
   resultSubtitle: {
-    fontSize: 16,
-    fontWeight: "400",
+    fontSize: 14,
+    fontFamily: FONT_FAMILY.REGULAR,
     color: "#505866"
   },
   userIdContainer: {
@@ -199,7 +181,8 @@ export const authCommonStyles = StyleSheet.create({
     padding: 20,
     width: "100%",
     borderWidth: 1,
-    borderColor: "#D6DADF"
+    borderColor: "#D6DADF",
+    marginTop: 20
   },
   userIdRow: {
     flexDirection: "row",
@@ -208,8 +191,8 @@ export const authCommonStyles = StyleSheet.create({
     marginBottom: 10
   },
   userIdLabel: {
-    fontSize: 14,
-    fontWeight: "400",
+    fontSize: 15,
+
     color: "#505866",
     marginBottom: 8
   },
@@ -220,6 +203,7 @@ export const authCommonStyles = StyleSheet.create({
   },
   userIdDate: {
     fontSize: 14,
+    letterSpacing: -0.4,
     fontWeight: "400",
     color: "#505866"
   },
@@ -230,13 +214,7 @@ export const authCommonStyles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center"
   },
-  passwordInput: {
-    flex: 1,
-    fontSize: 18,
-    fontWeight: "700",
-    color: "#2B2B2B",
-    paddingVertical: 12
-  },
+
   eyeButton: {
     padding: 4
   },
@@ -317,8 +295,8 @@ export const Timer: React.FC<TimerProps> = ({ timeRemaining, isTimerActive }) =>
 
   return (
     <View style={authCommonStyles.timerContainer}>
-      <Text style={authCommonStyles.timerLabel}>남은시간</Text>
-      <Text style={[authCommonStyles.timerText, timeRemaining <= 30 && authCommonStyles.timerWarning]}>{formatTime(timeRemaining)}</Text>
+      <BoldText style={authCommonStyles.timerLabel}>남은시간</BoldText>
+      <BoldText style={[authCommonStyles.timerText, timeRemaining <= 30 && authCommonStyles.timerWarning]}>{formatTime(timeRemaining)}</BoldText>
     </View>
   );
 };
@@ -334,7 +312,7 @@ export const EmailInput: React.FC<EmailInputProps> = ({ value, onChangeText, pla
   <View style={authCommonStyles.inputContainer}>
     <LabelText style={authCommonStyles.inputLabel}>이메일 주소</LabelText>
     <TextInput
-      style={authCommonStyles.input}
+      style={globalStyles.input}
       placeholder={placeholder}
       placeholderTextColor="#B1B8C0"
       value={value}
@@ -370,7 +348,7 @@ export const EmailInputWithButton: React.FC<EmailInputWithButtonProps> = ({
     <LabelText style={authCommonStyles.inputLabel}>이메일(아이디)</LabelText>
     <View style={authCommonStyles.phoneInputContainer}>
       <TextInput
-        style={authCommonStyles.phoneInput}
+        style={authCommonStyles.input}
         placeholder="abc@email.com"
         placeholderTextColor="#B1B8C0"
         value={value}
@@ -422,7 +400,7 @@ export const PhoneInput: React.FC<PhoneInputProps> = ({ value, onChangeText, onS
     <View style={authCommonStyles.phoneInputContainer}>
       <TextInput
         key="phone-input"
-        style={authCommonStyles.phoneInput}
+        style={globalStyles.input}
         placeholder="(-)제외하고 숫자만 입력"
         placeholderTextColor="#B1B8C0"
         value={value}
@@ -442,7 +420,7 @@ export const PhoneInput: React.FC<PhoneInputProps> = ({ value, onChangeText, onS
       </TouchableOpacity>
     </View>
     <View style={authCommonStyles.inputBorder} />
-    {isVerificationSent && <SmallText style={authCommonStyles.statusMessage}>인증번호가 발송되었습니다.</SmallText>}
+    {isVerificationSent && <BoldText style={authCommonStyles.statusMessage}>인증번호가 발송되었습니다.</BoldText>}
   </View>
 );
 
@@ -452,7 +430,7 @@ export const VerificationInput: React.FC<VerificationInputProps> = ({ value, onC
     <View style={authCommonStyles.verificationInputContainer}>
       <TextInput
         key="verification-input"
-        style={authCommonStyles.verificationInput}
+        style={globalStyles.input}
         placeholder="인증번호 입력"
         placeholderTextColor="#B1B8C0"
         value={value}
@@ -472,7 +450,7 @@ export const VerificationInput: React.FC<VerificationInputProps> = ({ value, onC
       </TouchableOpacity>
     </View>
     <View style={authCommonStyles.inputBorder} />
-    {isVerificationCompleted && <Text style={authCommonStyles.statusMessage}>휴대폰 번호 인증이 완료되었습니다.</Text>}
+    {isVerificationCompleted && <LabelText style={authCommonStyles.statusMessage}>휴대폰 번호 인증이 완료되었습니다.</LabelText>}
   </View>
 );
 
@@ -514,7 +492,7 @@ export const PasswordInput: React.FC<PasswordInputProps> = ({
     <LabelText style={authCommonStyles.inputLabel}>{mode === PasswordInputMode.INPUT ? "비밀번호" : "비밀번호 확인"}</LabelText>
     <View style={authCommonStyles.passwordInputContainer}>
       <TextInput
-        style={authCommonStyles.passwordInput}
+        style={globalStyles.input}
         placeholder={placeholder}
         placeholderTextColor="#B1B8C0"
         value={value}
@@ -645,9 +623,9 @@ export const AuthResultStep: React.FC<AuthResultStepProps> = ({
 
   const renderTitle = (title: string, style?: StyleProp<TextStyle>) => {
     return title.split("\n").map((line: string, index: number) => (
-      <Text key={index} style={style ? style : authCommonStyles.resultTitle}>
+      <ExtraBoldText key={index} style={style ? style : authCommonStyles.resultTitle}>
         {line}
-      </Text>
+      </ExtraBoldText>
     ));
   };
   return (
@@ -662,10 +640,10 @@ export const AuthResultStep: React.FC<AuthResultStepProps> = ({
         {userId && (
           <View style={authCommonStyles.userIdContainer}>
             <View style={authCommonStyles.userIdRow}>
-              <LabelText style={authCommonStyles.userIdLabel}>가입일</LabelText>
+              <BoldText style={authCommonStyles.userIdLabel}>가입일</BoldText>
               <LabelText style={authCommonStyles.userIdDate}>{registrationDate}</LabelText>
             </View>
-            <LabelText style={authCommonStyles.userId}>{userId}</LabelText>
+            <BoldText style={authCommonStyles.userId}>{userId}</BoldText>
           </View>
         )}
       </View>

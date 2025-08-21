@@ -1,3 +1,5 @@
+import { MembershipLevel } from "./membership";
+
 // 이미지 파일 타입 선언
 declare module "*.png" {
   const value: any;
@@ -32,15 +34,6 @@ export interface User {
   membershipLevel: MembershipLevel;
   points: number;
   joinDate: string;
-}
-
-export interface MembershipLevel {
-  id: string;
-  name: string;
-  color: string;
-  benefits: string[];
-  minPoints: number;
-  discount: number;
 }
 
 export interface Benefit {

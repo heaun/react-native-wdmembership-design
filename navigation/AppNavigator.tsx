@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { SafeAreaView } from "react-native";
+import React, { useState, useEffect } from "react";
+import { SafeAreaView, Linking, Alert } from "react-native";
 import { MainScreen } from "../src/screens/MainScreen";
 import { BenefitsScreen } from "../src/screens/BenefitsScreen";
 import { ProfileScreen } from "../src/screens/ProfileScreen";
@@ -29,6 +29,7 @@ import { VersionUpdateScreen } from "../src/screens/VersionUpdateScreen";
 import { VersionInfo } from "../types/version";
 import { AppSettingsSubMenuScreen } from "../src/screens/AppSettingsSubMenuScreen";
 import { HomeScreen } from "../src/screens/HomeScreen";
+import { MembershipType } from "../types/membership";
 
 type ScreenType =
   | "Home"
@@ -61,7 +62,8 @@ type ScreenType =
   | "ReservationDetail"
   | "MembershipVerification"
   | "ServiceDetail"
-  | "AppSettingsSubMenu";
+  | "AppSettingsSubMenu"
+  | "MembershipResult";
 
 interface AppNavigatorProps {
   onLogout?: () => void;
@@ -85,6 +87,10 @@ export const AppNavigator: React.FC<AppNavigatorProps> = ({ onLogout }) => {
   const [newOrder, setNewOrder] = useState<any>(null);
   const [selectedMembershipId, setSelectedMembershipId] = useState<string>("with-doctors");
   const [selectedReservation, setSelectedReservation] = useState<any>(null);
+
+  useEffect(() => {
+    console.log("currentScreen ::", currentScreen);
+  }, []);
 
   const handleTabPress = (tabName: string) => {
     if (tabName === "Home" || tabName === "Schedule" || tabName === "MembershipCard" || tabName === "MyService") {
@@ -124,7 +130,8 @@ export const AppNavigator: React.FC<AppNavigatorProps> = ({ onLogout }) => {
     setCurrentScreen("Home");
   };
 
-  const handleUserMembershipInfoPress = () => {
+  const handleUserMembershipInfoPress = (membershipId: string) => {
+    setSelectedMembershipId(membershipId);
     setCurrentScreen("UserMembershipInfo");
   };
 
@@ -396,8 +403,8 @@ export const AppNavigator: React.FC<AppNavigatorProps> = ({ onLogout }) => {
             currentTab={currentScreen}
             onTabPress={handleTabPress}
             onMembershipVerificationPress={handleMembershipVerificationPress}
-            onMembershipGuidePress={handleMembershipGuidePress}
-            onMembershipInfoPress={handleUserMembershipInfoPress}
+            onUserMembershipInfoPress={(membershipId) => handleUserMembershipInfoPress(membershipId)}
+            onMembershipInfoPress={() => handleUserMembershipInfoPress(selectedMembershipId)}
             onSideMenuItemPress={handleSideMenuItemPress}
           />
         );
@@ -411,7 +418,12 @@ export const AppNavigator: React.FC<AppNavigatorProps> = ({ onLogout }) => {
           />
         );
       case "MembershipGuide":
-        return <MembershipGuideScreen onBackPress={handleBackToMembershipCardFromGuide} onMenuItemPress={handleMembershipDetailPress} />;
+        return (
+          <MembershipGuideScreen
+            onBackPress={handleBackToMembershipCardFromGuide}
+            onMenuItemPress={(itemId) => handleMembershipDetailPress(itemId as MembershipType)}
+          />
+        );
       case "MyService":
         return (
           <MyServiceScreen
@@ -624,10 +636,39 @@ export const AppNavigator: React.FC<AppNavigatorProps> = ({ onLogout }) => {
       case "UserMembershipInfo":
         return (
           <UserMembershipInfoScreen
+            membershipId={selectedMembershipId}
+            membershipType={MembershipType.PH_1603} // 임시로 고정값 사용
             onBackPress={handleBackToMembershipCard}
-            currentTab={currentScreen}
-            onTabPress={handleTabPress}
-            onSideMenuItemPress={handleSideMenuItemPress}
+            onConsultationPress={async () => {
+              // 멤버십 상담 문의 처리
+              console.log("멤버십 상담 문의");
+              const phoneNumber = "1588-1234";
+
+              try {
+                // 전화번호에서 하이픈 제거
+                const cleanPhoneNumber = phoneNumber.replace(/-/g, "");
+                const telUrl = `tel:${cleanPhoneNumber}`;
+
+                console.log("전화 연결 시도:", telUrl);
+
+                const supported = await Linking.canOpenURL(telUrl);
+                console.log("전화 앱 지원 여부:", supported);
+
+                if (supported) {
+                  await Linking.openURL(telUrl);
+                } else {
+                  // 전화 앱이 지원되지 않는 경우 (시뮬레이터 등)
+                  Alert.alert("전화 연결", `전화 앱을 열 수 없습니다.\n\n전화번호: ${phoneNumber}\n\n직접 전화를 걸어주세요.`, [
+                    { text: "확인", style: "default" }
+                  ]);
+                }
+              } catch (error) {
+                console.error("전화 연결 오류:", error);
+                Alert.alert("오류 발생", "전화 연결 중 오류가 발생했습니다.\n\n전화번호: 1588-1234\n\n직접 전화를 걸어주세요.", [
+                  { text: "확인", style: "default" }
+                ]);
+              }
+            }}
           />
         );
       case "AppSettings":

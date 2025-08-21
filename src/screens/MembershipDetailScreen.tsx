@@ -1,26 +1,9 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image, Linking, Alert } from "react-native";
 import { CommonLayout } from "../components/CommonLayout";
-import { LabelText, ButtonText, SmallText } from "../components/CommonText";
+import { LabelText, ButtonText, SmallText, ExtraBoldText } from "../components/CommonText";
 import { Ionicons } from "@expo/vector-icons";
-
-interface MembershipDetail {
-  id: string;
-  title: string;
-  subtitle: string;
-  membershipType: string;
-  joinFee: string;
-  annualFee: string;
-  returnType: string;
-  familyDiscount: string;
-  benefits: {
-    title: string;
-    items: string[];
-  }[];
-  cardImage: any;
-  notes?: string[];
-  backgroundColor: string;
-}
+import { MembershipDetail } from "../../types/membership";
 
 interface MembershipDetailScreenProps {
   membershipId: string;
@@ -36,8 +19,9 @@ export const MembershipDetailScreen: React.FC<MembershipDetailScreenProps> = ({ 
       title: "위드닥터스 맴버",
       subtitle: "With Drs. Member Only",
       membershipType: "VIP MEMBERSHIP",
-      joinFee: "150,000,000 원",
-      annualFee: "10,000,000 원",
+      joinFee: "150,000,000",
+      annualFee: "10,000,000",
+      unit: "원",
       returnType: "10년 반환형",
       familyDiscount: "가족형(기명) : 1인 30% DC",
       cardImage: require("../assets/membership/with-doctors-member.png"),
@@ -89,6 +73,7 @@ export const MembershipDetailScreen: React.FC<MembershipDetailScreenProps> = ({ 
       membershipType: "VIP MEMBERSHIP",
       joinFee: "별도 협의",
       annualFee: "별도 협의",
+      unit: "",
       returnType: "",
       familyDiscount: "",
       cardImage: require("../assets/membership/ph-1603-residence.png"),
@@ -124,9 +109,10 @@ export const MembershipDetailScreen: React.FC<MembershipDetailScreenProps> = ({ 
       title: "세인트폴 스쿨",
       subtitle: "For Saint Paul",
       membershipType: "VIP MEMBERSHIP",
-      joinFee: "80,000,000 원",
-      annualFee: "7,000,000 원",
+      joinFee: "80,000,000",
+      annualFee: "7,000,000",
       returnType: "가족형 (2인 기준) : 150,000,000 원",
+      unit: "원",
       familyDiscount: "가족형 (2인 기준) : 14,000,000 원",
       cardImage: require("../assets/membership/saint-paul-school.png"),
       backgroundColor: "#505F65",
@@ -197,11 +183,11 @@ export const MembershipDetailScreen: React.FC<MembershipDetailScreenProps> = ({ 
           {/* 상단 전환 헤더 */}
           <View style={styles.switchHeader}>
             <TouchableOpacity onPress={goPrev} style={styles.switchArrow}>
-              <Ionicons name="chevron-back" size={22} color="#FFFFFF" />
+              <Ionicons name="chevron-back" size={22} />
             </TouchableOpacity>
             <LabelText style={styles.switchTitle}>{membership.title}</LabelText>
             <TouchableOpacity onPress={goNext} style={styles.switchArrow}>
-              <Ionicons name="chevron-forward" size={22} color="#FFFFFF" />
+              <Ionicons name="chevron-forward" size={22} />
             </TouchableOpacity>
           </View>
 
@@ -213,9 +199,9 @@ export const MembershipDetailScreen: React.FC<MembershipDetailScreenProps> = ({ 
 
           {membership.id === "ph-1603" ? (
             <View style={styles.feeSection_ph1603}>
-              <LabelText style={styles.feeLabel_ph1603}>가입비 / 연회비</LabelText>
-              <LabelText style={styles.feeBigValue_ph1603}>{membership.joinFee}</LabelText>
-              <LabelText style={styles.feeSmallInfo_ph1603}>{membership.returnType}</LabelText>
+              <SmallText style={styles.feeLabel_ph1603}>가입비 / 연회비</SmallText>
+              <ExtraBoldText style={styles.feeBigValue_ph1603}>{membership.joinFee}</ExtraBoldText>
+              <SmallText style={styles.feeSmallInfo_ph1603}>{membership.returnType}</SmallText>
             </View>
           ) : (
             <View style={styles.feeSection}>
@@ -223,8 +209,11 @@ export const MembershipDetailScreen: React.FC<MembershipDetailScreenProps> = ({ 
               <View style={styles.feeRow}>
                 <LabelText style={styles.feeLabel}>가입비</LabelText>
                 <View style={styles.feeRight}>
-                  <LabelText style={styles.feeBigValue}>{membership.joinFee}</LabelText>
-                  {!!membership.returnType && <LabelText style={styles.feeSmallInfo}>{membership.returnType}</LabelText>}
+                  <View style={styles.feeContainer}>
+                    <ExtraBoldText style={styles.feeBigValue}>{membership.joinFee}</ExtraBoldText>
+                    <SmallText style={styles.feeBigUnit}>{membership.unit}</SmallText>
+                  </View>
+                  {!!membership.returnType && <SmallText style={styles.feeSmallInfo}>{membership.returnType}</SmallText>}
                 </View>
               </View>
 
@@ -234,8 +223,11 @@ export const MembershipDetailScreen: React.FC<MembershipDetailScreenProps> = ({ 
               <View style={styles.feeRow}>
                 <LabelText style={styles.feeLabel}>연회비</LabelText>
                 <View style={styles.feeRight}>
-                  <LabelText style={styles.feeBigValue}>{membership.annualFee}</LabelText>
-                  {!!membership.familyDiscount && <LabelText style={styles.feeSmallInfo}>{membership.familyDiscount}</LabelText>}
+                  <View style={{ flexDirection: "row", alignItems: "flex-end", gap: 10 }}>
+                    <ExtraBoldText style={styles.feeBigValue}>{membership.annualFee}</ExtraBoldText>
+                    <SmallText style={styles.feeBigUnit}>{membership.unit}</SmallText>
+                  </View>
+                  {!!membership.familyDiscount && <SmallText style={styles.feeSmallInfo}>{membership.familyDiscount}</SmallText>}
                 </View>
               </View>
             </View>
@@ -244,9 +236,9 @@ export const MembershipDetailScreen: React.FC<MembershipDetailScreenProps> = ({ 
           {membership.notes && (
             <View style={{ marginTop: 16 }}>
               {membership.notes.map((n, idx) => (
-                <LabelText key={idx} style={styles.noteText}>
+                <SmallText key={idx} style={styles.noteText}>
                   {n}
-                </LabelText>
+                </SmallText>
               ))}
             </View>
           )}
@@ -254,16 +246,16 @@ export const MembershipDetailScreen: React.FC<MembershipDetailScreenProps> = ({ 
 
         {/* Benefits Section */}
         <View style={styles.benefitsSection}>
-          <LabelText style={styles.benefitTitle}>멤버십 혜택 안내</LabelText>
+          <ExtraBoldText style={styles.benefitTitle}>멤버십 혜택 안내</ExtraBoldText>
           <View style={styles.divider} />
           {membership.benefits.map((benefit, index) => (
             <View key={index} style={styles.benefitGroup}>
-              <LabelText style={styles.benefitTitle}>{benefit.title}</LabelText>
+              <ExtraBoldText style={styles.benefitTitle}>{benefit.title}</ExtraBoldText>
               <View style={styles.benefitItems}>
                 {benefit.items.map((item, itemIndex) => (
                   <View key={itemIndex} style={styles.bulletRow}>
                     <View style={styles.bulletDot} />
-                    <SmallText style={styles.bulletText}>{item}</SmallText>
+                    <LabelText style={styles.bulletText}>{item}</LabelText>
                   </View>
                 ))}
               </View>
@@ -293,7 +285,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between"
   },
-  switchArrow: { padding: 4 },
+  switchArrow: {
+    padding: 4,
+    color: "#2B2B2B",
+    backgroundColor: "#ffffff",
+    borderRadius: 100,
+    width: 30,
+    height: 30,
+    alignItems: "center",
+    justifyContent: "center"
+  },
   switchTitle: { fontSize: 18, fontWeight: "800", color: "#FFFFFF", position: "absolute", left: 0, right: 0, textAlign: "center" },
 
   headerSection: {
@@ -315,16 +316,18 @@ const styles = StyleSheet.create({
   feeRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start", paddingVertical: 12 },
   feeLabel: { fontSize: 16, fontWeight: "700", color: "#D6DADF" },
   feeRight: { alignItems: "flex-end" },
-  feeBigValue: { fontSize: 28, fontWeight: "900", color: "#FFFFFF" },
+  feeContainer: { flexDirection: "row", alignItems: "flex-end", gap: 10 },
+  feeBigValue: { fontSize: 28, fontWeight: "900", color: "#FFFFFF", letterSpacing: -0.64 },
+  feeBigUnit: { fontSize: 28, color: "#FFFFFF", letterSpacing: -0.64 },
   feeSmallInfo: { fontSize: 14, fontWeight: "400", color: "#D6DADF", marginTop: 4 },
   noteText: { fontSize: 14, color: "#FFFFFF", textAlign: "center", marginTop: 8 },
 
   benefitsSection: { paddingHorizontal: 20, paddingTop: 30 },
-  benefitGroup: { marginBottom: 20 },
+  benefitGroup: { marginVertical: 20 },
   benefitTitle: { fontSize: 16, fontWeight: "800", color: "#000000", marginBottom: 16, letterSpacing: -0.64 },
-  benefitItems: { marginBottom: 20, marginTop: 10 },
+  benefitItems: { marginBottom: 20, marginTop: 10, paddingHorizontal: 15 },
   bulletRow: { flexDirection: "row", alignItems: "flex-start", marginBottom: 8 },
-  bulletDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: "#505866", marginTop: 9, marginRight: 8 },
+  bulletDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: "#505866", marginTop: 9, marginRight: 10 },
   bulletText: { flex: 1, fontSize: 16, fontWeight: "400", color: "#505866", lineHeight: 24, letterSpacing: -0.64 },
 
   divider: { height: 1, backgroundColor: "#D6DADF", marginVertical: 12 },

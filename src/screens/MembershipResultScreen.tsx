@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image, Linking, A
 import { CommonLayout } from "../components/CommonLayout";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
+import { MembershipResult } from "../../types/membership";
 
 interface MembershipResultProps {
   onBackPress?: () => void;
@@ -10,11 +11,7 @@ interface MembershipResultProps {
   approveStatus: boolean;
 }
 
-interface MembershipResultData {
-  approveStatus: boolean;
-}
-
-const initialData: MembershipResultData = {
+const initialData: MembershipResult = {
   approveStatus: true
 };
 
@@ -34,7 +31,7 @@ const message = {
 };
 
 export const MembershipResultScreen: React.FC<MembershipResultProps> = ({ onBackPress, onSuccess, approveStatus = true }) => {
-  const [data, setData] = useState<MembershipResultData>(() => ({
+  const [data, setData] = useState<MembershipResult>(() => ({
     ...initialData,
     approveStatus
   }));

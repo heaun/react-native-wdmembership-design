@@ -2,28 +2,9 @@ import React, { useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image, Dimensions } from "react-native";
 import { CommonLayout } from "../components/CommonLayout";
 import { CommonModal } from "../components/CommonModal";
-import { LabelText, ButtonText, SmallText } from "../components/CommonText";
+import { LabelText, ButtonText, SmallText, ExtraBoldText } from "../components/CommonText";
 const { width: screenWidth } = Dimensions.get("window");
-
-interface MembershipCardData {
-  id: string;
-  title: string;
-  subtitle: string;
-  membershipNumber: string;
-  expiryDate: string;
-  cardImage: any;
-  backgroundColor: string;
-  qrCodeImage: any;
-  couponCount: number;
-  infoSections: {
-    id: string;
-    title: string;
-    type: "verification" | "coupon" | "action";
-    value?: string | number;
-    image?: any;
-    onPress?: () => void;
-  }[];
-}
+import { MembershipCard } from "../../types/membership";
 
 interface MembershipCardScreenProps {
   onBack?: () => void;
@@ -34,7 +15,7 @@ interface MembershipCardScreenProps {
   onMembershipCheckPress?: () => void;
   onAuthInfoPress?: () => void;
   onMembershipVerificationPress?: () => void;
-  onMembershipGuidePress?: () => void;
+  onUserMembershipInfoPress?: (membershipId: string) => void;
   onMembershipInfoPress?: () => void;
   currentTab?: string;
   onTabPress?: (tabName: string) => void;
@@ -50,7 +31,7 @@ export const MembershipCardScreen: React.FC<MembershipCardScreenProps> = ({
   onMembershipCheckPress,
   onAuthInfoPress,
   onMembershipVerificationPress,
-  onMembershipGuidePress,
+  onUserMembershipInfoPress,
   onMembershipInfoPress,
   currentTab,
   onTabPress,
@@ -67,10 +48,10 @@ export const MembershipCardScreen: React.FC<MembershipCardScreenProps> = ({
   };
 
   // 멤버십 카드 데이터
-  const membershipCardData: MembershipCardData = {
+  const membershipCardData: MembershipCard = {
     id: "ph1603",
-    title: "PH1603 레지던스 전용",
-    subtitle: "PH1603 RESIDENCE",
+    title: "PH1603 RESIDENCE",
+    subtitle: "PH1603 레지던스 전용",
     membershipNumber: "9869 4586 2335 3698",
     expiryDate: "2030년 10월 25일 까지",
     cardImage: require("../assets/membership/card-bg.png"),
@@ -95,7 +76,7 @@ export const MembershipCardScreen: React.FC<MembershipCardScreenProps> = ({
         id: "benefits",
         title: "멤버십 혜택 보기",
         type: "action",
-        onPress: onMembershipGuidePress
+        onPress: () => onUserMembershipInfoPress?.(membershipCardData.id)
       },
       {
         id: "auth",
@@ -123,7 +104,7 @@ export const MembershipCardScreen: React.FC<MembershipCardScreenProps> = ({
         <View style={styles.membershipCardContainer}>
           <View style={[styles.membershipCard, { backgroundColor: membershipCardData.backgroundColor }]}>
             <View style={styles.cardInfo}>
-              <LabelText style={styles.cardTitle}>{membershipCardData.title}</LabelText>
+              <ExtraBoldText style={styles.cardTitle}>{membershipCardData.title}</ExtraBoldText>
               <LabelText style={styles.cardSubtitle}>{membershipCardData.subtitle}</LabelText>
             </View>
 
@@ -211,22 +192,18 @@ const styles = StyleSheet.create({
   },
 
   membershipCard: {
-    padding: 20,
-
-    width: "100%",
-    height: 210,
-    backgroundColor: "#4D4132",
-    overflow: "hidden",
-    position: "relative"
+    padding: 20
   },
   cardContent: {
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
-    paddingVertical: 24,
-    gap: 30
+    marginTop: 20,
+    gap: 15
   },
-  cardInfo: {},
+  cardInfo: {
+    gap: 10
+  },
   cardTitle: {
     fontSize: 18,
     fontWeight: "900",
@@ -257,7 +234,7 @@ const styles = StyleSheet.create({
   detailLabel: {
     fontSize: 13,
     fontWeight: "400",
-    color: "#FFFFFF"
+    color: "#B1B8C0"
   },
   detailValue: {
     fontSize: 16,

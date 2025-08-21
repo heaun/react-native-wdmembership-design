@@ -4,8 +4,20 @@ import { FONT_FAMILY, FONT_SIZE } from "../utils/globalStyles";
 
 // 기본 Text 컴포넌트
 interface CommonTextProps extends TextProps {
-  variant?: "title" | "subtitle" | "body" | "button" | "input" | "label" | "small" | "emphasis";
-  weight?: "light" | "regular" | "bold" | "extraBold" | "heavy";
+  variant?:
+    | "title"
+    | "subtitle"
+    | "body"
+    | "button"
+    | "input"
+    | "label"
+    | "small"
+    | "emphasis"
+    | "myeongjo"
+    | "myeongjoTitle"
+    | "myeongjoSubtitle"
+    | "myeongjoExtraBold";
+  weight?: "light" | "regular" | "bold" | "extraBold" | "heavy" | "myeongjo";
   size?: number;
   color?: string;
 }
@@ -24,6 +36,8 @@ export const CommonText: React.FC<CommonTextProps> = ({ variant = "body", weight
           return FONT_FAMILY.EXTRA_BOLD;
         case "heavy":
           return FONT_FAMILY.HEAVY;
+        case "myeongjo":
+          return FONT_FAMILY.MYEONGJO;
         default:
           return FONT_FAMILY.REGULAR;
       }
@@ -46,6 +60,14 @@ export const CommonText: React.FC<CommonTextProps> = ({ variant = "body", weight
         return FONT_FAMILY.LIGHT;
       case "emphasis":
         return FONT_FAMILY.EXTRA_BOLD;
+      case "myeongjo":
+        return FONT_FAMILY.MYEONGJO;
+      case "myeongjoTitle":
+        return FONT_FAMILY.MYEONGJO;
+      case "myeongjoSubtitle":
+        return FONT_FAMILY.MYEONGJO;
+      case "myeongjoExtraBold":
+        return FONT_FAMILY.MYEONGJO_EXTRA_BOLD;
       default:
         return FONT_FAMILY.REGULAR;
     }
@@ -71,6 +93,14 @@ export const CommonText: React.FC<CommonTextProps> = ({ variant = "body", weight
         return FONT_SIZE.SM;
       case "emphasis":
         return FONT_SIZE.LG;
+      case "myeongjo":
+        return FONT_SIZE.LG;
+      case "myeongjoTitle":
+        return FONT_SIZE.XXL;
+      case "myeongjoSubtitle":
+        return FONT_SIZE.BASE;
+      case "myeongjoExtraBold":
+        return FONT_SIZE.XXL;
       default:
         return FONT_SIZE.BASE;
     }
@@ -96,6 +126,14 @@ export const CommonText: React.FC<CommonTextProps> = ({ variant = "body", weight
         return "#B1B8C0";
       case "emphasis":
         return "#B48327";
+      case "myeongjo":
+        return "#2B2B2B";
+      case "myeongjoTitle":
+        return "#2B2B2B";
+      case "myeongjoSubtitle":
+        return "#505866";
+      case "myeongjoExtraBold":
+        return "#2B2B2B";
       default:
         return "#2B2B2B";
     }
@@ -141,3 +179,12 @@ export const BoldText: React.FC<TextProps> = (props) => <CommonText weight="bold
 export const ExtraBoldText: React.FC<TextProps> = (props) => <CommonText weight="extraBold" {...props} />;
 
 export const HeavyText: React.FC<TextProps> = (props) => <CommonText weight="heavy" {...props} />;
+
+// NanumMyeongjo 폰트 컴포넌트들
+export const MyeongjoText: React.FC<TextProps> = (props) => <CommonText variant="myeongjo" {...props} />;
+
+export const MyeongjoTitleText: React.FC<TextProps> = (props) => <CommonText variant="myeongjoTitle" {...props} />;
+
+export const MyeongjoSubtitleText: React.FC<TextProps> = (props) => <CommonText variant="myeongjoSubtitle" {...props} />;
+
+export const MyeongjoExtraBoldText: React.FC<TextProps> = (props) => <CommonText variant="myeongjoExtraBold" {...props} />;

@@ -1,548 +1,333 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Image, Dimensions } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image, Linking, Alert } from "react-native";
 import { CommonLayout } from "../components/CommonLayout";
-
-const { width: screenWidth } = Dimensions.get("window");
+import { LabelText, ButtonText, SmallText, ExtraBoldText } from "../components/CommonText";
+import { Ionicons } from "@expo/vector-icons";
+import { MembershipDetail, MembershipType } from "../../types/membership";
 
 interface UserMembershipInfoScreenProps {
+  membershipId: string;
+  membershipType: MembershipType;
   onBackPress?: () => void;
-  currentTab?: string;
-  onTabPress?: (tabName: string) => void;
-  onSideMenuItemPress?: (itemId: string) => void;
+  onConsultationPress?: () => void;
 }
 
-export const UserMembershipInfoScreen: React.FC<UserMembershipInfoScreenProps> = ({ onBackPress, currentTab, onTabPress, onSideMenuItemPress }) => {
-  const [cardSlide, setCardSlide] = useState<number>(0);
-
-  const handleMembershipBenefitsPress = () => {
-    console.log("멤버십 혜택 안내");
+export const UserMembershipInfoScreen: React.FC<UserMembershipInfoScreenProps> = ({
+  membershipId,
+  membershipType,
+  onBackPress,
+  onConsultationPress
+}) => {
+  // membershipId 매핑 (MembershipCardScreen에서 전달되는 ID를 UserMembershipInfoScreen의 키로 변환)
+  const getMembershipKey = (id: string): string => {
+    switch (id) {
+      case "ph1603":
+        return "ph-1603";
+      case "with-doctors":
+        return "with-doctors";
+      case "saint-paul":
+        return "saint-paul";
+      default:
+        return id;
+    }
   };
 
-  const handleUsageHistoryPress = () => {
-    console.log("사용 이력 보기");
-  };
+  const mappedMembershipId = getMembershipKey(membershipId);
 
-  const handlePaymentPress = () => {
-    console.log("연회비 납부하기");
-  };
-
-  const handleMoreTicketsPress = () => {
-    console.log("멤버십 이용권 더보기");
-  };
-
-  const handleMoreBenefitsPress = () => {
-    console.log("혜택 더보기");
-  };
-
-  // 데이터 바인딩 객체
-  const membershipData = {
-    member: {
-      name: "박기용",
-      residence: "PH 1603 레지던스",
-      statusText: "멤버십 회원입니다."
+  // 멤버십 데이터 (순서 고정)
+  const membershipDetails: { [key: string]: MembershipDetail } = {
+    "with-doctors": {
+      id: "with-doctors",
+      title: "위드닥터스 맴버",
+      subtitle: "With Drs. Member Only",
+      membershipType: "VIP MEMBERSHIP",
+      joinFee: "150,000,000 원",
+      annualFee: "10,000,000 원",
+      returnType: "10년 반환형",
+      familyDiscount: "가족형(기명) : 1인 30% DC",
+      cardImage: require("../assets/membership/with-doctors-member.png"),
+      backgroundColor: "#5C6969",
+      benefits: [
+        {
+          title: "건강증진 프로그램",
+          items: [
+            "호텔형 피트니스 무료 이용",
+            "사우나, 자쿠지 무료이용",
+            "피트니스 PT 무료이용권 10회 제공",
+            "탈모관리 및 해드 스파 30% 할인",
+            "스톤케어 및 등관리 30% 할인",
+            "골프연습타석, 스크린골프장 이용 20% 할인"
+          ]
+        },
+        {
+          title: "메디케어 프로그램",
+          items: [
+            "24시간 응급 내과 진료, 응급 이송 서비스 제공",
+            "마인드앤바디 케어 프로그램 30% 할인",
+            "국내 최고 4대 병원 최고급 건강검진 10% 할인",
+            "제휴 피부과 시술 및 레이저 치료 10% 할인",
+            "항노화, 호르몬 관리 프로그램 20% 할인",
+            "원격의료 서비스 제공",
+            "위드닥터스 팀닥터 다학제 의료 서비스 제공",
+            "회원 본인 혹은 직계 가족 제한 VIP 수술 전 / 후 암케어 통원 서비스 (3개월) 혹은 프리미엄 성장케어 (3개월) 프로그램 특별 제공",
+            "병원 예약 및 간호사와 함께 하는 고급 차량 의전 서비스 20% 할인"
+          ]
+        },
+        {
+          title: "케어 푸드 프로그램",
+          items: ["카페 & 베이커리 20% 할인", "케어 푸드 식당 20% 할인"]
+        },
+        {
+          title: "멤버십 혜택안내",
+          items: [
+            "멤버스 프리미엄 라운지 무료 이용 10회, 추가 이용시 50% 할인",
+            "하이앤드 그룹 미팅룸 무료 이용 2회, 추가 이용시 30% 할인",
+            "PGA, LPGA 선수와 함께하는 원포인트 레슨 이용권 7회 제공"
+          ]
+        }
+      ]
     },
-    details: {
-      memberNumber: "9869 4586 2335 3698",
-      period: "2026.03.01 ~ 2030.02.29"
+    "ph-1603": {
+      id: "ph-1603",
+      title: "PH1603 레지던스",
+      subtitle: "For PH 1603 Residence",
+      membershipType: "VIP MEMBERSHIP",
+      joinFee: "별도 협의",
+      annualFee: "별도 협의",
+      returnType: "",
+      familyDiscount: "",
+      cardImage: require("../assets/membership/ph-1603-residence.png"),
+      backgroundColor: "#605B51",
+      benefits: [
+        {
+          title: "레지던스 혜택",
+          items: [
+            "프라이빗 고급 주거 공간 무료 이용",
+            "컨시어지 서비스 24시간 제공",
+            "커뮤니티 시설 무료 이용",
+            "고급 보안 시스템 제공",
+            "전용 주차 공간 제공",
+            "정원 및 휴식 공간 무료 이용"
+          ]
+        },
+        {
+          title: "라이프스타일 서비스",
+          items: [
+            "고급 클리닝 서비스 20% 할인",
+            "전용 피트니스 센터 무료 이용",
+            "스파 및 마사지 서비스 30% 할인",
+            "고급 레스토랑 예약 서비스",
+            "이벤트 공간 대여 50% 할인",
+            "전용 수영장 무료 이용"
+          ]
+        }
+      ],
+      notes: ["회원님별 맞춤 혜택과 서비스 범위에 따라 \n가입비 및 연회비가 달라지므로 별도 협의가 필요합니다."]
     },
-    payment: {
-      due: "2027.10.01 ~ 2027.10.31",
-      phone: "070-457-8965"
-    },
-    tickets: [
-      {
-        id: "t1",
-        icon: require("../assets/membership/healthy-meal-plan-icon.png"),
-        title: "전 메뉴 30% 할인 이용권",
-        provider: "Healthy Meal Plan",
-        period: "2027.10.01 ~ 2027.10.31",
-        region: "전국 멤버십 가맹점 모두"
-      },
-      {
-        id: "t2",
-        icon: require("../assets/membership/coffee-icon.png"),
-        title: "무료 아이스 아메리카노 1잔 증정",
-        provider: "The Coffee M&N",
-        period: "2027.10.01 ~ 2027.10.31",
-        region: "서초 / 신촌 /경기 성남 한정"
-      },
-      {
-        id: "t3",
-        icon: require("../assets/membership/mind-body-icon.png"),
-        title: "체형/체력 성장 정밀 검사 이용권",
-        provider: "마인드앤바디 포 차일드",
-        period: "2027.10.01 ~ 2027.10.31",
-        region: "전국 멤버십 가맹점 모두"
-      },
-      {
-        id: "t4",
-        icon: require("../assets/membership/gcc-golf-icon.png"),
-        title: "골프 프로 무료 레슨 이용권",
-        provider: "GCC 스크린골프 연습장",
-        period: "2027.10.01 ~ 2027.10.31",
-        region: "전국 멤버십 가맹점 모두"
-      }
-    ],
-    benefits: [
-      {
-        id: "b1",
-        icon: require("../assets/membership/spa-icon.png"),
-        category: "스파/에스테틱",
-        title: "메디컬 에스테틱 20%할인",
-        provider: "에코스 스파"
-      },
-      {
-        id: "b2",
-        icon: require("../assets/membership/golf-icon.png"),
-        category: "레저 스포츠",
-        title: "골프용품 10%할인",
-        provider: "GCC 스크린골프"
-      },
-      {
-        id: "b3",
-        icon: require("../assets/membership/medical-icon.png"),
-        category: "의료",
-        title: "성장주사 시술 20%할인",
-        provider: "서울 정형외과"
-      },
-      {
-        id: "b4",
-        icon: require("../assets/membership/health-icon.png"),
-        category: "건강",
-        title: "요가/SNPE 용품 40%할인",
-        provider: "마인드앰바디 포 어덜트"
-      }
-    ]
-  } as const;
+    "saint-paul": {
+      id: "saint-paul",
+      title: "세인트폴 스쿨",
+      subtitle: "For Saint Paul",
+      membershipType: "VIP MEMBERSHIP",
+      joinFee: "80,000,000 원",
+      annualFee: "7,000,000 원",
+      returnType: "가족형 (2인 기준) : 150,000,000 원",
+      familyDiscount: "가족형 (2인 기준) : 14,000,000 원",
+      cardImage: require("../assets/membership/saint-paul-school.png"),
+      backgroundColor: "#505F65",
+      benefits: [
+        {
+          title: "교육 프로그램",
+          items: [
+            "맞춤형 영어 교육 프로그램",
+            "글로벌 인재 양성 프로그램",
+            "자녀 성장 프로그램",
+            "맞춤 컨설팅 제공",
+            "해외 유학 상담 서비스",
+            "언어 능력 평가 및 인증"
+          ]
+        },
+        {
+          title: "특별 혜택",
+          items: [
+            "해외 명문대 입학 상담",
+            "국제 교류 프로그램 참여",
+            "전문 강사 1:1 튜터링",
+            "온라인 학습 플랫폼 무료 이용",
+            "학부모 상담 서비스",
+            "진로 상담 및 멘토링"
+          ]
+        }
+      ]
+    }
+  };
 
-  const paymentDescription = `멤버십 서비스 연회비 납부 안내드립니다.\n납부금액 및 기타 문의사항은 ${membershipData.payment.phone} 로\n연락주시면 친철히 안내해 드리겠습니다.`;
+  const membershipOrder = ["with-doctors", "ph-1603", "saint-paul"] as const;
+  const initialIndex = Math.max(0, membershipOrder.indexOf(membershipId as any));
+  const [currentIndex, setCurrentIndex] = useState<number>(initialIndex);
+  const membership = membershipDetails[mappedMembershipId];
 
-  const slidesCount = 2; // 0: 요약, 1: 상세
-  const goPrevSlide = () => setCardSlide((prev) => (prev - 1 + slidesCount) % slidesCount);
-  const goNextSlide = () => setCardSlide((prev) => (prev + 1) % slidesCount);
+  // 멤버십이 존재하지 않을 경우 에러 처리
+  if (!membership) {
+    return (
+      <CommonLayout title="멤버십 안내" showBackButton={true} onBackPress={onBackPress} showTabBar={false} isWideLayout={true}>
+        <View style={styles.errorContainer}>
+          <LabelText style={styles.errorText}>멤버십 정보를 찾을 수 없습니다.</LabelText>
+        </View>
+      </CommonLayout>
+    );
+  }
+
+  const slidesCount = membershipOrder.length;
+  const goPrev = () => setCurrentIndex((i) => (i - 1 + slidesCount) % slidesCount);
+  const goNext = () => setCurrentIndex((i) => (i + 1) % slidesCount);
 
   return (
-    <CommonLayout
-      title="멤버십 정보 조회"
-      showBackButton={true}
-      showTabBar={true}
-      onBackPress={onBackPress}
-      onMenuPress={() => console.log("메뉴 버튼 클릭")}
-      onCouponPress={() => console.log("쿠폰 버튼 클릭")}
-      onNotificationPress={() => console.log("알림 버튼 클릭")}
-      currentTab={currentTab}
-      onTabPress={onTabPress}
-      onSideMenuItemPress={onSideMenuItemPress}
-    >
+    <CommonLayout title="멤버십 안내" showBackButton={true} onBackPress={onBackPress} showTabBar={false} isWideLayout={true}>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-        {/* 멤버십 정보 섹션 */}
-        <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>멤버십 정보</Text>
-            <TouchableOpacity style={styles.moreButton} onPress={handleMembershipBenefitsPress}>
-              <Text style={styles.moreButtonText}>멤버십 혜택 안내</Text>
-              <Ionicons name="chevron-forward" size={24} color="#505866" />
+        {/* Header Section */}
+        <View style={[styles.headerSection, { backgroundColor: membership.backgroundColor }]}>
+          {/* 상단 전환 헤더 */}
+          {/* <View style={styles.switchHeader}>
+            <TouchableOpacity onPress={goPrev} style={styles.switchArrow}>
+              <Ionicons name="chevron-back" size={22} color="#FFFFFF" />
             </TouchableOpacity>
-          </View>
+            <TouchableOpacity onPress={goNext} style={styles.switchArrow}>
+              <Ionicons name="chevron-forward" size={22} color="#FFFFFF" />
+            </TouchableOpacity>
+          </View> */}
+          <LabelText style={styles.switchTitle}>{membership.title}</LabelText>
 
           <View style={styles.membershipCard}>
-            {/* 카드 헤더: 좌우 이동 버튼 */}
-            <View style={styles.cardHeader}>
-              <TouchableOpacity onPress={goPrevSlide} style={styles.arrowButton} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
-                <Ionicons name="chevron-back" size={22} color="#505866" />
-              </TouchableOpacity>
-              <View style={styles.cardHeaderSpacer} />
-              <TouchableOpacity onPress={goNextSlide} style={styles.arrowButton} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
-                <Ionicons name="chevron-forward" size={22} color="#505866" />
-              </TouchableOpacity>
-            </View>
-
-            {/* 슬라이드 0: 요약 */}
-            {cardSlide === 0 && (
-              <>
-                <Text style={styles.memberName}>{membershipData.member.name} 님은</Text>
-                <Text style={styles.memberAddress}>{membershipData.member.residence}</Text>
-                <Text style={styles.memberStatus}>{membershipData.member.statusText}</Text>
-              </>
-            )}
-
-            {/* 슬라이드 1: 상세 */}
-            {cardSlide === 1 && (
-              <>
-                <View style={styles.membershipDetails}>
-                  <View style={styles.detailRow}>
-                    <Text style={styles.detailLabel}>멤버십 회원 번호</Text>
-                    <Text style={styles.detailValue}>{membershipData.details.memberNumber}</Text>
-                  </View>
-                  <View style={styles.detailRow}>
-                    <Text style={styles.detailLabel}>멤버십 기간</Text>
-                    <Text style={styles.detailValue}>{membershipData.details.period}</Text>
-                  </View>
-                </View>
-                <View style={styles.progressBar}>
-                  {Array.from({ length: 79 }, (_, i) => (
-                    <View key={i} style={styles.progressDot} />
-                  ))}
-                </View>
-              </>
-            )}
-          </View>
-        </View>
-
-        {/* 연회비 납부 안내 */}
-        <View style={styles.paymentNotice}>
-          <Text style={styles.paymentTitle}>연회비 납부안내</Text>
-          <View style={styles.paymentDetails}>
-            <View style={styles.detailRow}>
-              <Text style={styles.detailLabel}>납부 기한</Text>
-              <Text style={styles.detailValue}>{membershipData.payment.due}</Text>
-            </View>
-            <View style={styles.detailRow}>
-              <Text style={styles.detailLabel}>문의전화</Text>
-              <Text style={styles.detailValue}>{membershipData.payment.phone}</Text>
-            </View>
-          </View>
-          <Text style={styles.paymentDescription}>{paymentDescription}</Text>
-          <TouchableOpacity style={styles.paymentButton} onPress={handlePaymentPress}>
-            <Text style={styles.paymentButtonText}>연회비 납부하기</Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* 멤버십 이용권 섹션 */}
-        <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>멤버십 이용권</Text>
-            <TouchableOpacity style={styles.moreButton} onPress={handleMoreTicketsPress}>
-              <Text style={styles.moreButtonText}>멤버십 이용권 더보기</Text>
-            </TouchableOpacity>
+            <Image source={membership.cardImage} style={styles.cardImage} resizeMode="cover" />
           </View>
 
-          <View style={styles.ticketContainer}>
-            <Text style={styles.availableTickets}>
-              사용가능 이용권 <Text style={styles.ticketCount}>{membershipData.tickets.length}</Text>
-            </Text>
+          {/* Fee Information */}
 
-            {membershipData.tickets.map((t) => (
-              <View key={t.id} style={styles.ticketCard}>
-                <Image source={t.icon} style={styles.ticketIcon} resizeMode="cover" />
-                <View style={styles.ticketInfo}>
-                  <Text style={styles.ticketTitle}>{t.title}</Text>
-                  <Text style={styles.ticketProvider}>{t.provider}</Text>
-                  <View style={styles.ticketDetails}>
-                    <Text style={styles.ticketDetailLabel}>유효기간</Text>
-                    <Text style={styles.ticketDetailValue}>{t.period}</Text>
-                  </View>
-                  <View style={styles.ticketDetails}>
-                    <Text style={styles.ticketDetailLabel}>사용가능지역</Text>
-                    <Text style={styles.ticketDetailValue}>{t.region}</Text>
-                  </View>
+          {membership.id === "ph-1603" ? (
+            <View style={styles.feeSection_ph1603}>
+              <SmallText style={styles.feeLabel_ph1603}>가입비 / 연회비</SmallText>
+              <LabelText style={styles.feeBigValue_ph1603}>{membership.joinFee}</LabelText>
+              <SmallText style={styles.feeSmallInfo_ph1603}>{membership.returnType}</SmallText>
+            </View>
+          ) : (
+            <View style={styles.feeSection}>
+              {/* 가입비 */}
+              <View style={styles.feeRow}>
+                <LabelText style={styles.feeLabel}>가입비</LabelText>
+                <View style={styles.feeRight}>
+                  <LabelText style={styles.feeBigValue}>{membership.joinFee}</LabelText>
+                  {!!membership.returnType && <LabelText style={styles.feeSmallInfo}>{membership.returnType}</LabelText>}
                 </View>
-                <Ionicons name="chevron-forward" size={24} color="#505866" />
               </View>
-            ))}
-          </View>
+
+              <View style={styles.divider} />
+
+              {/* 연회비 */}
+              <View style={styles.feeRow}>
+                <LabelText style={styles.feeLabel}>연회비</LabelText>
+                <View style={styles.feeRight}>
+                  <LabelText style={styles.feeBigValue}>{membership.annualFee}</LabelText>
+                  {!!membership.familyDiscount && <LabelText style={styles.feeSmallInfo}>{membership.familyDiscount}</LabelText>}
+                </View>
+              </View>
+            </View>
+          )}
+          {/* 안내 문구 (선택) */}
+          {membership.notes && (
+            <View style={{ marginTop: 16 }}>
+              {membership.notes.map((n, idx) => (
+                <SmallText key={idx} style={styles.noteText}>
+                  {n}
+                </SmallText>
+              ))}
+            </View>
+          )}
         </View>
 
-        {/* 멤버십 혜택 섹션 */}
-        <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>멤버십 혜택</Text>
-            <TouchableOpacity style={styles.moreButton} onPress={handleMoreBenefitsPress}>
-              <Text style={styles.moreButtonText}>혜택 더보기</Text>
-            </TouchableOpacity>
-          </View>
-
-          <Text style={styles.benefitsDescription}>멤버십 회원님들께만 드리는 특별한 할인 혜택을 누려보세요.</Text>
-
-          {membershipData.benefits.map((b) => (
-            <View key={b.id} style={styles.benefitCard}>
-              <Image source={b.icon} style={styles.benefitIcon} resizeMode="cover" />
-              <View style={styles.benefitInfo}>
-                <Text style={styles.benefitCategory}>{b.category}</Text>
-                <Text style={styles.benefitTitle}>{b.title}</Text>
-                <Text style={styles.benefitProvider}>{b.provider}</Text>
+        {/* Benefits Section */}
+        <View style={styles.benefitsSection}>
+          <ExtraBoldText style={styles.benefitTitle}>멤버십 혜택 안내</ExtraBoldText>
+          <View style={styles.divider} />
+          {membership.benefits.map((benefit, index) => (
+            <View key={index} style={styles.benefitGroup}>
+              <ExtraBoldText style={styles.benefitTitle}>{benefit.title}</ExtraBoldText>
+              <View style={styles.benefitItems}>
+                {benefit.items.map((item, itemIndex) => (
+                  <View key={itemIndex} style={styles.bulletRow}>
+                    <View style={styles.bulletDot} />
+                    <SmallText style={styles.bulletText}>{item}</SmallText>
+                  </View>
+                ))}
               </View>
-              <TouchableOpacity style={styles.downloadButton}>
-                <Text style={styles.downloadText}>다운로드</Text>
-              </TouchableOpacity>
+              {index < membership.benefits.length - 1 && <View style={styles.divider} />}
             </View>
           ))}
         </View>
-
-        {/* 혜택 이용 상세 내역 */}
-        <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>혜택 이용 상세 내역</Text>
-            <TouchableOpacity style={styles.moreButton} onPress={handleUsageHistoryPress}>
-              <Text style={styles.moreButtonText}>사용 이력 보기</Text>
-              <Ionicons name="chevron-forward" size={24} color="#505866" />
-            </TouchableOpacity>
-          </View>
-        </View>
       </ScrollView>
+
+      {/* 멤버십 상담 문의 버튼 */}
+      <View style={styles.buttonSection}>
+        <TouchableOpacity style={styles.consultationButton} onPress={onConsultationPress}>
+          <LabelText style={styles.consultationButtonText}>멤버십 상담 문의</LabelText>
+        </TouchableOpacity>
+      </View>
     </CommonLayout>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#FFFFFF"
-  },
-  section: {
-    paddingVertical: 20
-  },
-  sectionHeader: {
+  container: { flex: 1, backgroundColor: "#FFFFFF" },
+  errorContainer: { flex: 1, justifyContent: "center", alignItems: "center" },
+  errorText: { fontSize: 16, color: "#505866" },
+
+  switchHeader: {
     flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 20,
-    paddingHorizontal: 20
+    justifyContent: "space-between"
   },
-  sectionTitle: {
-    fontSize: 16,
-    fontWeight: "800",
-    color: "#2B2B2B",
-    letterSpacing: -0.64
+  switchArrow: { padding: 4 },
+  switchTitle: { fontSize: 18, fontWeight: "800", color: "#FFFFFF", textAlign: "center" },
+
+  headerSection: {
+    backgroundColor: "#e40000",
+    paddingHorizontal: 20,
+    paddingVertical: 30
   },
   membershipCard: {
-    backgroundColor: "#FFFFFF",
-    borderRadius: 10,
-    padding: 20,
-    borderWidth: 1,
-    borderColor: "#D6DADF",
-    marginHorizontal: 20,
-    marginTop: 10
-  },
-  cardHeader: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginBottom: 10
-  },
-  arrowButton: {
-    padding: 2
-  },
-  cardHeaderSpacer: {
-    flex: 1
-  },
-  memberName: {
-    fontSize: 20,
-    fontWeight: "800",
-    color: "#2B2B2B",
-    textAlign: "center",
-    marginBottom: 5
-  },
-  memberAddress: {
-    fontSize: 20,
-    fontWeight: "900",
-    color: "#B48327",
-    textAlign: "center",
-    marginBottom: 5
-  },
-  memberStatus: {
-    fontSize: 20,
-    fontWeight: "400",
-    color: "#2B2B2B",
-    textAlign: "center",
-    marginBottom: 20
-  },
-  membershipDetails: {
-    marginBottom: 20
-  },
-  detailRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 15
-  },
-  detailLabel: {
-    fontSize: 14,
-    fontWeight: "700",
-    color: "#79818B"
-  },
-  detailValue: {
-    fontSize: 16,
-    fontWeight: "800",
-    color: "#2B2B2B",
-    textAlign: "right"
-  },
-  progressBar: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    paddingHorizontal: 10
-  },
-  progressDot: {
-    width: 4,
-    height: 4,
-    borderRadius: 2,
-    backgroundColor: "#FFFFFF"
-  },
-  paymentNotice: {
-    backgroundColor: "#FFFFFF",
-    borderRadius: 10,
-    padding: 20,
-    marginHorizontal: 20,
-    marginBottom: 20,
-    borderWidth: 1,
-    borderColor: "#D6DADF"
-  },
-  paymentTitle: {
-    fontSize: 16,
-    fontWeight: "800",
-    color: "#2B2B2B",
-    marginBottom: 20
-  },
-  paymentDetails: {
-    marginBottom: 20
-  },
-  paymentDescription: {
-    fontSize: 13,
-    fontWeight: "400",
-    color: "#2B2B2B",
-    lineHeight: 20,
-    marginBottom: 20
-  },
-  paymentButton: {
-    backgroundColor: "#CAB8A2",
-    borderRadius: 25,
-    paddingVertical: 12,
-    paddingHorizontal: 30,
-    alignSelf: "center"
-  },
-  paymentButtonText: {
-    fontSize: 16,
-    fontWeight: "700",
-    color: "#2B2B2B",
-    textAlign: "center"
-  },
-  ticketContainer: {
-    marginTop: 10,
-    paddingHorizontal: 20
-  },
-  availableTickets: {
-    fontSize: 16,
-    fontWeight: "800",
-    color: "#2B2B2B",
-    marginBottom: 15
-  },
-  ticketCount: {
-    color: "#B48327"
-  },
-  ticketCard: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#FFFFFF",
-    borderRadius: 6,
-    padding: 15,
-    marginBottom: 15,
-    borderWidth: 1,
-    borderColor: "#D6DADF"
-  },
-  ticketIcon: {
-    width: 50,
-    height: 50,
-    borderRadius: 6,
-    marginRight: 15
-  },
-  ticketInfo: {
-    flex: 1
-  },
-  ticketTitle: {
-    fontSize: 16,
-    fontWeight: "800",
-    color: "#2B2B2B",
-    marginBottom: 5
-  },
-  ticketProvider: {
-    fontSize: 13,
-    fontWeight: "700",
-    color: "#79818B",
-    marginBottom: 10
-  },
-  ticketDetails: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 5
-  },
-  ticketDetailLabel: {
-    fontSize: 13,
-    fontWeight: "700",
-    color: "#79818B"
-  },
-  ticketDetailValue: {
-    fontSize: 13,
-    fontWeight: "800",
-    color: "#2B2B2B",
-    textAlign: "right"
-  },
-  moreButton: {
-    flexDirection: "row",
+    marginVertical: 40,
     alignItems: "center"
   },
-  moreButtonText: {
-    fontSize: 14,
-    fontWeight: "700",
-    color: "#505866",
-    marginRight: 5
-  },
-  benefitsDescription: {
-    fontSize: 13,
-    fontWeight: "400",
-    color: "#2B2B2B",
-    lineHeight: 20,
+  cardImage: { width: 280, height: 160, borderRadius: 12 },
+
+  feeSection: {},
+  feeSection_ph1603: { alignItems: "center" },
+  feeLabel_ph1603: { fontSize: 16, fontWeight: "700", color: "#D6DADF" },
+  feeBigValue_ph1603: { fontSize: 28, fontWeight: "900", color: "#FFFFFF", marginTop: 12 },
+  feeSmallInfo_ph1603: { fontSize: 14, fontWeight: "400", color: "#D6DADF" },
+
+  feeRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start", paddingVertical: 12 },
+  feeLabel: { fontSize: 16, fontWeight: "700", color: "#D6DADF" },
+  feeRight: { alignItems: "flex-end" },
+  feeBigValue: { fontSize: 28, fontWeight: "900", color: "#FFFFFF" },
+  feeSmallInfo: { fontSize: 14, fontWeight: "400", color: "#D6DADF", marginTop: 4 },
+  noteText: { fontSize: 14, color: "#FFFFFF", textAlign: "center", marginTop: 8 },
+
+  benefitsSection: { paddingHorizontal: 20, paddingTop: 30 },
+  benefitGroup: { marginVertical: 20 },
+  benefitTitle: { fontSize: 16, fontWeight: "800", color: "#000000", marginBottom: 16, letterSpacing: -0.64 },
+  benefitItems: {
     marginBottom: 20,
-    paddingHorizontal: 20
+    marginTop: 10,
+    paddingHorizontal: 15
   },
-  benefitCard: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#FFFFFF",
-    borderRadius: 6,
-    padding: 15,
-    marginBottom: 15,
-    borderWidth: 1,
-    borderColor: "#D6DADF",
-    marginHorizontal: 20
-  },
-  benefitIcon: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    marginRight: 15
-  },
-  benefitInfo: {
-    flex: 1
-  },
-  benefitCategory: {
-    fontSize: 12,
-    fontWeight: "700",
-    color: "#505866",
-    marginBottom: 5
-  },
-  benefitTitle: {
-    fontSize: 14,
-    fontWeight: "800",
-    color: "#2B2B2B",
-    marginBottom: 5
-  },
-  benefitProvider: {
-    fontSize: 12,
-    fontWeight: "700",
-    color: "#505866"
-  },
-  downloadButton: {
-    backgroundColor: "#FFFFFF",
-    borderRadius: 30,
-    paddingVertical: 8,
-    paddingHorizontal: 15,
-    borderWidth: 1,
-    borderColor: "#D6DADF"
-  },
-  downloadText: {
-    fontSize: 12,
-    fontWeight: "700",
-    color: "#79818B",
-    textAlign: "center"
-  }
+  bulletRow: { flexDirection: "row", alignItems: "flex-start", marginBottom: 8 },
+  bulletDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: "#505866", marginTop: 9, marginRight: 10 },
+  bulletText: { flex: 1, fontSize: 16, fontWeight: "400", color: "#505866", lineHeight: 24, letterSpacing: -0.64 },
+
+  divider: { height: 1, backgroundColor: "#D6DADF", marginVertical: 12 },
+
+  buttonSection: { paddingHorizontal: 24, paddingVertical: 10 },
+  consultationButton: { backgroundColor: "#2B2B2B", borderRadius: 48, height: 50, justifyContent: "center", alignItems: "center" },
+  consultationButtonText: { fontSize: 16, fontWeight: "700", color: "#FFFFFF", letterSpacing: -0.64 }
 });

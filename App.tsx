@@ -43,7 +43,9 @@ function AppContent() {
         "NanumSquareNeo-bRg": require("./src/assets/fonts/NanumSquareNeo-bRg.ttf"),
         "NanumSquareNeo-cBd": require("./src/assets/fonts/NanumSquareNeo-cBd.ttf"),
         "NanumSquareNeo-dEb": require("./src/assets/fonts/NanumSquareNeo-dEb.ttf"),
-        "NanumSquareNeo-eHv": require("./src/assets/fonts/NanumSquareNeo-eHv.ttf")
+        "NanumSquareNeo-eHv": require("./src/assets/fonts/NanumSquareNeo-eHv.ttf"),
+        NanumMyeongjo: require("./src/assets/fonts/NanumMyeongjo.ttf"),
+        NanumMyeongjoExtraBold: require("./src/assets/fonts/NanumMyeongjoExtraBold.ttf")
       });
       setFontsLoaded(true);
     }

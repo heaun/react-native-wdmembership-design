@@ -70,6 +70,45 @@ export const globalStyles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "800",
     color: "#B48327"
+  },
+
+  // 명조체 텍스트 스타일
+  myeongjoText: {
+    fontFamily: "NanumMyeongjo",
+    fontSize: 16,
+    fontWeight: "400",
+    color: "#2B2B2B"
+  },
+
+  // 명조체 제목 스타일
+  myeongjoTitle: {
+    fontFamily: "NanumMyeongjo",
+    fontSize: 20,
+    fontWeight: "400",
+    color: "#2B2B2B"
+  },
+
+  // 명조체 부제목 스타일
+  myeongjoSubtitle: {
+    fontFamily: "NanumMyeongjo",
+    fontSize: 14,
+    fontWeight: "400",
+    color: "#505866"
+  },
+
+  myeongjoExtraBoldText: {
+    fontFamily: "NanumMyeongjoExtraBold",
+    fontSize: 20,
+    color: "#2B2B2B"
+  },
+
+  /* input */
+  input: {
+    flex: 1,
+    fontSize: 16,
+    color: "#2B2B2B",
+    paddingVertical: 12,
+    fontFamily: "NanumSquareNeo-cBd"
   }
 });
 
@@ -79,7 +118,9 @@ export const FONT_FAMILY = {
   REGULAR: "NanumSquareNeo-bRg",
   BOLD: "NanumSquareNeo-cBd",
   EXTRA_BOLD: "NanumSquareNeo-dEb",
-  HEAVY: "NanumSquareNeo-eHv"
+  HEAVY: "NanumSquareNeo-eHv",
+  MYEONGJO: "NanumMyeongjo",
+  MYEONGJO_EXTRA_BOLD: "NanumMyeongjoExtraBold"
 } as const;
 
 // 폰트 크기 상수

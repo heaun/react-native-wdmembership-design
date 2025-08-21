@@ -15,6 +15,8 @@ import {
   PasswordValidation
 } from "../components/AuthCommon";
 import { PasswordInputMode } from "../components/AuthCommon";
+import { MembershipResult } from "../../types/membership";
+import { globalStyles } from "../utils/globalStyles";
 
 interface SignUpScreenProps {
   onBackPress?: () => void;
@@ -76,10 +78,6 @@ interface TermsItem {
   isRequired: boolean;
   isAgreed: boolean;
   hasDetail: boolean;
-}
-
-interface MembershipResult {
-  approveStatus: boolean;
 }
 
 const initialData: SignUpData = {
@@ -740,7 +738,7 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
         <View style={styles.inputContainer}>
           <Text style={styles.inputLabel}>이메일(아이디)</Text>
           <TextInput
-            style={styles.input}
+            style={globalStyles.input}
             placeholder="abc@email.com"
             placeholderTextColor="#B1B8C0"
             value={data.form.email}

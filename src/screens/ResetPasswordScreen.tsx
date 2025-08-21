@@ -5,6 +5,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { AuthResultStep, PasswordInput, PasswordValidation } from "../components/AuthCommon";
 import { PasswordInputMode } from "../components/AuthCommon";
 import { LabelText } from "../components/CommonText";
+import { globalStyles } from "../utils/globalStyles";
 
 interface ResetPasswordScreenProps {
   onBackPress?: () => void;
@@ -115,7 +116,7 @@ export const ResetPasswordScreen: React.FC<ResetPasswordScreenProps> = ({ onBack
               <View style={styles.inputContainer}>
                 <LabelText style={styles.inputLabel}>아이디(이메일)</LabelText>
                 <TextInput
-                  style={styles.input}
+                  style={globalStyles.input}
                   placeholder="가입하신 아이디(이메일)를 입력해주세요."
                   placeholderTextColor="#B1B8C0"
                   value={data.form.id}
@@ -185,8 +186,7 @@ const styles = StyleSheet.create({
     alignItems: "flex-start"
   },
   title: {
-    fontSize: 24,
-    fontWeight: "700",
+    fontSize: 20,
     color: "#2B2B2B",
     marginBottom: 8
   },

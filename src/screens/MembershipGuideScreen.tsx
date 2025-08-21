@@ -1,15 +1,8 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image } from "react-native";
 import { CommonLayout } from "../components/CommonLayout";
-
-interface MembershipItem {
-  id: string;
-  title: string;
-  subtitle: string;
-  description: string;
-  image: any;
-  type: "with-doctors" | "ph-1603" | "saint-paul";
-}
+import { MembershipItem } from "../../types/membership";
+import { MyeongjoExtraBoldText, LabelText, ExtraBoldText, BoldText } from "../components/CommonText";
 
 interface MembershipGuideScreenProps {
   onBackPress?: () => void;
@@ -53,8 +46,10 @@ export const MembershipGuideScreen: React.FC<MembershipGuideScreenProps> = ({ on
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         {/* Header Section */}
         <View style={styles.headerSection}>
-          <Text style={styles.vipTitle}>VIP MEMBERSHIP</Text>
-          <Text style={styles.vipDescription}>최상위 멤버를 위한 프라이빗 레지던스 서비스로{"\n"}한 차원 높은 품격과 특별한 혜택을 경험하세요.</Text>
+          <MyeongjoExtraBoldText style={styles.vipTitle}>VIP MEMBERSHIP</MyeongjoExtraBoldText>
+          <LabelText style={styles.vipDescription}>
+            최상위 멤버를 위한 프라이빗 레지던스 서비스로{"\n"}한 차원 높은 품격과 특별한 혜택을 경험하세요.
+          </LabelText>
         </View>
 
         {/* Membership Items */}
@@ -66,14 +61,14 @@ export const MembershipGuideScreen: React.FC<MembershipGuideScreenProps> = ({ on
                   <Image source={item.image} style={styles.cardImage} resizeMode="cover" />
                 </View>
                 <View style={styles.textContainer}>
-                  <Text style={styles.cardTitle}>{item.title}</Text>
-                  <Text style={styles.cardSubtitle}>{item.subtitle}</Text>
+                  <ExtraBoldText style={styles.cardTitle}>{item.title}</ExtraBoldText>
+                  <LabelText style={styles.cardSubtitle}>{item.subtitle}</LabelText>
                 </View>
               </View>
 
               <View style={styles.cardDescriptionContainer}>
-                <Text style={styles.cardDescription}>{item.description}</Text>
-                <Text style={styles.detailLink}>멤버십 혜택 상세보기</Text>
+                <LabelText style={styles.cardDescription}>{item.description}</LabelText>
+                <BoldText style={styles.detailLink}>멤버십 혜택 상세보기</BoldText>
               </View>
             </View>
           </TouchableOpacity>

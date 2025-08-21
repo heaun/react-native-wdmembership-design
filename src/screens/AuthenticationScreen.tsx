@@ -14,6 +14,7 @@ import {
   usePhoneAutoSend,
   usePhoneVerificationStep
 } from "../components/AuthCommon";
+import { LabelText, ExtraBoldText, ButtonText } from "../components/CommonText";
 
 interface AuthenticationProps {
   onBackPress?: () => void;
@@ -282,10 +283,10 @@ export const AuthenticationScreen: React.FC<AuthenticationProps> = ({ onBackPres
     inputType = "phone"
   }) => (
     <View style={authCommonStyles.headerSection}>
-      <Text style={authCommonStyles.title}>{title}</Text>
-      {inputType === "phone" && <Text style={authCommonStyles.title}>휴대폰 인증을 해주세요</Text>}
-      {inputType === "email" && <Text style={authCommonStyles.title}>이메일 인증을 해주세요</Text>}
-      {subtitle && <Text style={authCommonStyles.subtitle}>{subtitle}</Text>}
+      <ExtraBoldText style={authCommonStyles.title}>{title}</ExtraBoldText>
+      {inputType === "phone" && <ExtraBoldText style={authCommonStyles.title}>휴대폰 인증을 해주세요</ExtraBoldText>}
+      {inputType === "email" && <ExtraBoldText style={authCommonStyles.title}>이메일 인증을 해주세요</ExtraBoldText>}
+      {subtitle && <LabelText style={authCommonStyles.subtitle}>{subtitle}</LabelText>}
     </View>
   );
 
@@ -318,7 +319,7 @@ export const AuthenticationScreen: React.FC<AuthenticationProps> = ({ onBackPres
 
         {mode === "resetPassword" && data.status.showEmailInput && (
           <View style={authCommonStyles.inputContainer}>
-            <Text style={authCommonStyles.inputLabel}>아이디(이메일)</Text>
+            <LabelText style={authCommonStyles.inputLabel}>아이디(이메일)</LabelText>
             <TextInput
               style={authCommonStyles.input}
               placeholder="가입하신 아이디(이메일)를 입력해주세요."
@@ -350,7 +351,7 @@ export const AuthenticationScreen: React.FC<AuthenticationProps> = ({ onBackPres
       </View>
 
       <TouchableOpacity style={authCommonStyles.resendButton} onPress={handleSendVerificationCode}>
-        <Text style={authCommonStyles.resendButtonText}>인증번호 재전송</Text>
+        <ButtonText style={authCommonStyles.resendButtonText}>인증번호 재전송</ButtonText>
       </TouchableOpacity>
     </View>
   );
@@ -361,7 +362,8 @@ export const AuthenticationScreen: React.FC<AuthenticationProps> = ({ onBackPres
       userId={data.result.foundUserId}
       registrationDate={data.result.registrationDate}
       message={{
-        title: message?.[mode]?.resultTitle
+        title: message?.[mode]?.resultTitle,
+        subtitle: message?.[mode]?.resultSubtitle
       }}
       primaryButton={{
         text: "로그인 하러가기",
@@ -415,35 +417,6 @@ export const AuthenticationScreen: React.FC<AuthenticationProps> = ({ onBackPres
             {/* {renderEmailDescription()} */}
           </>
         )}
-      </View>
-    </View>
-  );
-
-  const renderEmailDescription = () => (
-    <View style={styles.linkInfoRow}>
-      <View style={styles.linkIconContainer}>
-        <Ionicons name="mail-outline" size={24} color="#B48327" />
-      </View>
-      <View style={styles.linkInfoTextContainer}>
-        <Text style={styles.linkInfoTitle}>이메일을 확인해주세요</Text>
-        <Text style={styles.linkInfoSubtitle}>입력하신 이메일 주소로 인증번호가 전송되었습니다.</Text>
-      </View>
-    </View>
-  );
-
-  const renderLinkStep = () => (
-    <View style={[styles.container, { paddingBottom: 120 }]}>
-      <View style={styles.linkInfoSection}>
-        <View style={styles.linkInfoCard}>
-          <View style={styles.linkIconContainer}>
-            <Ionicons name="mail-outline" size={32} color="#B48327" />
-          </View>
-          <Text style={styles.linkInfoTitle}>이메일을 확인해주세요</Text>
-          <Text style={styles.linkInfoSubtitle}>
-            입력하신 이메일 주소로{"\n"}
-            아이디 찾기 링크가 전송되었습니다.
-          </Text>
-        </View>
       </View>
     </View>
   );

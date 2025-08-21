@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, TextInput } from "react-native";
 import { CommonLayout } from "../components/CommonLayout";
-import { LabelText, ButtonText, SmallText } from "../components/CommonText";
+import { LabelText, ButtonText, SmallText, ExtraBoldText } from "../components/CommonText";
+import { globalStyles } from "../utils/globalStyles";
 
 interface LoginScreenProps {
   onBackPress?: () => void;
@@ -21,6 +22,8 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [keepLoggedIn, setKeepLoggedIn] = useState(false);
+  const [usernameFocused, setUsernameFocused] = useState(false);
+  const [passwordFocused, setPasswordFocused] = useState(false);
 
   const handleLogin = () => {
     if (username && password) {
@@ -32,6 +35,18 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
     setKeepLoggedIn(!keepLoggedIn);
   };
 
+  const buttons = [
+    {
+      text: "멤버십 상품 소개",
+      onPress: () => onMembershipInfoPress?.(),
+      style: "custom" as const,
+      customStyle: {
+        backgroundColor: "transparent",
+        textColor: "#B48327"
+      }
+    }
+  ];
+
   return (
     <CommonLayout
       title="로그인"
@@ -42,11 +57,12 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
       onMenuPress={() => {}}
       onCouponPress={() => {}}
       onNotificationPress={() => {}}
+      buttons={buttons}
     >
       {/* Welcome Text */}
       <View style={styles.welcomeSection}>
-        <LabelText style={styles.welcomeText}>반갑습니다.</LabelText>
-        <SmallText style={styles.subtitleText}>가입하신 계정으로 로그인하세요.</SmallText>
+        <ExtraBoldText style={styles.welcomeText}>반갑습니다.</ExtraBoldText>
+        <LabelText style={styles.subtitleText}>가입하신 계정으로 로그인하세요.</LabelText>
       </View>
 
       {/* Input Fields */}
@@ -59,8 +75,10 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
             value={username}
             onChangeText={setUsername}
             showSoftInputOnFocus={false}
+            onFocus={() => setUsernameFocused(true)}
+            onBlur={() => setUsernameFocused(false)}
           />
-          <View style={styles.inputBorder} />
+          <View style={[styles.inputBorder, usernameFocused && styles.inputBorderFocused]} />
         </View>
 
         <View style={styles.inputContainer}>
@@ -72,8 +90,10 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
             value={password}
             onChangeText={setPassword}
             showSoftInputOnFocus={false}
+            onFocus={() => setPasswordFocused(true)}
+            onBlur={() => setPasswordFocused(false)}
           />
-          <View style={styles.inputBorder} />
+          <View style={[styles.inputBorder, passwordFocused && styles.inputBorderFocused]} />
         </View>
       </View>
 
@@ -104,21 +124,13 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
           <ButtonText style={styles.linkText}>비밀번호 재설정</ButtonText>
         </TouchableOpacity>
       </View>
-
-      {/* Membership Info Text */}
-      <View style={styles.membershipInfoSection}>
-        <TouchableOpacity onPress={onMembershipInfoPress}>
-          <ButtonText style={styles.membershipInfoText}>멤버십 상품 소개</ButtonText>
-        </TouchableOpacity>
-      </View>
     </CommonLayout>
   );
 };
 
 const styles = StyleSheet.create({
   welcomeSection: {
-    marginBottom: 40,
-    marginTop: 20
+    marginVertical: 40
   },
   welcomeText: {
     fontSize: 30,
@@ -133,23 +145,23 @@ const styles = StyleSheet.create({
     color: "#2B2B2B",
     letterSpacing: -0.64
   },
-  inputSection: {
-    marginBottom: 30
-  },
+  inputSection: {},
   inputContainer: {
-    marginBottom: 30
+    marginVertical: 10
   },
   input: {
     fontSize: 16,
-    fontWeight: "700",
     color: "#2B2B2B",
-    paddingVertical: 12,
-    letterSpacing: -0.64
+    paddingVertical: 5,
+    fontFamily: "NanumSquareNeo-cBd"
   },
   inputBorder: {
     height: 1,
     backgroundColor: "#D6DADF",
     marginTop: 8
+  },
+  inputBorderFocused: {
+    backgroundColor: "#000000"
   },
   keepLoggedInSection: {
     flexDirection: "row",
@@ -188,7 +200,7 @@ const styles = StyleSheet.create({
     height: 50,
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 40
+    marginVertical: 30
   },
   loginButtonDisabled: {
     backgroundColor: "#E5E5E5"
@@ -219,14 +231,5 @@ const styles = StyleSheet.create({
     height: 10,
     backgroundColor: "#D6DADF",
     marginHorizontal: 20
-  },
-  membershipInfoSection: {
-    alignItems: "center"
-  },
-  membershipInfoText: {
-    fontSize: 16,
-    fontWeight: "700",
-    color: "#B48327",
-    letterSpacing: -0.64
   }
 });

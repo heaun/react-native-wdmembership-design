@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { StyleSheet, Text, View, Image, StatusBar, Dimensions } from "react-native";
 import { typography } from "../../utils/typography";
-import { LabelText, ButtonText, SmallText } from "../components/CommonText";
+import { LabelText, ButtonText, SmallText, MyeongjoExtraBoldText, MyeongjoTitleText } from "../components/CommonText";
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
@@ -28,9 +28,9 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onFinish }) => {
 
         {/* Title Section */}
         <View style={styles.titleSection}>
-          <LabelText style={styles.title}>WITH DOCTORS</LabelText>
-          <LabelText style={styles.subtitle}>FIRST CARE</LabelText>
-          <LabelText style={styles.subtitle}>MEMBERSHIP</LabelText>
+          <MyeongjoTitleText style={styles.title}>WITH DOCTORS</MyeongjoTitleText>
+          <MyeongjoTitleText style={styles.title}>FIRST CARE</MyeongjoTitleText>
+          <MyeongjoTitleText style={styles.title}>MEMBERSHIP</MyeongjoTitleText>
         </View>
       </View>
       {/* Copyright */}
@@ -101,26 +101,16 @@ const styles = StyleSheet.create({
   },
   titleSection: {
     alignItems: "center",
-    marginBottom: 100,
-    marginTop: 100
+    marginTop: 80
   },
   title: {
     fontSize: 31,
-    fontWeight: "400",
-    color: "#89744C",
-    textAlign: "center",
     letterSpacing: 0.93,
+    textAlign: "center",
     lineHeight: 36,
-    marginBottom: 5
+    color: "#89744C"
   },
-  subtitle: {
-    fontSize: 31,
-    fontWeight: "400",
-    color: "#89744C",
-    textAlign: "center",
-    letterSpacing: 0.93,
-    lineHeight: 36
-  },
+
   copyrightSection: {
     paddingHorizontal: 24,
     paddingBottom: 20
