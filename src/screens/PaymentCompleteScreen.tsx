@@ -99,7 +99,7 @@ export const PaymentCompleteScreen: React.FC<PaymentCompleteScreenProps> = ({
 
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.confirmButton} onPress={onGoToMyService}>
-          <LabelText style={styles.confirmButtonText}>마이 서비스 돌아가기</LabelText>
+          <LabelText style={styles.confirmButtonText}>확인</LabelText>
         </TouchableOpacity>
       </View>
     </CommonLayout>

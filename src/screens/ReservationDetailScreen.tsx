@@ -23,6 +23,7 @@ interface ReservationDetailScreenProps {
   reservationData?: ReservationData;
   onBackPress?: () => void;
   onReservationStart?: () => void;
+  onReservationChangePress?: () => void;
   currentTab?: string;
   onTabPress?: (tabName: string) => void;
   onSideMenuItemPress?: (itemId: string) => void;
@@ -34,6 +35,7 @@ export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = (
   reservationData,
   onBackPress,
   onReservationStart,
+  onReservationChangePress,
   currentTab,
   onTabPress,
   onSideMenuItemPress
@@ -58,8 +60,8 @@ export const ReservationDetailScreen: React.FC<ReservationDetailScreenProps> = (
   const data = reservationData || defaultData;
 
   const handleReservationPress = () => {
-    // 새로운 예약 시작
-    onReservationStart?.();
+    // 예약 변경
+    onReservationChangePress?.();
   };
 
   const handleCancelPress = () => {

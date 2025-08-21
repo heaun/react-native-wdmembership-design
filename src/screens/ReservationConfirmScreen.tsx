@@ -2,28 +2,11 @@ import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image } from "react-native";
 import { CommonLayout } from "../components/CommonLayout";
 import { LabelText, ButtonText, SmallText } from "../components/CommonText";
-
-interface ReservationData {
-  service: {
-    id: number;
-    title: string;
-    category: string;
-    tags: string;
-    image: any;
-  };
-  location: {
-    id: number;
-    name: string;
-    address: string;
-    image: any;
-  };
-  date: string;
-  time: string;
-  personCount: number;
-}
+import { globalStyles } from "../../styles/globalStyles";
+import { ReservationMode, Reservation, ReservationType } from "../../types/reservation";
 
 interface ReservationConfirmScreenProps {
-  reservationData?: ReservationData;
+  reservationData?: Reservation;
   onBackPress?: () => void;
   onConfirmReservation?: () => void;
   currentTab?: string;
@@ -40,7 +23,7 @@ export const ReservationConfirmScreen: React.FC<ReservationConfirmScreenProps> =
   onSideMenuItemPress
 }) => {
   // 기본 데이터 (reservationData가 없을 때 사용)
-  const defaultData: ReservationData = {
+  const defaultData: Reservation = {
     service: {
       id: 1,
       title: "마인드앤바디 포 어덜트",
@@ -56,21 +39,33 @@ export const ReservationConfirmScreen: React.FC<ReservationConfirmScreenProps> =
     },
     date: "2026-10-31",
     time: "14:30",
-    personCount: 1
+    personCount: 1,
+    type: ReservationType.SERVICE
   };
 
   const data = reservationData || defaultData;
 
   const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`;
+    if (!dateString) return "날짜 미정";
+    try {
+      const date = new Date(dateString);
+      if (isNaN(date.getTime())) return "날짜 미정";
+      return `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`;
+    } catch (error) {
+      return "날짜 미정";
+    }
   };
 
   const formatTime = (time: string) => {
-    const hour = parseInt(time.split(":")[0]);
-    const period = hour < 12 ? "오전" : "오후";
-    const displayHour = hour <= 12 ? hour : hour - 12;
-    return `${period} ${displayHour.toString().padStart(2, "0")}:${time.split(":")[1]}`;
+    if (!time) return "시간 미정";
+    try {
+      const hour = parseInt(time.split(":")[0]);
+      const period = hour < 12 ? "오전" : "오후";
+      const displayHour = hour <= 12 ? hour : hour - 12;
+      return `${period} ${displayHour.toString().padStart(2, "0")}:${time.split(":")[1]}`;
+    } catch (error) {
+      return "시간 미정";
+    }
   };
 
   const handleConfirmPress = () => {
@@ -98,9 +93,10 @@ export const ReservationConfirmScreen: React.FC<ReservationConfirmScreenProps> =
               <Image source={require("../assets/icons/ic_location.png")} style={styles.iconStyle} />
             </View>
             <View style={styles.sectionContent}>
-              <LabelText style={styles.sectionTitle}>{data.location.name}</LabelText>
-              <LabelText style={styles.sectionSubtitle}>{data.location.address}</LabelText>
+              <LabelText style={styles.sectionTitle}>{data.location?.name || "장소 미정"}</LabelText>
+              <LabelText style={styles.sectionSubtitle}>{data.location?.address || "주소 미정"}</LabelText>
             </View>
+            <Image source={require("../assets/icons/ic-chevron-right.png")} style={globalStyles.chevron} />
           </View>
         </View>
 
@@ -113,6 +109,7 @@ export const ReservationConfirmScreen: React.FC<ReservationConfirmScreenProps> =
             <View style={styles.sectionContent}>
               <LabelText style={styles.sectionTitle}>{formatDate(data.date)}</LabelText>
             </View>
+            <Image source={require("../assets/icons/ic-chevron-right.png")} style={globalStyles.chevron} />
           </View>
         </View>
 
@@ -125,6 +122,7 @@ export const ReservationConfirmScreen: React.FC<ReservationConfirmScreenProps> =
             <View style={styles.sectionContent}>
               <LabelText style={styles.sectionTitle}>{formatTime(data.time)}</LabelText>
             </View>
+            <Image source={require("../assets/icons/ic-chevron-right.png")} style={globalStyles.chevron} />
           </View>
         </View>
 
@@ -135,21 +133,22 @@ export const ReservationConfirmScreen: React.FC<ReservationConfirmScreenProps> =
               <Image source={require("../assets/icons/ic_people.png")} style={styles.iconStyle} />
             </View>
             <View style={styles.sectionContent}>
-              <LabelText style={styles.sectionTitle}>{data.personCount}명</LabelText>
+              <LabelText style={styles.sectionTitle}>{data.personCount || 0}명</LabelText>
             </View>
+            <Image source={require("../assets/icons/ic-chevron-right.png")} style={globalStyles.chevron} />
           </View>
         </View>
 
         {/* 예약 요약 카드 */}
-        <View style={styles.summaryCard}>
-          <LabelText style={styles.summaryTitle}>{data.service.title}</LabelText>
-          <LabelText style={styles.summaryName}>{data.location.name}</LabelText>
-          <LabelText style={styles.summaryLocation}>({data.location.address})</LabelText>
+        <View style={[styles.summaryCard, data.type == ReservationType.PRODUCT && styles.summaryCardProduct]}>
+          <LabelText style={styles.summaryTitle}>{data.service?.title || "서비스 미정"}</LabelText>
+          <LabelText style={styles.summaryName}>{data.location?.name || "장소 미정"}</LabelText>
+          <LabelText style={styles.summaryLocation}>({data.location?.address || "주소 미정"})</LabelText>
           <View style={styles.summaryDivider} />
           <LabelText style={styles.summaryDetails}>
             {formatDate(data.date)} {formatTime(data.time)}
           </LabelText>
-          <LabelText style={styles.summaryDetails}>참여인원 : {data.personCount}명</LabelText>
+          <LabelText style={styles.summaryDetails}>참여인원 : {data.personCount || 0}명</LabelText>
         </View>
 
         {/* 안내 메시지 */}
@@ -164,7 +163,7 @@ export const ReservationConfirmScreen: React.FC<ReservationConfirmScreenProps> =
 
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.confirmButton} onPress={handleConfirmPress}>
-          <LabelText style={styles.confirmButtonText}>예약 확정</LabelText>
+          <LabelText style={styles.confirmButtonText}> 예약 확정</LabelText>
         </TouchableOpacity>
       </View>
     </CommonLayout>
@@ -231,6 +230,9 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: "#EFF1F3",
     borderRadius: 6
+  },
+  summaryCardProduct: {
+    backgroundColor: "#FFF8C0"
   },
   summaryTitle: {
     fontSize: 16,

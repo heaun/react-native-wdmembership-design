@@ -84,6 +84,7 @@ export const ResetPasswordScreen: React.FC<ResetPasswordScreenProps> = ({ onBack
         }
       ];
     }
+
     return [
       {
         text: "비밀번호 재설정",
@@ -109,7 +110,7 @@ export const ResetPasswordScreen: React.FC<ResetPasswordScreenProps> = ({ onBack
         {data.step === "input" ? (
           <View style={[styles.container, { paddingBottom: 120 }]}>
             <View style={styles.headerSection}>
-              <LabelText style={styles.title}>새로 사용하실{"\n"}비밀번호를 입력해 주세요</LabelText>
+              <LabelText style={styles.title}>새로 사용하실 {"\n"}비밀번호를 입력해 주세요</LabelText>
             </View>
 
             <View style={styles.inputSection}>
@@ -214,7 +215,6 @@ const styles = StyleSheet.create({
     color: "#2B2B2B",
     paddingVertical: 12
   },
-
   inputBorder: {
     height: 1,
     backgroundColor: "#D6DADF",

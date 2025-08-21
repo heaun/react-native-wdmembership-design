@@ -327,7 +327,7 @@ export const ServiceDetailScreen: React.FC<ServiceDetailScreenProps> = ({
                   // index가 1번째인 경우 (두 번째 항목): 텍스트가 왼쪽, 이미지가 오른쪽
                   <>
                     <View style={styles.serviceTextContainer}>
-                      <LabelText style={styles.descriptionText}>{item.description}</LabelText>
+                      <LabelText style={[styles.descriptionText, { paddingHorizontal: 0, paddingRight: 40 }]}>{item.description}</LabelText>
                     </View>
                     <Image source={item.image} style={styles.serviceImage} resizeMode="cover" />
                   </>
@@ -434,7 +434,8 @@ const styles = StyleSheet.create({
     color: "#000000",
     textAlign: "center",
     lineHeight: 24,
-    letterSpacing: -0.72
+    letterSpacing: -0.72,
+    paddingTop: 10
   },
   contentSection: {
     backgroundColor: "#FFFFFF",
@@ -459,10 +460,11 @@ const styles = StyleSheet.create({
   serviceTextContainer: {},
   descriptionText: {
     fontSize: 13,
-    fontWeight: "700",
     color: "#000000",
     lineHeight: 20,
     letterSpacing: -0.52,
+    paddingHorizontal: 30,
+    paddingVertical: 10,
     minWidth: 160,
     maxWidth: 200
   },
