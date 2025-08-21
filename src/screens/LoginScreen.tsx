@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, TextInput } from "react-native";
 import { CommonLayout } from "../components/CommonLayout";
 import { LabelText, ButtonText, SmallText, ExtraBoldText } from "../components/CommonText";
-import { globalStyles } from "../utils/globalStyles";
+import { globalStyles } from "../../styles/globalStyles";
 
 interface LoginScreenProps {
   onBackPress?: () => void;

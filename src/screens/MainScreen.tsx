@@ -1,7 +1,9 @@
 import React from "react";
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image, Dimensions } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image, Dimensions, StyleProp, ViewStyle } from "react-native";
 import { CommonLayout } from "../components/CommonLayout";
-import { LabelText, ButtonText, SmallText } from "../components/CommonText";
+import { LabelText, ButtonText, SmallText, ExtraBoldText } from "../components/CommonText";
+import { globalStyles } from "../../styles/globalStyles";
+import { ChevronButton } from "../components/Button";
 
 const { width: screenWidth } = Dimensions.get("window");
 
@@ -14,6 +16,7 @@ interface MainScreenProps {
   onEditProfilePress?: () => void;
   onViewAllServicesPress?: () => void;
   onSideMenuItemPress?: (itemId: string) => void;
+  onServiceDetailPress?: (service: any) => void;
 }
 
 export const MainScreen: React.FC<MainScreenProps> = ({
@@ -23,7 +26,9 @@ export const MainScreen: React.FC<MainScreenProps> = ({
   onReservationDetailPress,
   onMembershipManagePress,
   onEditProfilePress,
-  onSideMenuItemPress
+  onViewAllServicesPress,
+  onSideMenuItemPress,
+  onServiceDetailPress
 }) => {
   const reservations = [
     {
@@ -69,20 +74,29 @@ export const MainScreen: React.FC<MainScreenProps> = ({
       description: "전문트레이너에게 체계적인 운동을 시작하세요.\n#전신근육강화 #코어근육 #다이어트"
     },
     {
-      id: 2,
+      id: 6,
       image: require("../assets/main/service-2.png"),
       location: "서울 서대문구",
-      title: "프리미엄 스파 휴리재",
+      title: "에코스 스파",
       description: "단 한 번의 세션으로 두피 건강을 개선하도록 설계된 맞춤형 트리트먼트를 즐기세요."
     },
     {
-      id: 3,
+      id: 5,
       image: require("../assets/main/service-3.png"),
       location: "서울 종로구",
-      title: "GCC 스크린 골프연습장",
+      title: "GCC 스크린 골프",
       description: "골프입문부터 싱글플레이까지 실력에 맞춘\n전문 프로골프 강사 래슨"
     }
   ];
+
+  const renderChevronButton = (title: string, style?: StyleProp<ViewStyle>, onPress?: () => void) => {
+    return (
+      <TouchableOpacity style={[globalStyles.chevronContainer, style]} onPress={onPress}>
+        <LabelText style={globalStyles.chevronText}>{title}</LabelText>
+        <Image source={require("../assets/icons/ic-chevron-right.png")} style={globalStyles.chevron} />
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <CommonLayout
@@ -94,42 +108,44 @@ export const MainScreen: React.FC<MainScreenProps> = ({
       currentTab={currentTab}
       onTabPress={onTabPress}
       onSideMenuItemPress={onSideMenuItemPress}
+      isWideLayout={true}
     >
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
         {/* Profile Section */}
-        <View style={styles.profileSection}>
-          <View style={styles.profileInfo}>
-            <Image source={require("../assets/main/profile-avatar.png")} style={styles.profileAvatar} />
-            <View style={styles.profileText}>
-              <LabelText style={styles.greeting}>안녕하세요!</LabelText>
-              <LabelText style={styles.userName}>
-                박기용<LabelText style={styles.userNameSuffix}>님</LabelText>
-              </LabelText>
+        <View style={[styles.section]}>
+          <View style={styles.profileInfoSection}>
+            <View style={styles.profileAvatarContainer}>
+              <Image source={require("../assets/main/profile-avatar.png")} style={styles.profileAvatar} />
+              <View style={styles.profileText}>
+                <LabelText style={styles.greeting}>안녕하세요!</LabelText>
+                <LabelText style={styles.userName}>
+                  <ExtraBoldText style={styles.userNameText}>박기용</ExtraBoldText>
+                  <LabelText style={styles.userNameSuffix}>님</LabelText>
+                </LabelText>
+              </View>
+            </View>
+            <ChevronButton title="내 정보 변경" onPress={onEditProfilePress ?? (() => {})} />
+            {/* {renderChevronButton("내 정보 변경", {}, onEditProfilePress ?? (() => {}))} */}
+          </View>
+
+          {/* Membership Card */}
+          <View style={styles.membershipCardSection}>
+            <View style={styles.membershipCardContainer}>
+              <Image source={require("../assets/main/membership-card.png")} style={styles.cardImage} />
+              <View style={styles.cardContainer}>
+                <LabelText style={styles.cardLabel}>My 멤버십</LabelText>
+                <ExtraBoldText style={styles.cardTitle}>PH 1603 RESIDENCE</ExtraBoldText>
+                <LabelText style={styles.cardNumber}>9869 4586 2335 3698</LabelText>
+                <ChevronButton title="멤버십 관리" onPress={onMembershipManagePress ?? (() => {})} />
+                {/* {renderChevronButton("멤버십 관리", {}, onMembershipManagePress ?? (() => {}))} */}
+              </View>
             </View>
           </View>
-          <TouchableOpacity style={styles.editProfileButton} onPress={onEditProfilePress}>
-            <LabelText style={styles.editProfileText}>내 정보 변경</LabelText>
-            <LabelText style={styles.arrowIcon}>›</LabelText>
-          </TouchableOpacity>
-        </View>
-
-        {/* Membership Card */}
-        <View style={styles.membershipCard}>
-          <Image source={require("../assets/main/membership-card.png")} style={styles.cardImage} />
-          <View style={styles.cardContent}>
-            <LabelText style={styles.cardLabel}>My 멤버십</LabelText>
-            <LabelText style={styles.cardTitle}>PH 1603 RESIDENCE</LabelText>
-            <LabelText style={styles.cardNumber}>9869 4586 2335 3698</LabelText>
-          </View>
-          <TouchableOpacity style={styles.membershipManageButton} onPress={onMembershipManagePress}>
-            <LabelText style={styles.membershipManageText}>멤버십 관리</LabelText>
-            <LabelText style={styles.arrowIcon}>›</LabelText>
-          </TouchableOpacity>
         </View>
 
         {/* Reservation Section */}
-        <View style={styles.section}>
-          <View style={styles.sectionHeader}>
+        <View style={[styles.section]}>
+          <View style={[styles.sectionHeader, { justifyContent: "flex-start" }]}>
             <LabelText style={styles.sectionTitle}>예약일정 체크</LabelText>
             <View style={styles.notificationCount}>
               <LabelText style={styles.notificationCountText}>3</LabelText>
@@ -150,30 +166,25 @@ export const MainScreen: React.FC<MainScreenProps> = ({
               </TouchableOpacity>
             ))}
           </ScrollView>
-          <TouchableOpacity style={styles.viewAllButton}>
-            <LabelText style={styles.viewAllText}>예약 관리 바로가기</LabelText>
-            <LabelText style={styles.arrowIcon}>›</LabelText>
-          </TouchableOpacity>
+          <ChevronButton title="예약 관리 바로가기" onPress={onReservationDetailPress ?? (() => {})} style={styles.viewAllButton} />
         </View>
 
         {/* Recommended Services */}
-        <View style={styles.section}>
+        <View style={[styles.section, styles.servicesSection]}>
           <View style={styles.sectionHeader}>
             <LabelText style={styles.sectionTitle}>추천 서비스</LabelText>
-            <TouchableOpacity>
-              <LabelText style={styles.viewAllText}>모두보기</LabelText>
-            </TouchableOpacity>
+            <ChevronButton title="모두보기" onPress={onViewAllServicesPress ?? (() => {})} />
           </View>
           <View style={styles.servicesContainer}>
             {services.map((service) => (
-              <View key={service.id} style={styles.serviceCard}>
+              <TouchableOpacity key={service.id} style={styles.serviceCard} onPress={() => onServiceDetailPress?.(service)}>
                 <Image source={service.image} style={styles.serviceImage} />
                 <View style={styles.serviceInfo}>
                   <LabelText style={styles.serviceLocation}>{service.location}</LabelText>
-                  <LabelText style={styles.serviceTitle}>{service.title}</LabelText>
+                  <ExtraBoldText style={styles.serviceTitle}>{service.title}</ExtraBoldText>
                   <LabelText style={styles.serviceDescription}>{service.description}</LabelText>
                 </View>
-              </View>
+              </TouchableOpacity>
             ))}
           </View>
         </View>
@@ -187,15 +198,20 @@ const styles = StyleSheet.create({
     flex: 1
   },
   profileSection: {
-    flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
-    paddingVertical: 20
+    paddingHorizontal: 15,
+    paddingVertical: 20,
+    backgroundColor: "#fff"
   },
-  profileInfo: {
+  profileAvatarContainer: {
     flexDirection: "row",
     alignItems: "center",
     gap: 15
+  },
+  profileInfoSection: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-end"
   },
   profileAvatar: {
     width: 60,
@@ -215,40 +231,34 @@ const styles = StyleSheet.create({
     fontWeight: "900",
     color: "#2B2B2B"
   },
+  userNameText: {
+    fontSize: 20
+  },
   userNameSuffix: {
-    fontSize: 20,
-    fontWeight: "400",
-    color: "#2B2B2B"
+    fontSize: 20
   },
-  editProfileButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 5
-  },
-  editProfileText: {
-    fontSize: 13,
-    fontWeight: "700",
-    color: "#505866"
-  },
-  arrowIcon: {
-    fontSize: 16,
-    color: "#505866"
-  },
-  membershipCard: {
-    marginBottom: 20,
+
+  membershipCardSection: {
+    marginTop: 20,
     backgroundColor: "#EFF1F3",
     borderRadius: 6,
-    padding: 20,
-    position: "relative"
+    paddingVertical: 10
+  },
+  membershipCardContainer: {
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    gap: 15,
+    paddingHorizontal: 10,
+    paddingVertical: 10
   },
   cardImage: {
     width: 82.29,
     height: 48,
     borderRadius: 6,
-    marginBottom: 15
+    marginTop: 10
   },
-  cardContent: {
-    gap: 5
+  cardContainer: {
+    gap: 10
   },
   cardLabel: {
     fontSize: 13,
@@ -265,21 +275,16 @@ const styles = StyleSheet.create({
     fontWeight: "800",
     color: "#79818B"
   },
-  membershipManageButton: {
-    position: "absolute",
-    top: 20,
-    right: 20,
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 5
-  },
   membershipManageText: {
     fontSize: 14,
     fontWeight: "700",
     color: "#505866"
   },
   section: {
-    marginBottom: 30
+    backgroundColor: "#fff",
+    marginBottom: 10,
+    paddingHorizontal: 15,
+    paddingVertical: 20
   },
   sectionHeader: {
     flexDirection: "row",
@@ -289,7 +294,6 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 16,
-    fontWeight: "800",
     color: "#2B2B2B"
   },
   notificationCount: {
@@ -298,7 +302,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#2B2B2B",
     borderRadius: 12,
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    marginLeft: 10
   },
   notificationCountText: {
     fontSize: 12,
@@ -355,14 +360,16 @@ const styles = StyleSheet.create({
   },
   viewAllButton: {
     flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
-    marginTop: 15
+    paddingTop: 20
   },
   viewAllText: {
     fontSize: 14,
     fontWeight: "700",
     color: "#505866"
+  },
+  servicesSection: {
+    marginBottom: 0
   },
   servicesContainer: {
     gap: 15
@@ -372,12 +379,12 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 1,
     borderColor: "#EFF1F3",
-    overflow: "hidden"
+    overflow: "hidden",
+    paddingBottom: 20
   },
   serviceImage: {
     width: "100%",
-    height: 168,
-    borderRadius: 10
+    height: 168
   },
   serviceInfo: {
     padding: 15,
@@ -389,13 +396,13 @@ const styles = StyleSheet.create({
     color: "#505866"
   },
   serviceTitle: {
+    marginTop: 5,
     fontSize: 20,
-    fontWeight: "800",
     color: "#2B2B2B"
   },
   serviceDescription: {
+    marginTop: 10,
     fontSize: 14,
-    fontWeight: "400",
     color: "#2B2B2B",
     lineHeight: 20
   }

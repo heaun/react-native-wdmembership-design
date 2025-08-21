@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Image, Dimensions } from "react-native";
 import { CommonLayout } from "../components/CommonLayout";
-import { LabelText, ButtonText, SmallText, BodyText } from "../components/CommonText";
+import { LabelText, ButtonText, SmallText, ExtraBoldText, HeavyText } from "../components/CommonText";
 const { width: screenWidth } = Dimensions.get("window");
 
 interface ServiceDetailScreenProps {
@@ -346,17 +346,17 @@ export const ServiceDetailScreen: React.FC<ServiceDetailScreenProps> = ({
 
           {/* Location Information */}
           <View style={styles.locationSection}>
-            <LabelText style={styles.sectionTitle}>지점위치</LabelText>
+            <ExtraBoldText style={styles.sectionTitle}>지점위치</ExtraBoldText>
             <View style={styles.divider} />
 
             {serviceDetailData.locations.map((location, index) => (
               <View key={index} style={styles.locationInfo}>
-                <SmallText style={styles.regionLabel}>{location.region}</SmallText>
+                <LabelText style={styles.regionLabel}>{location.region}</LabelText>
                 <View style={styles.branchList}>
                   {location.branches.map((branch, branchIndex) => (
-                    <BodyText key={branchIndex} style={styles.branchName}>
+                    <ExtraBoldText key={branchIndex} style={styles.branchName}>
                       {branch}
-                    </BodyText>
+                    </ExtraBoldText>
                   ))}
                 </View>
               </View>
@@ -365,9 +365,9 @@ export const ServiceDetailScreen: React.FC<ServiceDetailScreenProps> = ({
 
           {/* Contact Information */}
           <View style={styles.contactSection}>
-            <LabelText style={styles.sectionTitle}>대표번호</LabelText>
+            <ExtraBoldText style={styles.sectionTitle}>대표번호</ExtraBoldText>
             <View style={styles.divider} />
-            <LabelText style={styles.phoneNumber}>{serviceDetailData.contact.phoneNumber}</LabelText>
+            <HeavyText style={styles.phoneNumber}>{serviceDetailData.contact.phoneNumber}</HeavyText>
             <LabelText style={styles.operatingHours}>{serviceDetailData.contact.operatingHours}</LabelText>
           </View>
         </View>
@@ -476,7 +476,7 @@ const styles = StyleSheet.create({
     letterSpacing: -0.64
   },
   locationInfo: {
-    marginBottom: 15
+    marginVertical: 15
   },
   regionLabel: {
     fontSize: 16,

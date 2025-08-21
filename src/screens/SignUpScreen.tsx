@@ -16,7 +16,7 @@ import {
 } from "../components/AuthCommon";
 import { PasswordInputMode } from "../components/AuthCommon";
 import { MembershipResult } from "../../types/membership";
-import { globalStyles } from "../utils/globalStyles";
+import { globalStyles } from "../../styles/globalStyles";
 
 interface SignUpScreenProps {
   onBackPress?: () => void;

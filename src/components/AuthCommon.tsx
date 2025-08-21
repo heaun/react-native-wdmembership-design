@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, StyleProp, TextStyle } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { LabelText, SmallText, ButtonText, BoldText, ExtraBoldText } from "./CommonText";
-import { FONT_FAMILY, globalStyles } from "../utils/globalStyles";
+import { FONT_FAMILY, globalStyles } from "../../styles/globalStyles";
 
 // 공통 스타일
 export const authCommonStyles = StyleSheet.create({

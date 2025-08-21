@@ -382,6 +382,7 @@ export const AppNavigator: React.FC<AppNavigatorProps> = ({ onLogout }) => {
             onEditProfilePress={handleEditProfilePress}
             onViewAllServicesPress={handleViewAllServicesPress}
             onSideMenuItemPress={handleSideMenuItemPress}
+            onServiceDetailPress={handleServiceDetailPress}
           />
         );
       case "Schedule":

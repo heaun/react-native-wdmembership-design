@@ -109,6 +109,18 @@ export const globalStyles = StyleSheet.create({
     color: "#2B2B2B",
     paddingVertical: 12,
     fontFamily: "NanumSquareNeo-cBd"
+  },
+  chevronContainer: {
+    flexDirection: "row",
+    alignItems: "center"
+  },
+  chevron: {
+    width: 18,
+    height: 18
+  },
+  chevronText: {
+    fontSize: 13,
+    color: "#505866"
   }
 });
 

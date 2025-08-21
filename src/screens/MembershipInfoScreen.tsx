@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image } from "rea
 import { Ionicons } from "@expo/vector-icons";
 import { CommonLayout } from "../components/CommonLayout";
 import { LabelText, ButtonText, SmallText } from "../components/CommonText";
+import { ChevronButton } from "../components/Button";
 
 interface MembershipInfoScreenProps {
   onBackPress?: () => void;
@@ -151,10 +152,7 @@ export const MembershipInfoScreen: React.FC<MembershipInfoScreenProps> = ({
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <LabelText style={styles.sectionTitle}>멤버십 정보</LabelText>
-            <TouchableOpacity style={styles.moreButton} onPress={handleMembershipBenefitsPress}>
-              <LabelText style={styles.moreButtonText}>멤버십 혜택 안내</LabelText>
-              <Image source={require("../assets/icons/ic-chevron-right.png")} style={styles.chevron} />
-            </TouchableOpacity>
+            <ChevronButton title="멤버십 혜택 안내" onPress={handleMembershipBenefitsPress} />
           </View>
           <View style={styles.divider} />
           <View style={styles.membershipCard}>
@@ -204,10 +202,7 @@ export const MembershipInfoScreen: React.FC<MembershipInfoScreenProps> = ({
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <LabelText style={styles.sectionTitle}>멤버십 이용권</LabelText>
-            <TouchableOpacity style={styles.moreButton} onPress={handleMoreTicketsPress}>
-              <LabelText style={styles.moreButtonText}>사용 이력 보기</LabelText>
-              <Image source={require("../assets/icons/ic-chevron-right.png")} style={styles.chevron} />
-            </TouchableOpacity>
+            <ChevronButton title="사용 이력 보기" onPress={handleMoreTicketsPress} />
           </View>
           <View style={styles.divider} />
 
@@ -284,7 +279,7 @@ export const MembershipInfoScreen: React.FC<MembershipInfoScreenProps> = ({
         {/* 혜택 이용 상세 내역 */}
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>혜택 이용 상세 내역</Text>
+            <LabelText style={styles.sectionTitle}>혜택 이용 상세 내역</LabelText>
             <TouchableOpacity style={styles.moreButton} onPress={handleUsageHistoryPress}>
               <Image source={require("../assets/icons/ic-chevron-right.png")} style={styles.chevron} />
             </TouchableOpacity>
