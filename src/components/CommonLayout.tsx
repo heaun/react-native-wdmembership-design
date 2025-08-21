@@ -287,7 +287,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#EFF1F3",
-    marginHorizontal: 5,
     fontFamily: typography.fontFamily
   },
 
@@ -409,7 +408,7 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    paddingHorizontal: 10,
+    paddingHorizontal: 15,
     backgroundColor: "#FFFFFF",
     fontFamily: typography.fontFamily
   },
@@ -425,13 +424,12 @@ const styles = StyleSheet.create({
     borderTopColor: "#EFF1F3",
     paddingBottom: 8,
     paddingTop: 8,
-    height: 56
+    justifyContent: "space-between"
   },
   tabItem: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 4
+    justifyContent: "center"
   },
   tabIcon: {
     width: 24,
@@ -439,7 +437,6 @@ const styles = StyleSheet.create({
   },
   tabText: {
     fontSize: 11,
-    fontWeight: "400",
     color: "#505866",
     marginTop: 4
   },

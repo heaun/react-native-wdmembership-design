@@ -161,8 +161,18 @@ export const MembershipDetailScreen: React.FC<MembershipDetailScreenProps> = ({ 
   }
 
   const slidesCount = membershipOrder.length;
-  const goPrev = () => setCurrentIndex((i) => (i - 1 + slidesCount) % slidesCount);
-  const goNext = () => setCurrentIndex((i) => (i + 1) % slidesCount);
+  const goPrev = () => {
+    console.log("goPrev called, currentIndex:", currentIndex, "slidesCount:", slidesCount);
+    const newIndex = (currentIndex - 1 + slidesCount) % slidesCount;
+    console.log("newIndex:", newIndex);
+    setCurrentIndex(newIndex);
+  };
+  const goNext = () => {
+    console.log("goNext called, currentIndex:", currentIndex, "slidesCount:", slidesCount);
+    const newIndex = (currentIndex + 1) % slidesCount;
+    console.log("newIndex:", newIndex);
+    setCurrentIndex(newIndex);
+  };
 
   const handleConsultationPress = async () => {
     const phoneNumber = "1588-1234";
@@ -185,7 +195,9 @@ export const MembershipDetailScreen: React.FC<MembershipDetailScreenProps> = ({ 
             <TouchableOpacity onPress={goPrev} style={styles.switchArrow}>
               <Ionicons name="chevron-back" size={22} />
             </TouchableOpacity>
-            <LabelText style={styles.switchTitle}>{membership.title}</LabelText>
+            <LabelText style={styles.switchTitle} pointerEvents="none">
+              {membership.title}
+            </LabelText>
             <TouchableOpacity onPress={goNext} style={styles.switchArrow}>
               <Ionicons name="chevron-forward" size={22} />
             </TouchableOpacity>
@@ -266,7 +278,7 @@ export const MembershipDetailScreen: React.FC<MembershipDetailScreenProps> = ({ 
 
         {/* Consultation Button */}
         <View style={styles.buttonSection}>
-          <TouchableOpacity style={styles.consultationButton} onPress={onConsultationPress || handleConsultationPress}>
+          <TouchableOpacity style={styles.consultationButton} onPress={handleConsultationPress}>
             <LabelText style={styles.consultationButtonText}>멤버십 상담 문의</LabelText>
           </TouchableOpacity>
         </View>
@@ -286,12 +298,12 @@ const styles = StyleSheet.create({
     justifyContent: "space-between"
   },
   switchArrow: {
-    padding: 4,
+    padding: 8,
     color: "#2B2B2B",
     backgroundColor: "#ffffff",
     borderRadius: 100,
-    width: 30,
-    height: 30,
+    width: 40,
+    height: 40,
     alignItems: "center",
     justifyContent: "center"
   },

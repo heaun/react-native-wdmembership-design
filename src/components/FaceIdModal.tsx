@@ -105,8 +105,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     borderRadius: 20,
-    overflow: "hidden",
-    backgroundColor: "red"
+    overflow: "hidden"
   },
   faceIdText: {
     fontSize: 16,

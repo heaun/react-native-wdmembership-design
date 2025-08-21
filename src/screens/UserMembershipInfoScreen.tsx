@@ -265,13 +265,6 @@ export const UserMembershipInfoScreen: React.FC<UserMembershipInfoScreenProps> =
           ))}
         </View>
       </ScrollView>
-
-      {/* 멤버십 상담 문의 버튼 */}
-      <View style={styles.buttonSection}>
-        <TouchableOpacity style={styles.consultationButton} onPress={onConsultationPress}>
-          <LabelText style={styles.consultationButtonText}>멤버십 상담 문의</LabelText>
-        </TouchableOpacity>
-      </View>
     </CommonLayout>
   );
 };
