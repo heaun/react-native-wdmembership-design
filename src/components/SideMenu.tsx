@@ -4,7 +4,7 @@ import { FaceIdModal } from "./FaceIdModal";
 import { PasswordInputScreen } from "../screens/PasswordInputScreen";
 import { LabelText, ButtonText, SmallText } from "../components/CommonText";
 import { Ionicons } from "@expo/vector-icons";
-import { PaymentAuthenticationMode, PaymentPasswordMode, PaymentSettings } from "../../types/payment";
+import { PaymentAuthenticationMode, PaymentPasswordMode, PaymentSettings } from "../types/payment";
 import { useToast } from "../context/ToastContext";
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
@@ -294,7 +294,7 @@ export const SideMenu: React.FC<SideMenuProps> = ({ visible, onClose, onMenuItem
 
         {item.hasChevron && !isToggle && (
           <View style={styles.chevronContainer}>
-            <Image source={require("../../assets/icons/ic-chevron-right.png")} style={styles.chevron} />
+            <Image source={require("@/assets/icons/ic-chevron-right.png")} style={styles.chevron} />
           </View>
         )}
       </TouchableOpacity>
@@ -318,7 +318,7 @@ export const SideMenu: React.FC<SideMenuProps> = ({ visible, onClose, onMenuItem
                 <LabelText style={styles.closeIcon}>✕</LabelText>
               </TouchableOpacity>
               <TouchableOpacity style={styles.settingsButton}>
-                <Image source={require("../../assets/icons/ic-side-menu-setting.png")} style={styles.settingsIcon} />
+                <Image source={require("@/assets/icons/ic-side-menu-setting.png")} style={styles.settingsIcon} />
               </TouchableOpacity>
             </View>
 

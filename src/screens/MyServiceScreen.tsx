@@ -4,12 +4,7 @@ import { CommonLayout } from "../components/CommonLayout";
 import { LabelText, ButtonText, SmallText } from "../components/CommonText";
 
 // 서비스 이미지 import
-import mindAndBodyImage from "../../assets/services/mind-and-body.png";
-import wellnessComeImage from "../../assets/services/wellness-come.png";
-import healthyMealPlan1Image from "../../assets/services/healthy-meal-plan-1.png";
-import medicalHospitalImage from "../../assets/services/medical-hospital.png";
-import gccScreenGolfImage from "../../assets/services/gcc-screen-golf.png";
-import ecosSpaImage from "../../assets/services/ecos-spa.png";
+// 서비스 이미지들은 require()로 사용
 
 const { width: screenWidth } = Dimensions.get("window");
 
@@ -46,49 +41,49 @@ export const MyServiceScreen: React.FC<MyServiceScreenProps> = ({
       title: "마인드앤바디 포 어덜트",
       category: "건강 프로그램",
       tags: "#자세고정 #심신안정 #체형 다이어트",
-      image: mindAndBodyImage
+      image: require("@/assets/services/mind-and-body.png")
     },
     {
       id: 2,
       title: "웰리스컴 Wellness Come",
       category: "건강 프로그램",
       tags: "#회복운동 #기초체력강화",
-      image: wellnessComeImage
+      image: require("@/assets/services/wellness-come.png")
     },
     {
       id: 3,
       title: "Healthy Meal Plan",
       category: "레스토랑 / 카페",
       tags: "#균형식단 #비타민보충 #다이어트",
-      image: healthyMealPlan1Image
+      image: require("@/assets/services/healthy-meal-plan-1.png")
     },
     {
       id: 4,
       title: "전문 내과병원",
       category: "의료",
       tags: "#내과치료 #의료서비스",
-      image: medicalHospitalImage
+      image: require("@/assets/services/medical-hospital.png")
     },
     {
       id: 5,
       title: "GCC 스크린 골프",
       category: "레저 스포츠",
       tags: "#자세교정 #코스공략",
-      image: gccScreenGolfImage
+      image: require("@/assets/services/gcc-screen-golf.png")
     },
     {
       id: 6,
       title: "에코스 스파",
       category: "스파/에스테틱",
       tags: "#수술전운동 #코어운동",
-      image: ecosSpaImage
+      image: require("@/assets/services/ecos-spa.png")
     },
     {
       id: 7,
       title: "Healthy Meal Plan",
       category: "레스토랑 / 카페",
       tags: "#3대영양소섭취 #식단조절",
-      image: healthyMealPlan1Image
+      image: require("@/assets/services/healthy-meal-plan-1.png")
     }
   ];
 

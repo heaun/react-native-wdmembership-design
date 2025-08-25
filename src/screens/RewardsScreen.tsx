@@ -4,8 +4,8 @@ import { Ionicons } from "@expo/vector-icons";
 import { Card } from "../components/Card";
 import { Button } from "../components/Button";
 import { CommonLayout } from "../components/CommonLayout";
-import { colors } from "../../utils/colors";
-import { Reward } from "../../types";
+import { colors } from "../utils/colors";
+import { Reward } from "../types";
 
 const mockRewards: Reward[] = [
   {

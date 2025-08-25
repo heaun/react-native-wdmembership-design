@@ -1,35 +1,35 @@
 import React, { useState, useEffect } from "react";
 import { SafeAreaView, Linking, Alert, Platform } from "react-native";
-import { MainScreen } from "../src/screens/MainScreen";
-import { BenefitsScreen } from "../src/screens/BenefitsScreen";
-import { ProfileScreen } from "../src/screens/ProfileScreen";
-import { MembershipCardScreen } from "../src/screens/MembershipCardScreen";
-import { MembershipVerificationScreen } from "../src/screens/MembershipVerificationScreen";
-import { MembershipGuideScreen } from "../src/screens/MembershipGuideScreen";
-import { MyServiceScreen } from "../src/screens/MyServiceScreen";
-import { ServiceDetailScreen } from "../src/screens/ServiceDetailScreen";
-import { LocationSelectionScreen } from "../src/screens/LocationSelectionScreen";
-import { DateSelectionScreen } from "../src/screens/DateSelectionScreen";
-import { TimeSelectionScreen } from "../src/screens/TimeSelectionScreen";
-import { PersonSelectionScreen } from "../src/screens/PersonSelectionScreen";
-import { ReservationConfirmScreen } from "../src/screens/ReservationConfirmScreen";
-import { ProductSelectionScreen } from "../src/screens/ProductSelectionScreen";
-import { ProductOptionScreen } from "../src/screens/ProductOptionScreen";
-// import { OrderConfirmScreen } from "../src/screens/OrderConfirmScreen";
-import { PaymentScreen } from "../src/screens/PaymentScreen";
-import { PasswordInputScreen } from "../src/screens/PasswordInputScreen";
-import { PaymentCompleteScreen } from "../src/screens/PaymentCompleteScreen";
-import { ScheduleScreen } from "../src/screens/ScheduleScreen";
-import { ReservationDetailScreen } from "../src/screens/ReservationDetailScreen";
-import { MembershipInfoScreen } from "../src/screens/MembershipInfoScreen";
-import { VehicleManagementScreen } from "../src/screens/VehicleManagementScreen";
-import { MembershipDetailScreen } from "../src/screens/MembershipDetailScreen";
-import { UserMembershipInfoScreen } from "../src/screens/UserMembershipInfoScreen";
-import { VersionUpdateScreen } from "../src/screens/VersionUpdateScreen";
-import { VersionInfo } from "../types/version";
-import { AppSettingsSubMenuScreen } from "../src/screens/AppSettingsSubMenuScreen";
-import { HomeScreen } from "../src/screens/HomeScreen";
-import { MembershipType } from "../types/membership";
+import { MainScreen } from "@/screens/MainScreen";
+import { BenefitsScreen } from "@/screens/BenefitsScreen";
+import { ProfileScreen } from "@/screens/ProfileScreen";
+import { MembershipCardScreen } from "@/screens/MembershipCardScreen";
+import { MembershipVerificationScreen } from "@/screens/MembershipVerificationScreen";
+import { MembershipGuideScreen } from "@/screens/MembershipGuideScreen";
+import { MyServiceScreen } from "@/screens/MyServiceScreen";
+import { ServiceDetailScreen } from "@/screens/ServiceDetailScreen";
+import { LocationSelectionScreen } from "@/screens/LocationSelectionScreen";
+import { DateSelectionScreen } from "@/screens/DateSelectionScreen";
+import { TimeSelectionScreen } from "@/screens/TimeSelectionScreen";
+import { PersonSelectionScreen } from "@/screens/PersonSelectionScreen";
+import { ReservationConfirmScreen } from "@/screens/ReservationConfirmScreen";
+import { ProductSelectionScreen } from "@/screens/ProductSelectionScreen";
+import { ProductOptionScreen } from "@/screens/ProductOptionScreen";
+// import { OrderConfirmScreen } from "@/screens/OrderConfirmScreen";
+import { PaymentScreen } from "@/screens/PaymentScreen";
+import { PasswordInputScreen } from "@/screens/PasswordInputScreen";
+import { PaymentCompleteScreen } from "@/screens/PaymentCompleteScreen";
+import { ScheduleScreen } from "@/screens/ScheduleScreen";
+import { ReservationDetailScreen } from "@/screens/ReservationDetailScreen";
+import { MembershipInfoScreen } from "@/screens/MembershipInfoScreen";
+import { VehicleManagementScreen } from "@/screens/VehicleManagementScreen";
+import { MembershipDetailScreen } from "@/screens/MembershipDetailScreen";
+import { UserMembershipInfoScreen } from "@/screens/UserMembershipInfoScreen";
+import { VersionUpdateScreen } from "@/screens/VersionUpdateScreen";
+import { VersionInfo } from "@/types/version";
+import { AppSettingsSubMenuScreen } from "@/screens/AppSettingsSubMenuScreen";
+import { HomeScreen } from "@/screens/HomeScreen";
+import { MembershipType } from "@/types/membership";
 
 type ScreenType =
   | "Home"
@@ -191,13 +191,13 @@ export const AppNavigator: React.FC<AppNavigatorProps> = ({ onLogout }) => {
           title: selectedReservation.title || "서비스 미정",
           category: "건강 프로그램",
           tags: "자세교정, 심신안정",
-          image: selectedReservation.image || require("../assets/services/service-image-1.png")
+          image: selectedReservation.image || require("@/assets/services/service-image-1.png")
         },
         location: {
           id: 1,
           name: selectedReservation.location || "장소 미정",
           address: "서울 서초구 서초대로 396",
-          image: require("../assets/locations/mediwell-house.png")
+          image: require("@/assets/locations/mediwell-house.png")
         },
         date: selectedReservation.date || "2026-10-31",
         time: selectedReservation.time || "14:30",

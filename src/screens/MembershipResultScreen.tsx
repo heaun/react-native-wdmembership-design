@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image, Linking, A
 import { CommonLayout } from "../components/CommonLayout";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import { MembershipResult } from "../../types/membership";
+import { MembershipResult } from "../types/membership";
 
 interface MembershipResultProps {
   onBackPress?: () => void;
@@ -74,12 +74,12 @@ export const MembershipResultScreen: React.FC<MembershipResultProps> = ({ onBack
     return (
       <View style={styles.resultContainer}>
         {/* 배경 */}
-        <Image source={require("../../assets/signup/bg_membership.png")} style={styles.resultBackgroundImage} />
+        <Image source={require("@/assets/signup/bg_membership.png")} style={styles.resultBackgroundImage} />
 
         {/* 멤버십 로고 */}
         <View style={styles.membershipLogoSection}>
           <View style={styles.membershipLogo}>
-            <Image source={require("../../assets/signup/logo_membership.png")} style={styles.membershipLogoImage} />
+            <Image source={require("@/assets/signup/logo_membership.png")} style={styles.membershipLogoImage} />
           </View>
         </View>
 

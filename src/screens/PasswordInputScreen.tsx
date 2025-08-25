@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity, TextInput } from "react-nativ
 import { CommonLayout } from "../components/CommonLayout";
 import { FaceIdModal } from "../components/FaceIdModal";
 import { LabelText } from "../components/CommonText";
-import { PaymentAuthenticationMode, PaymentPasswordMode, PaymentSettings } from "../../types/payment";
+import { PaymentAuthenticationMode, PaymentPasswordMode, PaymentSettings } from "../types/payment";
 
 interface PasswordInputScreenProps {
   onBackPress?: () => void;

@@ -2,8 +2,8 @@ import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image } from "react-native";
 import { CommonLayout } from "../components/CommonLayout";
 import { LabelText, ButtonText, SmallText } from "../components/CommonText";
-import { globalStyles } from "../../styles/globalStyles";
-import { ReservationMode, Reservation, ReservationType } from "../../types/reservation";
+import { globalStyles } from "../styles/globalStyles";
+import { ReservationMode, Reservation, ReservationType } from "../types/reservation";
 
 interface ReservationConfirmScreenProps {
   reservationData?: Reservation;
@@ -29,13 +29,13 @@ export const ReservationConfirmScreen: React.FC<ReservationConfirmScreenProps> =
       title: "마인드앤바디 포 어덜트",
       category: "건강 프로그램",
       tags: "자세교정, 심신안정",
-      image: require("../../assets/services/service-image-1.png")
+      image: require("@/assets/services/service-image-1.png")
     },
     location: {
       id: 1,
       name: "서초 메디웰하우스",
       address: "서울 서초구 서초대로 396",
-      image: require("../../assets/locations/mediwell-house.png")
+      image: require("@/assets/locations/mediwell-house.png")
     },
     date: "2026-10-31",
     time: "14:30",
@@ -90,13 +90,13 @@ export const ReservationConfirmScreen: React.FC<ReservationConfirmScreenProps> =
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <View style={styles.iconContainer}>
-              <Image source={require("../../assets/icons/ic_location.png")} style={styles.iconStyle} />
+              <Image source={require("@/assets/icons/ic_location.png")} style={styles.iconStyle} />
             </View>
             <View style={styles.sectionContent}>
               <LabelText style={styles.sectionTitle}>{data.location?.name || "장소 미정"}</LabelText>
               <LabelText style={styles.sectionSubtitle}>{data.location?.address || "주소 미정"}</LabelText>
             </View>
-            <Image source={require("../../assets/icons/ic-chevron-right.png")} style={globalStyles.chevron} />
+            <Image source={require("@/assets/icons/ic-chevron-right.png")} style={globalStyles.chevron} />
           </View>
         </View>
 
@@ -104,12 +104,12 @@ export const ReservationConfirmScreen: React.FC<ReservationConfirmScreenProps> =
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <View style={styles.iconContainer}>
-              <Image source={require("../../assets/icons/ic_day.png")} style={styles.iconStyle} />
+              <Image source={require("@/assets/icons/ic_day.png")} style={styles.iconStyle} />
             </View>
             <View style={styles.sectionContent}>
               <LabelText style={styles.sectionTitle}>{formatDate(data.date)}</LabelText>
             </View>
-            <Image source={require("../../assets/icons/ic-chevron-right.png")} style={globalStyles.chevron} />
+            <Image source={require("@/assets/icons/ic-chevron-right.png")} style={globalStyles.chevron} />
           </View>
         </View>
 
@@ -117,12 +117,12 @@ export const ReservationConfirmScreen: React.FC<ReservationConfirmScreenProps> =
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <View style={styles.iconContainer}>
-              <Image source={require("../../assets/icons/ic_time.png")} style={styles.iconStyle} />
+              <Image source={require("@/assets/icons/ic_time.png")} style={styles.iconStyle} />
             </View>
             <View style={styles.sectionContent}>
               <LabelText style={styles.sectionTitle}>{formatTime(data.time)}</LabelText>
             </View>
-            <Image source={require("../../assets/icons/ic-chevron-right.png")} style={globalStyles.chevron} />
+            <Image source={require("@/assets/icons/ic-chevron-right.png")} style={globalStyles.chevron} />
           </View>
         </View>
 
@@ -130,12 +130,12 @@ export const ReservationConfirmScreen: React.FC<ReservationConfirmScreenProps> =
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <View style={styles.iconContainer}>
-              <Image source={require("../../assets/icons/ic_people.png")} style={styles.iconStyle} />
+              <Image source={require("@/assets/icons/ic_people.png")} style={styles.iconStyle} />
             </View>
             <View style={styles.sectionContent}>
               <LabelText style={styles.sectionTitle}>{data.personCount || 0}명</LabelText>
             </View>
-            <Image source={require("../../assets/icons/ic-chevron-right.png")} style={globalStyles.chevron} />
+            <Image source={require("@/assets/icons/ic-chevron-right.png")} style={globalStyles.chevron} />
           </View>
         </View>
 

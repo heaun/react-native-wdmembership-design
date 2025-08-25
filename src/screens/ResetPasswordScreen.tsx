@@ -5,7 +5,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { AuthResultStep, PasswordInput, PasswordValidation } from "../components/AuthCommon";
 import { PasswordInputMode } from "../components/AuthCommon";
 import { LabelText } from "../components/CommonText";
-import { globalStyles } from "../../styles/globalStyles";
+import { globalStyles } from "../styles/globalStyles";
 
 interface ResetPasswordScreenProps {
   onBackPress?: () => void;

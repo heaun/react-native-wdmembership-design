@@ -1,5 +1,7 @@
 import { MembershipLevel } from "./membership";
 
+export { MembershipLevel };
+
 // 이미지 파일 타입 선언
 declare module "*.png" {
   const value: any;

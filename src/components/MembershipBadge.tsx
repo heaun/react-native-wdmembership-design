@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet, ViewStyle } from "react-native";
-import { colors, membershipLevels } from "../../utils/colors";
-import { MembershipLevel } from "../../types";
+import { colors, membershipLevels } from "../utils/colors";
+import { MembershipLevel } from "../types/index";
 import { LabelText, ButtonText, SmallText } from "../components/CommonText";
 
 interface MembershipBadgeProps {

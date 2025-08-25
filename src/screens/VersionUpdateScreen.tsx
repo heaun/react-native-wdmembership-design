@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { CommonLayout } from "../components/CommonLayout";
-import { VersionInfo } from "../../types/version";
+import { VersionInfo } from "../types/version";
 import Constants from "expo-constants";
 import { LabelText } from "../components/CommonText";
 
@@ -34,7 +34,7 @@ export const VersionUpdateScreen: React.FC<VersionUpdateScreenProps> = ({ onBack
       <View style={styles.container}>
         {/* 앱 아이콘 */}
         <View style={styles.appIconContainer}>
-          <Image source={require("../../assets/icon.png")} style={styles.appIcon} />
+          <Image source={require("@/assets/icon.png")} style={styles.appIcon} />
         </View>
 
         {/* 버전 정보 */}

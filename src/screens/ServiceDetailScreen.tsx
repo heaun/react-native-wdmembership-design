@@ -64,17 +64,17 @@ export const ServiceDetailScreen: React.FC<ServiceDetailScreenProps> = ({
         serviceItems: [
           {
             id: 1,
-            image: require("../../assets/services/service-image-1.png"),
+            image: require("@/assets/services/service-image-1.png"),
             description: "24시간 응급내과 진료, 응급 이송 서비스, 일상 외 응급상황에도 빠른 대응과 진단으로 웰니스의 격을 높입니다."
           },
           {
             id: 2,
-            image: require("../../assets/services/service-image-2.png"),
+            image: require("@/assets/services/service-image-2.png"),
             description: "겉보다 속을 먼저 살피는 진단, 정확한 진단과 따뜻한 관리로 메디컬 웰니스의 기초를 다집니다."
           },
           {
             id: 3,
-            image: require("../../assets/services/service-image-3.png"),
+            image: require("@/assets/services/service-image-3.png"),
             description: "호르몬관리, 안티에이징, 기본 건강 관리 등 몸과 건강의 균형을 바로잡는 가장 과학적인 진료와 차별화된 의료 상품을 제공합니다."
           }
         ],
@@ -101,17 +101,17 @@ export const ServiceDetailScreen: React.FC<ServiceDetailScreenProps> = ({
         serviceItems: [
           {
             id: 1,
-            image: require("../../assets/services/service-image-1.png"),
+            image: require("@/assets/services/service-image-1.png"),
             description: "24시간 응급내과 진료, 응급 이송 서비스, 일상 외 응급상황에도 빠른 대응과 진단으로 웰니스의 격을 높입니다."
           },
           {
             id: 2,
-            image: require("../../assets/services/service-image-2.png"),
+            image: require("@/assets/services/service-image-2.png"),
             description: "겉보다 속을 먼저 살피는 진단, 정확한 진단과 따뜻한 관리로 메디컬 웰니스의 기초를 다집니다."
           },
           {
             id: 3,
-            image: require("../../assets/services/service-image-3.png"),
+            image: require("@/assets/services/service-image-3.png"),
             description: "호르몬관리, 안티에이징, 기본 건강 관리 등 몸과 건강의 균형을 바로잡는 가장 과학적인 진료와 차별화된 의료 상품을 제공합니다."
           }
         ],
@@ -138,17 +138,17 @@ export const ServiceDetailScreen: React.FC<ServiceDetailScreenProps> = ({
         serviceItems: [
           {
             id: 1,
-            image: require("../../assets/services/service-image-1.png"),
+            image: require("@/assets/services/service-image-1.png"),
             description: "영양학적으로 균형 잡힌 식단을 통해 건강한 다이어트를 지원합니다."
           },
           {
             id: 2,
-            image: require("../../assets/services/service-image-2.png"),
+            image: require("@/assets/services/service-image-2.png"),
             description: "개인별 맞춤 영양 상담과 식단 계획을 제공합니다."
           },
           {
             id: 3,
-            image: require("../../assets/services/service-image-3.png"),
+            image: require("@/assets/services/service-image-3.png"),
             description: "신선한 재료로 만든 건강한 식사와 영양 보충제를 함께 제공합니다."
           }
         ],
@@ -175,17 +175,17 @@ export const ServiceDetailScreen: React.FC<ServiceDetailScreenProps> = ({
         serviceItems: [
           {
             id: 1,
-            image: require("../../assets/services/service-image-1.png"),
+            image: require("@/assets/services/service-image-1.png"),
             description: "전문 의료진의 정확한 진단과 치료를 통해 건강을 관리합니다."
           },
           {
             id: 2,
-            image: require("../../assets/services/service-image-2.png"),
+            image: require("@/assets/services/service-image-2.png"),
             description: "최신 의료 장비를 활용한 정밀 검진과 치료 서비스를 제공합니다."
           },
           {
             id: 3,
-            image: require("../../assets/services/service-image-3.png"),
+            image: require("@/assets/services/service-image-3.png"),
             description: "개인별 맞춤 치료 계획과 지속적인 건강 관리를 지원합니다."
           }
         ],
@@ -212,17 +212,17 @@ export const ServiceDetailScreen: React.FC<ServiceDetailScreenProps> = ({
         serviceItems: [
           {
             id: 1,
-            image: require("../../assets/services/service-image-1.png"),
+            image: require("@/assets/services/service-image-1.png"),
             description: "전문 골프 강사의 지도하에 정확한 자세 교정을 통해 실력을 향상시킵니다."
           },
           {
             id: 2,
-            image: require("../../assets/services/service-image-2.png"),
+            image: require("@/assets/services/service-image-2.png"),
             description: "스크린 골프를 통한 코스 공략 연습과 실전 감각을 기릅니다."
           },
           {
             id: 3,
-            image: require("../../assets/services/service-image-3.png"),
+            image: require("@/assets/services/service-image-3.png"),
             description: "개인별 맞춤 레슨과 체계적인 골프 교육 프로그램을 제공합니다."
           }
         ],
@@ -249,17 +249,17 @@ export const ServiceDetailScreen: React.FC<ServiceDetailScreenProps> = ({
         serviceItems: [
           {
             id: 1,
-            image: require("../../assets/services/service-image-1.png"),
+            image: require("@/assets/services/service-image-1.png"),
             description: "전문 스파 테라피를 통한 심신의 휴식과 건강 관리를 제공합니다."
           },
           {
             id: 2,
-            image: require("../../assets/services/service-image-2.png"),
+            image: require("@/assets/services/service-image-2.png"),
             description: "수술 전후 운동과 코어 강화 운동을 통해 건강한 몸을 만듭니다."
           },
           {
             id: 3,
-            image: require("../../assets/services/service-image-3.png"),
+            image: require("@/assets/services/service-image-3.png"),
             description: "개인별 맞춤 케어 프로그램과 프리미엄 스파 서비스를 제공합니다."
           }
         ],
@@ -307,7 +307,7 @@ export const ServiceDetailScreen: React.FC<ServiceDetailScreenProps> = ({
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
         {/* Service Header Image */}
         <View style={styles.headerImageContainer}>
-          <Image source={require("../../assets/services/header-image.png")} style={styles.headerImage} resizeMode="cover" />
+          <Image source={require("@/assets/services/header-image.png")} style={styles.headerImage} resizeMode="cover" />
         </View>
 
         {/* Service Info Card */}

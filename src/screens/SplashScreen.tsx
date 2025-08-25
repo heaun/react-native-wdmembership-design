@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { StyleSheet, Text, View, Image, StatusBar, Dimensions } from "react-native";
-import { typography } from "../../utils/typography";
-import { LabelText, ButtonText, SmallText, MyeongjoExtraBoldText, MyeongjoTitleText } from "../components/CommonText";
+import { typography } from "@/utils/typography";
+import { LabelText, ButtonText, SmallText, MyeongjoExtraBoldText, MyeongjoTitleText } from "@/components/CommonText";
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
@@ -24,7 +24,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onFinish }) => {
     <View style={styles.container}>
       {/* Logo Section */}
       <View style={styles.logoSection}>
-        <Image source={require("../../assets/splash-icon.png")} style={styles.logo} resizeMode="contain" />
+        <Image source={require("@/assets/splash-icon.png")} style={styles.logo} resizeMode="contain" />
 
         {/* Title Section */}
         <View style={styles.titleSection}>

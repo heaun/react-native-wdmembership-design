@@ -58,7 +58,7 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({ currentTab, onTabP
     phoneNumber: "010-12**-56**",
     email: "jgcho**@wiiv****.com",
     defaultLocation: "메디웰 하우스 (서울 서초구)",
-    avatarImage: require("../../assets/profile/profile-avatar-6bf758.png")
+    avatarImage: require("@/assets/profile/profile-avatar-6bf758.png")
   };
 
   // 실제 사용할 데이터 (props로 받은 데이터가 있으면 사용, 없으면 기본 데이터 사용)

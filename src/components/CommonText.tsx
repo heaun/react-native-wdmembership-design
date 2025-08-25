@@ -1,6 +1,6 @@
 import React from "react";
 import { Text, TextProps, StyleSheet } from "react-native";
-import { FONT_FAMILY, FONT_SIZE } from "../../styles/globalStyles";
+import { FONT_FAMILY, FONT_SIZE } from "@/styles/globalStyles";
 
 // 기본 Text 컴포넌트
 interface CommonTextProps extends TextProps {

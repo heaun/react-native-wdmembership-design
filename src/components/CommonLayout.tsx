@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, StatusBar, SafeAreaView, Platform, Image } from "react-native";
 import { LabelText, ButtonText } from "./CommonText";
 import { SideMenu } from "./SideMenu";
-import { typography } from "../../utils/typography";
+import { typography } from "@/utils/typography";
 
 interface TabItem {
   name: string;
@@ -76,26 +76,26 @@ export const CommonLayout: React.FC<CommonLayoutProps> = ({
   const tabs: TabItem[] = [
     {
       name: "Home",
-      icon: require("../../assets/icons/ic_tap_01_off.png"),
-      activeIcon: require("../../assets/icons/ic_tap_01_on.png"),
+      icon: require("@/assets/icons/ic_tap_01_off.png"),
+      activeIcon: require("@/assets/icons/ic_tap_01_on.png"),
       label: "홈"
     },
     {
       name: "Schedule",
-      icon: require("../../assets/icons/ic_tap_02_off.png"),
-      activeIcon: require("../../assets/icons/ic_tap_02_on.png"),
+      icon: require("@/assets/icons/ic_tap_02_off.png"),
+      activeIcon: require("@/assets/icons/ic_tap_02_on.png"),
       label: "나의일정"
     },
     {
       name: "MembershipCard",
-      icon: require("../../assets/icons/ic_tap_03_off.png"),
-      activeIcon: require("../../assets/icons/ic_tap_03_on.png"),
+      icon: require("@/assets/icons/ic_tap_03_off.png"),
+      activeIcon: require("@/assets/icons/ic_tap_03_on.png"),
       label: "멤버십카드"
     },
     {
       name: "MyService",
-      icon: require("../../assets/icons/ic_tap_04_off.png"),
-      activeIcon: require("../../assets/icons/ic_tap_04_on.png"),
+      icon: require("@/assets/icons/ic_tap_04_off.png"),
+      activeIcon: require("@/assets/icons/ic_tap_04_on.png"),
       label: "멤버십서비스"
     }
   ];
@@ -116,11 +116,11 @@ export const CommonLayout: React.FC<CommonLayoutProps> = ({
           <View style={styles.leftSide}>
             {showBackButton ? (
               <TouchableOpacity style={styles.backButton} onPress={onBackPress}>
-                <Image source={require("../../assets/icons/ic-chevron-left.png")} style={styles.backButtonIcon} />
+                <Image source={require("@/assets/icons/ic-chevron-left.png")} style={styles.backButtonIcon} />
               </TouchableOpacity>
             ) : showTopIcons ? (
               <TouchableOpacity style={styles.menuButton} onPress={handleMenuPress}>
-                <Image source={require("../../assets/icons/ic_menu.png")} style={styles.menuIcon} />
+                <Image source={require("@/assets/icons/ic_menu.png")} style={styles.menuIcon} />
               </TouchableOpacity>
             ) : (
               <View style={styles.emptyButton} />
@@ -132,11 +132,11 @@ export const CommonLayout: React.FC<CommonLayoutProps> = ({
             {showTopIcons && !showBackButton ? (
               <View style={styles.rightIcons}>
                 <TouchableOpacity style={styles.iconButton} onPress={onCouponPress}>
-                  <Image source={require("../../assets/icons/ic_coupon.png")} style={styles.iconImage} />
+                  <Image source={require("@/assets/icons/ic_coupon.png")} style={styles.iconImage} />
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.iconButton} onPress={onNotificationPress}>
                   <View style={styles.notificationContainer}>
-                    <Image source={require("../../assets/icons/ic_notification.png")} style={styles.iconImage} />
+                    <Image source={require("@/assets/icons/ic_notification.png")} style={styles.iconImage} />
                     <View style={styles.notificationDot} />
                   </View>
                 </TouchableOpacity>

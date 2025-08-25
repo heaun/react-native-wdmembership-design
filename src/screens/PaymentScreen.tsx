@@ -120,7 +120,7 @@ export const PaymentScreen: React.FC<PaymentScreenProps> = ({
               <>
                 {/* 카드 정보 */}
                 <View style={styles.cardInfo}>
-                  <Image source={require("../../assets/payment/card-image.png")} style={styles.cardImage} resizeMode="cover" />
+                  <Image source={require("@/assets/payment/card-image.png")} style={styles.cardImage} resizeMode="cover" />
                   <LabelText style={styles.cardName}>JADE CLESSIC{"\n"}하나카드</LabelText>
                 </View>
 

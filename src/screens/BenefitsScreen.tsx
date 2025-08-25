@@ -4,8 +4,8 @@ import { Ionicons } from "@expo/vector-icons";
 import { Card } from "../components/Card";
 import { MembershipBadge } from "../components/MembershipBadge";
 import { CommonLayout } from "../components/CommonLayout";
-import { colors, membershipLevels } from "../../utils/colors";
-import { Benefit } from "../../types";
+import { colors, membershipLevels } from "../utils/colors";
+import { Benefit } from "../types";
 
 const mockBenefits: Benefit[] = [
   {

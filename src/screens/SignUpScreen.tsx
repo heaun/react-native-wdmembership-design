@@ -15,8 +15,8 @@ import {
   PasswordValidation
 } from "../components/AuthCommon";
 import { PasswordInputMode } from "../components/AuthCommon";
-import { MembershipResult } from "../../types/membership";
-import { globalStyles } from "../../styles/globalStyles";
+import { MembershipResult } from "../types/membership";
+import { FONT_FAMILY, globalStyles } from "../styles/globalStyles";
 
 interface SignUpScreenProps {
   onBackPress?: () => void;
@@ -572,7 +572,7 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
               <SmallText style={styles.cardSubtitle}>휴대폰 인증</SmallText>
             </View>
             <View style={styles.cardIconSection}>
-              <Image source={require("../../assets/icons/ic_local.png")} style={styles.ic_local} />
+              <Image source={require("@/assets/icons/ic_local.png")} style={styles.ic_local} />
             </View>
           </View>
         </TouchableOpacity>
@@ -588,7 +588,7 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
               <SmallText style={styles.cardSubtitle}>이메일로 인증</SmallText>
             </View>
             <View style={styles.cardIconSection}>
-              <Image source={require("../../assets/icons/ic_foreigner.png")} style={styles.ic_foreign} />
+              <Image source={require("@/assets/icons/ic_foreigner.png")} style={styles.ic_foreign} />
             </View>
           </View>
         </TouchableOpacity>
@@ -857,7 +857,7 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({ onBackPress, onRegis
             <LabelText style={styles.inputLabel}>이름</LabelText>
             <TextInput
               ref={nameInputRef}
-              style={styles.input}
+              style={globalStyles.input}
               placeholder="이름을 입력하세요"
               placeholderTextColor="#B1B8C0"
               value={data.form.name}
@@ -1373,9 +1373,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12
   },
   residentNumberInput: {
-    fontSize: 18,
-    fontWeight: "700",
-    color: "#2B2B2B",
+    ...globalStyles.input,
     textAlign: "left",
     minWidth: 100
   },

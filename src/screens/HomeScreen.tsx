@@ -4,8 +4,8 @@ import { Ionicons } from "@expo/vector-icons";
 import { Card } from "../components/Card";
 import { Button } from "../components/Button";
 import { MembershipBadge } from "../components/MembershipBadge";
-import { colors } from "../../utils/colors";
-import { User, Benefit, Reward } from "../../types";
+import { colors } from "../utils/colors";
+import { User, Benefit, Reward } from "../types";
 
 // Mock data
 const mockUser: User = {

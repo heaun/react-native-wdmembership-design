@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Switch, Image } from "react-native";
 import { CommonLayout } from "../components/CommonLayout";
 import { FaceIdModal } from "../components/FaceIdModal";
-import { VersionInfo } from "../../types/version";
+import { VersionInfo } from "../types/version";
 import Constants from "expo-constants";
 import { LabelText, ButtonText, SmallText } from "../components/CommonText";
 
@@ -216,7 +216,7 @@ export const AppSettingsSubMenuScreen: React.FC<AppSettingsSubMenuScreenProps> =
             <LabelText style={styles.settingTitle}>{item.title}</LabelText>
           )}
         </View>
-        <Image source={require("../../assets/icons/ic-chevron-right.png")} style={styles.chevron} />
+        <Image source={require("@/assets/icons/ic-chevron-right.png")} style={styles.chevron} />
       </TouchableOpacity>
     );
   };

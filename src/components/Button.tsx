@@ -1,8 +1,8 @@
 import React from "react";
 import { TouchableOpacity, Text, StyleSheet, ViewStyle, TextStyle, ActivityIndicator, Image } from "react-native";
-import { colors } from "../../utils/colors";
-import { LabelText, ButtonText, SmallText } from "../components/CommonText";
-import { globalStyles } from "../../styles/globalStyles";
+import { colors } from "@/utils/colors";
+import { LabelText, ButtonText, SmallText } from "@/components/CommonText";
+import { globalStyles } from "@/styles/globalStyles";
 
 interface ButtonProps {
   title: string;
@@ -28,7 +28,7 @@ export const ChevronButton: React.FC<ButtonProps> = ({
   return (
     <TouchableOpacity style={[globalStyles.chevronContainer, style]} onPress={onPress}>
       <LabelText style={globalStyles.chevronText}>{title}</LabelText>
-      <Image source={require("../../assets/icons/ic-chevron-right.png")} style={globalStyles.chevron} />
+      <Image source={require("@/assets/icons/ic-chevron-right.png")} style={globalStyles.chevron} />
     </TouchableOpacity>
   );
 };

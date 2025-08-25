@@ -2,17 +2,17 @@ import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Linking, Alert } from "react-native";
 import Toast, { BaseToast, ErrorToast, InfoToast } from "react-native-toast-message";
 import * as Font from "expo-font";
-import { SplashScreen } from "./src/screens/SplashScreen";
-import { IntroScreen } from "./src/screens/IntroScreen";
-import { LoginScreen } from "./src/screens/LoginScreen";
-import { AuthenticationScreen } from "./src/screens/AuthenticationScreen";
-import { ResetPasswordScreen } from "./src/screens/ResetPasswordScreen";
-import { AppNavigator } from "./navigation/AppNavigator";
-import { ToastProvider, useToast } from "./src/context/ToastContext";
-import { SignUpScreen } from "./src/screens/SignUpScreen";
-import { MembershipResultScreen } from "./src/screens/MembershipResultScreen";
-import { MembershipGuideScreen } from "./src/screens/MembershipGuideScreen";
-import { MembershipDetailScreen } from "./src/screens/MembershipDetailScreen";
+import { SplashScreen } from "@/screens/SplashScreen";
+import { IntroScreen } from "@/screens/IntroScreen";
+import { LoginScreen } from "@/screens/LoginScreen";
+import { AuthenticationScreen } from "@/screens/AuthenticationScreen";
+import { ResetPasswordScreen } from "@/screens/ResetPasswordScreen";
+import { AppNavigator } from "@/navigation/AppNavigator";
+import { ToastProvider, useToast } from "@/context/ToastContext";
+import { SignUpScreen } from "@/screens/SignUpScreen";
+import { MembershipResultScreen } from "@/screens/MembershipResultScreen";
+import { MembershipGuideScreen } from "@/screens/MembershipGuideScreen";
+import { MembershipDetailScreen } from "@/screens/MembershipDetailScreen";
 
 type ScreenType =
   | "splash"
@@ -39,13 +39,13 @@ function AppContent() {
   useEffect(() => {
     async function loadFonts() {
       await Font.loadAsync({
-        "NanumSquareNeo-aLt": require("./assets/fonts/NanumSquareNeo-aLt.ttf"),
-        "NanumSquareNeo-bRg": require("./assets/fonts/NanumSquareNeo-bRg.ttf"),
-        "NanumSquareNeo-cBd": require("./assets/fonts/NanumSquareNeo-cBd.ttf"),
-        "NanumSquareNeo-dEb": require("./assets/fonts/NanumSquareNeo-dEb.ttf"),
-        "NanumSquareNeo-eHv": require("./assets/fonts/NanumSquareNeo-eHv.ttf"),
-        NanumMyeongjo: require("./assets/fonts/NanumMyeongjo.ttf"),
-        NanumMyeongjoExtraBold: require("./assets/fonts/NanumMyeongjoExtraBold.ttf")
+        "NanumSquareNeo-aLt": require("@/assets/fonts/NanumSquareNeo-aLt.ttf"),
+        "NanumSquareNeo-bRg": require("@/assets/fonts/NanumSquareNeo-bRg.ttf"),
+        "NanumSquareNeo-cBd": require("@/assets/fonts/NanumSquareNeo-cBd.ttf"),
+        "NanumSquareNeo-dEb": require("@/assets/fonts/NanumSquareNeo-dEb.ttf"),
+        "NanumSquareNeo-eHv": require("@/assets/fonts/NanumSquareNeo-eHv.ttf"),
+        NanumMyeongjo: require("@/assets/fonts/NanumMyeongjo.ttf"),
+        NanumMyeongjoExtraBold: require("@/assets/fonts/NanumMyeongjoExtraBold.ttf")
       });
       setFontsLoaded(true);
     }

@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image, Linking, A
 import { CommonLayout } from "../components/CommonLayout";
 import { LabelText, ButtonText, SmallText, ExtraBoldText } from "../components/CommonText";
 import { Ionicons } from "@expo/vector-icons";
-import { MembershipDetail } from "../../types/membership";
+import { MembershipDetail } from "../types/membership";
 
 interface MembershipDetailScreenProps {
   membershipId: string;
@@ -24,7 +24,7 @@ export const MembershipDetailScreen: React.FC<MembershipDetailScreenProps> = ({ 
       unit: "원",
       returnType: "10년 반환형",
       familyDiscount: "가족형(기명) : 1인 30% DC",
-      cardImage: require("../../assets/membership/with-doctors-member.png"),
+      cardImage: require("@/assets/membership/with-doctors-member.png"),
       backgroundColor: "#5C6969",
       benefits: [
         {
@@ -76,7 +76,7 @@ export const MembershipDetailScreen: React.FC<MembershipDetailScreenProps> = ({ 
       unit: "",
       returnType: "",
       familyDiscount: "",
-      cardImage: require("../../assets/membership/ph-1603-residence.png"),
+      cardImage: require("@/assets/membership/ph-1603-residence.png"),
       backgroundColor: "#605B51",
       benefits: [
         {
@@ -114,7 +114,7 @@ export const MembershipDetailScreen: React.FC<MembershipDetailScreenProps> = ({ 
       returnType: "가족형 (2인 기준) : 150,000,000 원",
       unit: "원",
       familyDiscount: "가족형 (2인 기준) : 14,000,000 원",
-      cardImage: require("../../assets/membership/saint-paul-school.png"),
+      cardImage: require("@/assets/membership/saint-paul-school.png"),
       backgroundColor: "#505F65",
       benefits: [
         {

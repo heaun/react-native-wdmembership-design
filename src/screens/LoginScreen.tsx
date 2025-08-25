@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, Dimensions } from "react-native";
 import { CommonLayout } from "../components/CommonLayout";
 import { LabelText, ButtonText, SmallText, ExtraBoldText } from "../components/CommonText";
-import { globalStyles } from "../../styles/globalStyles";
+import { globalStyles } from "../styles/globalStyles";
 
 const { height: screenHeight } = Dimensions.get("window");
 const isSmallScreen = screenHeight < 700; // iPhone SE 기준

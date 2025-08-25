@@ -4,11 +4,11 @@
     "slug": "WDMembershipApp",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./src/assets/icon.png",
     "userInterfaceStyle": "dark",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/splash-icon.png",
+      "image": "./src/assets/splash-icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#2B2B2B"
     },
@@ -17,11 +17,11 @@
         "expo-font",
         {
           "fonts": [
-            "./assets/fonts/NanumSquareNeo-bRg.ttf",
-            "./assets/fonts/NanumSquareNeo-cBd.ttf",
-            "./assets/fonts/NanumSquareNeo-dEb.ttf",
-            "./assets/fonts/NanumSquareNeo-eHv.ttf",
-            "./assets/fonts/NanumSquareNeo-aLt.ttf"
+            "./src/assets/fonts/NanumSquareNeo-bRg.ttf",
+            "./src/assets/fonts/NanumSquareNeo-cBd.ttf",
+            "./src/assets/fonts/NanumSquareNeo-dEb.ttf",
+            "./src/assets/fonts/NanumSquareNeo-eHv.ttf",
+            "./src/assets/fonts/NanumSquareNeo-aLt.ttf"
           ]
         }
       ]
@@ -33,7 +33,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./src/assets/adaptive-icon.png",
         "backgroundColor": "#2B2B2B"
       },
       "fonts": [
@@ -41,19 +41,19 @@
           "fontFamily": "NanumSquareNeo-bRg",
           "fontDefinitions": [
             {
-              "path": "./assets/fonts/NanumSquareNeo-bRg.ttf",
+              "path": "./src/assets/fonts/NanumSquareNeo-bRg.ttf",
               "fontFamily": "NanumSquareNeo-bRg",
               "fontWeight": "400",
               "fontStyle": "normal"
             },
             {
-              "path": "./assets/fonts/NanumSquareNeo-cBd.ttf",
+              "path": "./src/assets/fonts/NanumSquareNeo-cBd.ttf",
               "fontFamily": "NanumSquareNeo-cBd",
               "fontWeight": "700",
               "fontStyle": "normal"
             },
             {
-              "path": "./assets/fonts/NanumSquareNeo-dEb.ttf",
+              "path": "./src/assets/fonts/NanumSquareNeo-dEb.ttf",
               "fontFamily": "NanumSquareNeo-dEb",
               "fontWeight": "800",
               "fontStyle": "normal"
@@ -69,7 +69,7 @@
       "package": "com.wiivlink.WDMembershipApp"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./src/assets/favicon.png"
     }
   }
 }
